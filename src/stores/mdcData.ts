@@ -14,7 +14,7 @@ export const useMCDStore = defineStore("data", () => {
   );
   const surfaceT = ref("SHORAD, AAA");
   const airT = ref("NONE");
-  const roe = ref("Shoot the children first");
+  const roe = ref("Don't shoot at Civilians, thank you.");
 
   const gameplan = ref(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris feugiat rhoncus mollis. Aliquam erat volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam efficitur at sapien at posuere. Pellentesque tortor eros, ultrices eget vestibulum et, blandit in mauris. Etiam rhoncus mattis mattis. Maecenas tristique facilisis luctus. Vivamus nec sapien enim. Vestibulum pulvinar, nisi ut ultricies sollicitudin, leo tortor bibendum metus, eu porta arcu tortor in enim. Aliquam pulvinar quam vitae mauris pretium semper. Quisque finibus quis ante in sollicitudin. Sed consequat, lectus nec facilisis congue, quam nibh blandit tortor, hendrerit porta nibh massa id tortor. Donec vestibulum placerat ex ut faucibus. "
