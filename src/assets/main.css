@@ -1,0 +1,173 @@
+
+/* Let's make some of the MCD's style global for funsies */
+* {
+    --mcdgrey: #3a3838;
+    --mcdwhite: #f2f2f2;
+    --mcdhalfgrey: #d0cece;
+    --rnlaforange: #ffc000;
+    --mcdred: #ff0000;
+    --mcdred-bg: #fce4d6;
+    --mcd-page: #ffff00;
+  
+    font-family: "Bahnschrift";
+    font-size: 1.15rem;
+    font-weight: bold;
+    text-align: center;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  
+  .dropdown {
+    border: 1px solid black;
+    border-radius: 0;
+  }
+  
+  .mcdpage {
+    border: 1px solid black;
+  
+    margin: 0 0;
+    background-color: var(--mcdwhite);
+    max-width: 768px;
+    max-height: 1024px;
+    color: black;
+    display: grid;
+    grid-template-columns: repeat(32, 1fr);
+    grid-template-rows: repeat(32, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+  }
+  
+  .border {
+    border: 1px solid black;
+  }
+  
+  .textbox {
+    min-width: 0;
+    min-height: 0;
+  
+    word-wrap: break-word;
+    max-width: 100%;
+    white-space: pre-line;
+    resize: none;
+    border: 1px solid black;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .pagenr {
+    background-color: var(--mcd-page);
+    grid-column: span 3;
+  }
+  
+  .header {
+    background-color: var(--mcdgrey);
+    color: var(--mcdwhite);
+    grid-column: span 29;
+  }
+  
+  .mcd-s-2 {
+    grid-column: span 2;
+  }
+  .mcd-s-3 {
+    grid-column: span 3;
+  }
+  .mcd-s-4 {
+    grid-column: span 4;
+  }
+  .mcd-s-5 {
+    grid-column: span 5;
+  }
+  .mcd-s-6 {
+    grid-column: span 6;
+  }
+  .mcd-s-7 {
+    grid-column: span 7;
+  }
+  .mcd-s-8 {
+    grid-column: span 8;
+  }
+  .mcd-s-9 {
+    grid-column: span 9;
+  }
+  .mcd-s-12 {
+    grid-column: span 12;
+  }
+  .mcd-s-16 {
+    grid-column: span 16;
+  }
+  
+  .mcd-s-20 {
+    grid-column: span 20;
+  }
+  
+  .mcd-s-28 {
+    grid-column: span 28;
+  }
+  .mcd-s-26 {
+    grid-column: span 26;
+  }
+  
+  .mcd-s-col {
+    grid-column: span 32;
+  }
+  .mcd-row-2 {
+    grid-row: span 2;
+  }
+  .mcd-row-3 {
+    grid-row: span 3;
+  }
+  .mcd-row-5 {
+    grid-row: span 5;
+  }
+  .mcd-row-6 {
+    grid-row: span 6;
+  }
+  .mcd-row-7 {
+    grid-row: span 7;
+  }
+  .mcd-row-8 {
+    grid-row: span 8;
+  }
+  .mcd-row-9 {
+    grid-row: span 9;
+  }
+  .mcd-row-10 {
+    grid-row: span 10;
+  }
+  .mcd-row-16 {
+    grid-row: span 16;
+  }
+  
+  .mcd-bow {
+    color: black;
+    background-color: var(--mcdwhite);
+    font-weight: 600;
+  }
+  .mcd-bog {
+    color: black;
+    background-color: var(--mcdhalfgrey);
+    font-weight: 600;
+  }
+  
+  .mcd-wog {
+    color: var(--mcdwhite);
+    background-color: var(--mcdgrey);
+  }
+  
+  .roehead {
+    color: black;
+    background-color: var(--mcdred);
+  }
+  
+  .roe {
+    background-color: var(--mcdred-bg);
+  }
+  .mcd-rnlaf313 {
+    background-color: var(--mcdgrey);
+    color: var(--rnlaforange);
+    grid-column: span 20;
+    grid-row: span 2;
+    font-size: calc(1020px / 23);
+    text-align: center;
+    vertical-align: middle;
+  }
