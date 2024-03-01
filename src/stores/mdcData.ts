@@ -1,8 +1,18 @@
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
+import { ref, computed, type WritableComputedRef } from "vue";
+import { defineStore, type SubscriptionCallbackMutation } from "pinia";
 
 export const useMCDStore = defineStore("data", () => {
-  const missionNr = ref(12345);
+  const packages = ref(new Array());
+  const selectedPackageNr = "";
+
+  const missionNr = computed({
+    get() {
+      return "";
+    },
+    set(v: string) {},
+  });
+
+  //const missionNr = ref(12345);
   const callsign = ref("BEAST 7");
   const pkgnr = ref("CAS PKG");
   const homePlate = ref("Incirlik");

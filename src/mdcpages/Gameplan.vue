@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref } from "vue";
+import { inject } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { useMCDStore } from "../stores/mdcData";
-import Dropdown from "primevue/dropdown";
 
 import { flights } from "../config/constants";
 
@@ -29,13 +28,15 @@ const showROE = inject("showROE");
 
 <template>
   <div class="mcdpage">
-    <div class="border pagenr">PAGE {{ pagenr }}</div>
-    <div class="border header">BRIEFING CARD</div>
+    <div class="border pagenr center-text">
+      <p>PAGE {{ pagenr }}</p>
+    </div>
+    <div class="border header"><p>BRIEFING CARD</p></div>
     <div class="border mcd-s-6 mcd-wog">MISSION</div>
     <div class="border mcd-s-6 mcd-bow">{{ missionNr }}</div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
-    <select v-model="callsign" class="dropdown mcd-s-5 mcd-bow">
-      <option v-for="flight of flights">{{ flight.CALLSIGN }}</option>
+    <select v-model="callsign" class="mcd-s-5 mcd-bow">
+      <option v-for="flight of flights">{{ flight.Callsign }}</option>
     </select>
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
     <div class="border mcd-s-5 mcd-bow">{{ pkgnr }}</div>
