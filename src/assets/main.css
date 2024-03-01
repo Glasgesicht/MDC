@@ -21,6 +21,16 @@
     border: 1px solid black;
     border-radius: 0;
   }
+
+  select::-ms-expand {
+    display: none;
+  }
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: "";
+  }
   
   .mcdpage {
     border: 1px solid black;
@@ -106,7 +116,7 @@
   .mcd-s-26 {
     grid-column: span 26;
   }
-  
+
   .mcd-s-col {
     grid-column: span 32;
   }
