@@ -24,7 +24,8 @@ const {
 
 const pagenr = 1; // TODO: Compute based on selected pages for export
 const metar = "weather";
-const departureName = "INCIRLIK AB";
+
+const departureName = "INCIRLIK AB"; // TODO: Make Dep/Arr/Alt more efficient via loop.
 const departureTACAN = "21X DA";
 const departureGround = "360.10";
 const departureLength = "10,000";
@@ -48,7 +49,6 @@ const alternateElevation = "232'";
 const alternateRunway = "I23 229°";
 const alternateILS = "111.70";
 
-const waypointNumber = 1;
 const waypointAction = "Climb";
 const waypointTimeOnStation = "21:24:54";
 const waypointHeading = "243°";
@@ -57,6 +57,10 @@ const waypointSpeed = ".72";
 const waypointAltitude = "FL240";
 const waypointMinimumFuel = ">2463";
 const waypointNote = "WAIT: 01:24:32";
+
+const bullseyeName = "SCIMITAR";
+const bullseyeLatitude = "N 40\"30.243";
+const bullseyeLongitude = "E 032\"16.885";
 
 const waypoints = ref([
   { id: 1, name: "TAKEOFF" },
@@ -117,7 +121,7 @@ const showROE = inject("showROE");
       STEERPOINTS
     </div>
 
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog">WP</div>
+    <div class="border mcd-s-2 mcd-row-1 mcd-wog">#</div>
     <div class="border mcd-s-5 mcd-wog">ACTION</div>
     <div class="border mcd-s-4 mcd-wog">TOS</div>
     <div class="border mcd-s-3 mcd-wog">HDG</div>
@@ -128,24 +132,27 @@ const showROE = inject("showROE");
     <div class="border mcd-s-5 mcd-wog">NOTE</div>
 
     <div class="mcd-s-31 parent" v-for="index in [...Array(24).keys()]">
-      <div class="border mcd-s-2 mcd-row-1 mcd-wog">WP</div>
-      <div class="border mcd-s-5 mcd-wog">ACTION</div>
+      <div class="border mcd-s-2  mcd-wog">{{index + 1}}</div>
+      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointAction}}</div>
+      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointTimeOnStation}}</div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointHeading}}</div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointDistance}}</div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointSpeed}}</div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointAltitude}}</div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointMinimumFuel}}</div>
+      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointNote}}</div>
     </div>
 
-    <textarea
-      type="text"
-      :class="`mcd-s-col textbox ${showROE ? 'mcd-row-10' : 'mcd-row-16'}`"
-      v-model="gameplan"
-    />
-    <div v-if="showROE" class="border roehead mcd-s-col" style="width: 100%">
-      RULES OF ENGAGEMENT
-    </div>
-    <textarea
-      v-if="showROE"
-      type="text"
-      v-model="roe"
-      class="border mcd-s-col roe textbox non-resizable mcd-row-6"
-    />
+    
+    <div class="border mcd-s-2 mcd-wog">25</div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-wog">BULLSEYE</div>
+    <div class="border mcd-s-8 mcd-bow">{{ bullseyeName }}</div>
+    <div class="border mcd-s-3 mcd-wog">LAT</div>
+    <div class="border mcd-s-5 mcd-bow">{{ bullseyeLatitude }}</div>
+    <div class="border mcd-s-3 mcd-wog">LONG</div>
+    <div class="border mcd-s-5 mcd-bow">{{ bullseyeLongitude }}</div>
+
+
   </div>
 </template>
 <style scoped>
