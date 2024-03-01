@@ -1,6 +1,6 @@
 import { ref, computed, type WritableComputedRef, type Ref } from "vue";
 import { defineStore, type SubscriptionCallbackMutation } from "pinia";
-import type { Package } from "@/types/mdcDataTypes";
+import type { Flight, Package } from "@/types/mdcDataTypes";
 
 export const useMCDStore = defineStore("data", () => {
   const packages: Ref<Package[]> = ref(new Array());
@@ -9,7 +9,14 @@ export const useMCDStore = defineStore("data", () => {
     name: "No Package Selected",
   });
 
-  const allPackageFlights = computed(() => selectedPKG.value?.flights);
+  const allPackageFlights: WritableComputedRef<Flight[]> = computed({
+    set(value: Flight[]) {
+      selectedPKG.value.flights = value;
+    },
+    get() {
+      return selectedPKG.value?.flights;
+    },
+  });
 
   const missionNr = computed({
     get() {
