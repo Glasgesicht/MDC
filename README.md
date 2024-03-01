@@ -1,5 +1,5 @@
-# MCD
-Small project to genertate MCD's from Data import with many contextual presets
+# MDC
+Small project to genertate MDC's from Data import with many contextual presets
 
 ### to get started:
 1. install Node.js from https://nodejs.org/en
