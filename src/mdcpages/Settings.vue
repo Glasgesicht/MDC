@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import Card from "primevue/card";
 import DataTable from "primevue/datatable";
+import Dropdown from "primevue/dropdown";
 import Column from "primevue/column";
 import { processCF } from "../config/parseCF";
 import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useMCDStore } from "@/stores/mdcData";
 
 const listItems = ref([
   {
@@ -16,6 +19,8 @@ const listItems = ref([
   { CALLSIGN: "DEMON 8", UHF: "267.80", VHF: "141.80", id: 1 },
   { CALLSIGN: "PLASMA 3", UHF: "267.30", VHF: "141.30", id: 1 },
 ]);
+
+const { packages, selectedPKG, allPackageFlights } = storeToRefs(useMCDStore());
 
 const onRowReorder = (event: any) => {
   listItems.value = event.value;
@@ -58,12 +63,21 @@ const onChangedFile = async (payload: any) => {
         />
         <p class="">Currently Selected Package</p>
         <p class="mcd-s-3">Order Flights In Package</p>
-        <select>
-          <option>meh</option>
-        </select>
+        <!--<select v-model="selectedPKG">
+          <option v-for="pkg in packages">{{ pkg.name }}</option>
+        </select>-->
+
+        <Dropdown
+          v-model="selectedPKG"
+          :options="packages"
+          optionLabel="name"
+          placeholder="Select A Package"
+          class="w-full md:w-14rem"
+        />
+
         <DataTable
           class="mcd-s-3 mcd-row-3"
-          :value="listItems"
+          :value="allPackageFlights"
           :reorderableColumns="true"
           showGridlines
           @rowReorder="onRowReorder"
@@ -78,7 +92,7 @@ const onChangedFile = async (payload: any) => {
               >FLIGHT #{{ index + 1 }}</template
             ></Column
           >
-          <Column field="CALLSIGN" header="CALLSIGN" key="CALLSIGN" />
+          <Column field="callsign" header="callsign" key="callsign" />
 
           <Column header="FLIGHTLEAD" />
         </DataTable>
