@@ -7,7 +7,8 @@ import TabPanel from "primevue/tabpanel";
 import Checkbox from "primevue/checkbox";
 
 import { inject, provide, ref } from "vue";
-import Page2Vue from "./mdcpages/Page2.vue";
+import Page2 from "./mdcpages/Page2.vue";
+import Settings from "./mdcpages/Settings.vue";
 
 const showROE = ref(false);
 
@@ -16,7 +17,7 @@ provide("showROE", showROE);
 
 <template>
   <TabView
-    ><TabPanel header="Settings"></TabPanel>
+    ><TabPanel header="Settings"> <Settings /> </TabPanel>
     <TabPanel header="Gameplan">
       <Gameplan />
       Display ROE:
@@ -26,7 +27,7 @@ provide("showROE", showROE);
       <Waypoints />
     </TabPanel>
     <TabPanel header="Page 2">
-      <Page2Vue />
+      <Page2 />
     </TabPanel>
     <TabPanel header="Export to JPG"></TabPanel>
   </TabView>

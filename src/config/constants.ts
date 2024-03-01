@@ -19,22 +19,41 @@
 ];
 */
 
-type flightConfig = {
-  CALLSIGN: String;
-  VHF: String;
-  UHF: String;
+const createFlight = (
+  callsign: String,
+  number: Number,
+  type: "F-16" | "F-15" | "F/A-18"
+) => {
+  switch (type) {
+    case "F-16":
+      return {
+        Callsign: `${callsign} ${number}`, // callsign + ' ' + number
+        UHF: `267.${number}0`,
+        VHF: `141.${number}0`,
+        type: type,
+      };
+    case "F-15":
+      return {
+        Callsign: `${callsign} ${number}`, // callsign + ' ' + number
+        UHF: `267.${number}0`,
+        VHF: `141.${number}0`,
+        type: type,
+      };
+    case "F/A-18":
+      return {
+        Callsign: `${callsign} ${number}`, // callsign + ' ' + number
+        UHF: `267.${number}0`,
+        VHF: `141.${number}0`,
+        type: type,
+      };
+  }
 };
 
-export const flights: Array<flightConfig> = [
-  {
-    CALLSIGN: "BEAST 7",
-    VHF: "141.70",
-    UHF: "267.70",
-  },
-  { CALLSIGN: "APEX 1", UHF: "267.10", VHF: "141.10" },
-];
+export const flights = [createFlight("Apex", 1, "F-16")];
 
-type Package = Array<{
+const f16s = flights.filter((flight) => flight.type === "F-16");
+
+/*type Package = Array<{
   callsign: flightConfig;
   plightplan: Array<{
     steerpointnr: number;
@@ -42,3 +61,4 @@ type Package = Array<{
     timeOnStation: String;
   }>;
 }>;
+*/
