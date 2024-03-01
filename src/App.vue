@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Gameplan from "./mdcpages/Gameplan.vue";
+import Waypoints from  "./mdcpages/waypoints.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -20,6 +21,9 @@ provide("showROE", showROE);
       <Gameplan />
       Display ROE:
       <Checkbox label="Show ROE-Box" :binary="true" v-model="showROE" />
+    </TabPanel>
+    <TabPanel header="Waypoints">
+      <Waypoints />
     </TabPanel>
     <TabPanel header="Page 2">
       <Page2Vue />
