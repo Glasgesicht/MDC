@@ -8,79 +8,70 @@ import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useMCDStore } from "@/stores/mdcData";
 
-const listItems = ref([
-  {
-    id: 1,
-    CALLSIGN: "BEAST 7",
-    VHF: "141.70",
-    UHF: "267.70",
-  },
-  { CALLSIGN: "APEX 1", UHF: "267.10", VHF: "141.10", id: 1 },
-  { CALLSIGN: "DEMON 8", UHF: "267.80", VHF: "141.80", id: 1 },
-  { CALLSIGN: "PLASMA 3", UHF: "267.30", VHF: "141.30", id: 1 },
-]);
-
 const { packages, selectedPKG, allPackageFlights } = storeToRefs(useMCDStore());
 
 const onRowReorder = (event: any) => {
-  listItems.value = event.value;
+  allPackageFlights.value = event.value;
 };
 
-const file = ref();
+const file = ref(false);
+
+const selectedFlight = ref(null);
 
 const onChangedFile = async (payload: any) => {
-  file.value = payload.target.files[0];
-  let filedata = processCF(file.value);
-  // console.log(filedata);
+  packages.value = new Array();
+  selectedPKG.value = { name: "not selected", flights: new Array() };
+  file.value = true;
+  processCF(payload.target.files[0]);
+  console.log(payload.value);
 };
 </script>
 
 <template>
-  <Card>
+  {{ packages }}
+  <Card class="base">
     <template #header>
       Use this page to import files and edit genera Settings. Welcome to the
       <br />webdesign nightmare
     </template>
-    <template #content v-if="!file">
-      <div class="parent">
-        <label for="input"></label>
-        <input
-          type="file"
-          id="input"
-          v-on:change="onChangedFile"
-          accept=".cf"
-        />
-      </div>
-    </template>
-    <template #content v-else>
-      <div class="parent">
-        <label for="input"></label>
-        <input
-          type="file"
-          id="input"
-          v-on:change="onChangedFile"
-          accept=".cf"
-        />
-        <p class="">Currently Selected Package</p>
-        <p class="mcd-s-3">Order Flights In Package</p>
+    <template #content>
+      <div class="parent" v-if="file">
+        <p>Currently Selected Package</p>
+        <p class="">Select Flight To Edit</p>
         <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
-
         <Dropdown
           v-model="selectedPKG"
           :options="packages"
           optionLabel="name"
           placeholder="Select A Package"
-          class="w-full md:w-14rem"
+          class=""
+          style="grid-row: 2"
         />
 
+        <Dropdown
+          v-model="selectedFlight"
+          :options="allPackageFlights"
+          optionLabel="callsign"
+          placeholder="Select A Flight"
+          class=""
+          style="grid-row: 2"
+        />
+
+        <p style="grid-row: 4">Order Flights In Package</p>
         <DataTable
-          class="mcd-s-3 mcd-row-3"
+          class="mcd-s-4 datatable"
           :value="allPackageFlights"
           :reorderableColumns="true"
           showGridlines
           @rowReorder="onRowReorder"
+          style="
+            grid-row: 5 / span 8;
+            align-content: left;
+            margin-left: 0;
+            text-align: start;
+          "
         >
           <Column
             rowReorder
@@ -92,21 +83,47 @@ const onChangedFile = async (payload: any) => {
               >FLIGHT #{{ index + 1 }}</template
             ></Column
           >
-          <Column field="callsign" header="callsign" key="callsign" />
+          <Column field="callsign" header="callsign" key="callsign">
+            <template #body="props"
+              >{{ props.data.callsign }}
+              {{ props.data.callsignNumber }}</template
+            >
+          </Column>
 
           <Column header="FLIGHTLEAD" />
         </DataTable>
       </div>
+      <input
+        type="file"
+        id="input"
+        v-on:change="onChangedFile"
+        accept=".cf"
+        class="mdc-s-2"
+        style="grid-row: 2"
+      />
     </template>
   </Card>
 </template>
 
 <style scoped>
+.base {
+  align-content: center;
+  margin: auto;
+  width: 75%;
+  max-width: 1980px;
+  padding: 10px;
+}
 .parent {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   grid-template-rows: repeat(16, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+}
+
+.datatable {
+  text-align: left;
+  align-items: start;
+  align-self: first baseline;
 }
 </style>
