@@ -35,7 +35,7 @@ const showROE = inject("showROE");
     <div class="border mcd-s-6 mcd-wog">MISSION</div>
     <div class="border mcd-s-6 mcd-bow">{{ missionNr }}</div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
-    <select v-model="callsign" class="mcd-s-5 mcd-bow">
+    <select v-model="callsign" class="mcd-s-5 mcd-bow dropdown">
       <option v-for="flight of flights">{{ flight.Callsign }}</option>
     </select>
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>

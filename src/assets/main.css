@@ -20,6 +20,7 @@
   .dropdown {
     border: 1px solid black;
     border-radius: 0;
+    box-shadow: none
   }
 
   select::-ms-expand {
@@ -37,6 +38,8 @@
     background-color: var(--mcdwhite);
     max-width: 768px;
     max-height: 1024px;
+    width: 768px;
+    height: 1024px;
     color: black;
     display: grid;
     grid-template-columns: repeat(32, 1fr);
