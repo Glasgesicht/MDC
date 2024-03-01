@@ -132,7 +132,7 @@ const showROE = inject("showROE");
     <div class="border mcd-s-5 mcd-wog">NOTE</div>
 
     <div class="mcd-s-31 parent" v-for="index in [...Array(24).keys()]">
-      <div :class="`border mcd-s-2 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{index + 1}}</div>
+      <div class="border mcd-s-2  mcd-wog">{{index + 1}}</div>
       <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointAction}}</div>
       <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointTimeOnStation}}</div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointHeading}}</div>
@@ -144,7 +144,7 @@ const showROE = inject("showROE");
     </div>
 
     
-    <div class="border mcd-s-2">25</div>
+    <div class="border mcd-s-2 mcd-wog">25</div>
     <div class="border mcd-s-5 mcd-row-1 mcd-wog">BULLSEYE</div>
     <div class="border mcd-s-8 mcd-bow">{{ bullseyeName }}</div>
     <div class="border mcd-s-3 mcd-wog">LAT</div>
