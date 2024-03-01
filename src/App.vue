@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Gameplan from "./mdcpages/Gameplan.vue";
 import Waypoints from  "./mdcpages/waypoints.vue";
+import Coordination from  "./mdcpages/coordination.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -25,6 +26,9 @@ provide("showROE", showROE);
     </TabPanel>
     <TabPanel header="Waypoints">
       <Waypoints />
+    </TabPanel>
+    <TabPanel header="Coordination">
+      <Coordination />
     </TabPanel>
     <TabPanel header="Page 2">
       <Page2 />
