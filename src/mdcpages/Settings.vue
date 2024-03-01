@@ -61,7 +61,7 @@ const onChangedFile = async (payload: any) => {
 
         <p style="grid-row: 4">Order Flights In Package</p>
         <DataTable
-          class="mcd-s-4 datatable"
+          class="mcd-s-4 datatable textleft"
           :value="allPackageFlights"
           :reorderableColumns="true"
           showGridlines
@@ -70,7 +70,7 @@ const onChangedFile = async (payload: any) => {
             grid-row: 5 / span 8;
             align-content: left;
             margin-left: 0;
-            text-align: start;
+            text-align: left;
           "
         >
           <Column
@@ -125,5 +125,8 @@ const onChangedFile = async (payload: any) => {
   text-align: left;
   align-items: start;
   align-self: first baseline;
+}
+.textleft {
+  text-align: unset;
 }
 </style>
