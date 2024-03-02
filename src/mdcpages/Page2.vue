@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import { useMCDStore } from "@/stores/mdcData";
+import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 const pagenr = ref(2); // TODO: AUTOMATE :)
 
-const {
-  airT,
-  callsign,
-  flightTask,
-  gameplan,
-  homePlate,
-  missionNr,
-  msnType,
-  pkgTask,
-  pkgnr,
-  situation,
-  surfaceT,
-  roe,
-} = storeToRefs(useMCDStore());
+const { pkgnr, roe } = storeToRefs(usePackageStore());
+
+const { msnType, flightTask } = storeToRefs(useFlightStore());
+
 import { flights } from "../config/constants";
+import { useFlightStore } from "@/stores/flightStore";
 </script>
 <template>
   <div class="mcdpage">
@@ -35,3 +26,4 @@ import { flights } from "../config/constants";
     <div class="border mcd-s-6 mcd-wog">FENCE I/O</div>
   </div>
 </template>
+@/stores/packageStore

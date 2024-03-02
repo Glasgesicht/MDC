@@ -2,7 +2,7 @@
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { useMCDStore } from "../stores/mdcData";
+import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
 import { flights } from "../config/constants";
@@ -10,20 +10,7 @@ import { flights } from "../config/constants";
 /// OK, please someone take a look at this.
 /// Fuck CSS, this shit just doesn't work and it's beyond my patience right now.
 
-const {
-  airT,
-  callsign,
-  flightTask,
-  gameplan,
-  homePlate,
-  missionNr,
-  msnType,
-  pkgTask,
-  pkgnr,
-  situation,
-  surfaceT,
-  roe,
-} = storeToRefs(useMCDStore());
+const { pkgnr, situation, roe } = storeToRefs(usePackageStore());
 
 const pagenr = 1; // TODO: Compute based on selected pages for export
 
@@ -69,7 +56,7 @@ const resize = (e: any) => {
     <div class="border mcd-s-6 mcd-bow">{{ missionNr }}</div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
     <select v-model="callsign" class="dropdown mcd-s-5 mcd-bow">
-      <option v-for="flight of flights">{{ flight.CALLSIGN }}</option>
+      <option v-for="flight of flights">{{ flight.Callsign }}</option>
     </select>
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
     <div class="border mcd-s-5 mcd-bow">{{ pkgnr }}</div>
@@ -150,3 +137,4 @@ const resize = (e: any) => {
   background-color: #ddd;
 }
 </style>
+../stores/packageStore

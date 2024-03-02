@@ -64,6 +64,7 @@ export type Flight = {
 
   /** NON CF, Task of indivisual flight*/
   flightTask: string;
+  gameplan: string;
 
   /** UHF of flight, try to deduct from CF, then set via flights*/
   UHF: string;
@@ -77,6 +78,15 @@ export type Package = {
   name: string;
   /** Flights in Package */
   flights: Flight[];
+
+  /** not from CF Export */
+
+  situation: string;
+  surfaceThreat: string;
+  airThreat: string;
+  roe: string;
+  packageTask: string;
+  missionType: string;
 };
 
 //** Combat Flite Export Types */

@@ -1,4 +1,4 @@
-import { useMCDStore } from "@/stores/mdcData";
+import { usePackageStore } from "@/stores/packageStore";
 import type {
   Flight,
   FlightMember,
@@ -34,7 +34,7 @@ export function processCF(payload: any /* cf file is a zip */) {
   }
 
   function parseCfXML(input: String) {
-    const { packages } = storeToRefs(useMCDStore());
+    const { packages } = storeToRefs(usePackageStore());
 
     // console.log(input); // XML as Text
     const parser = new xml2js.Parser({
@@ -47,6 +47,12 @@ export function processCF(payload: any /* cf file is a zip */) {
 
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
         coll.push({
+          airThreat: "NONE",
+          packageTask: "Eat Burger",
+          roe: "Don't Shoot Friendlies",
+          situation: "situation",
+          surfaceThreat: "AAA",
+          missionType: "",
           name: curr.Name ? curr.Name[0] : "Name Missing",
           flights: res.Mission.Routes[0].Route.filter(
             (route) => route.PackageTag[0] === curr.Tag[0]
@@ -73,6 +79,7 @@ export function processCF(payload: any /* cf file is a zip */) {
               homeplate: mCurr.Waypoints[0].Waypoint[0].Name[0],
               MSNumber: mCurr.MSNnumber[0],
               task: mCurr.Task[0],
+              gameplan: "",
               tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
               units: [...new Array(parseInt(mCurr.Units[0])).keys()].map(
                 (_n, i) => {

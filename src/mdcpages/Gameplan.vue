@@ -2,24 +2,22 @@
 import { inject } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { useMCDStore } from "../stores/mdcData";
+import { usePackageStore } from "../stores/packageStore";
 
 import { flights } from "../config/constants";
+import { useFlightStore } from "@/stores/flightStore";
 
 const {
-  airT,
-  callsign,
-  flightTask,
-  gameplan,
-  homePlate,
-  missionNr,
-  msnType,
-  pkgTask,
+  airThreat,
+  packageTask,
   pkgnr,
   situation,
-  surfaceT,
+  surfaceThreat,
   roe,
-} = storeToRefs(useMCDStore());
+  selectedPKG,
+} = storeToRefs(usePackageStore());
+
+const { selctedFlight, gameplan } = storeToRefs(useFlightStore());
 
 const pagenr = 1; // TODO: Compute based on selected pages for export
 
@@ -27,39 +25,52 @@ const showROE = inject("showROE");
 </script>
 
 <template>
+  {{ selctedFlight }}
   <div class="mcdpage">
     <div class="border pagenr center-text">
       <p>PAGE {{ pagenr }}</p>
     </div>
     <div class="border header"><p>BRIEFING CARD</p></div>
-    <div class="border mcd-s-6 mcd-wog">MISSION</div>
-    <div class="border mcd-s-6 mcd-bow">{{ missionNr }}</div>
-    <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
-    <select v-model="callsign" class="mcd-s-5 mcd-bow dropdown">
-      <option v-for="flight of flights">{{ flight.Callsign }}</option>
-    </select>
-    <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
-    <div class="border mcd-s-5 mcd-bow">{{ pkgnr }}</div>
-    <div class="border mcd-s-6 mcd-wog">HOMEPLATE</div>
-    <div class="border mcd-s-6 mcd-bog">{{ homePlate }}</div>
-    <div class="border mcd-rnlaf313">RNLAF 313 SQUADRON</div>
-    <div class="border mcd-s-6 mcd-wog">MSN TYPE</div>
-    <div class="border mcd-s-6 mcd-bow">{{ msnType }}</div>
-    <div class="border mcd-s-6 mcd-wog">PACKAGE TASK</div>
-    <input v-model="pkgTask" class="border mcd-s-26 mcd-bog textbox" />
-    <div class="border mcd-s-6 mcd-wog">FLIGHT TASK</div>
-    <input v-model="flightTask" class="border mcd-s-26 mcd-bow" />
-    <div class="border mcd-s-col mcd-wog">SITUATION</div>
+    <div class="border mcd-s-6 mcd-wog"><p>MISSION</p></div>
+    <div class="border mcd-s-6 mcd-bow">
+      <p>{{ selctedFlight.MSNumber }}</p>
+    </div>
+    <div class="border mcd-s-5 mcd-wog"><p>CALLSIGN</p></div>
+    <div class="border mcd-s-5 mcd-bow">
+      <p>{{ selctedFlight.callsign }} {{ selctedFlight.callsignNumber }}</p>
+    </div>
+    <!-- 
+    <select v-model="selctedFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
+      <option v-for="flight of flights">{{ flight.callsignRaw }}</option>
+    </select>-->
+    <div class="border mcd-s-5 mcd-wog"><p>PACKAGE</p></div>
+    <div class="border mcd-s-5 mcd-bow">
+      <p>{{ pkgnr }}</p>
+    </div>
+    <div class="border mcd-s-6 mcd-wog"><p>HOMEPLATE</p></div>
+    <div class="border mcd-s-6 mcd-bog">
+      <p>{{ selctedFlight.homeplate }}</p>
+    </div>
+    <div class="border mcd-rnlaf313"><p>RNLAF 313 SQUADRON</p></div>
+    <div class="border mcd-s-6 mcd-wog"><p>MSN TYPE</p></div>
+    <div class="border mcd-s-6 mcd-bow">
+      <p>{{ selectedPKG.missionType }}</p>
+    </div>
+    <div class="border mcd-s-6 mcd-wog"><p>PACKAGE TASK</p></div>
+    <input v-model="packageTask" class="border mcd-s-26 mcd-bog textbox" />
+    <div class="border mcd-s-6 mcd-wog"><p>FLIGHT TASK</p></div>
+    <input v-model="selctedFlight.task" class="border mcd-s-26 mcd-bow" />
+    <div class="border mcd-s-col mcd-wog"><p>SITUATION</p></div>
     <textarea
       v-model="situation"
       class="border mcd-row-5 mcd-s-col mcd-bow textbox"
     />
 
-    <div class="border mcd-s-16 mcd-wog">SURFACE THREATS</div>
-    <div class="border mcd-s-16 mcd-wog">AIR THREATS</div>
-    <div class="border mcd-row-2 mcd-s-16 mcd-bow">{{ surfaceT }}</div>
-    <textarea v-model="airT" class="mcd-row-2 mcd-s-16 mcd-bow textbox" />
-    <div class="border mcd-s-col mcd-wog">GAMEPLAN</div>
+    <div class="border mcd-s-16 mcd-wog"><p>SURFACE THREATS</p></div>
+    <div class="border mcd-s-16 mcd-wog"><p>AIR THREATS</p></div>
+    <div class="border mcd-row-2 mcd-s-16 mcd-bow">{{ surfaceThreat }}</div>
+    <textarea v-model="airThreat" class="mcd-row-2 mcd-s-16 mcd-bow textbox" />
+    <div class="border mcd-s-col mcd-wog"><p>GAMEPLAN</p></div>
 
     <textarea
       type="text"
@@ -77,3 +88,4 @@ const showROE = inject("showROE");
     />
   </div>
 </template>
+../stores/packageStore

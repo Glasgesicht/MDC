@@ -2,25 +2,15 @@
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { useMCDStore } from "../stores/mdcData";
+import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
 import { flights } from "../config/constants";
+import { useFlightStore } from "@/stores/flightStore";
 
-const {
-  airT,
-  callsign,
-  flightTask,
-  gameplan,
-  homePlate,
-  missionNr,
-  msnType,
-  pkgTask,
-  pkgnr,
-  situation,
-  surfaceT,
-  roe,
-} = storeToRefs(useMCDStore());
+const {} = storeToRefs(usePackageStore());
+
+const { selctedFlight } = storeToRefs(useFlightStore());
 
 const pagenr = 1; // TODO: Compute based on selected pages for export
 const metar = "weather";
@@ -59,8 +49,8 @@ const waypointMinimumFuel = ">2463";
 const waypointNote = "WAIT: 01:24:32";
 
 const bullseyeName = "SCIMITAR";
-const bullseyeLatitude = "N 40\"30.243";
-const bullseyeLongitude = "E 032\"16.885";
+const bullseyeLatitude = 'N 40"30.243';
+const bullseyeLongitude = 'E 032"16.885';
 
 const waypoints = ref([
   { id: 1, name: "TAKEOFF" },
@@ -132,18 +122,33 @@ const showROE = inject("showROE");
     <div class="border mcd-s-5 mcd-wog">NOTE</div>
 
     <div class="mcd-s-31 parent" v-for="index in [...Array(24).keys()]">
-      <div class="border mcd-s-2  mcd-wog">{{index + 1}}</div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointAction}}</div>
-      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointTimeOnStation}}</div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointHeading}}</div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointDistance}}</div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointSpeed}}</div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointAltitude}}</div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointMinimumFuel}}</div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">{{waypointNote}}</div>
+      <div class="border mcd-s-2 mcd-wog">{{ index + 1 }}</div>
+      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointAction }}
+      </div>
+      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointTimeOnStation }}
+      </div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointHeading }}
+      </div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointDistance }}
+      </div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointSpeed }}
+      </div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointAltitude }}
+      </div>
+      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointMinimumFuel }}
+      </div>
+      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ waypointNote }}
+      </div>
     </div>
 
-    
     <div class="border mcd-s-2 mcd-wog">25</div>
     <div class="border mcd-s-5 mcd-row-1 mcd-wog">BULLSEYE</div>
     <div class="border mcd-s-8 mcd-bow">{{ bullseyeName }}</div>
@@ -151,8 +156,6 @@ const showROE = inject("showROE");
     <div class="border mcd-s-5 mcd-bow">{{ bullseyeLatitude }}</div>
     <div class="border mcd-s-3 mcd-wog">LONG</div>
     <div class="border mcd-s-5 mcd-bow">{{ bullseyeLongitude }}</div>
-
-
   </div>
 </template>
 <style scoped>
@@ -163,3 +166,4 @@ const showROE = inject("showROE");
   grid-row-gap: 0px;
 }
 </style>
+../stores/packageStore

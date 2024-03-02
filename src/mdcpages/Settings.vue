@@ -11,15 +11,18 @@ import Column from "primevue/column";
 import { processCF } from "../config/parseCF";
 import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useMCDStore } from "@/stores/mdcData";
+import { usePackageStore } from "@/stores/packageStore";
 import type { Package } from "@/types/mdcDataTypes";
+import { useFlightStore } from "@/stores/flightStore";
 
 const confirmDelete = (index: number) => {
   allFlightsFromPackage.value.splice(index, 1);
 };
 
-const { packages, selectedPKG, allFlightsFromPackage, selctedFlight } =
-  storeToRefs(useMCDStore());
+const { packages, selectedPKG, allFlightsFromPackage } = storeToRefs(
+  usePackageStore()
+);
+const { selctedFlight } = storeToRefs(useFlightStore());
 
 const onRowReorder = (event: any) => {
   allFlightsFromPackage.value = event.value;
@@ -137,7 +140,6 @@ const onChangedFile = async (payload: any) => {
               :value="selctedFlight.units"
               :reorderableColumns="true"
               showGridlines
-              @rowReorder="onRowReorder"
               style="
                 grid-row: 5 / span 5;
                 align-content: left;
@@ -145,11 +147,6 @@ const onChangedFile = async (payload: any) => {
                 text-align: left;
               "
             >
-              <Column
-                rowReorder
-                headerStyle="width: 4rem"
-                :reorderableColumn="false"
-              />
               <Column header="#" headerStyle="width: 4rem"
                 ><template #body="{ index }">#{{ index + 1 }}</template></Column
               >
@@ -194,3 +191,4 @@ const onChangedFile = async (payload: any) => {
   text-align: left;
 }
 </style>
+@/stores/packageStore

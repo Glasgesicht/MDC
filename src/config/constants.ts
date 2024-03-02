@@ -60,7 +60,8 @@ export const rnlaf313members: Array<{ callsign: string; tailnr: number }> = [
   },
 ];
 
-const f16s = flights.filter((flight) => flight.type === "F-16");
+export const F16Flights = flights.filter((flight) => flight.type === "F-16");
+export const F15Flights = flights.filter((flight) => flight.type === "F-15");
 
 /*type Package = Array<{
   callsign: flightConfig;
