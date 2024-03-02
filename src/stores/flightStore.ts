@@ -10,7 +10,24 @@ const f16callsigns = F16Flights.map((flight) => flight.Callsign);
 export const useFlightStore = defineStore("flight", () => {
   // const { selctedFlight } = storeToRefs(usePackageStore());
 
-  const selctedFlight: Ref<Flight> = ref({} as Flight);
+  const selctedFlight: Ref<Flight> = ref({
+    aircrafttype: "",
+    alternate: "",
+    arrival: "",
+    callsign: "",
+    callsignNumber: NaN,
+    flightTask: "",
+    gameplan: "",
+    MSNumber: "",
+    homeplate: "",
+    missionType: "",
+    tacan: "",
+    task: "",
+    UHF: "",
+    units: [],
+    VHF: "",
+    waypoints: new Array(25),
+  });
   // Here goes all the data that only belongs to the currently selected flight
 
   const homePlate = computed({
@@ -48,16 +65,16 @@ export const useFlightStore = defineStore("flight", () => {
     return "XXX.XX";
   });
   const UHF = computed(() => {
-    if (f16callsigns.includes(selctedFlight.value.callsign))
-      return `267.${selctedFlight.value.callsignNumber}0`;
-    else if (f15callsigns.includes(selctedFlight.value.callsign))
-      return `269.${selctedFlight.value.callsignNumber}0`;
+    if (f16callsigns.includes(selctedFlight?.value.callsign))
+      return `267.${selctedFlight?.value.callsignNumber}0`;
+    else if (f15callsigns.includes(selctedFlight?.value.callsign))
+      return `269.${selctedFlight?.value.callsignNumber}0`;
     return "XXX.XX";
   });
 
   const gameplan = computed({
     get() {
-      return selctedFlight.value.gameplan;
+      return selctedFlight.value.gameplan ?? null;
     },
     set(value) {
       selctedFlight.value.gameplan = value;

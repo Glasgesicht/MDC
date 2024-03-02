@@ -43,7 +43,7 @@ export function processCF(payload: any /* cf file is a zip */) {
     });
 
     parser.parseStringPromise(input).then((res: { Mission: Mission }) => {
-      // console.dir(res); // Data as Object
+      console.dir(res); // Data as Object
 
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
         coll.push({
@@ -52,7 +52,7 @@ export function processCF(payload: any /* cf file is a zip */) {
           roe: "Don't Shoot Friendlies",
           situation: "situation",
           surfaceThreat: "AAA",
-          missionType: "",
+          metar: "",
           name: curr.Name ? curr.Name[0] : "Name Missing",
           flights: res.Mission.Routes[0].Route.filter(
             (route) => route.PackageTag[0] === curr.Tag[0]
@@ -78,7 +78,8 @@ export function processCF(payload: any /* cf file is a zip */) {
               callsignNumber: parseInt(mCurr.CallsignNumber[0]),
               homeplate: mCurr.Waypoints[0].Waypoint[0].Name[0],
               MSNumber: mCurr.MSNnumber[0],
-              task: mCurr.Task[0],
+              missionType: mCurr.Task[0],
+              task: "",
               gameplan: "",
               tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
               units: [...new Array(parseInt(mCurr.Units[0])).keys()].map(
@@ -119,7 +120,8 @@ export function processCF(payload: any /* cf file is a zip */) {
 
               waypoints: mCurr.Waypoints[0].Waypoint.reduce(
                 (wpColl, wpCurr, i) => {
-                  wpColl.push({
+                  if (i > 23) return wpColl;
+                  wpColl[i] = {
                     activity: wpCurr.Activity[0],
                     airspeed_calibrated: parseFloat(wpCurr.KCAS[0]),
                     airspeed_total: parseFloat(wpCurr.KTAS[0]),
@@ -132,10 +134,14 @@ export function processCF(payload: any /* cf file is a zip */) {
                     tot: wpCurr.TOT[0],
                     type: wpCurr.Type[0],
                     waypointNr: i,
-                  });
+                  };
                   return wpColl;
-                },
-                new Array<Waypoint>()
+                }, //@ts-ignore
+                [...new Array<Waypoint>(24).keys()].map((_n, i) => {
+                  return {
+                    waypoint: i,
+                  };
+                }) as Array<Waypoint>
               ),
             });
 

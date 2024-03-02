@@ -126,4 +126,3 @@ const pagenr = 1; // TODO: Compute based on selected pages for export
   grid-row-gap: 0px;
 }
 </style>
-../stores/packageStore

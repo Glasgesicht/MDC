@@ -191,4 +191,3 @@ const onChangedFile = async (payload: any) => {
   text-align: left;
 }
 </style>
-@/stores/packageStore

@@ -53,9 +53,8 @@ const showROE = inject("showROE");
     </div>
     <div class="border mcd-rnlaf313"><p>RNLAF 313 SQUADRON</p></div>
     <div class="border mcd-s-6 mcd-wog"><p>MSN TYPE</p></div>
-    <div class="border mcd-s-6 mcd-bow">
-      <p>{{ selectedPKG.missionType }}</p>
-    </div>
+    <input class="border mcd-s-6 mcd-bow" v-model="selctedFlight.missionType" />
+
     <div class="border mcd-s-6 mcd-wog"><p>PACKAGE TASK</p></div>
     <input v-model="packageTask" class="border mcd-s-26 mcd-bog textbox" />
     <div class="border mcd-s-6 mcd-wog"><p>FLIGHT TASK</p></div>
@@ -78,7 +77,7 @@ const showROE = inject("showROE");
       v-model="gameplan"
     />
     <div v-if="showROE" class="border roehead mcd-s-col" style="width: 100%">
-      RULES OF ENGAGEMENT
+      <p>RULES OF ENGAGEMENT</p>
     </div>
     <textarea
       v-if="showROE"
@@ -88,4 +87,3 @@ const showROE = inject("showROE");
     />
   </div>
 </template>
-../stores/packageStore

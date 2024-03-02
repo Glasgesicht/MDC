@@ -46,6 +46,9 @@ export type Flight = {
   callsignNumber: number;
   /**Mission Number, is a String */
   MSNumber: String;
+
+  /** Mission Type from CF */
+  missionType: string;
   /**Task, like OCA */
   task: string;
   /**Number of aircraft */
@@ -86,7 +89,7 @@ export type Package = {
   airThreat: string;
   roe: string;
   packageTask: string;
-  missionType: string;
+  metar: string;
 };
 
 //** Combat Flite Export Types */

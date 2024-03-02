@@ -8,12 +8,11 @@ import Dropdown from "primevue/dropdown";
 import { flights } from "../config/constants";
 import { useFlightStore } from "@/stores/flightStore";
 
-const {} = storeToRefs(usePackageStore());
+const { selectedPKG } = storeToRefs(usePackageStore());
 
 const { selctedFlight } = storeToRefs(useFlightStore());
 
 const pagenr = 1; // TODO: Compute based on selected pages for export
-const metar = "weather";
 
 const departureName = "INCIRLIK AB"; // TODO: Make Dep/Arr/Alt more efficient via loop.
 const departureTACAN = "21X DA";
@@ -52,21 +51,71 @@ const bullseyeName = "SCIMITAR";
 const bullseyeLatitude = 'N 40"30.243';
 const bullseyeLongitude = 'E 032"16.885';
 
+const hhmmss = (time: string) => {
+  if (!time) return "";
+  const date = new Date(time);
+  return `${date.toLocaleTimeString()}`;
+};
+
 const waypoints = ref([
   { id: 1, name: "TAKEOFF" },
   { id: 2, name: "CLIMB" },
   { id: 3, name: "CRUISE" },
 ]);
 
+// this doesn't account of the magnetic whaatever, idk, it's like 6° off in syria
+function calculateHeading(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
+  // Convert latitude and longitude from degrees to radians
+  lat1 = toRadians(lat1);
+  lon1 = toRadians(lon1);
+  lat2 = toRadians(lat2);
+  lon2 = toRadians(lon2);
+
+  // Calculate the difference in longitudes
+  var dLon = lon2 - lon1;
+
+  // Calculate the bearing using the arctan2 function
+  var y = Math.sin(dLon) * Math.cos(lat2);
+  var x =
+    Math.cos(lat1) * Math.sin(lat2) -
+    Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+  var bearing = Math.atan2(y, x);
+
+  // Convert the bearing from radians to degrees
+  bearing = toDegrees(bearing);
+
+  // Normalize the bearing to the range [0, 360)
+  bearing = (bearing + 360) % 360;
+
+  // Round the bearing to a reasonable number of decimal places
+  bearing = Math.round(bearing * 100) / 100;
+
+  function toRadians(degrees: number) {
+    return (degrees * Math.PI) / 180;
+  }
+
+  function toDegrees(radians: number) {
+    return (radians * 180) / Math.PI;
+  }
+
+  return bearing;
+}
+
 const showROE = inject("showROE");
 </script>
 
 <template>
+  {{ selctedFlight?.waypoints }}
   <div class="mcdpage">
     <div class="border pagenr">PAGE {{ pagenr }}</div>
     <div class="border header">WAYPOINTS</div>
     <div class="border mcd-s-3 mcd-wog">METAR</div>
-    <div class="border mcd-s-29 mcd-bow">{{ metar }}</div>
+    <div class="border mcd-s-29 mcd-bow">{{ selectedPKG.metar }}</div>
 
     <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
       AIRFIELD
@@ -118,52 +167,74 @@ const showROE = inject("showROE");
     <div class="border mcd-s-3 mcd-wog">DIST</div>
     <div class="border mcd-s-3 mcd-wog">TAS/M</div>
     <div class="border mcd-s-3 mcd-wog">ALT</div>
-    <div class="border mcd-s-3 mcd-wog">>FUEL</div>
+    <div class="border mcd-s-3 mcd-wog">FUEL</div>
     <div class="border mcd-s-5 mcd-wog">NOTE</div>
 
-    <div class="mcd-s-31 parent" v-for="index in [...Array(24).keys()]">
+    <div class="mcd-s-31 parent" v-for="index in new Array(24).keys()">
       <div class="border mcd-s-2 mcd-wog">{{ index + 1 }}</div>
       <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointAction }}
+        {{ selctedFlight?.waypoints[index]?.type }}
       </div>
       <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointTimeOnStation }}
+        {{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointHeading }}
+        {{
+          selctedFlight?.waypoints[index + 1]?.longitude
+            ? calculateHeading(
+                selctedFlight?.waypoints[index]?.latitude,
+                selctedFlight?.waypoints[index]?.longitude,
+                selctedFlight?.waypoints[index + 1]?.latitude,
+                selctedFlight?.waypoints[index + 1]?.longitude
+              )
+            : ""
+        }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointDistance }}
+        {{}}N/A
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointSpeed }}
+        {{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointAltitude }}
+        {{}}ft selctedFlight?.waypoints[index]?.altitude
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointMinimumFuel }}
+        {{}}N/A
       </div>
       <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ waypointNote }}
+        {{}}N/A
       </div>
     </div>
 
-    <div class="border mcd-s-2 mcd-wog">25</div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-wog">BULLSEYE</div>
-    <div class="border mcd-s-8 mcd-bow">{{ bullseyeName }}</div>
-    <div class="border mcd-s-3 mcd-wog">LAT</div>
-    <div class="border mcd-s-5 mcd-bow">{{ bullseyeLatitude }}</div>
-    <div class="border mcd-s-3 mcd-wog">LONG</div>
-    <div class="border mcd-s-5 mcd-bow">{{ bullseyeLongitude }}</div>
+    <div
+      class="border mcd-wog"
+      style="grid-row-start: 32; grid-column: 2 / span 2; grid-column-start: 2"
+    >
+      25
+    </div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-wog" style="grid-row-start: 32">
+      BULLSEYE
+    </div>
+    <div class="border mcd-s-8 mcd-bow" style="grid-row-start: 32">
+      {{ bullseyeName }}
+    </div>
+    <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LAT</div>
+    <div class="border mcd-s-5 mcd-bow" style="grid-row-start: 32">
+      {{ bullseyeLatitude }}
+    </div>
+    <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LONG</div>
+    <div class="border mcd-s-5 mcd-bow" style="grid-row-start: 32">
+      {{ bullseyeLongitude }}
+    </div>
   </div>
 </template>
 <style scoped>
 .parent {
   display: inline-grid;
   grid-template-columns: repeat(31, 1fr);
+  grid-template-rows: repeat(1, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
 </style>
-../stores/packageStore
