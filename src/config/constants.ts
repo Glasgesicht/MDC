@@ -1,24 +1,3 @@
-/*export const flights = [
-  "APEX 1",
-  "CANINE 2",
-  "PLASMA 3",
-  "CLAW 4",
-  "JACKAL 5",
-  "TIGER 6",
-  "BEAST 7",
-  "DEMON 8",
-
-  "PANTHER 1",
-  "FLEX 2",
-  "HAMMER 3",
-  "JUNGLE 4",
-  "BUCK 5",
-  "SLAYER 6",
-  "WARMAN 7",
-  "COUGAR 8",
-];
-*/
-
 const createFlight = (
   callsign: String,
   number: Number,
@@ -28,6 +7,8 @@ const createFlight = (
     case "F-16":
       return {
         Callsign: `${callsign} ${number}`, // callsign + ' ' + number
+        callsignRaw: callsign,
+        number: number,
         UHF: `267.${number}0`,
         VHF: `141.${number}0`,
         type: type,
@@ -35,13 +16,17 @@ const createFlight = (
     case "F-15":
       return {
         Callsign: `${callsign} ${number}`, // callsign + ' ' + number
-        UHF: `267.${number}0`,
-        VHF: `141.${number}0`,
+        callsignRaw: callsign,
+        number: number,
+        UHF: `269.${number}0`,
+        VHF: `144.${number}0`,
         type: type,
       };
     case "F/A-18":
       return {
         Callsign: `${callsign} ${number}`, // callsign + ' ' + number
+        callsignRaw: callsign,
+        number: number,
         UHF: `267.${number}0`,
         VHF: `141.${number}0`,
         type: type,
@@ -49,7 +34,31 @@ const createFlight = (
   }
 };
 
-export const flights = [createFlight("Apex", 1, "F-16")];
+export const flights = [
+  createFlight("APEX", 1, "F-16"),
+  createFlight("CANINE", 2, "F-16"),
+  createFlight("PLASMA", 3, "F-16"),
+  createFlight("CLAW", 4, "F-16"),
+  createFlight("JACKAL", 5, "F-16"),
+  createFlight("TIGER", 6, "F-16"),
+  createFlight("BEAST", 7, "F-16"),
+  createFlight("DEMON", 8, "F-16"),
+  createFlight("PANTHER", 1, "F-15"),
+  createFlight("FLEX", 2, "F-15"),
+  createFlight("HAMMER", 3, "F-15"),
+  createFlight("JUNGLE", 4, "F-15"),
+  createFlight("BUCK", 5, "F-15"),
+  createFlight("SLAYER", 6, "F-15"),
+  createFlight("WARMAN", 7, "F-15"),
+  createFlight("COUGAR", 8, "F-15"),
+];
+
+export const rnlaf313members: Array<{ callsign: string; tailnr: number }> = [
+  {
+    callsign: "Espere",
+    tailnr: 894,
+  },
+];
 
 const f16s = flights.filter((flight) => flight.type === "F-16");
 

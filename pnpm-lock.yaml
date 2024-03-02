@@ -10,6 +10,7 @@ specifiers:
   jszip: ^3.10.1
   npm-run-all2: ^6.1.1
   pinia: ^2.1.7
+  primeicons: ^6.0.1
   primevue: ^3.49.1
   typescript: ~5.3.0
   vite: ^5.0.11
@@ -22,6 +23,7 @@ dependencies:
   events: 3.3.0
   jszip: 3.10.1
   pinia: 2.1.7_4kz7whipk5c23xfbqgzv75whe4
+  primeicons: 6.0.1
   primevue: 3.49.1_vue@3.4.21
   vue: 3.4.21_typescript@5.3.3
   vue-router: 4.3.0_vue@3.4.21
@@ -750,6 +752,10 @@ packages:
       nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.0.2
+
+  /primeicons/6.0.1:
+    resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
+    dev: false
 
   /primevue/3.49.1_vue@3.4.21:
     resolution: {integrity: sha512-OmUTqbKbPB63Zqf7uA49cipDi+Qh+/13AYJPwgvsVsI4QmAKIkeibBwkOgj1CNIFlopfF79YmyBshFUAPqlw9A==}

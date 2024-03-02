@@ -4,17 +4,24 @@ import type { Flight, Package } from "@/types/mdcDataTypes";
 
 export const useMCDStore = defineStore("data", () => {
   const packages: Ref<Package[]> = ref(new Array());
-  const selectedPKG: Ref<Package> = ref({
-    flights: new Array(),
-    name: "No Package Selected",
-  });
+  const selectedPKG: Ref<Package> = ref({} as Package);
 
-  const allPackageFlights: WritableComputedRef<Flight[]> = computed({
+  const selctedFlight: Ref<Flight> = ref({} as Flight);
+
+  const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({
     set(value: Flight[]) {
-      selectedPKG.value.flights = value;
+      const index = packages.value.findIndex(
+        (flight) => flight.name === selectedPKG.value.name
+      );
+      if (index === -1) return;
+      packages.value[index].flights = value;
     },
     get() {
-      return selectedPKG.value?.flights;
+      const index = packages.value.findIndex(
+        (flight) => flight.name === selectedPKG.value.name
+      );
+      if (index === -1) return [];
+      return packages.value[index].flights;
     },
   });
 
@@ -46,7 +53,9 @@ export const useMCDStore = defineStore("data", () => {
   return {
     packages,
     selectedPKG,
-    allPackageFlights,
+    allFlightsFromPackage,
+    selctedFlight,
+
     missionNr,
     callsign,
     pkgnr,

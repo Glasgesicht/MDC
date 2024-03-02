@@ -9,6 +9,7 @@ import type {
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
+import { flights } from "./constants";
 
 export function processCF(payload: any /* cf file is a zip */) {
   readCF(payload).then((res) => parseCfXML(res));
@@ -50,9 +51,12 @@ export function processCF(payload: any /* cf file is a zip */) {
           flights: res.Mission.Routes[0].Route.filter(
             (route) => route.PackageTag[0] === curr.Tag[0]
           ).reduce((mColl, mCurr) => {
-            //@ts-ignore
+            // match callsign with config
+            let callsign = flights.find((flight) =>
+              flight.Callsign.includes(mCurr.CallsignNameCustom[0])
+            );
+
             mColl.push({
-              //@ts-ignore
               aircrafttype: mCurr.Aircraft[0].Type[0],
               alternate:
                 mCurr.Waypoints[0].Waypoint.find(
@@ -70,7 +74,41 @@ export function processCF(payload: any /* cf file is a zip */) {
               MSNumber: mCurr.MSNnumber[0],
               task: mCurr.Task[0],
               tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
-              units: new Array<FlightMember>(parseInt(mCurr.Units[0])),
+              units: [...new Array(parseInt(mCurr.Units[0])).keys()].map(
+                (_n, i) => {
+                  return {
+                    callsign: "",
+                    tailNr: undefined,
+                    STN:
+                      (mCurr.Aircraft[0].Type[0].includes("16")
+                        ? "031"
+                        : "049") +
+                      callsign?.number +
+                      "" +
+                      (i + 1), // leading 0's ?
+                    L16: callsign?.Callsign
+                      ? callsign?.Callsign[0] +
+                        callsign?.callsignRaw[callsign.callsignRaw.length - 1] +
+                        callsign?.number +
+                        "" +
+                        (i + 1)
+                      : "", //BT71
+                    TACAN: "", //
+                    LCODE: "", //
+                  } satisfies FlightMember;
+                }
+              ), // defaults to number of wingman per cf
+
+              flightTask: "", // not in cf
+              // Try to get from CF
+              UHF:
+                flights.find((flight) =>
+                  flight.Callsign.includes(mCurr.CallsignNameCustom[0])
+                )?.UHF ?? "",
+              VHF:
+                flights.find((flight) =>
+                  flight.Callsign.includes(mCurr.CallsignNameCustom[0])
+                )?.VHF ?? "",
 
               waypoints: mCurr.Waypoints[0].Waypoint.reduce(
                 (wpColl, wpCurr, i) => {

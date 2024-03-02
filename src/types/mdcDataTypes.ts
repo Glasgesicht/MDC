@@ -1,6 +1,6 @@
 export type FlightMember = {
   callsign: string;
-  tailNr: number;
+  tailNr?: number;
   STN: String; // leading 0's ?
   L16: String; //BT71
   TACAN: String; //
@@ -62,7 +62,14 @@ export type Flight = {
   /**Arrival, deduct from "Landing" waypoint */
   arrival: string;
 
-  flightTask?: string;
+  /** NON CF, Task of indivisual flight*/
+  flightTask: string;
+
+  /** UHF of flight, try to deduct from CF, then set via flights*/
+  UHF: string;
+
+  /** UHF of flight, try to deduct from CF, then set via flights*/
+  VHF: string;
 };
 
 export type Package = {
