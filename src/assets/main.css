@@ -46,6 +46,7 @@
     grid-template-rows: repeat(32, 1fr);
     grid-column-gap: 0px;
     grid-row-gap: 0px;
+    white-space: nowrap;
   }
   
   .border {

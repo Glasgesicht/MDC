@@ -68,7 +68,6 @@ const showROE = inject("showROE");
 </script>
 
 <template>
-  {{ selctedFlight?.waypoints }}
   <div class="mcdpage">
     <div class="border pagenr">PAGE {{ pagenr }}</div>
     <div class="border header">WAYPOINTS</div>
@@ -122,11 +121,11 @@ const showROE = inject("showROE");
     <div class="border mcd-s-5 mcd-wog">ACTION</div>
     <div class="border mcd-s-4 mcd-wog">TOS</div>
     <div class="border mcd-s-3 mcd-wog">HDG</div>
-    <div class="border mcd-s-3 mcd-wog">DIST</div>
+    <div class="border mcd-s-4 mcd-wog">DIST</div>
     <div class="border mcd-s-3 mcd-wog">TAS/M</div>
     <div class="border mcd-s-3 mcd-wog">ALT</div>
     <div class="border mcd-s-3 mcd-wog">FUEL</div>
-    <div class="border mcd-s-5 mcd-wog">NOTE</div>
+    <div class="border mcd-s-4 mcd-wog">NOTE</div>
 
     <div class="mcd-s-31 parent" v-for="index in new Array(24).keys()">
       <div class="border mcd-s-2 mcd-wog">{{ index + 1 }}</div>
@@ -148,7 +147,7 @@ const showROE = inject("showROE");
             : ""
         }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
           selctedFlight?.waypoints[index + 1]?.longitude
             ? calculateDistance(
@@ -165,7 +164,7 @@ const showROE = inject("showROE");
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selctedFlight?.waypoints[index].altitude
+          selctedFlight?.waypoints[index]?.altitude
             ? selctedFlight?.waypoints[index]?.altitude + "ft"
             : ""
         }}
@@ -173,7 +172,7 @@ const showROE = inject("showROE");
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{}}
       </div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ selctedFlight?.waypoints[index]?.activity }}
       </div>
     </div>
