@@ -40,7 +40,6 @@ const onChangedFile = async (payload: any) => {
 </script>
 
 <template>
-  {{ selctedFlight }}
   <Card class="base">
     <template #header>
       Use this page to import files and edit general settings. Welcome to the

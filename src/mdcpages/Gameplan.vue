@@ -25,7 +25,6 @@ const showROE = inject("showROE");
 </script>
 
 <template>
-  {{ selctedFlight }}
   <div class="mcdpage">
     <div class="border pagenr center-text">
       <p>PAGE {{ pagenr }}</p>
