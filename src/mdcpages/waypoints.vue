@@ -6,6 +6,7 @@ import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
 import { flights } from "../config/constants";
+import { calculateHeading, calculateDistance } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -62,49 +63,6 @@ const waypoints = ref([
   { id: 2, name: "CLIMB" },
   { id: 3, name: "CRUISE" },
 ]);
-
-// this doesn't account of the magnetic whaatever, idk, it's like 6° off in syria
-function calculateHeading(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-) {
-  // Convert latitude and longitude from degrees to radians
-  lat1 = toRadians(lat1);
-  lon1 = toRadians(lon1);
-  lat2 = toRadians(lat2);
-  lon2 = toRadians(lon2);
-
-  // Calculate the difference in longitudes
-  var dLon = lon2 - lon1;
-
-  // Calculate the bearing using the arctan2 function
-  var y = Math.sin(dLon) * Math.cos(lat2);
-  var x =
-    Math.cos(lat1) * Math.sin(lat2) -
-    Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-  var bearing = Math.atan2(y, x);
-
-  // Convert the bearing from radians to degrees
-  bearing = toDegrees(bearing);
-
-  // Normalize the bearing to the range [0, 360)
-  bearing = (bearing + 360) % 360;
-
-  // Round the bearing to a reasonable number of decimal places
-  bearing = Math.round(bearing * 100) / 100;
-
-  function toRadians(degrees: number) {
-    return (degrees * Math.PI) / 180;
-  }
-
-  function toDegrees(radians: number) {
-    return (radians * 180) / Math.PI;
-  }
-
-  return bearing;
-}
 
 const showROE = inject("showROE");
 </script>
@@ -191,19 +149,32 @@ const showROE = inject("showROE");
         }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{}}N/A
+        {{
+          selctedFlight?.waypoints[index + 1]?.longitude
+            ? calculateDistance(
+                selctedFlight?.waypoints[index]?.latitude,
+                selctedFlight?.waypoints[index]?.longitude,
+                selctedFlight?.waypoints[index + 1]?.latitude,
+                selctedFlight?.waypoints[index + 1]?.longitude
+              ) + "nm"
+            : ""
+        }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{}}ft selctedFlight?.waypoints[index]?.altitude
+        {{
+          selctedFlight?.waypoints[index].altitude
+            ? selctedFlight?.waypoints[index]?.altitude + "ft"
+            : ""
+        }}
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{}}N/A
+        {{}}
       </div>
       <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{}}N/A
+        {{ selctedFlight?.waypoints[index]?.activity }}
       </div>
     </div>
 
