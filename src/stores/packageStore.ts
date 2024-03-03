@@ -7,7 +7,21 @@ export const usePackageStore = defineStore("package", () => {
   const packages: Ref<Package[]> = ref(new Array());
 
   // Data for only the selected package goes here
-  const selectedPKG: Ref<Package> = ref({} as Package);
+  const selectedPKG: Ref<Package> = ref({
+    airThreat: "",
+    bullseye: {
+      lat: 0,
+      long: 0,
+      name: "BULLZ",
+    },
+    flights: new Array(),
+    metar: "",
+    name: "",
+    packageTask: "",
+    roe: "",
+    situation: "",
+    surfaceThreat: "",
+  });
   const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({
     set(value: Flight[]) {
       const index = packages.value.findIndex(

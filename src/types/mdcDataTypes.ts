@@ -79,6 +79,11 @@ export type Flight = {
 export type Package = {
   /** Name of Package */
   name: string;
+  bullseye: {
+    name: string;
+    lat: number;
+    long: number;
+  };
   /** Flights in Package */
   flights: Flight[];
 

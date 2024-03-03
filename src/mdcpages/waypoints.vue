@@ -6,7 +6,12 @@ import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
 import { flights } from "../config/constants";
-import { calculateHeading, calculateDistance } from "@/utils/utilFunctions";
+import {
+  calculateHeading,
+  calculateDistance,
+  toLatString,
+  toLongString,
+} from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -117,63 +122,71 @@ const showROE = inject("showROE");
       STEERPOINTS
     </div>
 
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog">#</div>
-    <div class="border mcd-s-5 mcd-wog">ACTION</div>
-    <div class="border mcd-s-4 mcd-wog">TOS</div>
-    <div class="border mcd-s-3 mcd-wog">HDG</div>
-    <div class="border mcd-s-4 mcd-wog">DIST</div>
-    <div class="border mcd-s-3 mcd-wog">TAS/M</div>
-    <div class="border mcd-s-3 mcd-wog">ALT</div>
-    <div class="border mcd-s-3 mcd-wog">FUEL</div>
-    <div class="border mcd-s-4 mcd-wog">NOTE</div>
+    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p>#</p></div>
+    <div class="border mcd-s-5 mcd-wog"><p>ACTION</p></div>
+    <div class="border mcd-s-4 mcd-wog"><p>TOS</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>HDG</p></div>
+    <div class="border mcd-s-4 mcd-wog"><p>DIST</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>TAS/M</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>ALT</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>FUEL</p></div>
+    <div class="border mcd-s-4 mcd-wog"><p>NOTE</p></div>
 
     <div class="mcd-s-31 parent" v-for="index in new Array(24).keys()">
-      <div class="border mcd-s-2 mcd-wog">{{ index + 1 }}</div>
+      <div class="border mcd-s-2 mcd-wog">
+        <p>{{ index + 1 }}</p>
+      </div>
       <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.type }}
+        <p class="font500">{{ selctedFlight?.waypoints[index]?.type }}</p>
       </div>
       <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}
+        <p class="font500">{{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}</p>
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{
-          selctedFlight?.waypoints[index + 1]?.longitude
-            ? calculateHeading(
-                selctedFlight?.waypoints[index]?.latitude,
-                selctedFlight?.waypoints[index]?.longitude,
-                selctedFlight?.waypoints[index + 1]?.latitude,
-                selctedFlight?.waypoints[index + 1]?.longitude
-              )
-            : ""
-        }}
+        <p class="font500">
+          {{
+            selctedFlight?.waypoints[index + 1]?.longitude
+              ? calculateHeading(
+                  selctedFlight?.waypoints[index]?.latitude,
+                  selctedFlight?.waypoints[index]?.longitude,
+                  selctedFlight?.waypoints[index + 1]?.latitude,
+                  selctedFlight?.waypoints[index + 1]?.longitude
+                )
+              : ""
+          }}
+        </p class="font500">
       </div>
       <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{
-          selctedFlight?.waypoints[index + 1]?.longitude
-            ? calculateDistance(
-                selctedFlight?.waypoints[index]?.latitude,
-                selctedFlight?.waypoints[index]?.longitude,
-                selctedFlight?.waypoints[index + 1]?.latitude,
-                selctedFlight?.waypoints[index + 1]?.longitude
-              ) + "nm"
-            : ""
-        }}
+        <p class="font500">
+          {{
+            selctedFlight?.waypoints[index + 1]?.longitude
+              ? calculateDistance(
+                  selctedFlight?.waypoints[index]?.latitude,
+                  selctedFlight?.waypoints[index]?.longitude,
+                  selctedFlight?.waypoints[index + 1]?.latitude,
+                  selctedFlight?.waypoints[index + 1]?.longitude
+                ) + "nm"
+              : ""
+          }}
+        </p>
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}
+        <p class="font500">{{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}</p>
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{
-          selctedFlight?.waypoints[index]?.altitude
-            ? selctedFlight?.waypoints[index]?.altitude + "ft"
-            : ""
-        }}
+        <p class="font500">
+          {{
+            selctedFlight?.waypoints[index]?.altitude
+              ? selctedFlight?.waypoints[index]?.altitude + "ft"
+              : ""
+          }}
+        </p>
       </div>
       <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{}}
+        <p class="font500">{{}}</p>
       </div>
       <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.activity }}
+        <p class="font500">{{ selctedFlight?.waypoints[index]?.activity }}</p>
       </div>
     </div>
 
@@ -186,16 +199,20 @@ const showROE = inject("showROE");
     <div class="border mcd-s-5 mcd-row-1 mcd-wog" style="grid-row-start: 32">
       BULLSEYE
     </div>
-    <div class="border mcd-s-8 mcd-bow" style="grid-row-start: 32">
-      {{ bullseyeName }}
-    </div>
+    <input
+      v-if="selectedPKG"
+      class="border mcd-s-8 mcd-bow"
+      style="grid-row-start: 32; font-weight: bold"
+      v-model="selectedPKG.bullseye.name"
+    />
+
     <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LAT</div>
     <div class="border mcd-s-5 mcd-bow" style="grid-row-start: 32">
-      {{ bullseyeLatitude }}
+      <p>{{ toLatString(selectedPKG?.bullseye?.lat) }}</p>
     </div>
     <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LONG</div>
     <div class="border mcd-s-5 mcd-bow" style="grid-row-start: 32">
-      {{ bullseyeLongitude }}
+      <p>{{ toLongString(selectedPKG?.bullseye?.long) }}</p>
     </div>
   </div>
 </template>
@@ -206,5 +223,8 @@ const showROE = inject("showROE");
   grid-template-rows: repeat(1, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+}
+.font500 {
+  font-weight: 500;
 }
 </style>

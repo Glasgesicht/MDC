@@ -29,6 +29,18 @@ export function calculateHeading(
   return Math.round(bearing);
 }
 
+export function toLatString(lat: number) {
+  return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0)}"${((lat % 1) * 60).toFixed(
+    3
+  )}`;
+}
+
+export function toLongString(lon: number) {
+  return `${lon > 0 ? "E" : "W"} ${lon.toFixed(0)}"${((lon % 1) * 60).toFixed(
+    3
+  )}`;
+}
+
 export function calculateDistance(
   lat1: number,
   lon1: number,

@@ -48,6 +48,11 @@ export function processCF(payload: any /* cf file is a zip */) {
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
         const newPackage = {
           airThreat: "NONE",
+          bullseye: {
+            name: res.Mission.BlueBullseye[0].Name[0],
+            lat: parseFloat(res.Mission.BlueBullseye[0].Lat[0]),
+            long: parseFloat(res.Mission.BlueBullseye[0].Lon[0]),
+          },
           packageTask: "Eat Burger",
           roe: "Don't Shoot Friendlies",
           situation: "situation",
@@ -72,9 +77,10 @@ export function processCF(payload: any /* cf file is a zip */) {
                 mCurr.Waypoints[0].Waypoint.find(
                   (wp) => wp.Type[0] === "Landing"
                 )?.Name[0] || "",
-              callsign: mCurr.CallsignNameCustomIs[0]
-                ? mCurr.CallsignNameCustom[0]
-                : mCurr.CallsignName[0],
+              callsign:
+                mCurr.CallsignNameCustomIs[0] === "True"
+                  ? mCurr.CallsignNameCustom[0]
+                  : mCurr.CallsignName[0],
               callsignNumber: parseInt(mCurr.CallsignNumber[0]),
               homeplate: mCurr.Waypoints[0].Waypoint[0].Name[0],
               MSNumber: mCurr.MSNnumber[0],
