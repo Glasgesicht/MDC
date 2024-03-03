@@ -46,7 +46,7 @@ export function processCF(payload: any /* cf file is a zip */) {
       console.dir(res); // Data as Object
 
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
-        coll.push({
+        const newPackage = {
           airThreat: "NONE",
           packageTask: "Eat Burger",
           roe: "Don't Shoot Friendlies",
@@ -147,7 +147,8 @@ export function processCF(payload: any /* cf file is a zip */) {
 
             return mColl;
           }, new Array<Flight>()),
-        });
+        };
+        if (newPackage.flights.length) coll.push(newPackage);
         return coll;
       }, new Array<Package>());
 

@@ -6,6 +6,7 @@ import Button from "primevue/button";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
+import Input from "primevue/inputtext";
 
 import Column from "primevue/column";
 import { processCF } from "../config/parseCF";
@@ -62,6 +63,7 @@ const onChangedFile = async (payload: any) => {
           ><div class="parent" v-if="file">
             <p>Selected Package</p>
             <p class="">Select Flight To Edit</p>
+            <p>Change Package Name</p>
             <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
@@ -73,7 +75,6 @@ const onChangedFile = async (payload: any) => {
               class=""
               style="grid-row: 2"
             />
-
             <Dropdown
               v-model="selctedFlight"
               :options="allFlightsFromPackage"
@@ -82,6 +83,7 @@ const onChangedFile = async (payload: any) => {
               class=""
               style="grid-row: 2"
             />
+            <Input style="grid-row: 2" v-model="selectedPKG.name"></Input>
 
             <p style="grid-row: 4">Order Flights In Package</p>
             <DataTable
