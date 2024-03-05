@@ -194,10 +194,10 @@ const showROE = inject("showROE");
       class="border mcd-wog"
       style="grid-row-start: 32; grid-column: 2 / span 2; grid-column-start: 2"
     >
-      25
+      <p>25</p>
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-wog" style="grid-row-start: 32">
-      BULLSEYE
+      <p>BULLSEYE</p>
     </div>
     <input
       v-if="selectedPKG"
@@ -207,13 +207,9 @@ const showROE = inject("showROE");
     />
 
     <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LAT</div>
-    <div class="border mcd-s-5 mcd-bow" style="grid-row-start: 32">
-      <p>{{ toLatString(selectedPKG?.bullseye?.lat) }}</p>
-    </div>
+    <input class="border mcd-s-5 mcd-bow" style="grid-row-start: 32" v-model="selectedPKG.bullseye.lat" />
     <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LONG</div>
-    <div class="border mcd-s-5 mcd-bow" style="grid-row-start: 32">
-      <p>{{ toLongString(selectedPKG?.bullseye?.long) }}</p>
-    </div>
+    <input class="border mcd-s-5 mcd-bow" style="grid-row-start: 32" v-model="selectedPKG.bullseye.long" />
   </div>
 </template>
 <style scoped>

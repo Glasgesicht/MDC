@@ -10,8 +10,8 @@ export const usePackageStore = defineStore("package", () => {
   const selectedPKG: Ref<Package> = ref({
     airThreat: "",
     bullseye: {
-      lat: 0,
-      long: 0,
+      lat: "",
+      long: "",
       name: "BULLZ",
     },
     flights: new Array(),

@@ -10,6 +10,7 @@ import JSZip from "jszip";
 import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
 import { flights } from "./constants";
+import { toLatString, toLongString } from "@/utils/utilFunctions";
 
 export function processCF(payload: any /* cf file is a zip */) {
   readCF(payload).then((res) => parseCfXML(res));
@@ -50,8 +51,8 @@ export function processCF(payload: any /* cf file is a zip */) {
           airThreat: "NONE",
           bullseye: {
             name: res.Mission.BlueBullseye[0].Name[0],
-            lat: parseFloat(res.Mission.BlueBullseye[0].Lat[0]),
-            long: parseFloat(res.Mission.BlueBullseye[0].Lon[0]),
+            lat: toLatString(parseFloat(res.Mission.BlueBullseye[0].Lat[0])),
+            long: toLongString(parseFloat(res.Mission.BlueBullseye[0].Lon[0])),
           },
           packageTask: "Eat Burger",
           roe: "Don't Shoot Friendlies",
