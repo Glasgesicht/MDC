@@ -30,15 +30,19 @@ export function calculateHeading(
 }
 
 export function toLatString(lat: number) {
-  return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0)}"${((lat % 1) * 60).toFixed(
-    3
-  )}`;
+  if (lat)
+    return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0)}"${((lat % 1) * 60).toFixed(
+      3
+    )}`;
+  return "";
 }
 
 export function toLongString(lon: number) {
-  return `${lon > 0 ? "E" : "W"} ${lon.toFixed(0)}"${((lon % 1) * 60).toFixed(
-    3
-  )}`;
+  if (lon)
+    return `${lon > 0 ? "E" : "W"} ${lon.toFixed(0)}"${((lon % 1) * 60).toFixed(
+      3
+    )}`;
+  return "";
 }
 
 export function calculateDistance(
