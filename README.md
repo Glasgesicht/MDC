@@ -1,7 +1,10 @@
 # MDC
 Small project to genertate MDC's from Data import with many contextual presets.
 
-This is in a heavy WIP state. Currently planned features include:
+This is in a heavy WIP state.
+The current programm represets a rough scaffold of what this will eventually become.
+
+Currently planned features include:
 1. Full set of Kneeboard pages for export.
 2. Selective export to JPEG/ZIP for single pages, flights and packages.
 3. Save and Loap Presets, independently of CF Files.
