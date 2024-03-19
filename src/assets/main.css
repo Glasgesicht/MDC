@@ -175,6 +175,9 @@
   .mcd-s-31 {
     grid-column: span 31;
   }
+  .mcd-s-32 {
+    grid-column: span 32;
+  }
   .mcd-s-col {
     grid-column: span 32;
   }

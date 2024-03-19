@@ -2,6 +2,7 @@
 import Gameplan from "./mdcpages/Gameplan.vue";
 import Waypoints from "./mdcpages/waypoints.vue";
 import Coordination from "./mdcpages/coordination.vue";
+import Dmpi from "./mdcpages/dmpi.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -55,6 +56,9 @@ provide("showROE", showROE);
     </TabPanel>
     <TabPanel header="Page 2">
       <Page2 />
+    </TabPanel>
+    <TabPanel header="DMPI">
+      <Dmpi />
     </TabPanel>
     <TabPanel header="Export to JPG"></TabPanel>
   </TabView>
