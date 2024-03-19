@@ -3,6 +3,7 @@ import Gameplan from "./mdcpages/Gameplan.vue";
 import Waypoints from "./mdcpages/waypoints.vue";
 import Coordination from "./mdcpages/coordination.vue";
 import Dmpi from "./mdcpages/dmpi.vue";
+import Datacard from "./mdcpages/datacard.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -53,6 +54,9 @@ provide("showROE", showROE);
     </TabPanel>
     <TabPanel header="Coordination">
       <Coordination />
+    </TabPanel>
+    <TabPanel header="Datacard">
+      <Datacard />
     </TabPanel>
     <TabPanel header="Page 2">
       <Page2 />
