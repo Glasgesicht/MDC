@@ -15,8 +15,18 @@ const { selctedFlight  } = storeToRefs(useFlightStore());
 
 
 const getAirport = (sel:string) => {
+  if(typeof sel == "string")
   return airports.find(ap=>
 ap.NAME.toLowerCase() === sel.toLowerCase())??  {
+    NAME: "",
+    ARR: "",
+    TACAN: "",
+    HDG: "",
+    ILS: "",
+    ELEV: "",
+    LEN: "",
+  }
+  return{
     NAME: "",
     ARR: "",
     TACAN: "",
@@ -58,46 +68,46 @@ const hhmmss = (time: string) => {
     <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p></p>DEP</div>
 
     <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
-       <p>{{ selctedFlight.DEP }}</p>
+       <p>{{ selctedFlight.DEP.NAME }}</p>
     </div>
 
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ selectedFlight }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).ARR }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).LEN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).ELEV }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ILS }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ARR }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).LEN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ELEV }}</p></div>
     <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
     <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
-      <p>{{ getAirport(selctedFlight.DEP).HDG }}</p>
+      <p>{{ getAirport(selctedFlight.DEP.NAME).HDG }}</p>
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).ILS }}</p></div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ILS }}</p></div>
 
     <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p>ARR</p></div>
     <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
-       <p>{{ selctedFlight.ARR }}</p>
+       <p>{{ selctedFlight.ARR.NAME }}</p>
     </div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).TACAN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).ARR }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).LEN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).ELEV }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).TACAN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).ARR }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).LEN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).ELEV }}</p></div>
     <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
     <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
-      <p>{{ getAirport(selctedFlight.ARR).HDG }}</p>
+      <p>{{ getAirport(selctedFlight.ARR.NAME).HDG }}</p>
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).ILS }}</p></div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).ILS }}</p></div>
 
     <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p></p>ALT</div>
     <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
-       <p>{{ selctedFlight.ALT }}</p>
+       <p>{{ selctedFlight.ALT.NAME }}</p>
     </div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).TACAN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).ARR }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).LEN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).ELEV }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).TACAN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).ARR }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).LEN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).ELEV }}</p></div>
     <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
     <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
-      <p>{{ getAirport(selctedFlight.ALT).HDG }}</p>
+      <p>{{ getAirport(selctedFlight.ALT.NAME).HDG }}</p>
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).ILS }}</p></div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).ILS }}</p></div>
 <!--
     <div class="border mcd-s-3 mcd-row-1 mcd-wog">ARR</div>
     <div class="border mcd-s-9 mcd-row-1 mcd-bow">{{ arrivalName }}</div>

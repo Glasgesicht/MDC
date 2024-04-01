@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
-import { flights } from "../config/constants";
+import { flights } from "../config/flights";
 import {
   calculateHeading,
   calculateDistance,

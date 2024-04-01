@@ -6,9 +6,9 @@ const pagenr = ref(2); // TODO: AUTOMATE :)
 
 const { pkgnr, roe, selectedPKG } = storeToRefs(usePackageStore());
 
-const { msnType, flightTask, selctedFlight } = storeToRefs(useFlightStore());
+const { flightTask, selctedFlight } = storeToRefs(useFlightStore());
 
-import { flights } from "../config/constants";
+import { flights } from "../config/flights";
 import { useFlightStore } from "@/stores/flightStore";
 </script>
 <template>

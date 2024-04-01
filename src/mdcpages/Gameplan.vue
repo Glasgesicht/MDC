@@ -4,7 +4,7 @@ import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 
-import { flights } from "../config/constants";
+import { flights } from "../config/flights";
 import { useFlightStore } from "@/stores/flightStore";
 import html2canvas from "html2canvas";
 
