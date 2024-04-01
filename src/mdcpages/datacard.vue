@@ -18,12 +18,19 @@ const { selectedPKG } = storeToRefs(usePackageStore());
 
 const { selctedFlight } = storeToRefs(useFlightStore());
 
-const pagenr = 1; // TODO: Compute based on selected pages for export
+// const pagenr = 1; // TODO: Compute based on selected pages for export
 
 const timeStep = "10:00:10";
 const timeStart = "10:00:10";
 const timeTaxi = "10:00:10";
 const timeTakeoff = "10:00:10";
+
+const {pagenr} = defineProps({
+  pagenr:{
+    required:true,
+    type: Number
+  }
+})
 
 const iffMode2 = "3010";
 const sourceTrackNumber = "03131";

@@ -36,7 +36,12 @@ ap.NAME.toLowerCase() === sel.toLowerCase())??  {
     LEN: "",
   }}
 
-const pagenr = 1; // TODO: Compute based on selected pages for export
+  const {pagenr} = defineProps({
+  pagenr:{
+    required:true,
+    type: Number
+  }
+})
 
 const hhmmss = (time: string) => {
   if (!time) return "";
@@ -47,7 +52,7 @@ const hhmmss = (time: string) => {
 </script>
 
 <template>{{ getAirport(selctedFlight.DEP.NAME) }}  {{ selctedFlight.DEP }} 
-  <div class="mcdpage"> 
+  <div class="mcdpage" name="mcdelement2"> 
     <div class="border pagenr">PAGE {{ pagenr }}</div>
     <div class="border header">WAYPOINTS</div>
     <div class="border mcd-s-3 mcd-wog">METAR</div>

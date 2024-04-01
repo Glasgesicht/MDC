@@ -5,11 +5,16 @@ import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
-import { flights } from "../config/constants";
+import { flights } from "../config/flights";
 
 const { pkgnr, situation, roe } = storeToRefs(usePackageStore());
 
-const pagenr = 1; // TODO: Compute based on selected pages for export
+const { pagenr } = defineProps({
+  pagenr: {
+    required: true,
+    type: Number,
+  },
+});
 
 // TODO: Figure out why vertical text is 2 columns wide... Preferably stop it from happening.
 // Eventually add colour coding to pre-push/post-exit.

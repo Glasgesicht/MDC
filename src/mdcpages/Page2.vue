@@ -2,7 +2,12 @@
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
-const pagenr = ref(2); // TODO: AUTOMATE :)
+const { pagenr } = defineProps({
+  pagenr: {
+    required: true,
+    type: Number,
+  },
+});
 
 const { pkgnr, roe, selectedPKG } = storeToRefs(usePackageStore());
 

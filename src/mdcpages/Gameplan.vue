@@ -6,7 +6,6 @@ import { usePackageStore } from "../stores/packageStore";
 
 import { flights } from "../config/flights";
 import { useFlightStore } from "@/stores/flightStore";
-import html2canvas from "html2canvas";
 
 const {
   airThreat,
@@ -20,18 +19,17 @@ const {
 
 const { selctedFlight, gameplan } = storeToRefs(useFlightStore());
 
-const pagenr = 1; // TODO: Compute based on selected pages for export
+const { pagenr } = defineProps({
+  pagenr: {
+    required: true,
+    type: Number,
+  },
+});
 
 const showROE = inject("showROE");
-const makejpg = () => {
-  html2canvas(document.getElementById("gameplan")!).then(function (canvas) {
-    document.body.appendChild(canvas);
-  });
-};
 </script>
 
 <template>
-  <Button @click="makejpg">label="makejpg"</Button>
   <div class="mcdpage" id="gameplan">
     <div class="border pagenr center-text">
       <p>PAGE {{ pagenr }}</p>
@@ -54,7 +52,10 @@ const makejpg = () => {
       <p>{{ pkgnr }}</p>
     </div>
     <div class="border mcd-s-6 mcd-wog"><p>HOMEPLATE</p></div>
-    <input v-model="selctedFlight.DEP" class="border mcd-s-6 mcd-bog textbox" />
+    <input
+      v-model="selctedFlight.DEP.NAME"
+      class="border mcd-s-6 mcd-bog textbox"
+    />
     <div class="border mcd-rnlaf313"><p>RNLAF 313 SQUADRON</p></div>
     <div class="border mcd-s-6 mcd-wog"><p>MSN TYPE</p></div>
     <input class="border mcd-s-6 mcd-bow" v-model="selctedFlight.missionType" />

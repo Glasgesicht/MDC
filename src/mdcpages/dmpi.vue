@@ -18,7 +18,12 @@ const { selectedPKG } = storeToRefs(usePackageStore());
 
 const { selctedFlight } = storeToRefs(useFlightStore());
 
-const pagenr = 9; // TODO: Compute based on selected pages for export
+const {pagenr} = defineProps({
+  pagenr:{
+    required:true,
+    type: Number
+  }
+})
 
 const dmpiName = "P12";
 const dmpiTarget = "PRI";
