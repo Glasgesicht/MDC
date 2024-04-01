@@ -58,13 +58,6 @@ export type Flight = {
   /**Waypoints */
   waypoints: Waypoint[];
 
-  /**Homeplate, deduct from "Take off (ramp)" waypoint, maybe stp1 */
-  homeplate: string;
-  /**Alternate, deduct from "Alternate" waypoint */
-  alternate: string;
-  /**Arrival, deduct from "Landing" waypoint */
-  arrival: string;
-
   /** NON CF, Task of indivisual flight*/
   flightTask: string;
   gameplan: string;
@@ -74,6 +67,34 @@ export type Flight = {
 
   /** UHF of flight, try to deduct from CF, then set via flights*/
   VHF: string;
+
+  DEP: {
+    NAME: string;
+    ARR: string;
+    TACAN: string;
+    HDG: string;
+    ILS: string;
+    ELEV: string;
+    LEN: string;
+  };
+  ARR: {
+    NAME: string;
+    ARR: string;
+    TACAN: string;
+    HDG: string;
+    ILS: string;
+    ELEV: string;
+    LEN: string;
+  };
+  ALT: {
+    NAME: string;
+    ARR: string;
+    TACAN: string;
+    HDG: string;
+    ILS: string;
+    ELEV: string;
+    LEN: string;
+  };
 };
 
 export type Package = {

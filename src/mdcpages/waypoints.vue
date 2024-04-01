@@ -1,61 +1,32 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref } from "vue";
-import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
-import Dropdown from "primevue/dropdown";
 
-import { flights } from "../config/constants";
 import {
   calculateHeading,
   calculateDistance,
-  toLatString,
-  toLongString,
 } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
+import { airports } from "@/config/airfields";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selctedFlight } = storeToRefs(useFlightStore());
+const { selctedFlight  } = storeToRefs(useFlightStore());
+
+
+const getAirport = (sel:string) => {
+  return airports.find(ap=>
+ap.NAME.toLowerCase() === sel.toLowerCase())??  {
+    NAME: "",
+    ARR: "",
+    TACAN: "",
+    HDG: "",
+    ILS: "",
+    ELEV: "",
+    LEN: "",
+  }}
 
 const pagenr = 1; // TODO: Compute based on selected pages for export
-
-const departureName = "INCIRLIK AB"; // TODO: Make Dep/Arr/Alt more efficient via loop.
-const departureTACAN = "21X DA";
-const departureGround = "360.10";
-const departureLength = "10,000";
-const departureElevation = "232'";
-const departureRunway = "I23 229°";
-const departureILS = "111.70";
-
-const arrivalName = "INCIRLIK AB";
-const arrivalTACAN = "21X DA";
-const arrivalGround = "360.10";
-const arrivalLength = "10,000";
-const arrivalElevation = "232'";
-const arrivalRunway = "I23 229°";
-const arrivalILS = "111.70";
-
-const alternateName = "INCIRLIK AB";
-const alternateTACAN = "21X DA";
-const alternateGround = "360.10";
-const alternateLength = "10,000";
-const alternateElevation = "232'";
-const alternateRunway = "I23 229°";
-const alternateILS = "111.70";
-
-const waypointAction = "Climb";
-const waypointTimeOnStation = "21:24:54";
-const waypointHeading = "243°";
-const waypointDistance = "124 nm";
-const waypointSpeed = ".72";
-const waypointAltitude = "FL240";
-const waypointMinimumFuel = ">2463";
-const waypointNote = "WAIT: 01:24:32";
-
-const bullseyeName = "SCIMITAR";
-const bullseyeLatitude = 'N 40"30.243';
-const bullseyeLongitude = 'E 032"16.885';
 
 const hhmmss = (time: string) => {
   if (!time) return "";
@@ -63,43 +34,71 @@ const hhmmss = (time: string) => {
   return `${date.toLocaleTimeString()}`;
 };
 
-const waypoints = ref([
-  { id: 1, name: "TAKEOFF" },
-  { id: 2, name: "CLIMB" },
-  { id: 3, name: "CRUISE" },
-]);
-
-const showROE = inject("showROE");
 </script>
 
-<template>
-  <div class="mcdpage">
+<template>{{ getAirport(selctedFlight.DEP.NAME) }}  {{ selctedFlight.DEP }} 
+  <div class="mcdpage"> 
     <div class="border pagenr">PAGE {{ pagenr }}</div>
     <div class="border header">WAYPOINTS</div>
     <div class="border mcd-s-3 mcd-wog">METAR</div>
-    <div class="border mcd-s-29 mcd-bow">{{ selectedPKG.metar }}</div>
+    <input class="border mcd-s-29 mcd-bow" v-model="selectedPKG.metar"/>
 
     <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
-      AIRFIELD
+      <p>AIRFIELD</p>
     </div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-wog"></div>
-    <div class="border mcd-s-9 mcd-wog">AIRFIELD</div>
-    <div class="border mcd-s-3 mcd-wog">TCN</div>
-    <div class="border mcd-s-3 mcd-wog">FREQ</div>
-    <div class="border mcd-s-3 mcd-wog">LENGTH</div>
-    <div class="border mcd-s-3 mcd-wog">ELEV</div>
-    <div class="border mcd-s-4 mcd-wog">RWY</div>
-    <div class="border mcd-s-3 mcd-wog">ILS</div>
+    <div class="border mcd-s-2 mcd-row-1 mcd-wog"></div>
+    <div class="border mcd-s-8 mcd-wog"><p>AIRFIELD</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>TCN</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>FREQ</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>LENGTH</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>ELEV</p></div>
+    <div class="border mcd-s-4 mcd-wog"><p>RWY</p></div>
+    <div class="border mcd-s-5 mcd-wog"><p>ILS</p></div>
 
-    <div class="border mcd-s-3 mcd-row-1 mcd-wog">DEP</div>
-    <div class="border mcd-s-9 mcd-row-1 mcd-bow">{{ departureName }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ departureTACAN }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ departureGround }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ departureLength }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ departureElevation }}</div>
-    <div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ departureRunway }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ departureILS }}</div>
+    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p></p>DEP</div>
 
+    <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
+       <p>{{ selctedFlight.DEP }}</p>
+    </div>
+
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ selectedFlight }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).ARR }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).LEN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).ELEV }}</p></div>
+    <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
+      <p>{{ getAirport(selctedFlight.DEP).HDG }}</p>
+    </div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP).ILS }}</p></div>
+
+    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p>ARR</p></div>
+    <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
+       <p>{{ selctedFlight.ARR }}</p>
+    </div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).TACAN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).ARR }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).LEN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).ELEV }}</p></div>
+    <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
+      <p>{{ getAirport(selctedFlight.ARR).HDG }}</p>
+    </div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR).ILS }}</p></div>
+
+    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p></p>ALT</div>
+    <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
+       <p>{{ selctedFlight.ALT }}</p>
+    </div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).TACAN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).ARR }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).LEN }}</p></div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).ELEV }}</p></div>
+    <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
+      <p>{{ getAirport(selctedFlight.ALT).HDG }}</p>
+    </div>
+    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT).ILS }}</p></div>
+<!--
     <div class="border mcd-s-3 mcd-row-1 mcd-wog">ARR</div>
     <div class="border mcd-s-9 mcd-row-1 mcd-bow">{{ arrivalName }}</div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalTACAN }}</div>
@@ -116,7 +115,7 @@ const showROE = inject("showROE");
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateLength }}</div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateElevation }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ alternateRunway }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateILS }}</div>
+    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateILS }}</div>-->
 
     <div class="border mcd-row-26 mcd-s-1 mcd-wog text-rotate-left">
       STEERPOINTS
@@ -222,5 +221,8 @@ const showROE = inject("showROE");
 }
 .font500 {
   font-weight: 500;
+}
+p{
+  font-weight: 600;
 }
 </style>

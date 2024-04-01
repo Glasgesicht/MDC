@@ -9,7 +9,7 @@ import type {
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
-import { flights } from "./constants";
+import { flights } from "./flights";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 
 export function processCF(payload: any /* cf file is a zip */) {
@@ -74,20 +74,48 @@ export function processCF(payload: any /* cf file is a zip */) {
 
             mColl.push({
               aircrafttype: mCurr.Aircraft[0].Type[0],
-              alternate:
-                mCurr.Waypoints[0].Waypoint.find(
-                  (wp) => wp.Type[0] === "Alternate"
-                )?.Name[0] || "",
-              arrival:
-                mCurr.Waypoints[0].Waypoint.find(
-                  (wp) => wp.Type[0] === "Landing"
-                )?.Name[0] || "",
+              DEP: {
+                NAME:
+                  mCurr.Waypoints[0].Waypoint.find((wp) =>
+                    wp.Type[0].includes("Take off")
+                  )?.Name[0] || "",
+                ARR: "",
+                TACAN: "",
+                HDG: "",
+                ILS: "",
+                ELEV: "",
+                LEN: "",
+              },
+              ARR: {
+                NAME:
+                  mCurr.Waypoints[0].Waypoint.find((wp) =>
+                    wp.Type[0].includes("Landing")
+                  )?.Name[0] || "",
+                ARR: "",
+                TACAN: "",
+                HDG: "",
+                ILS: "",
+                ELEV: "",
+                LEN: "",
+              },
+
+              ALT: {
+                NAME:
+                  mCurr.Waypoints[0].Waypoint.find((wp) =>
+                    wp.Type[0].includes("Alternate")
+                  )?.Name[0] || "",
+                ARR: "",
+                TACAN: "",
+                HDG: "",
+                ILS: "",
+                ELEV: "",
+                LEN: "",
+              },
               callsign:
                 mCurr.CallsignNameCustomIs[0] === "True"
                   ? mCurr.CallsignNameCustom[0]
                   : mCurr.CallsignName[0],
               callsignNumber: parseInt(mCurr.CallsignNumber[0]),
-              homeplate: mCurr.Waypoints[0].Waypoint[0].Name[0],
               MSNumber: mCurr.MSNnumber[0],
               missionType: mCurr.Task[0],
               task: "",

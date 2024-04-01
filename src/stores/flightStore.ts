@@ -2,7 +2,7 @@ import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 import { computed, ref, type Ref } from "vue";
 import type { Flight } from "@/types/mdcDataTypes";
-import { F15Flights, F16Flights } from "@/config/constants";
+import { F15Flights, F16Flights } from "@/config/flights";
 
 const f15callsigns = F15Flights.map((flight) => flight.Callsign);
 const f16callsigns = F16Flights.map((flight) => flight.Callsign);
@@ -12,14 +12,11 @@ export const useFlightStore = defineStore("flight", () => {
 
   const selctedFlight: Ref<Flight> = ref({
     aircrafttype: "",
-    alternate: "",
-    arrival: "",
     callsign: "",
     callsignNumber: NaN,
     flightTask: "",
     gameplan: "",
     MSNumber: "",
-    homeplate: "",
     missionType: "",
     tacan: "",
     task: "",
@@ -27,26 +24,35 @@ export const useFlightStore = defineStore("flight", () => {
     units: [],
     VHF: "",
     waypoints: new Array(25),
+    DEP: {
+      NAME: "",
+      ARR: "",
+      TACAN: "",
+      HDG: "",
+      ILS: "",
+      ELEV: "",
+      LEN: "",
+    },
+    ARR: {
+      NAME: "",
+      ARR: "",
+      TACAN: "",
+      HDG: "",
+      ILS: "",
+      ELEV: "",
+      LEN: "",
+    },
+    ALT: {
+      NAME: "",
+      ARR: "",
+      TACAN: "",
+      HDG: "",
+      ILS: "",
+      ELEV: "",
+      LEN: "",
+    },
   });
   // Here goes all the data that only belongs to the currently selected flight
-
-  const homePlate = computed({
-    get() {
-      return selctedFlight.value.homeplate;
-    },
-    set(value) {
-      selctedFlight.value.homeplate = value;
-    },
-  });
-
-  const msnType = computed({
-    get() {
-      return selctedFlight.value.task;
-    },
-    set(value) {
-      selctedFlight.value.task = value;
-    },
-  });
 
   const flightTask = computed({
     get() {
@@ -63,6 +69,7 @@ export const useFlightStore = defineStore("flight", () => {
     else if (f15callsigns.includes(selctedFlight.value.callsign))
       return `144.${selctedFlight.value.callsignNumber}0`;
     return "XXX.XX";
+    //need to figure out freq's for other wings
   });
   const UHF = computed(() => {
     if (f16callsigns.includes(selctedFlight?.value.callsign))
@@ -81,5 +88,5 @@ export const useFlightStore = defineStore("flight", () => {
     },
   });
 
-  return { selctedFlight, homePlate, msnType, flightTask, gameplan };
+  return { selctedFlight, flightTask, gameplan };
 });

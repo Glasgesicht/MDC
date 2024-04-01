@@ -60,14 +60,14 @@ export function calculateDistance(
   const dLat = lat2 - lat1;
   const dLon = lon2 - lon1;
 
-  var a =
+  const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   // Earth's radius in nautical miles is approximately 3440.065
-  var distanceNM = 3440.065 * c;
+  let distanceNM = 3440.065 * c;
 
   // Round the distance to a reasonable number of decimal places
   distanceNM = Math.round(distanceNM * 10) / 10;
