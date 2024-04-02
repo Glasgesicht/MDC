@@ -51,12 +51,14 @@ export function processCF(payload: any /* cf file is a zip */) {
           airThreat: "NONE",
           bullseye: {
             name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
-            lat: toLatString(
-              parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? 0)
-            ),
-            long: toLongString(
-              parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? 0)
-            ),
+            lat:
+              toLatString(
+                parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? 0)
+              ) ?? "",
+            long:
+              toLongString(
+                parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? 0)
+              ) ?? "",
           },
           packageTask: "Eat Burger",
           roe: "Don't Shoot Friendlies",

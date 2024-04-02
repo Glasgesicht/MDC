@@ -75,7 +75,7 @@ const makejpg = async () => {
       <Checkbox label="Show ROE-Box" :binary="true" v-model="showROE" />
     </TabPanel>
     <TabPanel header="Waypoints">
-      <Waypoints :pagenr="2" name="mcdelement2" />
+      <Waypoints :pagenr="2" />
     </TabPanel>
     <TabPanel header="Coordination">
       <Coordination :pagenr="3" name="mcdelement3" />

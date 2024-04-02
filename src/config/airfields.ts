@@ -18,3 +18,5 @@ export const airports = [
     LEN: "10.000 ft",
   },
 ];
+
+export type Airport = (typeof airports)[0];

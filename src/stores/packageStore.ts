@@ -12,7 +12,7 @@ export const usePackageStore = defineStore("package", () => {
     bullseye: {
       lat: "",
       long: "",
-      name: "BULLZ",
+      name: "Bullseye",
     },
     flights: new Array(),
     metar: "",

@@ -1,8 +1,8 @@
 import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 import { computed, ref, type Ref } from "vue";
-import type { Flight } from "@/types/mdcDataTypes";
 import { F15Flights, F16Flights } from "@/config/flights";
+import type { FlightMember } from "@/types/mdcDataTypes";
 
 const f15callsigns = F15Flights.map((flight) => flight.Callsign);
 const f16callsigns = F16Flights.map((flight) => flight.Callsign);
@@ -10,7 +10,7 @@ const f16callsigns = F16Flights.map((flight) => flight.Callsign);
 export const useFlightStore = defineStore("flight", () => {
   // const { selctedFlight } = storeToRefs(usePackageStore());
 
-  const selctedFlight: Ref<Flight> = ref({
+  const selctedFlight = ref({
     aircrafttype: "",
     callsign: "",
     callsignNumber: NaN,
@@ -21,7 +21,7 @@ export const useFlightStore = defineStore("flight", () => {
     tacan: "",
     task: "",
     UHF: "",
-    units: [],
+    units: new Array<FlightMember>(),
     VHF: "",
     waypoints: new Array(25),
     DEP: {
@@ -52,8 +52,8 @@ export const useFlightStore = defineStore("flight", () => {
       LEN: "",
     },
   });
-  // Here goes all the data that only belongs to the currently selected flight
 
+  // Here goes all the data that only belongs to the currently selected flight
   const flightTask = computed({
     get() {
       return selctedFlight.value.flightTask;
@@ -63,6 +63,8 @@ export const useFlightStore = defineStore("flight", () => {
     },
   });
 
+  // Might not need this because it's set in createFlights as a macro.
+  /*
   const VHF = computed(() => {
     if (f16callsigns.includes(selctedFlight.value.callsign))
       return `141.${selctedFlight.value.callsignNumber}0`;
@@ -77,8 +79,9 @@ export const useFlightStore = defineStore("flight", () => {
     else if (f15callsigns.includes(selctedFlight?.value.callsign))
       return `269.${selctedFlight?.value.callsignNumber}0`;
     return "XXX.XX";
-  });
+  });*/
 
+  // not enirely sure why i have an explicit getter/setter here, but that's okay
   const gameplan = computed({
     get() {
       return selctedFlight.value.gameplan ?? null;

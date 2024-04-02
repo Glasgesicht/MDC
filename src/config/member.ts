@@ -1,4 +1,4 @@
-export const rnlaf313members: Array<{ callsign: string; tailnr: number }> = [
+export const rnlaf313members = [
   {
     callsign: "Espere",
     tailnr: 894,

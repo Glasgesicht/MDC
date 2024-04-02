@@ -1,3 +1,5 @@
+import { useFlightStore } from "@/stores/flightStore";
+
 export type FlightMember = {
   callsign: string;
   tailNr?: number;
@@ -37,65 +39,9 @@ export type Waypoint = {
   type: string;
 };
 
-export type Flight = {
-  /**Type of aircraft */
-  aircrafttype: string; // TODO: Set to possible Aircraft via CF
-  /**Callsign without number */
-  callsign: string;
-  /**Callsign Number, eg 1 in APEX 1 */
-  callsignNumber: number;
-  /**Mission Number, is a String */
-  MSNumber: String;
+const flight = useFlightStore().selctedFlight;
 
-  /** Mission Type from CF */
-  missionType: string;
-  /**Task, like OCA */
-  task: string;
-  /**Number of aircraft */
-  units: FlightMember[];
-  /**TACAN grab from frist waypoint*/
-  tacan: string;
-  /**Waypoints */
-  waypoints: Waypoint[];
-
-  /** NON CF, Task of indivisual flight*/
-  flightTask: string;
-  gameplan: string;
-
-  /** UHF of flight, try to deduct from CF, then set via flights*/
-  UHF: string;
-
-  /** UHF of flight, try to deduct from CF, then set via flights*/
-  VHF: string;
-
-  DEP: {
-    NAME: string;
-    ARR: string;
-    TACAN: string;
-    HDG: string;
-    ILS: string;
-    ELEV: string;
-    LEN: string;
-  };
-  ARR: {
-    NAME: string;
-    ARR: string;
-    TACAN: string;
-    HDG: string;
-    ILS: string;
-    ELEV: string;
-    LEN: string;
-  };
-  ALT: {
-    NAME: string;
-    ARR: string;
-    TACAN: string;
-    HDG: string;
-    ILS: string;
-    ELEV: string;
-    LEN: string;
-  };
-};
+export type Flight = typeof flight;
 
 export type Package = {
   /** Name of Package */

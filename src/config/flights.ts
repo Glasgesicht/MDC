@@ -3,35 +3,27 @@ const createFlight = (
   number: Number,
   type: "F-16" | "F-15" | "F/A-18"
 ) => {
+  let uhf;
+  let vhf;
   switch (type) {
     case "F-16":
-      return {
-        Callsign: `${callsign} ${number}`, // callsign + ' ' + number
-        callsignRaw: callsign,
-        number: number,
-        UHF: `267.${number}0`,
-        VHF: `141.${number}0`,
-        type: type,
-      };
+      uhf = 267;
+      vhf = 141;
     case "F-15":
-      return {
-        Callsign: `${callsign} ${number}`, // callsign + ' ' + number
-        callsignRaw: callsign,
-        number: number,
-        UHF: `269.${number}0`,
-        VHF: `144.${number}0`,
-        type: type,
-      };
+      uhf = 269;
+      vhf = 144;
     case "F/A-18":
-      return {
-        Callsign: `${callsign} ${number}`, // callsign + ' ' + number
-        callsignRaw: callsign,
-        number: number,
-        UHF: `267.${number}0`,
-        VHF: `141.${number}0`,
-        type: type,
-      };
+      uhf = 266;
+      vhf = 142;
   }
+  return {
+    Callsign: `${callsign} ${number}`, // callsign + ' ' + number
+    callsignRaw: callsign,
+    number: number,
+    UHF: `${uhf}.${number}0`,
+    VHF: `${vhf}.${number}0`,
+    type: type,
+  };
 };
 
 export const flights = [
@@ -51,7 +43,16 @@ export const flights = [
   createFlight("SLAYER", 6, "F-15"),
   createFlight("WARMAN", 7, "F-15"),
   createFlight("COUGAR", 8, "F-15"),
+  //createFlight("VICTORY", 1, "F/A-18"), //Note: 212 uses different frequencies taht are off-pattern
+  //createFlight("TEMPLAR", 3, "F/A-18"),
+  //createFlight("ASSASSIN", 4, "F/A-18"),
+  //createFlight("PALADIN", 5, "F/A-18"),
+  //createFlight("CRUSADER", 6, "F/A-18"),
+  //createFlight("KNIGHT", 7, "F/A-18"),
 ];
+
+export type flightType = (typeof flights)[0];
 
 export const F16Flights = flights.filter((flight) => flight.type === "F-16");
 export const F15Flights = flights.filter((flight) => flight.type === "F-15");
+export const F18Flights = flights.filter((flight) => flight.type === "F/A-18");

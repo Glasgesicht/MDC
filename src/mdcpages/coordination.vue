@@ -22,30 +22,34 @@ const { pagenr } = defineProps({
 
 <template>
   <div class="mcdpage">
-    <div class="border pagenr">PAGE {{ pagenr }}</div>
-    <div class="border header">PACKAGE COORDINATION</div>
+    <div class="border pagenr">
+      <p>PAGE {{ pagenr }}</p>
+    </div>
+    <div class="border header"><p>PACKAGE COORDINATION</p></div>
 
-    <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">PACKAGE</div>
+    <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
+      <p>PACKAGE</p>
+    </div>
 
-    <div class="border mcd-s-6 mcd-wog">CALLSIGN</div>
+    <div class="border mcd-s-6 mcd-wog"><p>CALLSIGN</p></div>
     <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
       <div class="border mcd-s-2 mcd-bow">{{ index + 1 }}</div>
     </div>
-    <div class="border mcd-s-6 mcd-wog"># A/C</div>
+    <div class="border mcd-s-6 mcd-wog"><p># A/C</p></div>
     <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
       <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border mcd-s-6 mcd-wog">TASKING</div>
+    <div class="border mcd-s-6 mcd-wog"><p>TASKING</p></div>
     <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
       <div class="border mcd-s-2 mcd-bow">{{ index + 1 }}</div>
     </div>
-    <div class="border mcd-s-31 mcd-wog">TIMINGS</div>
+    <div class="border mcd-s-31 mcd-wog"><p>TIMINGS</p></div>
 
     <div class="border mcd-row-9 mcd-s-1 mcd-wog text-rotate-left">
-      PRE-PUSH
+      <p>PRE-PUSH</p>
     </div>
 
-    <div class="border mcd-s-6 mcd-row-2 mcd-wog">DEPARTURE</div>
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog"><p>DEPARTURE</p></div>
     <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
       <div class="border mcd-s-5 mcd-row-2 mcd-bow">{{ index + 1 }}</div>
     </div>
@@ -70,7 +74,12 @@ const { pagenr } = defineProps({
       <div class="border mcd-s-5 mcd-row-2 mcd-bog">{{ index + 1 }}</div>
     </div>
 
-    <div class="border mcd-row-10 mcd-s-1 mcd-wog text-rotate-left">TARGET</div>
+    <div
+      class="border mcd-row-10 mcd-s-1 mcd-wog text-rotate-left"
+      style="box-sizing: content-box"
+    >
+      <p>TARGET</p>
+    </div>
 
     <div class="border mcd-s-6 mcd-row-2 mcd-wog">PUSH POINT</div>
     <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
@@ -80,7 +89,9 @@ const { pagenr } = defineProps({
     <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
       <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border mcd-s-6 mcd-row-2 mcd-wog">TARGET</div>
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">
+      <p>TARGET</p>
+    </div>
     <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
       <div class="border mcd-s-5 mcd-row-2 mcd-bog">{{ index + 1 }}</div>
     </div>
@@ -98,7 +109,7 @@ const { pagenr } = defineProps({
     </div>
 
     <div class="border mcd-row-8 mcd-s-1 mcd-wog text-rotate-left">
-      POST EXIT
+      <p>POST EXIT</p>
     </div>
 
     <div class="border mcd-s-6 mcd-wog">AAR TRACK</div>

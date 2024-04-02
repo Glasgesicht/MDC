@@ -51,11 +51,11 @@ const hhmmss = (time: string) => {
 
 </script>
 
-<template>{{ getAirport(selctedFlight.DEP.NAME) }}  {{ selctedFlight.DEP }} 
+<template>
   <div class="mcdpage" name="mcdelement2"> 
-    <div class="border pagenr">PAGE {{ pagenr }}</div>
-    <div class="border header">WAYPOINTS</div>
-    <div class="border mcd-s-3 mcd-wog">METAR</div>
+    <div class="border pagenr"><p>PAGE {{ pagenr }}</p></div>
+    <div class="border header"><p>WAYPOINTS</p></div>
+    <div class="border mcd-s-3 mcd-wog"><p>METAR</p></div>
     <input class="border mcd-s-29 mcd-bow" v-model="selectedPKG.metar"/>
 
     <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
