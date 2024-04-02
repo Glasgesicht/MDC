@@ -61,7 +61,6 @@ const onChangedFile = async (payload: any) => {
         <TabPanel header="Configure Package"
           ><div class="parent" v-if="file">
             <p>Selected Package</p>
-            <p class="">Select Flight To Edit</p>
             <p>Change Package Name</p>
             <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
@@ -71,14 +70,6 @@ const onChangedFile = async (payload: any) => {
               :options="packages"
               optionLabel="name"
               placeholder="Select A Package"
-              class=""
-              style="grid-row: 2"
-            />
-            <Dropdown
-              v-model="selctedFlight"
-              :options="allFlightsFromPackage"
-              optionLabel="callsign"
-              placeholder="Select A Flight"
               class=""
               style="grid-row: 2"
             />

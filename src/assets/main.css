@@ -11,9 +11,9 @@
   font-family: "Bahnschrift";
   font-size: 1.019em;
   font-weight: bolder;
+
   text-align: center;
   box-sizing: border-box;
-  align-items: center; /* Vertically center */
 }
 
 .dropdown {
