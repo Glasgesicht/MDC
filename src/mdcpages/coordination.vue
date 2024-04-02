@@ -75,10 +75,10 @@ const { pagenr } = defineProps({
         {{ index + 1 }}
       </div>
     </div>
-
+    <!-- There is on px missing and it looks stupid, probably due to some rounding error in the Transform -->
     <div
       class="border mcd-row-10 mcd-s-1 mcd-wog text-rotate-left"
-      style="box-sizing: content-box"
+      style="height: 100.1%"
     >
       TARGET
     </div>
