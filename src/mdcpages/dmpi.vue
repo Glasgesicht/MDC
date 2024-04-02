@@ -43,8 +43,8 @@ const showROE = inject("showROE");
 
 <template>
   <div class="mcdpage">
-    <div class="border pagenr">PAGE {{ pagenr }}</div>
-    <div class="border header">DMPI</div>
+    <div class="border pagenr"><p>PAGE {{ pagenr }}</p></div>
+    <div class="border header"><p>DMPI</p></div>
 
     <div class="border mcd-s-2 mcd-wog"><p>WP</p></div>
     <div class="border mcd-s-5 mcd-wog"><p>NAME</p></div>
