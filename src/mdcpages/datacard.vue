@@ -25,17 +25,17 @@ const timeStart = "10:00:10";
 const timeTaxi = "10:00:10";
 const timeTakeoff = "10:00:10";
 
-const {pagenr} = defineProps({
-  pagenr:{
-    required:true,
-    type: Number
-  }
-})
+const { pagenr } = defineProps({
+  pagenr: {
+    required: true,
+    type: Number,
+  },
+});
 
 const iffMode2 = "3010";
 const sourceTrackNumber = "03131";
 
-const fenceInOut = "10 / 23"
+const fenceInOut = "10 / 23";
 
 const ramrodCharacter1 = "S";
 const ramrodCharacter2 = "W";
@@ -98,219 +98,230 @@ const showROE = inject("showROE");
 
 <template>
   <div class="mcdpage">
-    <div class="border pagenr"><p>PAGE {{ pagenr }}</p></div>
-    <div class="border header"><p>DATACARD</p></div>
+    <div class="border child pagenr">PAGE {{ pagenr }}</div>
+    <div class="border child header">DATACARD</div>
 
-    <div class="border mcd-s-3 mcd-wog"><p>MSN</p></div>
-    <div class="border mcd-s-4 mcd-bow"><p>{{ selctedFlight?.MSNumber }}</p></div>    
-    <div class="border mcd-s-5 mcd-wog"><p>CALLSIGN</p></div>
-    <div class="border mcd-s-6 mcd-bow"><p>{{ selctedFlight?.callsign }} {{ selctedFlight?.callsignNumber }}</p></div>
-    <div class="border mcd-s-5 mcd-wog"><p>PACKAGE</p></div>
-    <div class="border mcd-s-9 mcd-bow"><p>{{ selectedPKG?.name }}</p></div>
-    
-    <div class="border mcd-s-3 mcd-wog"><p>STEP</p></div>
-    <div class="border mcd-s-5 mcd-bog"><p>{{ timeStep }}</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>START</p></div>
-    <div class="border mcd-s-5 mcd-bog"><p>{{ timeStart }}</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>TAXI</p></div>
-    <div class="border mcd-s-5 mcd-bog"><p>{{ timeTaxi }}</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>T/O</p></div>
-    <div class="border mcd-s-5 mcd-bog"><p>{{ timeTakeoff }}</p></div>
+    <div class="border child mcd-s-3 mcd-wog">MSN</div>
+    <div class="border child mcd-s-4 mcd-bow">
+      {{ selctedFlight?.MSNumber }}
+    </div>
+    <div class="border child mcd-s-5 mcd-wog">CALLSIGN</div>
+    <div class="border child mcd-s-6 mcd-bow">
+      {{ selctedFlight?.callsign }} {{ selctedFlight?.callsignNumber }}
+    </div>
+    <div class="border child mcd-s-5 mcd-wog">PACKAGE</div>
+    <div class="border child mcd-s-9 mcd-bow">{{ selectedPKG?.name }}</div>
 
-    <div class="border mcd-s-5 mcd-wog"><p>FENCE I/O</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>TIME</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>M1</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>M2</p></div>
-    <div class="border mcd-s-3 mcd-bow"><p>{{ mode2code }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>1</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>2</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>3</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>4</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>5</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>6</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>7</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>8</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>9</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p>10</p></div>
-    
-    <div class="border mcd-s-2 mcd-wog"><p>STN</p></div>
-    <div class="border mcd-s-3 mcd-bow"><p>{{ sourceTrackNumber }}</p></div>
+    <div class="border child mcd-s-3 mcd-wog">STEP</div>
+    <div class="border child mcd-s-5 mcd-bog">{{ timeStep }}</div>
+    <div class="border child mcd-s-3 mcd-wog">START</div>
+    <div class="border child mcd-s-5 mcd-bog">{{ timeStart }}</div>
+    <div class="border child mcd-s-3 mcd-wog">TAXI</div>
+    <div class="border child mcd-s-5 mcd-bog">{{ timeTaxi }}</div>
+    <div class="border child mcd-s-3 mcd-wog">T/O</div>
+    <div class="border child mcd-s-5 mcd-bog">{{ timeTakeoff }}</div>
 
-    <div class="border mcd-s-5 mcd-bog"><p>{{ fenceInOut }}</p></div>
-    <div class="border mcd-s-3 mcd-bog"><p>{{ mode1time1 }}</p></div>
-    <div class="border mcd-s-2 mcd-bog"><p>{{ mode1code1 }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>M3</p></div>
-    <div class="border mcd-s-3 mcd-bog"><p>{{ mode3code }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter1 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter2 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter3 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter4 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter5 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter6 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter7 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter8 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter9 }}</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>{{ ramrodCharacter10 }}</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>FC</p></div>
-    <div class="border mcd-s-2 mcd-bog"><p>{{ fighterChannel }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
+    <div class="border child mcd-s-5 mcd-wog">FENCE I/O</div>
+    <div class="border child mcd-s-3 mcd-wog">TIME</div>
+    <div class="border child mcd-s-2 mcd-wog">M1</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+    <div class="border child mcd-s-2 mcd-wog">M2</div>
+    <div class="border child mcd-s-3 mcd-bow">{{ mode2code }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+    <div class="border child mcd-s-1 mcd-wog">1</div>
+    <div class="border child mcd-s-1 mcd-wog">2</div>
+    <div class="border child mcd-s-1 mcd-wog">3</div>
+    <div class="border child mcd-s-1 mcd-wog">4</div>
+    <div class="border child mcd-s-1 mcd-wog">5</div>
+    <div class="border child mcd-s-1 mcd-wog">6</div>
+    <div class="border child mcd-s-1 mcd-wog">7</div>
+    <div class="border child mcd-s-1 mcd-wog">8</div>
+    <div class="border child mcd-s-1 mcd-wog">9</div>
+    <div class="border child mcd-s-1 mcd-wog">10</div>
 
-    <div class="border mcd-s-5 mcd-wog"><p>TOT</p></div>
-    <div class="border mcd-s-3 mcd-bow"><p>{{ mode1time2 }}</p></div>
-    <div class="border mcd-s-2 mcd-bow"><p>{{ mode1code2 }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>POS 1</p></div>
-    <div class="border mcd-s-1 mcd-bow"><p>1</p></div>
-    <div class="border mcd-s-1 mcd-bow"><p></p></div>
-    <div class="border mcd-s-1 mcd-bow"><p></p></div>
-    <div class="border mcd-s-1 mcd-bow"><p></p></div>
-    <div class="border mcd-s-1 mcd-bow"><p>4</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>ON</p></div>
-    <div class="border mcd-s-1 mcd-bow"><p>N</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>OF</p></div>
-    <div class="border mcd-s-1 mcd-bow"><p>8</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p></p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>MC</p></div>
-    <div class="border mcd-s-2 mcd-bow"><p>{{ missionChannel }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
+    <div class="border child mcd-s-2 mcd-wog">STN</div>
+    <div class="border child mcd-s-3 mcd-bow">{{ sourceTrackNumber }}</div>
 
-    <div class="border mcd-s-5 mcd-bog"><p>{{ timeOnTarget }}</p></div>
-    <div class="border mcd-s-3 mcd-bog"><p>{{ mode1time3 }}</p></div>
-    <div class="border mcd-s-2 mcd-bog"><p>{{ mode1code3 }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>POS 2</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>1</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>2</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>3</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>C</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>4</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>ON</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>W</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>OF</p></div>
-    <div class="border mcd-s-1 mcd-bog"><p>11</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p></p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>SC</p></div>
-    <div class="border mcd-s-2 mcd-bog"><p>{{ surveillanceChannel }}</p></div>
-    <div class="border mcd-s-1 mcd-wog"><p></p></div>
+    <div class="border child mcd-s-5 mcd-bog">{{ fenceInOut }}</div>
+    <div class="border child mcd-s-3 mcd-bog">{{ mode1time1 }}</div>
+    <div class="border child mcd-s-2 mcd-bog">{{ mode1code1 }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+    <div class="border child mcd-s-2 mcd-wog">M3</div>
+    <div class="border child mcd-s-3 mcd-bog">{{ mode3code }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter1 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter2 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter3 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter4 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter5 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter6 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter7 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter8 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter9 }}</div>
+    <div class="border child mcd-s-1 mcd-bog">{{ ramrodCharacter10 }}</div>
+    <div class="border child mcd-s-2 mcd-wog">FC</div>
+    <div class="border child mcd-s-2 mcd-bog">{{ fighterChannel }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
 
-    <div class="border mcd-row-5 mcd-s-1 mcd-wog text-rotate-left"><p>FLIGHT</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p></p></div>
-    <div class="border mcd-s-9 mcd-wog"><p>NAME</p></div>
-    <div class="border mcd-s-2 mcd-wog"><p>A/C</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>SEARCH</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>IDM</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>TCN</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>LSR</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>M2</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>STN</p></div>
+    <div class="border child mcd-s-5 mcd-wog">TOT</div>
+    <div class="border child mcd-s-3 mcd-bow">{{ mode1time2 }}</div>
+    <div class="border child mcd-s-2 mcd-bow">{{ mode1code2 }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+    <div class="border child mcd-s-3 mcd-wog">POS 1</div>
+    <div class="border child mcd-s-1 mcd-bow">1</div>
+    <div class="border child mcd-s-1 mcd-bow"></div>
+    <div class="border child mcd-s-1 mcd-bow"></div>
+    <div class="border child mcd-s-1 mcd-bow"></div>
+    <div class="border child mcd-s-1 mcd-bow">4</div>
+    <div class="border child mcd-s-2 mcd-wog">ON</div>
+    <div class="border child mcd-s-1 mcd-bow">N</div>
+    <div class="border child mcd-s-2 mcd-wog">OF</div>
+    <div class="border child mcd-s-1 mcd-bow">8</div>
+    <div class="border child mcd-s-2 mcd-wog"></div>
+    <div class="border child mcd-s-2 mcd-wog">MC</div>
+    <div class="border child mcd-s-2 mcd-bow">{{ missionChannel }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
 
-    <div class="mcd-s-31 parent" v-for="index in new Array(4).keys()">
-      <div class="border mcd-s-2 mcd-wog">
-        <p>{{ index + 1 }}</p>
+    <div class="border child mcd-s-5 mcd-bog">{{ timeOnTarget }}</div>
+    <div class="border child mcd-s-3 mcd-bog">{{ mode1time3 }}</div>
+    <div class="border child mcd-s-2 mcd-bog">{{ mode1code3 }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+    <div class="border child mcd-s-3 mcd-wog">POS 2</div>
+    <div class="border child mcd-s-1 mcd-bog">1</div>
+    <div class="border child mcd-s-1 mcd-bog">2</div>
+    <div class="border child mcd-s-1 mcd-bog">3</div>
+    <div class="border child mcd-s-1 mcd-bog">C</div>
+    <div class="border child mcd-s-1 mcd-bog">4</div>
+    <div class="border child mcd-s-2 mcd-wog">ON</div>
+    <div class="border child mcd-s-1 mcd-bog">W</div>
+    <div class="border child mcd-s-2 mcd-wog">OF</div>
+    <div class="border child mcd-s-1 mcd-bog">11</div>
+    <div class="border child mcd-s-2 mcd-wog"></div>
+    <div class="border child mcd-s-2 mcd-wog">SC</div>
+    <div class="border child mcd-s-2 mcd-bog">{{ surveillanceChannel }}</div>
+    <div class="border child mcd-s-1 mcd-wog"></div>
+
+    <div class="border child mcd-row-5 mcd-s-1 mcd-wog text-rotate-left">
+      FLIGHT
+    </div>
+    <div class="border child mcd-s-2 mcd-wog"></div>
+    <div class="border child mcd-s-9 mcd-wog">NAME</div>
+    <div class="border child mcd-s-2 mcd-wog">A/C</div>
+    <div class="border child mcd-s-3 mcd-wog">SEARCH</div>
+    <div class="border child mcd-s-3 mcd-wog">IDM</div>
+    <div class="border child mcd-s-3 mcd-wog">TCN</div>
+    <div class="border child mcd-s-3 mcd-wog">LSR</div>
+    <div class="border child mcd-s-3 mcd-wog">M2</div>
+    <div class="border child mcd-s-3 mcd-wog">STN</div>
+
+    <div class="mcd-s-31 parent child" v-for="index in new Array(4).keys()">
+      <div class="border child mcd-s-2 mcd-wog">
+        {{ index + 1 }}
       </div>
-      <div :class="`border mcd-s-9 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotName }}</p>
+      <div :class="`border child mcd-s-9 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotName }}
       </div>
-      <div :class="`border mcd-s-2 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotTailnumber }}</p>
+      <div :class="`border child mcd-s-2 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotTailnumber }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotSearch }}</p class="font500">
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotSearch }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotIdm }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotIdm }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotTacan }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotTacan }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotLaser }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotLaser }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotMode2 }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotMode2 }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{  pilotSourceTrackNumber }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ pilotSourceTrackNumber }}
       </div>
     </div>
 
-    <div class="border mcd-row-6 mcd-s-1 mcd-wog text-rotate-left"><p>PACKAGE</p></div>
-    <div class="border mcd-s-6 mcd-wog"><p>CALLSIGN</p></div>
-    <div class="border mcd-s-4 mcd-wog"><p>TYPE</p></div>
-    <div class="border mcd-s-5 mcd-wog"><p>TASK</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>PRI</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>SEC</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>L16</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>STN</p></div>
-    <div class="border mcd-s-4 mcd-wog"><p>PUSH</p></div>
+    <div class="border child mcd-row-6 mcd-s-1 mcd-wog text-rotate-left">
+      PACKAGE
+    </div>
+    <div class="border child mcd-s-6 mcd-wog">CALLSIGN</div>
+    <div class="border child mcd-s-4 mcd-wog">TYPE</div>
+    <div class="border child mcd-s-5 mcd-wog">TASK</div>
+    <div class="border child mcd-s-3 mcd-wog">PRI</div>
+    <div class="border child mcd-s-3 mcd-wog">SEC</div>
+    <div class="border child mcd-s-3 mcd-wog">L16</div>
+    <div class="border child mcd-s-3 mcd-wog">STN</div>
+    <div class="border child mcd-s-4 mcd-wog">PUSH</div>
 
-    <div class="mcd-s-31 parent" v-for="index in new Array(5).keys()">
-      <div :class="`border mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightCallsign }}</p>
+    <div class="mcd-s-31 parent child" v-for="index in new Array(5).keys()">
+      <div :class="`border child mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightCallsign }}
       </div>
-      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightSize }} {{ flightType }}</p>
+      <div :class="`border child mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightSize }} {{ flightType }}
       </div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightTask }}</p class="font500">
+      <div :class="`border child mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightTask }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightPrimaryFrequency }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightPrimaryFrequency }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightSecondaryFrequency }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightSecondaryFrequency }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightLinkCallsign }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightLinkCallsign }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightSourceTrackNumber }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightSourceTrackNumber }}
       </div>
-      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ flightPushTime }}</p>
+      <div :class="`border child mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ flightPushTime }}
       </div>
     </div>
 
-    <div class="border mcd-row-6 mcd-s-1 mcd-wog text-rotate-left"><p>SUPPORT</p></div>
-    <div class="border mcd-s-6 mcd-wog"><p>AGENCY</p></div>
-    <div class="border mcd-s-6 mcd-wog"><p>CALLSIGN</p></div>
-    <div class="border mcd-s-5 mcd-wog"><p>TYPE</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>FREQ</p></div>
-    <div class="border mcd-s-5 mcd-wog"><p>BULLS</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>ALT</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>TCN</p></div>
+    <div class="border child mcd-row-6 mcd-s-1 mcd-wog text-rotate-left">
+      SUPPORT
+    </div>
+    <div class="border child mcd-s-6 mcd-wog">AGENCY</div>
+    <div class="border child mcd-s-6 mcd-wog">CALLSIGN</div>
+    <div class="border child mcd-s-5 mcd-wog">TYPE</div>
+    <div class="border child mcd-s-3 mcd-wog">FREQ</div>
+    <div class="border child mcd-s-5 mcd-wog">BULLS</div>
+    <div class="border child mcd-s-3 mcd-wog">ALT</div>
+    <div class="border child mcd-s-3 mcd-wog">TCN</div>
 
-    <div class="mcd-s-31 parent" v-for="index in new Array(5).keys()">
-      <div :class="`border mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportAgency }}</p>
+    <div class="mcd-s-31 parent child" v-for="index in new Array(5).keys()">
+      <div :class="`border child mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportAgency }}
       </div>
-      <div :class="`border mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportCallsign }} {{ supportCallsignNumber }}</p>
+      <div :class="`border child mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportCallsign }} {{ supportCallsignNumber }}
       </div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportType }}</p class="font500">
+      <div :class="`border child mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportType }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportFrequency }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportFrequency }}
       </div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportBullseye }}</p>
+      <div :class="`border child mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportBullseye }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportAltitude }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportAltitude }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ supportTacan }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ supportTacan }}
       </div>
     </div>
 
-    <div class="border mcd-s-32 mcd-wog"><p>AIRSPACE COORDINATION</p></div>
-    <div class="border mcd-s-32 mcd-row-7 mcd-bog"><p>{{ airspaceCoordination }}</p></div>
-
+    <div class="border child mcd-s-32 mcd-wog">AIRSPACE COORDINATION</div>
+    <div class="border child mcd-s-32 mcd-row-7 mcd-bog">
+      {{ airspaceCoordination }}
+    </div>
   </div>
 </template>
 <style scoped>

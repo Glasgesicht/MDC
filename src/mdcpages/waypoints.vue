@@ -2,22 +2,28 @@
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 
-import {
-  calculateHeading,
-  calculateDistance,
-} from "@/utils/utilFunctions";
+import { calculateHeading, calculateDistance } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "@/config/airfields";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selctedFlight  } = storeToRefs(useFlightStore());
+const { selctedFlight } = storeToRefs(useFlightStore());
 
-
-const getAirport = (sel:string) => {
-  if(typeof sel == "string")
-  return airports.find(ap=>
-ap.NAME.toLowerCase() === sel.toLowerCase())??  {
+const getAirport = (sel: string) => {
+  if (typeof sel == "string")
+    return (
+      airports.find((ap) => ap.NAME.toLowerCase() === sel.toLowerCase()) ?? {
+        NAME: "",
+        ARR: "",
+        TACAN: "",
+        HDG: "",
+        ILS: "",
+        ELEV: "",
+        LEN: "",
+      }
+    );
+  return {
     NAME: "",
     ARR: "",
     TACAN: "",
@@ -25,205 +31,235 @@ ap.NAME.toLowerCase() === sel.toLowerCase())??  {
     ILS: "",
     ELEV: "",
     LEN: "",
-  }
-  return{
-    NAME: "",
-    ARR: "",
-    TACAN: "",
-    HDG: "",
-    ILS: "",
-    ELEV: "",
-    LEN: "",
-  }}
+  };
+};
 
-  const {pagenr} = defineProps({
-  pagenr:{
-    required:true,
-    type: Number
-  }
-})
+const { pagenr } = defineProps({
+  pagenr: {
+    required: true,
+    type: Number,
+  },
+});
 
 const hhmmss = (time: string) => {
   if (!time) return "";
   const date = new Date(time);
   return `${date.toLocaleTimeString()}`;
 };
-
 </script>
 
 <template>
-  <div class="mcdpage" name="mcdelement2"> 
-    <div class="border pagenr"><p>PAGE {{ pagenr }}</p></div>
-    <div class="border header"><p>WAYPOINTS</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>METAR</p></div>
-    <input class="border mcd-s-29 mcd-bow" v-model="selectedPKG.metar"/>
+  <div class="mcdpage" name="mcdelement2">
+    <div class="border child pagenr">PAGE {{ pagenr }}</div>
+    <div class="border child header">WAYPOINTS</div>
+    <div class="border child mcd-s-3 mcd-wog">METAR</div>
+    <input class="border child mcd-s-29 mcd-bow" v-model="selectedPKG.metar" />
 
-    <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
-      <p>AIRFIELD</p>
+    <div class="border child mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
+      AIRFIELD
     </div>
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog"></div>
-    <div class="border mcd-s-8 mcd-wog"><p>AIRFIELD</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>TCN</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>FREQ</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>LENGTH</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>ELEV</p></div>
-    <div class="border mcd-s-4 mcd-wog"><p>RWY</p></div>
-    <div class="border mcd-s-5 mcd-wog"><p>ILS</p></div>
+    <div class="border child mcd-s-2 mcd-row-1 mcd-wog"></div>
+    <div class="border child mcd-s-8 mcd-wog">AIRFIELD</div>
+    <div class="border child mcd-s-3 mcd-wog">TCN</div>
+    <div class="border child mcd-s-3 mcd-wog">FREQ</div>
+    <div class="border child mcd-s-3 mcd-wog">LENGTH</div>
+    <div class="border child mcd-s-3 mcd-wog">ELEV</div>
+    <div class="border child mcd-s-4 mcd-wog">RWY</div>
+    <div class="border child mcd-s-5 mcd-wog">ILS</div>
 
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p></p>DEP</div>
+    <div class="border child mcd-s-2 mcd-row-1 mcd-wog">DEP</div>
 
-    <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
-       <p>{{ selctedFlight.DEP.NAME }}</p>
+    <div class="border child mcd-s-8 mcd-row-1 mcd-bow">
+      {{ selctedFlight.DEP.NAME }}
     </div>
 
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ILS }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ARR }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).LEN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ELEV }}</p></div>
-    <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
-    <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
-      <p>{{ getAirport(selctedFlight.DEP.NAME).HDG }}</p>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.DEP.NAME).ILS }}
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.DEP.NAME).ILS }}</p></div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.DEP.NAME).ARR }}
+    </div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.DEP.NAME).LEN }}
+    </div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.DEP.NAME).ELEV }}
+    </div>
+    <!--<div class="border child mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <div class="border child mcd-s-4 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.DEP.NAME).HDG }}
+    </div>
+    <div class="border child mcd-s-5 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.DEP.NAME).ILS }}
+    </div>
 
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p>ARR</p></div>
-    <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
-       <p>{{ selctedFlight.ARR.NAME }}</p>
+    <div class="border child mcd-s-2 mcd-row-1 mcd-wog">ARR</div>
+    <div class="border child mcd-s-8 mcd-row-1 mcd-bow">
+      {{ selctedFlight.ARR.NAME }}
     </div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).TACAN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).ARR }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).LEN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).ELEV }}</p></div>
-    <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
-    <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
-      <p>{{ getAirport(selctedFlight.ARR.NAME).HDG }}</p>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ARR.NAME).TACAN }}
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ARR.NAME).ILS }}</p></div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ARR.NAME).ARR }}
+    </div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ARR.NAME).LEN }}
+    </div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ARR.NAME).ELEV }}
+    </div>
+    <!--<div class="border child mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <div class="border child mcd-s-4 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ARR.NAME).HDG }}
+    </div>
+    <div class="border child mcd-s-5 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ARR.NAME).ILS }}
+    </div>
 
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p></p>ALT</div>
-    <div class="border mcd-s-8 mcd-row-1 mcd-bow" >
-       <p>{{ selctedFlight.ALT.NAME }}</p>
+    <div class="border child mcd-s-2 mcd-row-1 mcd-wog">ALT</div>
+    <div class="border child mcd-s-8 mcd-row-1 mcd-bow">
+      {{ selctedFlight.ALT.NAME }}
     </div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).TACAN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).ARR }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).LEN }}</p></div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).ELEV }}</p></div>
-    <!--<div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
-    <div class="border mcd-s-4 mcd-row-1 mcd-bow" >
-      <p>{{ getAirport(selctedFlight.ALT.NAME).HDG }}</p>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ALT.NAME).TACAN }}
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-bow"><p>{{ getAirport(selctedFlight.ALT.NAME).ILS }}</p></div>
-<!--
-    <div class="border mcd-s-3 mcd-row-1 mcd-wog">ARR</div>
-    <div class="border mcd-s-9 mcd-row-1 mcd-bow">{{ arrivalName }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalTACAN }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalGround }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalLength }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalElevation }}</div>
-    <div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ arrivalRunway }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalILS }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ALT.NAME).ARR }}
+    </div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ALT.NAME).LEN }}
+    </div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ALT.NAME).ELEV }}
+    </div>
+    <!--<div class="border child mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <div class="border child mcd-s-4 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ALT.NAME).HDG }}
+    </div>
+    <div class="border child mcd-s-5 mcd-row-1 mcd-bow">
+      {{ getAirport(selctedFlight.ALT.NAME).ILS }}
+    </div>
+    <!--
+    <div class="border child mcd-s-3 mcd-row-1 mcd-wog">ARR</div>
+    <div class="border child mcd-s-9 mcd-row-1 mcd-bow">{{ arrivalName }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalTACAN }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalGround }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalLength }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalElevation }}</div>
+    <div class="border child mcd-s-4 mcd-row-1 mcd-bow">{{ arrivalRunway }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ arrivalILS }}</div>
 
-    <div class="border mcd-s-3 mcd-row-1 mcd-wog">ALT</div>
-    <div class="border mcd-s-9 mcd-row-1 mcd-bow">{{ alternateName }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateTACAN }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateGround }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateLength }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateElevation }}</div>
-    <div class="border mcd-s-4 mcd-row-1 mcd-bow">{{ alternateRunway }}</div>
-    <div class="border mcd-s-3 mcd-row-1 mcd-bow">{{ alternateILS }}</div>-->
+    <div class="border child mcd-s-3 mcd-row-1 mcd-wog">ALT</div>
+    <div class="border child mcd-s-9 mcd-row-1 mcd-bow">{{ alternateName }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ alternateTACAN }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ alternateGround }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ alternateLength }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ alternateElevation }}</div>
+    <div class="border child mcd-s-4 mcd-row-1 mcd-bow">{{ alternateRunway }}</div>
+    <div class="border child mcd-s-3 mcd-row-1 mcd-bow">{{ alternateILS }}</div>-->
 
-    <div class="border mcd-row-26 mcd-s-1 mcd-wog text-rotate-left">
+    <div class="border child mcd-row-26 mcd-s-1 mcd-wog text-rotate-left">
       STEERPOINTS
     </div>
 
-    <div class="border mcd-s-2 mcd-row-1 mcd-wog"><p>#</p></div>
-    <div class="border mcd-s-5 mcd-wog"><p>ACTION</p></div>
-    <div class="border mcd-s-4 mcd-wog"><p>TOS</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>HDG</p></div>
-    <div class="border mcd-s-4 mcd-wog"><p>DIST</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>TAS/M</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>ALT</p></div>
-    <div class="border mcd-s-3 mcd-wog"><p>FUEL</p></div>
-    <div class="border mcd-s-4 mcd-wog"><p>NOTE</p></div>
+    <div class="border child mcd-s-2 mcd-row-1 mcd-wog">#</div>
+    <div class="border child mcd-s-5 mcd-wog">ACTION</div>
+    <div class="border child mcd-s-4 mcd-wog">TOS</div>
+    <div class="border child mcd-s-3 mcd-wog">HDG</div>
+    <div class="border child mcd-s-4 mcd-wog">DIST</div>
+    <div class="border child mcd-s-3 mcd-wog">TAS/M</div>
+    <div class="border child mcd-s-3 mcd-wog">ALT</div>
+    <div class="border child mcd-s-3 mcd-wog">FUEL</div>
+    <div class="border child mcd-s-4 mcd-wog">NOTE</div>
 
-    <div class="mcd-s-31 parent" v-for="index in new Array(24).keys()">
-      <div class="border mcd-s-2 mcd-wog">
-        <p>{{ index + 1 }}</p>
+    <div class="mcd-s-31 parent child" v-for="index in new Array(24).keys()">
+      <div class="border child mcd-s-2 mcd-wog">
+        {{ index + 1 }}
       </div>
-      <div :class="`border mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ selctedFlight?.waypoints[index]?.type }}</p>
+      <div :class="`border child mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ selctedFlight?.waypoints[index]?.type }}
       </div>
-      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}</p>
+      <div :class="`border child mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">
-          {{
-            selctedFlight?.waypoints[index + 1]?.longitude
-              ? calculateHeading(
-                  selctedFlight?.waypoints[index]?.latitude,
-                  selctedFlight?.waypoints[index]?.longitude,
-                  selctedFlight?.waypoints[index + 1]?.latitude,
-                  selctedFlight?.waypoints[index + 1]?.longitude
-                )
-              : ""
-          }}
-        </p class="font500">
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{
+          selctedFlight?.waypoints[index + 1]?.longitude
+            ? calculateHeading(
+                selctedFlight?.waypoints[index]?.latitude,
+                selctedFlight?.waypoints[index]?.longitude,
+                selctedFlight?.waypoints[index + 1]?.latitude,
+                selctedFlight?.waypoints[index + 1]?.longitude
+              )
+            : ""
+        }}
       </div>
-      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">
-          {{
-            selctedFlight?.waypoints[index + 1]?.longitude
-              ? calculateDistance(
-                  selctedFlight?.waypoints[index]?.latitude,
-                  selctedFlight?.waypoints[index]?.longitude,
-                  selctedFlight?.waypoints[index + 1]?.latitude,
-                  selctedFlight?.waypoints[index + 1]?.longitude
-                ) + "nm"
-              : ""
-          }}
-        </p>
+      <div :class="`border child mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{
+          selctedFlight?.waypoints[index + 1]?.longitude
+            ? calculateDistance(
+                selctedFlight?.waypoints[index]?.latitude,
+                selctedFlight?.waypoints[index]?.longitude,
+                selctedFlight?.waypoints[index + 1]?.latitude,
+                selctedFlight?.waypoints[index + 1]?.longitude
+              ) + "nm"
+            : ""
+        }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">
-          {{
-            selctedFlight?.waypoints[index]?.altitude
-              ? selctedFlight?.waypoints[index]?.altitude + "ft"
-              : ""
-          }}
-        </p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{
+          selctedFlight?.waypoints[index]?.altitude
+            ? selctedFlight?.waypoints[index]?.altitude + "ft"
+            : ""
+        }}
       </div>
-      <div :class="`border mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{}}</p>
+      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{}}
       </div>
-      <div :class="`border mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        <p class="font500">{{ selctedFlight?.waypoints[index]?.activity }}</p>
+      <div :class="`border child mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+        {{ selctedFlight?.waypoints[index]?.activity }}
       </div>
     </div>
 
     <div
-      class="border mcd-wog"
+      class="border child mcd-wog"
       style="grid-row-start: 32; grid-column: 2 / span 2; grid-column-start: 2"
     >
-      <p>25</p>
+      25
     </div>
-    <div class="border mcd-s-5 mcd-row-1 mcd-wog" style="grid-row-start: 32">
-      <p>BULLSEYE</p>
+    <div
+      class="border child mcd-s-5 mcd-row-1 mcd-wog"
+      style="grid-row-start: 32"
+    >
+      BULLSEYE
     </div>
     <input
       v-if="selectedPKG"
-      class="border mcd-s-8 mcd-bow"
+      class="border child mcd-s-8 mcd-bow"
       style="grid-row-start: 32; font-weight: bold"
       v-model="selectedPKG.bullseye.name"
     />
 
-    <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LAT</div>
-    <input class="border mcd-s-5 mcd-bow" style="grid-row-start: 32" v-model="selectedPKG.bullseye.lat" />
-    <div class="border mcd-s-3 mcd-wog" style="grid-row-start: 32">LONG</div>
-    <input class="border mcd-s-5 mcd-bow" style="grid-row-start: 32" v-model="selectedPKG.bullseye.long" />
+    <div class="border child mcd-s-3 mcd-wog" style="grid-row-start: 32">
+      LAT
+    </div>
+    <input
+      class="border child mcd-s-5 mcd-bow"
+      style="grid-row-start: 32"
+      v-model="selectedPKG.bullseye.lat"
+    />
+    <div class="border child mcd-s-3 mcd-wog" style="grid-row-start: 32">
+      LONG
+    </div>
+    <input
+      class="border child mcd-s-5 mcd-bow"
+      style="grid-row-start: 32"
+      v-model="selectedPKG.bullseye.long"
+    />
   </div>
 </template>
 <style scoped>
@@ -237,7 +273,7 @@ const hhmmss = (time: string) => {
 .font500 {
   font-weight: 500;
 }
-p{
+p {
   font-weight: 600;
 }
 </style>

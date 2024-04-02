@@ -9,11 +9,11 @@
   --mcd-page: #ffff00;
 
   font-family: "Bahnschrift";
-  font-size: 1.02em;
+  font-size: 1em;
   font-weight: bolder;
   text-align: center;
   box-sizing: border-box;
-  text-align: center;
+  align-items: center; /* Vertically center */
 }
 
 .dropdown {
@@ -48,14 +48,21 @@ select {
   white-space: nowrap;
 }
 
-.border {
-  border: 1px solid black;
+.mcdpage::after {
   height: 100%;
-  align-items: center;
 }
 
-p {
-  margin: 3px 0 0 0;
+.border {
+  border: 1px solid black;
+}
+
+.child {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .textbox {
