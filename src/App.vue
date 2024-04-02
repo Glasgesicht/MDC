@@ -43,7 +43,7 @@ const makejpg = async () => {
       function (dataUrl) {
         var img = new Image();
         img.src = dataUrl;
-        document.body.getElementsByClassName("mcdimages")[0].appendChild(img);
+        document.body.getElementsByClassName("mcdimages")[0].append(img);
       }
     );
   }

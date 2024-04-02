@@ -9,7 +9,7 @@
   --mcd-page: #ffff00;
 
   font-family: "Bahnschrift";
-  font-size: 1em;
+  font-size: 1.019em;
   font-weight: bolder;
   text-align: center;
   box-sizing: border-box;
@@ -56,7 +56,7 @@ select {
   border: 1px solid black;
 }
 
-.child {
+.mcdpage * {
   height: 100%;
   width: 100%;
   align-items: center;

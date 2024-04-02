@@ -43,66 +43,62 @@ const showROE = inject("showROE");
 
 <template>
   <div class="mcdpage">
-    <div class="border child pagenr">PAGE {{ pagenr }}</div>
-    <div class="border child header">DMPI</div>
+    <div class="border pagenr">PAGE {{ pagenr }}</div>
+    <div class="border header">DMPI</div>
 
-    <div class="border child mcd-s-2 mcd-wog">WP</div>
-    <div class="border child mcd-s-5 mcd-wog">NAME</div>
-    <div class="border child mcd-s-2 mcd-wog">TGT</div>
-    <div class="border child mcd-s-9 mcd-wog">MGRS</div>
-    <div class="border child mcd-s-11 mcd-wog">LAT / LONG</div>
-    <div class="border child mcd-s-3 mcd-wog">ELEV</div>
+    <div class="border mcd-s-2 mcd-wog">WP</div>
+    <div class="border mcd-s-5 mcd-wog">NAME</div>
+    <div class="border mcd-s-2 mcd-wog">TGT</div>
+    <div class="border mcd-s-9 mcd-wog">MGRS</div>
+    <div class="border mcd-s-11 mcd-wog">LAT / LONG</div>
+    <div class="border mcd-s-3 mcd-wog">ELEV</div>
 
-    <div class="mcd-s-32 parent child" v-for="index in new Array(8).keys()">
-      <div class="border child mcd-s-2 mcd-wog">
+    <div class="mcd-s-32 parent" v-for="index in new Array(8).keys()">
+      <div class="border mcd-s-2 mcd-wog">
         {{ index + 81 }}
       </div>
-      <div :class="`border child mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ dmpiName }}
       </div>
-      <div :class="`border child mcd-s-2 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-2 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ dmpiTarget }}
       </div>
-      <div :class="`border child mcd-s-9 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-9 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ dmpiMgrs }}
       </div>
-      <div
-        :class="`border child mcd-s-11 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`"
-      >
+      <div :class="`border  mcd-s-11 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ dmpiCoordinates }}
       </div>
-      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ dmpiElevation }}
       </div>
     </div>
 
-    <div class="border child mcd-s-32 mcd-wog">TRACKS</div>
-    <div class="border child mcd-s-8 mcd-wog">TRACK NAME</div>
-    <div class="border child mcd-s-3 mcd-wog">TYPE</div>
-    <div class="border child mcd-s-3 mcd-wog">DIM</div>
-    <div class="border child mcd-s-3 mcd-wog">HDG</div>
-    <div class="border child mcd-s-11 mcd-wog">LAT / LONG</div>
-    <div class="border child mcd-s-4 mcd-wog">BULLS</div>
+    <div class="border mcd-s-32 mcd-wog">TRACKS</div>
+    <div class="border mcd-s-8 mcd-wog">TRACK NAME</div>
+    <div class="border mcd-s-3 mcd-wog">TYPE</div>
+    <div class="border mcd-s-3 mcd-wog">DIM</div>
+    <div class="border mcd-s-3 mcd-wog">HDG</div>
+    <div class="border mcd-s-11 mcd-wog">LAT / LONG</div>
+    <div class="border mcd-s-4 mcd-wog">BULLS</div>
 
-    <div class="mcd-s-32 parent child" v-for="index in new Array(20).keys()">
-      <div :class="`border child mcd-s-8 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+    <div class="mcd-s-32 parent" v-for="index in new Array(20).keys()">
+      <div :class="`border  mcd-s-8 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ trackName }}
       </div>
-      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ trackType }}
       </div>
-      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ trackDimension }}
       </div>
-      <div :class="`border child mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ trackHeading }}
       </div>
-      <div
-        :class="`border child mcd-s-11 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`"
-      >
+      <div :class="`border  mcd-s-11 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ trackCoordinates }}
       </div>
-      <div :class="`border child mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
+      <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ trackBullseye }}
       </div>
     </div>

@@ -22,129 +22,127 @@ const { pagenr } = defineProps({
 
 <template>
   <div class="mcdpage">
-    <div class="border child pagenr">PAGE {{ pagenr }}</div>
-    <div class="border child header">PACKAGE COORDINATION</div>
+    <div class="border pagenr">PAGE {{ pagenr }}</div>
+    <div class="border header">PACKAGE COORDINATION</div>
 
-    <div class="border child mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">
-      PACKAGE
-    </div>
+    <div class="border mcd-row-4 mcd-s-1 mcd-wog text-rotate-left">PACKAGE</div>
 
-    <div class="border child mcd-s-6 mcd-wog">CALLSIGN</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bow">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">CALLSIGN</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bow">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog"># A/C</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bog">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog"># A/C</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">TASKING</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bow">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">TASKING</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bow">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-31 mcd-wog">TIMINGS</div>
+    <div class="border mcd-s-31 mcd-wog">TIMINGS</div>
 
-    <div class="border child mcd-row-9 mcd-s-1 mcd-wog text-rotate-left">
+    <div class="border mcd-row-9 mcd-s-1 mcd-wog text-rotate-left">
       PRE-PUSH
     </div>
 
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">DEPARTURE</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bow">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">DEPARTURE</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bow">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">T/O TIME</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bog">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">T/O TIME</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">AAR TRACK</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bow">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">AAR TRACK</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bow">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">AAR TOS</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bog">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">AAR TOS</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bog">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">HOLD TRACK</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bow">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">HOLD TRACK</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bow">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">HOLD TOS</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bog">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">HOLD TOS</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bog">
         {{ index + 1 }}
       </div>
     </div>
 
     <div
-      class="border child mcd-row-10 mcd-s-1 mcd-wog text-rotate-left"
+      class="border mcd-row-10 mcd-s-1 mcd-wog text-rotate-left"
       style="box-sizing: content-box"
     >
       TARGET
     </div>
 
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">PUSH POINT</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bow">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">PUSH POINT</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bow">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">PUSH TOS</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bog">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">PUSH TOS</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">TARGET</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bog">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">TARGET</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bog">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">TOT/TOS</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bow">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">TOT/TOS</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bow">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">EXIT POINT</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bog">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">EXIT POINT</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bog">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">EXIT TOS</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bog">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">EXIT TOS</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
 
-    <div class="border child mcd-row-8 mcd-s-1 mcd-wog text-rotate-left">
+    <div class="border mcd-row-8 mcd-s-1 mcd-wog text-rotate-left">
       POST EXIT
     </div>
 
-    <div class="border child mcd-s-6 mcd-wog">AAR TRACK</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bog">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">AAR TRACK</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">AAR TOS</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bog">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">AAR TOS</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bog">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">ARRIVAL</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bow">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">ARRIVAL</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bow">
         {{ index + 1 }}
       </div>
     </div>
-    <div class="border child mcd-s-6 mcd-wog">LAND TOS</div>
-    <div class="mcd-s-5 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-2 mcd-bog">{{ index + 1 }}</div>
+    <div class="border mcd-s-6 mcd-wog">LAND TOS</div>
+    <div class="mcd-s-5" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-2 mcd-bog">{{ index + 1 }}</div>
     </div>
-    <div class="border child mcd-s-6 mcd-row-2 mcd-wog">ALTERNATE</div>
-    <div class="mcd-s-5 mcd-row-2 child" v-for="index in [...Array(5).keys()]">
-      <div class="border child mcd-s-5 mcd-row-2 child mcd-bog">
+    <div class="border mcd-s-6 mcd-row-2 mcd-wog">ALTERNATE</div>
+    <div class="mcd-s-5 mcd-row-2" v-for="index in [...Array(5).keys()]">
+      <div class="border mcd-s-5 mcd-row-2 mcd-bog">
         {{ index + 1 }}
       </div>
     </div>
