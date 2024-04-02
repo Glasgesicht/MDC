@@ -74,7 +74,7 @@ const hhmmss = (time: string) => {
     </div>
 
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).ILS }}
+      {{ getAirport(selctedFlight.DEP.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selctedFlight.DEP.NAME).ARR }}
