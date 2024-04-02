@@ -74,6 +74,13 @@ export function processCF(payload: any /* cf file is a zip */) {
               flight.Callsign.includes(mCurr.CallsignNameCustom[0])
             );
 
+            mCurr.Waypoints[0].Waypoint = mCurr.Waypoints[0].Waypoint.map(
+              (wp) => {
+                if (wp.Type[0].includes("(ramp)")) wp.Type[0] = "Take off";
+                return wp;
+              }
+            );
+
             mColl.push({
               aircrafttype: mCurr.Aircraft[0].Type[0],
               DEP: {
