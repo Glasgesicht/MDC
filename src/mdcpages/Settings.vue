@@ -43,8 +43,8 @@ const groupedFlights = computed(() =>
     if (
       packages.value.find((e) =>
         e.flights.find((n) => {
-          console.log(n.callsign);
-          return n.callsign.toLowerCase() == curr.Callsign.toLowerCase();
+          // Filters out already assigned Callsigns
+          return n.callsign.toLowerCase() == curr.callsign.toLowerCase();
         })
       )
     )
@@ -53,7 +53,7 @@ const groupedFlights = computed(() =>
     const group = coll.map((n) => n.label).indexOf(curr.type);
     if (group !== -1)
       coll[group].items.push({
-        callsign: curr.callsignRaw,
+        callsign: curr.callsign,
         callsignNumber: curr.number,
         type: curr.type,
       });
@@ -62,7 +62,7 @@ const groupedFlights = computed(() =>
         label: curr.type,
         items: [
           {
-            callsign: curr.callsignRaw,
+            callsign: curr.callsign,
             callsignNumber: curr.number,
             type: curr.type,
           },
@@ -160,7 +160,14 @@ const groupedFlights = computed(() =>
               placeholder="Select A Flight"
               class=""
               style="grid-row: 2"
-            />
+              ><template #value="value"
+                >{{ value.value.callsign || "Select a Flight" }}
+                {{ value.value.callsignNumber || "" }}</template
+              >
+              <template #option="option"
+                >{{ option.option.callsign }} {{ option.option.callsignNumber }}
+              </template></Dropdown
+            >
 
             <Dropdown
               placeholder="select new callsign"
@@ -195,6 +202,7 @@ const groupedFlights = computed(() =>
                 margin-left: 0;
                 text-align: left;
               "
+              edit-mode="cell"
             >
               <Column header="#" headerStyle="width: 4rem"
                 ><template #body="{ index }">#{{ index + 1 }}</template></Column
@@ -203,7 +211,17 @@ const groupedFlights = computed(() =>
                 header="Callsign"
                 field="callsign"
                 headerStyle="width: 10rem"
-              />
+              >
+                <template #body="{ data, field }">
+                  {{ data[field] }}
+                </template>
+                <template #editor="{ data, field, index }">
+                  <input
+                    v-model="selctedFlight.units[index].callsign"
+                    autofocus
+                  />
+                </template>
+              </Column>
 
               <Column field="STN" header="STN" />
               <Column field="tailNr" header="TailNr" />

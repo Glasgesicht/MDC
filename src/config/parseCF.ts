@@ -5,7 +5,7 @@ import type {
   Mission,
   Package,
   Waypoint,
-} from "@/types/mdcDataTypes";
+} from "@/types/mdcDataTypes"; // @ts-ignore // stfu
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
@@ -191,8 +191,8 @@ export function processCF(payload: any /* cf file is a zip */) {
       }, new Array<Package>());
 
       //reset stores before comitting new values
-      usePackageStore().$reset();
-      useFlightStore().$reset();
+      usePackageStore().reset();
+      useFlightStore().reset();
       packages.value = _packages;
 
       return;

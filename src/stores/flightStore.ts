@@ -58,7 +58,9 @@ export const useFlightStore = defineStore("flight", () => {
   };
   const selctedFlight: Ref<typeof initState> = ref(cloneDeep(initState));
 
-  const $reset = () => (selctedFlight.value = cloneDeep(initState));
+  function reset() {
+    selctedFlight.value = cloneDeep(initState);
+  }
 
   // Here goes all the data that only belongs to the currently selected flight
   const flightTask = computed({
@@ -108,5 +110,5 @@ export const useFlightStore = defineStore("flight", () => {
     selctedFlight.value.callsignNumber = opts.callsignNumber;
   };
 
-  return { selctedFlight, flightTask, gameplan, setNewCallsign, $reset };
+  return { selctedFlight, flightTask, gameplan, setNewCallsign, reset };
 });

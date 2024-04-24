@@ -25,7 +25,9 @@ export const usePackageStore = defineStore("package", () => {
   };
   const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
 
-  const $reset = (selectedPKG.value = cloneDeep(initState));
+  function reset() {
+    selectedPKG.value = cloneDeep(initState);
+  }
   const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({
     set(value: Flight[]) {
       const index = packages.value.findIndex(
@@ -101,5 +103,6 @@ export const usePackageStore = defineStore("package", () => {
     roe,
 
     pkgnr,
+    reset,
   };
 });

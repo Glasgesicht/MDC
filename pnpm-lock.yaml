@@ -42,6 +42,9 @@ importers:
       '@tsconfig/node20':
         specifier: ^20.1.2
         version: 20.1.4
+      '@types/lodash':
+        specifier: ^4.17.0
+        version: 4.17.0
       '@types/node':
         specifier: ^20.11.10
         version: 20.12.7
@@ -312,6 +315,9 @@ packages:
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+
+  '@types/lodash@4.17.0':
+    resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
 
   '@types/node@20.12.7':
     resolution: {integrity: sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==}
@@ -808,6 +814,8 @@ snapshots:
   '@tsconfig/node20@20.1.4': {}
 
   '@types/estree@1.0.5': {}
+
+  '@types/lodash@4.17.0': {}
 
   '@types/node@20.12.7':
     dependencies:
