@@ -1,6 +1,7 @@
-export const rnlaf313members = [
-  {
-    callsign: "Espere",
-    tailnr: 894,
-  },
-];
+export const rnlaf313members: readonly { callsign: string; tailnr: number }[] =
+  [
+    {
+      callsign: "Espere",
+      tailnr: 894,
+    },
+  ];

@@ -4,13 +4,19 @@ import { computed, ref, type Ref } from "vue";
 import { F15Flights, F16Flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
 
-const f15callsigns = F15Flights.map((flight) => flight.Callsign);
-const f16callsigns = F16Flights.map((flight) => flight.Callsign);
+import { cloneDeep } from "lodash";
+
+const f15callsigns = F15Flights.map(
+  (flight) => flight.callsign + " " + flight.number
+);
+const f16callsigns = F16Flights.map(
+  (flight) => flight.callsign + " " + flight.number
+);
 
 export const useFlightStore = defineStore("flight", () => {
   // const { selctedFlight } = storeToRefs(usePackageStore());
 
-  const selctedFlight = ref({
+  const initState = {
     aircrafttype: "",
     callsign: "",
     callsignNumber: NaN,
@@ -49,14 +55,17 @@ export const useFlightStore = defineStore("flight", () => {
       ELEV: "",
       LEN: "",
     },
-  });
+  };
+  const selctedFlight: Ref<typeof initState> = ref(cloneDeep(initState));
+
+  const $reset = () => (selctedFlight.value = cloneDeep(initState));
 
   // Here goes all the data that only belongs to the currently selected flight
   const flightTask = computed({
     get() {
       return selctedFlight.value.flightTask;
     },
-    set(value) {
+    set(value: string) {
       selctedFlight.value.flightTask = value;
     },
   });
@@ -84,7 +93,7 @@ export const useFlightStore = defineStore("flight", () => {
     get() {
       return selctedFlight.value.gameplan ?? null;
     },
-    set(value) {
+    set(value: string) {
       selctedFlight.value.gameplan = value;
     },
   });
@@ -99,5 +108,5 @@ export const useFlightStore = defineStore("flight", () => {
     selctedFlight.value.callsignNumber = opts.callsignNumber;
   };
 
-  return { selctedFlight, flightTask, gameplan, setNewCallsign };
+  return { selctedFlight, flightTask, gameplan, setNewCallsign, $reset };
 });

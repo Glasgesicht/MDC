@@ -1,13 +1,14 @@
 import { ref, computed, type WritableComputedRef, type Ref } from "vue";
 import { defineStore, type SubscriptionCallbackMutation } from "pinia";
 import type { Flight, Package } from "@/types/mdcDataTypes";
+import { cloneDeep } from "lodash";
 
 export const usePackageStore = defineStore("package", () => {
   // Data for the entire mission goes here
   const packages: Ref<Package[]> = ref(new Array());
 
   // Data for only the selected package goes here
-  const selectedPKG: Ref<Package> = ref({
+  const initState = {
     airThreat: "",
     bullseye: {
       lat: "",
@@ -21,7 +22,10 @@ export const usePackageStore = defineStore("package", () => {
     roe: "",
     situation: "",
     surfaceThreat: "",
-  });
+  };
+  const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
+
+  const $reset = (selectedPKG.value = cloneDeep(initState));
   const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({
     set(value: Flight[]) {
       const index = packages.value.findIndex(

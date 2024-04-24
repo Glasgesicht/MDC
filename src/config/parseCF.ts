@@ -11,6 +11,7 @@ import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
 import { flights } from "./flights";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
+import { useFlightStore } from "@/stores/flightStore";
 
 export function processCF(payload: any /* cf file is a zip */) {
   readCF(payload).then((res) => parseCfXML(res));
@@ -21,16 +22,21 @@ export function processCF(payload: any /* cf file is a zip */) {
       //resolve promise if we can load data from Mission.xml, otherwise reject
       zip
         .loadAsync(payload)
-        .then((zip) => {
-          return zip.forEach((relativePath, file) => {
-            // console.log(relativePath);
-            if (relativePath === "mission.xml")
-              return file.async("text").then((filedata) => {
-                resolve(filedata);
-              });
-          });
+        .then((zip: any) => {
+          return zip.forEach(
+            (
+              relativePath: string,
+              file: { async: (arg0: string) => Promise<any> }
+            ) => {
+              // console.log(relativePath);
+              if (relativePath === "mission.xml")
+                return file.async("text").then((filedata) => {
+                  resolve(filedata);
+                });
+            }
+          );
         })
-        .catch((error) => reject(error));
+        .catch((error: any) => reject(error));
     });
   }
 
@@ -53,11 +59,11 @@ export function processCF(payload: any /* cf file is a zip */) {
             name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
             lat:
               toLatString(
-                parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? 0)
+                parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? "0")
               ) ?? "",
             long:
               toLongString(
-                parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? 0)
+                parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? "0")
               ) ?? "",
           },
           packageTask: "Eat Burger",
@@ -71,7 +77,7 @@ export function processCF(payload: any /* cf file is a zip */) {
           ).reduce((mColl, mCurr) => {
             // match callsign with config
             let callsign = flights.find((flight) =>
-              flight.Callsign.includes(mCurr.CallsignNameCustom[0])
+              flight.callsign.includes(mCurr.CallsignNameCustom[0])
             );
 
             mCurr.Waypoints[0].Waypoint = mCurr.Waypoints[0].Waypoint.map(
@@ -184,8 +190,10 @@ export function processCF(payload: any /* cf file is a zip */) {
         return coll;
       }, new Array<Package>());
 
+      //reset stores before comitting new values
+      usePackageStore().$reset();
+      useFlightStore().$reset();
       packages.value = _packages;
-      if (packages.value.length > 0) selectedPKG.value = packages.value[0];
 
       return;
     });

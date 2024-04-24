@@ -1,4 +1,12 @@
-export const airports = [
+export const airports: readonly {
+  NAME: string;
+  ARR: string;
+  TACAN: string;
+  HDG: string;
+  ILS: string;
+  ELEV: string;
+  LEN: string;
+}[] = [
   {
     NAME: "RAF AKROTIRI",
     ARR: "123.6",

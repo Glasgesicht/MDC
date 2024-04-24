@@ -1,27 +1,11 @@
 const createFlight = (
-  callsign: String,
-  number: Number,
+  callsign: string,
+  number: number,
   type: "F-16" | "F-15" | "F/A-18"
 ) => {
-  let uhf;
-  let vhf;
-  switch (type) {
-    case "F-16":
-      uhf = 267;
-      vhf = 141;
-    case "F-15":
-      uhf = 269;
-      vhf = 144;
-    case "F/A-18":
-      uhf = 266;
-      vhf = 142;
-  }
   return {
-    Callsign: `${callsign} ${number}`, // callsign + ' ' + number
-    callsignRaw: callsign,
+    callsign: callsign,
     number: number,
-    UHF: `${uhf}.${number}0`,
-    VHF: `${vhf}.${number}0`,
     type: type,
   };
 };
