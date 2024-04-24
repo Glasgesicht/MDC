@@ -35,7 +35,7 @@ export function processCF(payload: any /* cf file is a zip */) {
   }
 
   function parseCfXML(input: String) {
-    const { packages } = storeToRefs(usePackageStore());
+    const { packages, selectedPKG } = storeToRefs(usePackageStore());
 
     // console.log(input); // XML as Text
     const parser = new xml2js.Parser({
@@ -135,36 +135,20 @@ export function processCF(payload: any /* cf file is a zip */) {
                   return {
                     callsign: "",
                     tailNr: undefined,
-                    STN:
-                      (mCurr.Aircraft[0].Type[0].includes("16")
-                        ? "031"
-                        : "049") +
-                      callsign?.number +
-                      "" +
-                      (i + 1), // leading 0's ?
-                    L16: callsign?.Callsign
-                      ? callsign?.Callsign[0] +
-                        callsign?.callsignRaw[callsign.callsignRaw.length - 1] +
-                        callsign?.number +
-                        "" +
-                        (i + 1)
-                      : "", //BT71
-                    TACAN: "", //
-                    LCODE: "", //
                   } satisfies FlightMember;
                 }
               ), // defaults to number of wingman per cf
 
               flightTask: "", // not in cf
               // Try to get from CF
-              UHF:
+              /*              UHF:
                 flights.find((flight) =>
                   flight.Callsign.includes(mCurr.CallsignNameCustom[0])
                 )?.UHF ?? "",
               VHF:
                 flights.find((flight) =>
                   flight.Callsign.includes(mCurr.CallsignNameCustom[0])
-                )?.VHF ?? "",
+                )?.VHF ?? "",*/
 
               waypoints: mCurr.Waypoints[0].Waypoint.reduce(
                 (wpColl, wpCurr, i) => {
@@ -201,6 +185,7 @@ export function processCF(payload: any /* cf file is a zip */) {
       }, new Array<Package>());
 
       packages.value = _packages;
+      if (packages.value.length > 0) selectedPKG.value = packages.value[0];
 
       return;
     });

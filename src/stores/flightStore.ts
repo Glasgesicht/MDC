@@ -20,9 +20,7 @@ export const useFlightStore = defineStore("flight", () => {
     missionType: "",
     tacan: "",
     task: "",
-    UHF: "",
     units: new Array<FlightMember>(),
-    VHF: "",
     waypoints: new Array(25),
     DEP: {
       NAME: "",
@@ -91,5 +89,15 @@ export const useFlightStore = defineStore("flight", () => {
     },
   });
 
-  return { selctedFlight, flightTask, gameplan };
+  const setNewCallsign = (opts: {
+    aircrafttype: string;
+    callsign: string;
+    callsignNumber: number;
+  }) => {
+    selctedFlight.value.aircrafttype = opts.aircrafttype;
+    selctedFlight.value.callsign = opts.callsign;
+    selctedFlight.value.callsignNumber = opts.callsignNumber;
+  };
+
+  return { selctedFlight, flightTask, gameplan, setNewCallsign };
 });

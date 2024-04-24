@@ -9,8 +9,9 @@ import TabPanel from "primevue/tabpanel";
 import Input from "primevue/inputtext";
 
 import Column from "primevue/column";
+import { flights } from "../config/flights";
 import { processCF } from "../config/parseCF";
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "@/stores/packageStore";
 import type { Package } from "@/types/mdcDataTypes";
@@ -33,10 +34,44 @@ const file = ref(false);
 
 const onChangedFile = async (payload: any) => {
   packages.value = new Array();
-  selectedPKG.value = {} as Package;
   file.value = true;
   processCF(payload.target.files[0]);
 };
+
+const groupedFlights = computed(() =>
+  flights.reduce((coll, curr) => {
+    if (
+      packages.value.find((e) =>
+        e.flights.find((n) => {
+          console.log(n.callsign);
+          return n.callsign.toLowerCase() == curr.Callsign.toLowerCase();
+        })
+      )
+    )
+      return coll;
+
+    const group = coll.map((n) => n.label).indexOf(curr.type);
+    if (group !== -1)
+      coll[group].items.push({
+        callsign: curr.callsignRaw,
+        callsignNumber: curr.number,
+        type: curr.type,
+      });
+    else
+      coll.push({
+        label: curr.type,
+        items: [
+          {
+            callsign: curr.callsignRaw,
+            callsignNumber: curr.number,
+            type: curr.type,
+          },
+        ],
+      });
+
+    return coll;
+  }, new Array<{ label: string; items: Array<{ callsign: String; callsignNumber: Number; type: String }> }>())
+);
 </script>
 
 <template>
@@ -126,6 +161,28 @@ const onChangedFile = async (payload: any) => {
               class=""
               style="grid-row: 2"
             />
+
+            <Dropdown
+              placeholder="select new callsign"
+              style="grid-row: 2"
+              :options="groupedFlights"
+              @change="
+                (event) => {
+                  selctedFlight.callsign = event.value.callsign;
+                  selctedFlight.callsignNumber = event.value.callsignNumber;
+                  selctedFlight.aircrafttype = event.value.type;
+                }
+              "
+              optionLabel="callsign"
+              optionGroupLabel="label"
+              optionGroupChildren="items"
+            >
+              <template #optiongroup="slotProps">
+                <div class="flex align-items-center">
+                  <div>{{ slotProps.option.label }}</div>
+                </div>
+              </template></Dropdown
+            >
             <p style="grid-row: 4">Member in selected Flight</p>
             <DataTable
               class="mcd-s-5 datatable textleft"
@@ -153,7 +210,7 @@ const onChangedFile = async (payload: any) => {
               <Column field="L16" header="L16" />
 
               <template #footer
-                ><Button label="Add memeber to flight"
+                ><Button label="Add member to flight"
               /></template>
             </DataTable></div
         ></TabPanel>
@@ -173,8 +230,8 @@ const onChangedFile = async (payload: any) => {
 }
 .parent {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(21, 1fr);
+  grid-template-columns: repeat(7);
+  grid-template-rows: repeat(32);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
