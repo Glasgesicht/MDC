@@ -7,6 +7,7 @@ import Button from "primevue/button";
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
 import Input from "primevue/inputtext";
+import AutoComplete from "primevue/autocomplete";
 
 import Column from "primevue/column";
 import { flights } from "../config/flights";
@@ -15,6 +16,7 @@ import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "@/stores/packageStore";
 import type { Package } from "@/types/mdcDataTypes";
+import { rnlaf313members } from "../config/member";
 import { useFlightStore } from "@/stores/flightStore";
 
 const confirmDelete = (index: number) => {
@@ -37,6 +39,8 @@ const onChangedFile = async (payload: any) => {
   file.value = true;
   processCF(payload.target.files[0]);
 };
+
+const _313ref = ref(rnlaf313members.map((n) => n.callsign));
 
 const groupedFlights = computed(() =>
   flights.reduce((coll, curr) => {
@@ -72,6 +76,22 @@ const groupedFlights = computed(() =>
     return coll;
   }, new Array<{ label: string; items: Array<{ callsign: String; callsignNumber: Number; type: String }> }>())
 );
+
+function FlightMemberUpdate() {
+  selctedFlight.value.units.forEach((unit) => {
+    if (unit.callsign.length < 3) return;
+    const args = rnlaf313members.find((n) =>
+      n.callsign.includes(unit.callsign)
+    );
+    if (args) {
+      unit.tailNr = args.tailnr;
+    }
+  });
+}
+
+const addFlightMemeber = () => {
+  selctedFlight.value.units.push({ tailNr: undefined, callsign: "" });
+};
 </script>
 
 <template>
@@ -138,7 +158,11 @@ const groupedFlights = computed(() =>
               </Column>
               <Column headerStyle="width: 4rem" header="VHF" field="VHF" />
               <Column headerStyle="width: 4rem" header="UHF" field="UHF" />
-              <Column header="FLIGHTLEAD" />
+              <Column header="FLIGHTLEAD">
+                <template #body="{ data }">
+                  {{ data.units[0]?.callsign }}
+                </template></Column
+              >
               <Column headerStyle="width: 4.3rem">
                 <template #body="{ index }"
                   ><Button
@@ -194,8 +218,8 @@ const groupedFlights = computed(() =>
             <DataTable
               class="mcd-s-5 datatable textleft"
               :value="selctedFlight.units"
-              :reorderableColumns="true"
               showGridlines
+              @cell-edit-complete="FlightMemberUpdate"
               style="
                 grid-row: 5 / span 5;
                 align-content: left;
@@ -216,7 +240,9 @@ const groupedFlights = computed(() =>
                   {{ data[field] }}
                 </template>
                 <template #editor="{ data, field, index }">
-                  <input
+                  <Dropdown
+                    editable
+                    :options="_313ref"
                     v-model="selctedFlight.units[index].callsign"
                     autofocus
                   />
@@ -228,7 +254,10 @@ const groupedFlights = computed(() =>
               <Column field="L16" header="L16" />
 
               <template #footer
-                ><Button label="Add member to flight"
+                ><Button
+                  v-if="selctedFlight.units[0]"
+                  label="Add member to flight"
+                  @click="addFlightMemeber"
               /></template>
             </DataTable></div
         ></TabPanel>
