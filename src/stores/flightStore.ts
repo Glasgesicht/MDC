@@ -27,7 +27,20 @@ export const useFlightStore = defineStore("flight", () => {
     tacan: "",
     task: "",
     units: new Array<FlightMember>(),
-    waypoints: new Array(25),
+    waypoints: new Array<{
+      activity: string;
+      airspeed_calibrated: number;
+      airspeed_total: number;
+      altitude: number;
+      groundspeed: number;
+      latitude: number;
+      longitude: number;
+      mach: number;
+      name: string;
+      tot: string;
+      type: string;
+      waypointNr: number;
+    }>(),
     DEP: {
       NAME: "",
       ARR: "",

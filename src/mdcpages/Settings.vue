@@ -18,6 +18,7 @@ import { usePackageStore } from "@/stores/packageStore";
 import type { Package } from "@/types/mdcDataTypes";
 import { rnlaf313members } from "../config/member";
 import { useFlightStore } from "@/stores/flightStore";
+import { sortedLastIndexBy } from "lodash";
 
 const confirmDelete = (index: number) => {
   allFlightsFromPackage.value.splice(index, 1);
@@ -92,6 +93,11 @@ function FlightMemberUpdate() {
 const addFlightMemeber = () => {
   selctedFlight.value.units.push({ tailNr: undefined, callsign: "" });
 };
+
+function deleteWaypoint(i: number) {
+  console.log(i);
+  selctedFlight.value.waypoints.splice(i, i);
+}
 </script>
 
 <template>
@@ -125,14 +131,14 @@ const addFlightMemeber = () => {
               :options="packages"
               optionLabel="name"
               placeholder="Select A Package"
-              class=""
+              class="redefSize"
               style="grid-row: 2"
             />
             <Input style="grid-row: 2" v-model="selectedPKG.name"></Input>
 
             <p style="grid-row: 4">Order Flights In Package</p>
             <DataTable
-              class="mcd-s-7 datatable textleft"
+              class="mcd-s-7 datatable textleft redefSize"
               :value="allFlightsFromPackage"
               showGridlines
               @rowReorder="onRowReorder"
@@ -182,7 +188,7 @@ const addFlightMemeber = () => {
               :options="allFlightsFromPackage"
               optionLabel="callsign"
               placeholder="Select A Flight"
-              class=""
+              class="redefSize"
               style="grid-row: 2"
               ><template #value="value"
                 >{{ value.value.callsign || "Select a Flight" }}
@@ -196,6 +202,7 @@ const addFlightMemeber = () => {
             <Dropdown
               placeholder="select new callsign"
               style="grid-row: 2"
+              class="redefSize"
               :options="groupedFlights"
               @change="
                 (event) => {
@@ -216,7 +223,7 @@ const addFlightMemeber = () => {
             >
             <p style="grid-row: 4">Member in selected Flight</p>
             <DataTable
-              class="mcd-s-5 datatable textleft"
+              class="mcd-s-3 datatable textleft redefSize"
               :value="selctedFlight.units"
               showGridlines
               @cell-edit-complete="FlightMemberUpdate"
@@ -231,17 +238,14 @@ const addFlightMemeber = () => {
               <Column header="#" headerStyle="width: 4rem"
                 ><template #body="{ index }">#{{ index + 1 }}</template></Column
               >
-              <Column
-                header="Callsign"
-                field="callsign"
-                headerStyle="width: 10rem"
-              >
+              <Column header="Callsign" field="callsign">
                 <template #body="{ data, field }">
                   {{ data[field] }}
                 </template>
                 <template #editor="{ data, field, index }">
                   <Dropdown
                     editable
+                    class="redefSize"
                     :options="_313ref"
                     v-model="selctedFlight.units[index].callsign"
                     autofocus
@@ -255,10 +259,39 @@ const addFlightMemeber = () => {
 
               <template #footer
                 ><Button
-                  v-if="selctedFlight.units[0]"
+                  v-if="
+                    selctedFlight.units[0] && selctedFlight.units.length < 4
+                  "
                   label="Add member to flight"
                   @click="addFlightMemeber"
               /></template>
+            </DataTable>
+
+            <p style="grid-row: 13">Edit Waypoints</p>
+            <DataTable
+              :value="selctedFlight.waypoints"
+              class="mcd-s-3 datatable textleft redefSize"
+              style="
+                grid-row: 14;
+                align-content: left;
+                margin-left: 0;
+                text-align: left;
+              "
+            >
+              <Column field="waypointNr" header="n°"></Column>
+              <Column field="name" header="name"></Column>
+              <Column field="activity" header="name"></Column>
+              <Column field="tot" header="name"></Column>
+              <Column field="type" header="name"></Column>
+              <Column field="mach" header="name"></Column>
+              <Column field="groundspeed" header="name"></Column>
+              <Column field="altitude" header="name"></Column>
+              <Column>
+                <template #body="{ index }"
+                  ><Button
+                    @click="deleteWaypoint(index)"
+                    icon="pi pi-trash" /></template
+              ></Column>
             </DataTable></div
         ></TabPanel>
       </TabView>
@@ -266,14 +299,16 @@ const addFlightMemeber = () => {
   </Card>
 </template>
 
-<style>
+<style scoped>
+html {
+  font: 13px;
+}
 .base {
   align-content: center;
   margin: auto;
   width: 75%;
   max-width: 1980px;
   min-width: 1080px;
-  padding: 10px;
 }
 .parent {
   display: grid;
@@ -281,6 +316,16 @@ const addFlightMemeber = () => {
   grid-template-rows: repeat(32);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+}
+
+.redefSize * {
+  padding: 1px 1px;
+  font-size: 1em;
+}
+
+.base * {
+  padding: 1px 1px;
+  font-size: 1em;
 }
 
 .datatable * {

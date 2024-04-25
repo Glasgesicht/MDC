@@ -175,7 +175,7 @@ export function processCF(payload: any /* cf file is a zip */) {
                   };
                   return wpColl;
                 }, //@ts-ignore
-                [...new Array<Waypoint>(24).keys()].map((_n, i) => {
+                [...new Array<Waypoint>().keys()].map((_n, i) => {
                   return {
                     waypoint: i,
                   };

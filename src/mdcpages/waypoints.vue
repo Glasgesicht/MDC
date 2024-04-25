@@ -178,7 +178,7 @@ const hhmmss = (time: string) => {
         {{ index + 1 }}
       </div>
       <div :class="`border  mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.type }}
+        {{ selctedFlight?.waypoints[index]?.name }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}
