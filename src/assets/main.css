@@ -264,3 +264,11 @@ select {
   text-align: center;
   vertical-align: middle;
 }
+
+.c-height {
+  height: fit-content;
+}
+
+.g-height {
+  min-height: 100%;
+}

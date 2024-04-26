@@ -10,7 +10,7 @@ import JSZip from "jszip";
 import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
 import { flights } from "./flights";
-import { toLatString, toLongString } from "@/utils/utilFunctions";
+import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 export function processCF(payload: any /* cf file is a zip */) {
@@ -141,6 +141,25 @@ export function processCF(payload: any /* cf file is a zip */) {
                   return {
                     callsign: "",
                     tailNr: undefined,
+                    STN: getSTN(
+                      mCurr.Aircraft[0].Type[0],
+                      mCurr.CallsignNumber[0] ?? 1,
+                      i
+                    ),
+                    L16: (() => {
+                      const callsign = (
+                        mCurr.CallsignNameCustomIs[0] === "True"
+                          ? mCurr.CallsignNameCustom[0]
+                          : mCurr.CallsignName[0]
+                      ).toUpperCase();
+
+                      return (
+                        callsign.charAt(0) +
+                        callsign.charAt(callsign.length - 1) +
+                        mCurr.CallsignNumber[0] +
+                        (i + 1)
+                      );
+                    })(),
                   } satisfies FlightMember;
                 }
               ), // defaults to number of wingman per cf

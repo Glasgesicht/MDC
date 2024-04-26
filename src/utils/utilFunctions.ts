@@ -29,6 +29,24 @@ export function calculateHeading(
   return Math.round(bearing);
 }
 
+export function getSTN(type: string, no: number | string, i: number | string) {
+  return (
+    String(
+      type.includes("-15")
+        ? "49"
+        : type.includes("16")
+        ? "31"
+        : type.includes("18")
+        ? "21"
+        : "00"
+    ) +
+    "" +
+    (String(no) ?? " ") +
+    "" +
+    (Number(i) + 1)
+  );
+}
+
 export function toLatString(lat: number) {
   if (lat)
     return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0)}"${((lat % 1) * 60).toFixed(

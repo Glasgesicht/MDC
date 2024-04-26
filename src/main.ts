@@ -7,7 +7,7 @@ import PrimeVue from "primevue/config";
 import App from "./App.vue";
 import router from "./router";
 
-import "primevue/resources/themes/aura-light-noir/theme.css";
+import "primevue/resources/themes/nano/theme.css";
 import "primeicons/primeicons.css";
 
 const app = createApp(App);

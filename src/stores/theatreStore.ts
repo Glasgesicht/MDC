@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
-
+import { ref } from "vue";
 // kinda not used since packages are used as top level for now.
 // might populate if needed.
-export const usePackageStore = defineStore("global", () => {});
+export const useGlobalStore = defineStore("global", () => {
+  const file = ref();
+  return { file };
+});

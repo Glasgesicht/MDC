@@ -3,6 +3,8 @@ import { useFlightStore } from "@/stores/flightStore";
 export type FlightMember = {
   callsign: string;
   tailNr?: number;
+  STN: string;
+  L16: string;
 };
 
 export type Waypoint = {
