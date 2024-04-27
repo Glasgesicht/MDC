@@ -83,11 +83,12 @@ const makejpg = async () => {
     <TabPanel header="Datacard">
       <Datacard :pagenr="4" name="mcdelement4" />
     </TabPanel>
-    <TabPanel header="Page 2">
+    <!--     <TabPanel header="Page 2">
       <Page2 :pagenr="5" name="mcdelement5" />
-    </TabPanel>
+    </TabPanel>-->>
+
     <TabPanel header="DMPI">
-      <Dmpi :pagenr="6" name="mcdelement6" />
+      <Dmpi :pagenr="5" name="mcdelement6" />
     </TabPanel>
     <TabPanel header="Export to JPG">
       <button @click="makejpg">label="makejpg"</button>
