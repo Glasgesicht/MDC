@@ -272,3 +272,11 @@ select {
 .g-height {
   min-height: 100%;
 }
+
+.mcd-m-a {
+  margin: auto;
+}
+
+.mcd-m-0 {
+  margin: 0;
+}

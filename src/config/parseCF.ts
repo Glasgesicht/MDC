@@ -157,7 +157,7 @@ export function processCF(payload: any /* cf file is a zip */) {
                         callsign.charAt(0) +
                         callsign.charAt(callsign.length - 1) +
                         mCurr.CallsignNumber[0] +
-                        (i + 1)
+                        (1 + i)
                       );
                     })(),
                   } satisfies FlightMember;

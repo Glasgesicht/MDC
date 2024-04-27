@@ -1,7 +1,7 @@
 <template>
   <div class="parent" v-if="file">
-    <p class="mcd-s-2">Selected Package</p>
-    <p class="mcd-s-2">Change Package Name</p>
+    <p class="mcd-s-2 mcd-m-a">Selected Package</p>
+    <p class="mcd-s-2 mcd-m-a">Change Package Name</p>
     <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
@@ -19,25 +19,23 @@
       v-model="selectedPKG.name"
     ></Input>
 
-    <p style="grid-row: 3 / span 1" class="mcd-s-2 c-height">
+    <p style="grid-row: 4 / span 1" class="mcd-s-2 c-height mcd-m-a">
       Order Flights In Package
     </p>
     <DataTable
       class="mcd-s-6 datatable textleft redefSize g-height"
       :value="allFlightsFromPackage"
       showGridlines
+      edit-mode="cell"
       @rowReorder="onRowReorder"
-      style="grid-row: 4 / span 6"
+      style="grid-row: 5 / span 6"
     >
       <Column rowReorder headerStyle="width: 4rem" :reorderableColumn="false" />
       <Column header="FLIGHT" headerStyle="width: 10rem"
         ><template #body="{ index }">FLIGHT #{{ index + 1 }}</template></Column
       >
-      <Column field="callsign" header="Callsign" key="callsign">
-        <template #body="props" style="text-align: unset; align-items: start"
-          >{{ props.data.callsign }} {{ props.data.callsignNumber }}</template
-        >
-      </Column>
+      <Column field="callsign" header="Callsign" key="callsign"> </Column>
+      <Column field="callsignNumber" header="Nr"> </Column>
       <Column headerStyle="width: 4rem" header="VHF" field="VHF" />
       <Column headerStyle="width: 4rem" header="UHF" field="UHF" />
       <Column header="FLIGHTLEAD">

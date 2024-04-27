@@ -45,9 +45,10 @@ html {
 .parent {
   display: grid;
   grid-template-columns: repeat(8, 180px);
-  grid-template-rows: repeat(32, 40px);
+  grid-template-rows: repeat(64, 25px);
   grid-column-gap: 3px;
   grid-row-gap: 3px;
+  text-align: left;
 }
 
 .redefSize * {
@@ -58,6 +59,11 @@ html {
 .base * {
   padding: 1px 1px;
   font-size: 1em;
+}
+
+.parent p {
+  text-align: left;
+  margin: 0;
 }
 
 .datatable * {
