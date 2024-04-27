@@ -27,7 +27,7 @@
       :value="allFlightsFromPackage"
       showGridlines
       @rowReorder="onRowReorder"
-      style="grid-row: 5 / span 6"
+      style="grid-row: 5 / span 5"
     >
       <Column rowReorder headerStyle="width: 4rem" :reorderableColumn="false" />
       <Column header="FLIGHT" headerStyle="width: 10rem"
@@ -55,12 +55,23 @@
         /></template>
       </Column>
     </DataTable>
+    <p style="grid-row: 10 / span 1" class="mcd-s-2 c-height mcd-m-a">
+      RAMROD (selected)
+    </p>
+    <Dropdown
+      style="grid-row: 11"
+      :options="ramrods"
+      filter
+      v-model="ramrod"
+      editable
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { usePackageStore } from "@/stores/packageStore";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { storeToRefs } from "pinia";
+import { ramrods } from "@/config/ramrod";
 
 import DataTable from "primevue/datatable";
 import Dropdown from "primevue/dropdown";
@@ -68,7 +79,7 @@ import Button from "primevue/button";
 import Input from "primevue/inputtext";
 import Column from "primevue/column";
 
-const { packages, selectedPKG, allFlightsFromPackage } = storeToRefs(
+const { packages, selectedPKG, allFlightsFromPackage, ramrod } = storeToRefs(
   usePackageStore()
 );
 

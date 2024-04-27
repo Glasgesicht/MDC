@@ -22,6 +22,7 @@ export const usePackageStore = defineStore("package", () => {
     roe: "",
     situation: "",
     surfaceThreat: "",
+    ramrod: "",
   };
   const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
 
@@ -91,6 +92,15 @@ export const usePackageStore = defineStore("package", () => {
   //const missionNr = ref(12345);
   const pkgnr = computed(() => selectedPKG.value.name);
 
+  const ramrod = computed({
+    get() {
+      return selectedPKG.value.ramrod;
+    },
+    set(value) {
+      selectedPKG.value.ramrod = value;
+    },
+  });
+
   return {
     packages,
     selectedPKG,
@@ -104,5 +114,6 @@ export const usePackageStore = defineStore("package", () => {
 
     pkgnr,
     reset,
+    ramrod,
   };
 });

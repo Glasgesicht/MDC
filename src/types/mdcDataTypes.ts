@@ -5,6 +5,10 @@ export type FlightMember = {
   tailNr?: number;
   STN: string;
   L16: string;
+  search: string;
+  tacan: string;
+  laser?: number;
+  m2?: number;
 };
 
 export type Waypoint = {
@@ -60,6 +64,7 @@ export type Package = {
   roe: string;
   packageTask: string;
   metar: string;
+  ramrod: string;
 };
 
 //** Combat Flite Export Types */

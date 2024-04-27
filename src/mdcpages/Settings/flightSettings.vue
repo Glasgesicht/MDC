@@ -50,6 +50,8 @@ const addFlightMemeber = () => {
   selctedFlight.value.units.push({
     tailNr: undefined,
     callsign: "",
+    search: "",
+    tacan: "",
     STN: getSTN(
       selctedFlight.value.aircrafttype,
       selctedFlight.value.callsignNumber,

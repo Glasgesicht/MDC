@@ -12,6 +12,7 @@ import xml2js from "xml2js";
 import { flights } from "./flights";
 import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
+import { random } from "lodash";
 
 export function processCF(payload: any /* cf file is a zip */) {
   readCF(payload).then((res) => parseCfXML(res));
@@ -68,6 +69,7 @@ export function processCF(payload: any /* cf file is a zip */) {
           },
           packageTask: "Eat Burger",
           roe: "Don't Shoot Friendlies",
+          ramrod: res.Mission.BlueRAMROD[0],
           situation: "situation",
           surfaceThreat: "AAA",
           metar: "",
@@ -75,11 +77,6 @@ export function processCF(payload: any /* cf file is a zip */) {
           flights: res.Mission.Routes[0].Route.filter(
             (route) => route.PackageTag[0] === curr.Tag[0]
           ).reduce((mColl, mCurr) => {
-            // match callsign with config
-            let callsign = flights.find((flight) =>
-              flight.callsign.includes(mCurr.CallsignNameCustom[0])
-            );
-
             mCurr.Waypoints[0].Waypoint = mCurr.Waypoints[0].Waypoint.map(
               (wp) => {
                 if (wp.Type[0].includes("(ramp)")) wp.Type[0] = "Take off";
@@ -139,7 +136,9 @@ export function processCF(payload: any /* cf file is a zip */) {
               units: [...new Array(parseInt(mCurr.Units[0])).keys()].map(
                 (_n, i) => {
                   return {
-                    callsign: "",
+                    callsign: mCurr.Units[i],
+                    search: "",
+                    tacan: "",
                     tailNr: undefined,
                     STN: getSTN(
                       mCurr.Aircraft[0].Type[0],

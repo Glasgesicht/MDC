@@ -128,6 +128,7 @@ const showROE = inject("showROE");
     <div class="border mcd-s-2 mcd-wog">M2</div>
     <div class="border mcd-s-3 mcd-bow">{{ mode2code }}</div>
     <div class="border mcd-s-1 mcd-wog"></div>
+    <div class="border mcd-s-1 mcd-wog">0</div>
     <div class="border mcd-s-1 mcd-wog">1</div>
     <div class="border mcd-s-1 mcd-wog">2</div>
     <div class="border mcd-s-1 mcd-wog">3</div>
@@ -137,7 +138,6 @@ const showROE = inject("showROE");
     <div class="border mcd-s-1 mcd-wog">7</div>
     <div class="border mcd-s-1 mcd-wog">8</div>
     <div class="border mcd-s-1 mcd-wog">9</div>
-    <div class="border mcd-s-1 mcd-wog">10</div>
 
     <div class="border mcd-s-2 mcd-wog">STN</div>
     <div class="border mcd-s-3 mcd-bow">{{ sourceTrackNumber }}</div>
@@ -149,16 +149,9 @@ const showROE = inject("showROE");
     <div class="border mcd-s-2 mcd-wog">M3</div>
     <div class="border mcd-s-3 mcd-bog">{{ mode3code }}</div>
     <div class="border mcd-s-1 mcd-wog"></div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter1 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter2 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter3 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter4 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter5 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter6 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter7 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter8 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter9 }}</div>
-    <div class="border mcd-s-1 mcd-bog">{{ ramrodCharacter10 }}</div>
+    <div class="border mcd-s-1 mcd-bog" v-for="index in new Array(10).keys()">
+      {{ selectedPKG.ramrod.charAt(index) }}
+    </div>
     <div class="border mcd-s-2 mcd-wog">FC</div>
     <div class="border mcd-s-2 mcd-bog">{{ fighterChannel }}</div>
     <div class="border mcd-s-1 mcd-wog"></div>
