@@ -139,7 +139,9 @@ export function processCF(payload: any /* cf file is a zip */) {
                     callsign: mCurr.Units[i],
                     search: "",
                     tacan: "",
-                    tailNr: undefined,
+                    laser: "",
+                    m2: "",
+                    tailNr: "",
                     STN: getSTN(
                       mCurr.Aircraft[0].Type[0],
                       mCurr.CallsignNumber[0] ?? 1,

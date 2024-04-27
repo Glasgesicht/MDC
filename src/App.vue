@@ -23,7 +23,7 @@ const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
   usePackageStore()
 );
-const { selctedFlight } = storeToRefs(useFlightStore());
+const { selectedFlight } = storeToRefs(useFlightStore());
 
 provide("showROE", showROE);
 
@@ -60,7 +60,7 @@ const makejpg = async () => {
       placeholder="Select A Package"
     />
     <Dropdown
-      v-model="selctedFlight"
+      v-model="selectedFlight"
       :options="allFlightsFromPackage"
       optionLabel="callsign"
       placeholder="Select A Flight"

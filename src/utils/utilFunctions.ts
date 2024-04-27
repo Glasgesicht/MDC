@@ -31,6 +31,7 @@ export function calculateHeading(
 
 export function getSTN(type: string, no: number | string, i: number | string) {
   return (
+    "" +
     String(
       type.includes("-15")
         ? "49"

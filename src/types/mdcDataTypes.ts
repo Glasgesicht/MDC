@@ -2,13 +2,13 @@ import { useFlightStore } from "@/stores/flightStore";
 
 export type FlightMember = {
   callsign: string;
-  tailNr?: number;
+  tailNr?: string;
   STN: string;
   L16: string;
   search: string;
   tacan: string;
-  laser?: number;
-  m2?: number;
+  laser: string;
+  m2: string;
 };
 
 export type Waypoint = {
@@ -41,7 +41,7 @@ export type Waypoint = {
   type: string;
 };
 
-const flight = useFlightStore().selctedFlight;
+const flight = useFlightStore().selectedFlight;
 
 export type Flight = typeof flight;
 

@@ -4,7 +4,7 @@ import { rnlaf313members } from "@/config/member";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useGlobalStore } from "@/stores/theatreStore";
 
 import DataTable from "primevue/datatable";
@@ -18,23 +18,43 @@ import { getSTN } from "@/utils/utilFunctions";
 import { template } from "lodash";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
+import InputMask from "primevue/inputmask";
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
-const { selctedFlight } = storeToRefs(useFlightStore());
+const { selectedFlight } = storeToRefs(useFlightStore());
 const { updateFligh } = useFlightStore();
 const { file } = storeToRefs(useGlobalStore());
 
 function callsignChangeEvent(event: any) {
   if (event.value.callsign) {
-    selctedFlight.value.callsign = event.value.callsign;
-    selctedFlight.value.callsignNumber = event.value.callsignNumber;
-    selctedFlight.value.aircrafttype = event.value.type;
+    selectedFlight.value.callsign = event.value.callsign;
+    selectedFlight.value.callsignNumber = event.value.callsignNumber;
+    selectedFlight.value.aircrafttype = event.value.type;
   }
   updateFligh();
 }
 
+watch(selectedFlight, () => {});
+
+function tacaninput() {
+  const match = selectedFlight.value.units[0].tacan.match(/(\d{1,2})([YX])/);
+  console.log(match);
+  if (match && match[2]) {
+    if (selectedFlight.value.units[1])
+      selectedFlight.value.units[1].tacan =
+        ((parseInt(match[1]) + 63) % 126) + match[2];
+    if (selectedFlight.value.units[2])
+      selectedFlight.value.units[2].tacan =
+        ((parseInt(match[1]) + 63) % 126) + "" + (match[2] === "Y" ? "X" : "Y");
+    if (selectedFlight.value.units[3])
+      selectedFlight.value.units[3].tacan =
+        parseInt(match[1]) + "" + (match[2] === "Y" ? "X" : "Y");
+  }
+}
+
 function FlightMemberUpdate() {
-  selctedFlight.value.units.forEach((unit) => {
+  selectedFlight.value.units.forEach((unit) => {
+    if (!unit.callsign) return;
     if (unit.callsign.length < 3) return;
     const args = rnlaf313members.find((n) =>
       n.callsign.includes(unit.callsign)
@@ -42,46 +62,51 @@ function FlightMemberUpdate() {
     if (args) {
       unit.tailNr = args.tailnr;
     }
-  });
+  }); // corrects TACAN assignment
+  tacaninput();
 }
 
 const isCustomCalsign = ref(false);
 const addFlightMemeber = () => {
-  selctedFlight.value.units.push({
+  selectedFlight.value.units.push({
     tailNr: undefined,
     callsign: "",
     search: "",
+    laser: "",
+    m2: "",
     tacan: "",
     STN: getSTN(
-      selctedFlight.value.aircrafttype,
-      selctedFlight.value.callsignNumber,
-      selctedFlight.value.units.length
+      selectedFlight.value.aircrafttype,
+      selectedFlight.value.callsignNumber,
+      selectedFlight.value.units.length
     ),
     L16: (() => {
-      const callsign = selctedFlight.value.callsign;
+      const callsign = selectedFlight.value.callsign;
       return (
         callsign.charAt(0) +
         callsign.charAt(callsign.length - 1) +
-        selctedFlight.value.callsignNumber +
-        (selctedFlight.value.units.length + 1)
+        selectedFlight.value.callsignNumber +
+        (selectedFlight.value.units.length + 1)
       );
     })(),
-  });
+  }); // adds TACAN
+  tacaninput();
 };
 
 function deleteWaypoint(i: number) {
-  selctedFlight.value.waypoints.splice(i, 1);
+  selectedFlight.value.waypoints.splice(i, 1);
 }
 
 function deleteMember(i: number) {
-  selctedFlight.value.units.splice(i, 1);
+  selectedFlight.value.units.splice(i, 1);
 
-  selctedFlight.value.units.map((n, i) => {
+  selectedFlight.value.units.map((n, i) => {
     (n.callsign = n.callsign),
       (n.tailNr = n.tailNr),
       (n.STN = n.STN.substring(0, n.STN.length - 1) + (i + 1));
     n.L16 = n.L16.substring(0, n.L16.length - 1) + (i + 1);
-  });
+  }); // corrects TACAN
+  tacaninput();
 }
 
 const _313ref = ref(rnlaf313members.map((n) => n.callsign));
@@ -126,7 +151,7 @@ const groupedFlights = computed(() =>
   <div class="parent" v-if="file">
     <p class="mcd-s-2 mcd-m-a">Select Flight To Edit</p>
     <Dropdown
-      v-model="selctedFlight"
+      v-model="selectedFlight"
       :options="allFlightsFromPackage"
       optionLabel="callsign"
       placeholder="Select A Flight"
@@ -162,7 +187,7 @@ const groupedFlights = computed(() =>
     >
 
     <InputText
-      v-model="selctedFlight.callsign"
+      v-model="selectedFlight.callsign"
       style="grid-row: 2; text-align: left; height: fit-content"
       v-if="isCustomCalsign"
       class="select mcd-s-1 in mcd-a-0"
@@ -173,7 +198,7 @@ const groupedFlights = computed(() =>
       style="grid-row: 2; text-align: left"
       class="select mcd-s-1 c-height in mcd-a-0"
       v-if="isCustomCalsign"
-      v-model="selctedFlight.callsignNumber"
+      v-model="selectedFlight.callsignNumber"
       @blur="updateFligh"
     />
 
@@ -194,9 +219,8 @@ const groupedFlights = computed(() =>
     </p>
     <DataTable
       class="mcd-s-3 datatable textleft redefSize"
-      :value="selctedFlight.units"
+      :value="selectedFlight.units"
       showGridlines
-      @cell-edit-complete="FlightMemberUpdate"
       style="
         grid-row: 5 / span 3;
         align-content: left;
@@ -206,13 +230,14 @@ const groupedFlights = computed(() =>
       "
       edit-mode="cell"
     >
-      <Column header="n°" headerStyle="width: 4rem"
+      <Column header="n°" headerStyle="width: 3rem"
         ><template #body="{ index }">#{{ index + 1 }}</template></Column
       >
       <Column
+        headerStyle="width: 10rem"
         header="Callsign"
         field="callsign"
-        style="max-width: 30%; width: 30%; max-height: fit-content"
+        style="max-height: fit-content"
       >
         <template #body="{ data, field }">
           {{ data[field] }}
@@ -220,25 +245,96 @@ const groupedFlights = computed(() =>
         <template #editor="{ data, field, index }">
           <Dropdown
             editable
+            @change="FlightMemberUpdate"
             class="redefSize"
             :options="_313ref"
-            v-model="selctedFlight.units[index].callsign"
+            v-model="selectedFlight.units[index].callsign"
             autofocus
           />
         </template>
       </Column>
-
-      <Column field="STN" header="STN">
+      <Column
+        header="Search"
+        field="search"
+        headerStyle="min-width: 10rem;max-width: 10rem;"
+        style="max-height: fit-content"
+      >
+        <template #body="{ data, field }">
+          {{ data[field] }}
+        </template>
         <template #editor="{ index }">
-          <Input :model-value="selctedFlight.units[index].STN" /></template
+          <Input v-model="selectedFlight.units[index].search" /> </template
       ></Column>
-      <Column field="tailNr" header="TailNr" />
-      <Column field="L16" header="L16" />
-      <Column style="min-width: 22px; width: 22px">
+
+      <Column
+        field="STN"
+        header="STN"
+        headerStyle="width: 4rem"
+        style="max-height: fit-content"
+      >
+        <template #body="{ data, field }">
+          {{ data[field] }}
+        </template>
+        <template #editor="{ index }">
+          <InputMask
+            mask="9?99999"
+            :autoClear="false"
+            v-model="selectedFlight.units[index].STN" /></template
+      ></Column>
+      <Column
+        field="tailNr"
+        header="TailNr"
+        headerStyle="max-width: 4rem"
+        style="max-height: fit-content"
+      >
+        <template #body="{ data, field }">
+          {{ data[field] }}
+        </template>
+        <template #editor="{ index }">
+          <Input v-model="selectedFlight.units[index].tailNr" /> </template
+      ></Column>
+      <Column
+        field="L16"
+        header="L16"
+        headerStyle="max-width: 4rem"
+        style="max-height: fit-content"
+      />
+      <Column
+        field="tacan"
+        header="TACAN"
+        headerStyle="max-width: 4rem"
+        style="max-height: fit-content"
+      >
+        <template #editor="{ index }">
+          <InputMask
+            mask="9?9a"
+            v-model="selectedFlight.units[0].tacan"
+            v-if="index === 0"
+            @complete="tacaninput"
+        /></template>
+      </Column>
+
+      <Column
+        field="laser"
+        header="Laser"
+        headerStyle="max-width: 4rem"
+        style="max-height: fit-content"
+      >
+        <template #body="{ data, field }">
+          {{ data[field] }}
+        </template>
+        <template #editor="{ index }">
+          <InputMask
+            mask="9999"
+            v-model="selectedFlight.units[index].laser"
+          /> </template
+      ></Column>
+
+      <Column headerStyle="width: 2rem" style="max-height: fit-content">
         <template #header><i icon="pi pi-trash" /> ></template>
         <template #body="{ index }"
           ><Button
-            :disabled="selctedFlight.units.length < 2"
+            :disabled="selectedFlight.units.length < 2"
             @click="deleteMember(index)"
             severity="danger"
             outlined
@@ -247,7 +343,7 @@ const groupedFlights = computed(() =>
 
       <template #footer
         ><Button
-          v-if="selctedFlight.units[0] && selctedFlight.units.length < 4"
+          v-if="selectedFlight.units[0] && selectedFlight.units.length < 4"
           label="Add member to flight"
           @click="addFlightMemeber"
       /></template>
@@ -256,7 +352,7 @@ const groupedFlights = computed(() =>
     <p style="grid-row: 12" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
     <DataTable
       showGridlines
-      :value="selctedFlight.waypoints"
+      :value="selectedFlight.waypoints"
       class="mcd-s-6 datatable textleft redefSize"
       style="
         grid-row: 13 / span 8;
@@ -283,6 +379,8 @@ const groupedFlights = computed(() =>
       ></Column>
     </DataTable>
   </div>
+
+  <Button @click="console.log(selectedFlight.units)" />
 </template>
 
 <style scoped>

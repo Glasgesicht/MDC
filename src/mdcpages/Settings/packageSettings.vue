@@ -55,13 +55,12 @@
         /></template>
       </Column>
     </DataTable>
-    <p style="grid-row: 10 / span 1" class="mcd-s-2 c-height mcd-m-a">
+    <p style="grid-row: 11 / span 1" class="mcd-s-2 c-height mcd-m-a">
       RAMROD (selected)
     </p>
     <Dropdown
-      style="grid-row: 11"
+      style="grid-row: 12"
       :options="ramrods"
-      filter
       v-model="ramrod"
       editable
     />

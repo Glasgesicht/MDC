@@ -8,7 +8,7 @@ import { airports } from "@/config/airfields";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selctedFlight } = storeToRefs(useFlightStore());
+const { selectedFlight } = storeToRefs(useFlightStore());
 
 const getAirport = (sel: string) => {
   if (typeof sel == "string")
@@ -70,75 +70,75 @@ const hhmmss = (time: string) => {
     <div class="border mcd-s-2 mcd-row-1 mcd-wog">DEP</div>
 
     <div class="border mcd-s-8 mcd-row-1 mcd-bow">
-      {{ selctedFlight.DEP.NAME }}
+      {{ selectedFlight.DEP.NAME }}
     </div>
 
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).TACAN }}
+      {{ getAirport(selectedFlight.DEP.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).ARR }}
+      {{ getAirport(selectedFlight.DEP.NAME).ARR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).LEN }}
+      {{ getAirport(selectedFlight.DEP.NAME).LEN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).ELEV }}
+      {{ getAirport(selectedFlight.DEP.NAME).ELEV }}
     </div>
     <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).HDG }}
+      {{ getAirport(selectedFlight.DEP.NAME).HDG }}
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.DEP.NAME).ILS }}
+      {{ getAirport(selectedFlight.DEP.NAME).ILS }}
     </div>
 
     <div class="border mcd-s-2 mcd-row-1 mcd-wog">ARR</div>
     <div class="border mcd-s-8 mcd-row-1 mcd-bow">
-      {{ selctedFlight.ARR.NAME }}
+      {{ selectedFlight.ARR.NAME }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ARR.NAME).TACAN }}
+      {{ getAirport(selectedFlight.ARR.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ARR.NAME).ARR }}
+      {{ getAirport(selectedFlight.ARR.NAME).ARR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ARR.NAME).LEN }}
+      {{ getAirport(selectedFlight.ARR.NAME).LEN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ARR.NAME).ELEV }}
+      {{ getAirport(selectedFlight.ARR.NAME).ELEV }}
     </div>
     <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ARR.NAME).HDG }}
+      {{ getAirport(selectedFlight.ARR.NAME).HDG }}
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ARR.NAME).ILS }}
+      {{ getAirport(selectedFlight.ARR.NAME).ILS }}
     </div>
 
     <div class="border mcd-s-2 mcd-row-1 mcd-wog">ALT</div>
     <div class="border mcd-s-8 mcd-row-1 mcd-bow">
-      {{ selctedFlight.ALT.NAME }}
+      {{ selectedFlight.ALT.NAME }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ALT.NAME).TACAN }}
+      {{ getAirport(selectedFlight.ALT.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ALT.NAME).ARR }}
+      {{ getAirport(selectedFlight.ALT.NAME).ARR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ALT.NAME).LEN }}
+      {{ getAirport(selectedFlight.ALT.NAME).LEN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ALT.NAME).ELEV }}
+      {{ getAirport(selectedFlight.ALT.NAME).ELEV }}
     </div>
     <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ALT.NAME).HDG }}
+      {{ getAirport(selectedFlight.ALT.NAME).HDG }}
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-bow">
-      {{ getAirport(selctedFlight.ALT.NAME).ILS }}
+      {{ getAirport(selectedFlight.ALT.NAME).ILS }}
     </div>
     <!--
     <div class="border  mcd-s-3 mcd-row-1 mcd-wog">ARR</div>
@@ -178,42 +178,42 @@ const hhmmss = (time: string) => {
         {{ index + 1 }}
       </div>
       <div :class="`border  mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.name }}
+        {{ selectedFlight?.waypoints[index]?.name }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ hhmmss(selctedFlight?.waypoints[index]?.tot) }}
+        {{ hhmmss(selectedFlight?.waypoints[index]?.tot) }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selctedFlight?.waypoints[index + 1]?.longitude
+          selectedFlight?.waypoints[index + 1]?.longitude
             ? calculateHeading(
-                selctedFlight?.waypoints[index]?.latitude,
-                selctedFlight?.waypoints[index]?.longitude,
-                selctedFlight?.waypoints[index + 1]?.latitude,
-                selctedFlight?.waypoints[index + 1]?.longitude
+                selectedFlight?.waypoints[index]?.latitude,
+                selectedFlight?.waypoints[index]?.longitude,
+                selectedFlight?.waypoints[index + 1]?.latitude,
+                selectedFlight?.waypoints[index + 1]?.longitude
               )
             : ""
         }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selctedFlight?.waypoints[index + 1]?.longitude
+          selectedFlight?.waypoints[index + 1]?.longitude
             ? calculateDistance(
-                selctedFlight?.waypoints[index]?.latitude,
-                selctedFlight?.waypoints[index]?.longitude,
-                selctedFlight?.waypoints[index + 1]?.latitude,
-                selctedFlight?.waypoints[index + 1]?.longitude
+                selectedFlight?.waypoints[index]?.latitude,
+                selectedFlight?.waypoints[index]?.longitude,
+                selectedFlight?.waypoints[index + 1]?.latitude,
+                selectedFlight?.waypoints[index + 1]?.longitude
               ) + "nm"
             : ""
         }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.mach?.toFixed(2) }}
+        {{ selectedFlight?.waypoints[index]?.mach?.toFixed(2) }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selctedFlight?.waypoints[index]?.altitude
-            ? selctedFlight?.waypoints[index]?.altitude + "ft"
+          selectedFlight?.waypoints[index]?.altitude
+            ? selectedFlight?.waypoints[index]?.altitude + "ft"
             : ""
         }}
       </div>
@@ -221,7 +221,7 @@ const hhmmss = (time: string) => {
         {{}}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selctedFlight?.waypoints[index]?.activity }}
+        {{ selectedFlight?.waypoints[index]?.activity }}
       </div>
     </div>
 

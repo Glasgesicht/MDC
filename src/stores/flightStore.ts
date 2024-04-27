@@ -15,7 +15,7 @@ const f16callsigns = F16Flights.map(
 );
 
 export const useFlightStore = defineStore("flight", () => {
-  // const { selctedFlight } = storeToRefs(usePackageStore());
+  // const { selectedFlight } = storeToRefs(usePackageStore());
 
   const initState = {
     aircrafttype: "",
@@ -70,54 +70,54 @@ export const useFlightStore = defineStore("flight", () => {
       LEN: "",
     },
   };
-  const selctedFlight: Ref<typeof initState> = ref(cloneDeep(initState));
+  const selectedFlight: Ref<typeof initState> = ref(cloneDeep(initState));
 
   function reset() {
-    selctedFlight.value = cloneDeep(initState);
+    selectedFlight.value = cloneDeep(initState);
   }
 
   // Here goes all the data that only belongs to the currently selected flight
   const flightTask = computed({
     get() {
-      return selctedFlight.value.flightTask;
+      return selectedFlight.value.flightTask;
     },
     set(value: string) {
-      selctedFlight.value.flightTask = value;
+      selectedFlight.value.flightTask = value;
     },
   });
 
   // Might not need this because it's set in createFlights as a macro.
   /*
   const VHF = computed(() => {
-    if (f16callsigns.includes(selctedFlight.value.callsign))
-      return `141.${selctedFlight.value.callsignNumber}0`;
-    else if (f15callsigns.includes(selctedFlight.value.callsign))
-      return `144.${selctedFlight.value.callsignNumber}0`;
+    if (f16callsigns.includes(selectedFlight.value.callsign))
+      return `141.${selectedFlight.value.callsignNumber}0`;
+    else if (f15callsigns.includes(selectedFlight.value.callsign))
+      return `144.${selectedFlight.value.callsignNumber}0`;
     return "XXX.XX";
     //need to figure out freq's for other wings
   });
   const UHF = computed(() => {
-    if (f16callsigns.includes(selctedFlight?.value.callsign))
-      return `267.${selctedFlight?.value.callsignNumber}0`;
-    else if (f15callsigns.includes(selctedFlight?.value.callsign))
-      return `269.${selctedFlight?.value.callsignNumber}0`;
+    if (f16callsigns.includes(selectedFlight?.value.callsign))
+      return `267.${selectedFlight?.value.callsignNumber}0`;
+    else if (f15callsigns.includes(selectedFlight?.value.callsign))
+      return `269.${selectedFlight?.value.callsignNumber}0`;
     return "XXX.XX";
   });*/
 
   const updateFligh = () => {
-    const callsign = selctedFlight.value.callsign;
+    const callsign = selectedFlight.value.callsign;
 
-    selctedFlight.value.units.forEach((_n, i) => {
-      selctedFlight.value.units[i].STN = getSTN(
-        selctedFlight.value.aircrafttype,
-        selctedFlight.value.callsignNumber % 8,
+    selectedFlight.value.units.forEach((_n, i) => {
+      selectedFlight.value.units[i].STN = getSTN(
+        selectedFlight.value.aircrafttype,
+        selectedFlight.value.callsignNumber % 8,
         i
       );
 
-      selctedFlight.value.units[i].L16 =
+      selectedFlight.value.units[i].L16 =
         callsign.charAt(0) +
         callsign.charAt(callsign.length - 1) +
-        selctedFlight.value.callsignNumber +
+        selectedFlight.value.callsignNumber +
         (Number(i) + 1);
     });
   };
@@ -125,10 +125,10 @@ export const useFlightStore = defineStore("flight", () => {
   // not enirely sure why i have an explicit getter/setter here, but that's okay
   const gameplan = computed({
     get() {
-      return selctedFlight.value.gameplan ?? null;
+      return selectedFlight.value.gameplan ?? null;
     },
     set(value: string) {
-      selctedFlight.value.gameplan = value;
+      selectedFlight.value.gameplan = value;
     },
   });
 
@@ -137,13 +137,13 @@ export const useFlightStore = defineStore("flight", () => {
     callsign: string;
     callsignNumber: number;
   }) => {
-    selctedFlight.value.aircrafttype = opts.aircrafttype;
-    selctedFlight.value.callsign = opts.callsign;
-    selctedFlight.value.callsignNumber = opts.callsignNumber;
+    selectedFlight.value.aircrafttype = opts.aircrafttype;
+    selectedFlight.value.callsign = opts.callsign;
+    selectedFlight.value.callsignNumber = opts.callsignNumber;
   };
 
   return {
-    selctedFlight,
+    selectedFlight,
     flightTask,
     gameplan,
     setNewCallsign,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref } from "vue";
+import { inject, onMounted, onUnmounted, ref, computed } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
@@ -16,7 +16,12 @@ import { useFlightStore } from "@/stores/flightStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selctedFlight } = storeToRefs(useFlightStore());
+const { selectedFlight } = storeToRefs(useFlightStore());
+
+const getUnit = computed(() => (i: number) => {
+  // console.log(selectedFlight.value.units[i]);
+  return selectedFlight.value.units[i] ?? null;
+});
 
 // const pagenr = 1; // TODO: Compute based on selected pages for export
 
@@ -32,21 +37,9 @@ const { pagenr } = defineProps({
   },
 });
 
-const iffMode2 = "3010";
 const sourceTrackNumber = "03131";
 
 const fenceInOut = "10 / 23";
-
-const ramrodCharacter1 = "S";
-const ramrodCharacter2 = "W";
-const ramrodCharacter3 = "E";
-const ramrodCharacter4 = "A";
-const ramrodCharacter5 = "R";
-const ramrodCharacter6 = "B";
-const ramrodCharacter7 = "L";
-const ramrodCharacter8 = "I";
-const ramrodCharacter9 = "N";
-const ramrodCharacter10 = "D";
 
 const fighterChannel = "009";
 const missionChannel = "057";
@@ -92,8 +85,6 @@ const supportAltitude = "FL240";
 const supportTacan = "106X";
 
 const airspaceCoordination = "Fly around and shoot stuff!";
-
-const showROE = inject("showROE");
 </script>
 
 <template>
@@ -103,11 +94,11 @@ const showROE = inject("showROE");
 
     <div class="border mcd-s-3 mcd-wog">MSN</div>
     <div class="border mcd-s-4 mcd-bow">
-      {{ selctedFlight?.MSNumber }}
+      {{ selectedFlight?.MSNumber }}
     </div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
     <div class="border mcd-s-6 mcd-bow">
-      {{ selctedFlight?.callsign }} {{ selctedFlight?.callsignNumber }}
+      {{ selectedFlight?.callsign }} {{ selectedFlight?.callsignNumber }}
     </div>
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
     <div class="border mcd-s-9 mcd-bow">{{ selectedPKG?.name }}</div>
@@ -210,28 +201,28 @@ const showROE = inject("showROE");
         {{ index + 1 }}
       </div>
       <div :class="`border  mcd-s-9 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotName }}
+        {{ getUnit(index)?.callsign }}
       </div>
       <div :class="`border  mcd-s-2 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotTailnumber }}
+        {{ getUnit(index)?.tailNr }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotSearch }}
+        {{ getUnit(index)?.search }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotIdm }}
+        {{ getUnit(index)?.m2 }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotTacan }}
+        {{ getUnit(index)?.tacan }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotLaser }}
+        {{ getUnit(index)?.laser }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotMode2 }}
+        {{ getUnit(index)?.m2 }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ pilotSourceTrackNumber }}
+        {{ getUnit(index)?.STN.padStart(6, "0") }}
       </div>
     </div>
 

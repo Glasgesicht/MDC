@@ -17,7 +17,7 @@ const {
   selectedPKG,
 } = storeToRefs(usePackageStore());
 
-const { selctedFlight, gameplan } = storeToRefs(useFlightStore());
+const { selectedFlight, gameplan } = storeToRefs(useFlightStore());
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -35,14 +35,14 @@ const showROE = inject("showROE");
     <div class="border header">BRIEFING CARD</div>
     <div class="border mcd-s-6 mcd-wog">MISSION</div>
     <div class="border mcd-s-6 mcd-bow">
-      {{ selctedFlight.MSNumber }}
+      {{ selectedFlight.MSNumber }}
     </div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
     <div class="border mcd-s-5 mcd-bow">
-      {{ selctedFlight.callsign }} {{ selctedFlight.callsignNumber }}
+      {{ selectedFlight.callsign }} {{ selectedFlight.callsignNumber }}
     </div>
     <!-- 
-    <select v-model="selctedFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
+    <select v-model="selectedFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
       <option v-for="flight of flights">{{ flight.callsignRaw }}</option>
     </select>-->
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
@@ -51,17 +51,20 @@ const showROE = inject("showROE");
     </div>
     <div class="border mcd-s-6 mcd-wog">HOMEPLATE</div>
     <input
-      v-model="selctedFlight.DEP.NAME"
+      v-model="selectedFlight.DEP.NAME"
       class="border mcd-s-6 mcd-bog textbox"
     />
     <div class="border mcd-rnlaf313">RNLAF 313 SQUADRON</div>
     <div class="border mcd-s-6 mcd-wog">MSN TYPE</div>
-    <input class="border mcd-s-6 mcd-bow" v-model="selctedFlight.missionType" />
+    <input
+      class="border mcd-s-6 mcd-bow"
+      v-model="selectedFlight.missionType"
+    />
 
     <div class="border mcd-s-6 mcd-wog">PACKAGE TASK</div>
     <input v-model="packageTask" class="border mcd-s-26 mcd-bog textbox" />
     <div class="border mcd-s-6 mcd-wog">FLIGHT TASK</div>
-    <input v-model="selctedFlight.task" class="border mcd-s-26 mcd-bow" />
+    <input v-model="selectedFlight.task" class="border mcd-s-26 mcd-bow" />
     <div class="border mcd-s-col mcd-wog">SITUATION</div>
     <textarea
       v-model="situation"
