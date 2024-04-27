@@ -69,4 +69,10 @@ html {
 .datatable * {
   text-align: left;
 }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 </style>

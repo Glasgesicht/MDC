@@ -16,9 +16,12 @@ import Input from "primevue/inputtext";
 import Column from "primevue/column";
 import { getSTN } from "@/utils/utilFunctions";
 import { template } from "lodash";
+import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 
-const { allFlightsFromPackage } = storeToRefs(usePackageStore());
-
+const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
+const { selctedFlight } = storeToRefs(useFlightStore());
+const { updateFligh } = useFlightStore();
 const { file } = storeToRefs(useGlobalStore());
 
 function callsignChangeEvent(event: any) {
@@ -27,6 +30,7 @@ function callsignChangeEvent(event: any) {
     selctedFlight.value.callsignNumber = event.value.callsignNumber;
     selctedFlight.value.aircrafttype = event.value.type;
   }
+  updateFligh();
 }
 
 function FlightMemberUpdate() {
@@ -77,9 +81,6 @@ function deleteMember(i: number) {
     n.L16 = n.L16.substring(0, n.L16.length - 1) + (i + 1);
   });
 }
-
-const { selctedFlight } = storeToRefs(useFlightStore());
-const { packages } = storeToRefs(usePackageStore());
 
 const _313ref = ref(rnlaf313members.map((n) => n.callsign));
 
@@ -140,6 +141,7 @@ const groupedFlights = computed(() =>
 
     <Dropdown
       placeholder="select new callsign"
+      v-if="!isCustomCalsign"
       style="grid-row: 2"
       filter
       class="redefSize mcd-s-2 c-height"
@@ -156,6 +158,23 @@ const groupedFlights = computed(() =>
         </div>
       </template></Dropdown
     >
+
+    <InputText
+      v-model="selctedFlight.callsign"
+      style="grid-row: 2; text-align: left; height: fit-content"
+      v-if="isCustomCalsign"
+      class="select mcd-s-1 in mcd-a-0"
+      @blur="updateFligh"
+    />
+    <InputNumber
+      mask="9"
+      style="grid-row: 2; text-align: left"
+      class="select mcd-s-1 c-height in mcd-a-0"
+      v-if="isCustomCalsign"
+      v-model="selctedFlight.callsignNumber"
+      @blur="updateFligh"
+    />
+
     <div style="grid-row: 2; text-align: left">
       <Checkbox
         label="Add custom Callsign"
@@ -263,3 +282,18 @@ const groupedFlights = computed(() =>
     </DataTable>
   </div>
 </template>
+
+<style scoped>
+.in * {
+  max-width: -moz-available;
+  padding: 0 0;
+  border: 0 0;
+  margin: auto;
+}
+.in {
+  padding: 0 0;
+  border: 0 0;
+  margin: auto;
+  max-width: -moz-available;
+}
+</style>

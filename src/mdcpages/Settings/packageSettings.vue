@@ -26,7 +26,6 @@
       class="mcd-s-6 datatable textleft redefSize g-height"
       :value="allFlightsFromPackage"
       showGridlines
-      edit-mode="cell"
       @rowReorder="onRowReorder"
       style="grid-row: 5 / span 6"
     >
@@ -34,8 +33,11 @@
       <Column header="FLIGHT" headerStyle="width: 10rem"
         ><template #body="{ index }">FLIGHT #{{ index + 1 }}</template></Column
       >
-      <Column field="callsign" header="Callsign" key="callsign"> </Column>
-      <Column field="callsignNumber" header="Nr"> </Column>
+      <Column field="callsign" header="Callsign" key="callsign">
+        <template #body="props" style="text-align: unset; align-items: start"
+          >{{ props.data.callsign }} {{ props.data.callsignNumber }}</template
+        >
+      </Column>
       <Column headerStyle="width: 4rem" header="VHF" field="VHF" />
       <Column headerStyle="width: 4rem" header="UHF" field="UHF" />
       <Column header="FLIGHTLEAD">

@@ -5,6 +5,7 @@ import { F15Flights, F16Flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
 
 import { cloneDeep } from "lodash";
+import { getSTN } from "@/utils/utilFunctions";
 
 const f15callsigns = F15Flights.map(
   (flight) => flight.callsign + " " + flight.number
@@ -103,6 +104,24 @@ export const useFlightStore = defineStore("flight", () => {
     return "XXX.XX";
   });*/
 
+  const updateFligh = () => {
+    const callsign = selctedFlight.value.callsign;
+
+    selctedFlight.value.units.forEach((_n, i) => {
+      selctedFlight.value.units[i].STN = getSTN(
+        selctedFlight.value.aircrafttype,
+        selctedFlight.value.callsignNumber % 8,
+        i
+      );
+
+      selctedFlight.value.units[i].L16 =
+        callsign.charAt(0) +
+        callsign.charAt(callsign.length - 1) +
+        selctedFlight.value.callsignNumber +
+        (Number(i) + 1);
+    });
+  };
+
   // not enirely sure why i have an explicit getter/setter here, but that's okay
   const gameplan = computed({
     get() {
@@ -123,5 +142,12 @@ export const useFlightStore = defineStore("flight", () => {
     selctedFlight.value.callsignNumber = opts.callsignNumber;
   };
 
-  return { selctedFlight, flightTask, gameplan, setNewCallsign, reset };
+  return {
+    selctedFlight,
+    flightTask,
+    gameplan,
+    setNewCallsign,
+    updateFligh,
+    reset,
+  };
 });

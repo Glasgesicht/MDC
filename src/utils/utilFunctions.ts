@@ -41,7 +41,7 @@ export function getSTN(type: string, no: number | string, i: number | string) {
         : "00"
     ) +
     "" +
-    (String(no) ?? " ") +
+    (parseInt(no + "") % 7) +
     "" +
     (Number(i) + 1)
   );
