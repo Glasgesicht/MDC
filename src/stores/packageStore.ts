@@ -23,6 +23,7 @@ export const usePackageStore = defineStore("package", () => {
     situation: "",
     surfaceThreat: "",
     ramrod: "",
+    agencies: new Array<any>(),
   };
   const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
 

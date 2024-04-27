@@ -65,6 +65,7 @@ export type Package = {
   packageTask: string;
   metar: string;
   ramrod: string;
+  agencies: Array<any>;
 };
 
 //** Combat Flite Export Types */
@@ -280,7 +281,7 @@ export interface AirspaceEntity {
   Expanded: string[];
   Polygons: PolygonsEntity[];
   Circles: (string | CirclesEntity)[];
-  Orbits: (string | OrbitsEntity)[];
+  Orbits: OrbitsEntity[];
   AORs: string[];
   RefPoints: (string | RefPointsEntity)[];
   GUSs: string[];

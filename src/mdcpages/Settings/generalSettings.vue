@@ -5,8 +5,8 @@
       id="input"
       v-on:change="onChangedFile"
       accept=".cf"
-      class="mdc-s-2"
-      style="grid-row: 2"
+      class="mdc-s-10"
+      style="grid-row: 2 / span2"
     />
   </div>
 </template>

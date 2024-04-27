@@ -1,7 +1,7 @@
 <template>
   <div class="parent" v-if="file">
-    <p class="mcd-s-2 mcd-m-a">Selected Package</p>
-    <p class="mcd-s-2 mcd-m-a">Change Package Name</p>
+    <p class="mcd-s-1 mcd-m-a">Selected Package</p>
+    <p class="mcd-s-1 mcd-m-a">Package Name</p>
     <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
@@ -10,12 +10,12 @@
       :options="packages"
       optionLabel="name"
       placeholder="Select A Package"
-      class="mcd-s-2 c-height"
+      class="mcd-s-1 c-height"
       style="grid-row: 2"
     />
     <Input
       style="grid-row: 2"
-      class="mcd-s-2 c-height"
+      class="mcd-s-1 c-height"
       v-model="selectedPKG.name"
     ></Input>
 
@@ -26,6 +26,7 @@
       class="mcd-s-6 datatable textleft redefSize g-height"
       :value="allFlightsFromPackage"
       showGridlines
+      edit-mode="cell"
       @rowReorder="onRowReorder"
       style="grid-row: 5 / span 5"
     >
@@ -37,6 +38,11 @@
         <template #body="props" style="text-align: unset; align-items: start"
           >{{ props.data.callsign }} {{ props.data.callsignNumber }}</template
         >
+      </Column>
+      <Column headerStyle="width: 4rem" header="Type" field="aircrafttype">
+        <template #editor="{ index }">
+          <Input v-model="selectedPKG.flights[index].aircrafttype"
+        /></template>
       </Column>
       <Column headerStyle="width: 4rem" header="VHF" field="VHF" />
       <Column headerStyle="width: 4rem" header="UHF" field="UHF" />
@@ -55,11 +61,11 @@
         /></template>
       </Column>
     </DataTable>
-    <p style="grid-row: 11 / span 1" class="mcd-s-2 c-height mcd-m-a">
+    <p style="grid-row: 12 / span 1" class="mcd-s-2 c-height mcd-m-a">
       RAMROD (selected)
     </p>
     <Dropdown
-      style="grid-row: 12"
+      style="grid-row: 13"
       :options="ramrods"
       v-model="ramrod"
       editable

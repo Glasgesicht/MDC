@@ -210,7 +210,7 @@ const airspaceCoordination = "Fly around and shoot stuff!";
         {{ getUnit(index)?.search }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ getUnit(index)?.m2 }}
+        {{ getUnit(index)?.L16.slice(-2) }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ getUnit(index)?.tacan }}
@@ -222,7 +222,7 @@ const airspaceCoordination = "Fly around and shoot stuff!";
         {{ getUnit(index)?.m2 }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ getUnit(index)?.STN.padStart(6, "0") }}
+        {{ getUnit(index)?.STN.padStart(5, "0") }}
       </div>
     </div>
 
@@ -238,13 +238,15 @@ const airspaceCoordination = "Fly around and shoot stuff!";
 
     <div class="mcd-s-31 parent" v-for="index in new Array(5).keys()">
       <div :class="`border  mcd-s-6 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ flightCallsign }}
+        {{ selectedPKG.flights[index]?.callsign }}
+        {{ selectedPKG.flights[index]?.callsignNumber }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ flightSize }} {{ flightType }}
+        {{ selectedPKG.flights[index]?.units.length }}
+        {{ selectedPKG.flights[index]?.aircrafttype }}
       </div>
       <div :class="`border  mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ flightTask }}
+        {{ selectedPKG.flights[index]?.missionType }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ flightPrimaryFrequency }}
@@ -253,10 +255,16 @@ const airspaceCoordination = "Fly around and shoot stuff!";
         {{ flightSecondaryFrequency }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ flightLinkCallsign }}
+        {{
+          selectedPKG.flights[index]?.units[0].L16.substring(0, 3).concat("X")
+        }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ flightSourceTrackNumber }}
+        {{
+          selectedPKG.flights[index]?.units[0].STN.padStart(5, "0")
+            .substring(0, 4)
+            .concat("X")
+        }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{ flightPushTime }}

@@ -38,7 +38,6 @@ watch(selectedFlight, () => {});
 
 function tacaninput() {
   const match = selectedFlight.value.units[0].tacan.match(/(\d{1,2})([YX])/);
-  console.log(match);
   if (match && match[2]) {
     if (selectedFlight.value.units[1])
       selectedFlight.value.units[1].tacan =
@@ -352,6 +351,7 @@ const groupedFlights = computed(() =>
     <p style="grid-row: 12" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
     <DataTable
       showGridlines
+      edit-mode="cell"
       :value="selectedFlight.waypoints"
       class="mcd-s-6 datatable textleft redefSize"
       style="
@@ -362,10 +362,17 @@ const groupedFlights = computed(() =>
       "
     >
       <Column field="waypointNr" header="n°"></Column>
-      <Column field="name" header="Name"></Column>
+      <Column field="name" header="Name"
+        ><template #editor="{ index }">
+          <Input v-model="selectedFlight.waypoints[index].name" /></template
+      ></Column>
+      <Column field="type" header="Type">
+        <template #editor="{ index }">
+          <Input v-model="selectedFlight.waypoints[index].type" /></template
+      ></Column>
       <Column field="activity" header="Activity"></Column>
       <Column field="tot" header="Time on Target"></Column>
-      <Column field="type" header="Type"></Column>
+
       <Column field="mach" header="Mach"></Column>
       <Column field="groundspeed" header="Groundspeed"></Column>
       <Column field="altitude" header="Altitude"></Column>

@@ -55,6 +55,19 @@ export function processCF(payload: any /* cf file is a zip */) {
 
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
         const newPackage = {
+          agencies: res.Mission.Airspace[0].Orbits[0]?.Orbit.reduce(
+            (coll, curr) => {
+              if (curr.Type.includes("AAR"))
+                coll.push({
+                  agency: curr.Type,
+                  callsign: curr.Name,
+                  type: "KC-135", // we filter for AAR and this is pretty much all we got... besides KC-130?
+                });
+
+              return coll;
+            },
+            new Array()
+          ),
           airThreat: "NONE",
           bullseye: {
             name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
@@ -85,7 +98,15 @@ export function processCF(payload: any /* cf file is a zip */) {
             );
 
             mColl.push({
-              aircrafttype: mCurr.Aircraft[0].Type[0],
+              // Sanitize Aircraft Type names for display
+              aircrafttype:
+                mCurr.Aircraft[0].Type[0] === "F-16C_50"
+                  ? "F-16CM"
+                  : mCurr.Aircraft[0].Type[0] === "F-15ESE"
+                  ? "F-15E" //FA-18C_hornet
+                  : mCurr.Aircraft[0].Type[0] === "FA-18C_hornet"
+                  ? "F/A-18C"
+                  : mCurr.Aircraft[0].Type[0],
               DEP: {
                 NAME:
                   mCurr.Waypoints[0].Waypoint.find((wp) =>
@@ -205,7 +226,7 @@ export function processCF(payload: any /* cf file is a zip */) {
 
             return mColl;
           }, new Array<Flight>()),
-        };
+        } satisfies Package;
         if (newPackage.flights.length) coll.push(newPackage);
         return coll;
       }, new Array<Package>());
