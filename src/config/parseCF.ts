@@ -55,7 +55,7 @@ export function processCF(payload: any /* cf file is a zip */) {
 
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
         const newPackage = {
-          agencies: res.Mission.Airspace[0].Orbits[0]?.Orbit.reduce(
+          agencies: res.Mission.Airspace[0]?.Orbits[0]?.Orbit.reduce(
             (coll, curr) => {
               if (curr.Type.includes("AAR"))
                 coll.push({
