@@ -3,6 +3,7 @@ import { inject } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
+import Input from "primevue/inputtext";
 
 import { flights } from "../config/flights";
 import { useFlightStore } from "@/stores/flightStore";
@@ -50,21 +51,21 @@ const showROE = inject("showROE");
       {{ pkgnr }}
     </div>
     <div class="border mcd-s-6 mcd-wog">HOMEPLATE</div>
-    <input
+    <Input
       v-model="selectedFlight.DEP.NAME"
       class="border mcd-s-6 mcd-bog textbox"
     />
     <div class="border mcd-rnlaf313">RNLAF 313 SQUADRON</div>
     <div class="border mcd-s-6 mcd-wog">MSN TYPE</div>
-    <input
-      class="border mcd-s-6 mcd-bow"
+    <Input
+      class="border mcd-s-6 mcd-bow textbox"
       v-model="selectedFlight.missionType"
     />
 
     <div class="border mcd-s-6 mcd-wog">PACKAGE TASK</div>
-    <input v-model="packageTask" class="border mcd-s-26 mcd-bog textbox" />
+    <Input v-model="packageTask" class="border mcd-s-26 mcd-bog textbox" />
     <div class="border mcd-s-6 mcd-wog">FLIGHT TASK</div>
-    <input v-model="selectedFlight.task" class="border mcd-s-26 mcd-bow" />
+    <Input v-model="selectedFlight.task" class="border mcd-s-26 mcd-bow" />
     <div class="border mcd-s-col mcd-wog">SITUATION</div>
     <textarea
       v-model="situation"

@@ -306,7 +306,7 @@ const groupedFlights = computed(() =>
       >
         <template #editor="{ index }">
           <InputMask
-            mask="9?9a"
+            mask="9?*a"
             v-model="selectedFlight.units[0].tacan"
             v-if="index === 0"
             @complete="tacaninput"

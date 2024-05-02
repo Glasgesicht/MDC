@@ -1,5 +1,5 @@
-/* Let's make some of the MCD's style global for funsies */
-* {
+/* Let's make some of the MCD'--mcd-text-colors style global for funsies */
+:root {
   --mcdgrey: #3a3838;
   --mcdwhite: #f2f2f2;
   --mcdhalfgrey: #d0cece;
@@ -7,15 +7,14 @@
   --mcdred: #ff0000;
   --mcdred-bg: #fce4d6;
   --mcd-page: #ffff00;
+  --mcd-font-size: 1.019em;
+  --mcd-header-font-weight: bolder;
+  --mcd-text-font-weight: 600;
 
-  font-family: "Bahnschrift";
-  font-size: 1.019em;
-  font-weight: bolder;
-
-  text-align: center;
-  box-sizing: border-box;
+  --mcd-text-color: black;
+  --mcd-text-contrast: var(--mcdwhite);
+  --mcd-font-family: "Bahnschrift";
 }
-
 .dropdown {
   border: 1px solid black;
   border-radius: 0;
@@ -39,13 +38,20 @@ select {
   max-height: 1024px;
   width: 768px;
   height: 1024px;
-  color: black;
+  color: var(--mcd-text-color);
   display: grid;
   grid-template-columns: repeat(32, 1fr);
   grid-template-rows: repeat(32, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   white-space: nowrap;
+
+  font-family: var(--mcd-font-family);
+  font-size: var(--mcd-font-size);
+  font-weight: var(--mcd-header-font-weight);
+
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .mcdpage::after {
@@ -76,6 +82,13 @@ select {
   border: 1px solid black;
   padding: 0;
   margin: 0;
+
+  font-family: var(--mcd-font-family);
+  font-size: var(--mcd-font-size);
+  font-weight: var(--mcd-header-font-weight);
+
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .pagenr {
@@ -232,14 +245,14 @@ select {
   writing-mode: tb-rl;
 }
 .mcd-bow {
-  color: black;
+  color: var(--mcd-text-color);
   background-color: var(--mcdwhite);
-  font-weight: 600;
+  font-weight: var(--mcd-text-font-weight);
 }
 .mcd-bog {
-  color: black;
+  color: var(--mcd-text-color);
   background-color: var(--mcdhalfgrey);
-  font-weight: 600;
+  font-weight: var(--mcd-text-font-weight);
 }
 
 .mcd-wog {
@@ -248,7 +261,7 @@ select {
 }
 
 .roehead {
-  color: black;
+  color: var(--mcd-text-color);
   background-color: var(--mcdred);
 }
 
