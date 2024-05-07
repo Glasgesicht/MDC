@@ -173,7 +173,7 @@ export function processCF(payload: any /* cf file is a zip */) {
               units: [...new Array(parseInt(mCurr.Units[0])).keys()].map(
                 (_n, i) => {
                   return {
-                    callsign: "TBA",
+                    callsign: "",
                     search: "",
                     tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
                     laser: "",
