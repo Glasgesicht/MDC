@@ -202,6 +202,13 @@ export function processCF(payload: any /* cf file is a zip */) {
                 }
               ), // defaults to number of wingman per cf
 
+              comms: {
+                cs: "",
+                pri: "",
+                sec: "",
+                ter: "",
+              },
+
               flightTask: "", // not in cf
               // Try to get from CF
               /*              UHF:
