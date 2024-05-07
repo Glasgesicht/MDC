@@ -3,6 +3,7 @@ import type {
   Flight,
   FlightMember,
   Mission,
+  OrbitsEntity,
   Package,
   Waypoint,
 } from "@/types/mdcDataTypes"; // @ts-ignore // stfu
@@ -55,7 +56,15 @@ export function processCF(payload: any /* cf file is a zip */) {
 
       let _packages = res.Mission.Package?.reduce((coll, curr) => {
         const newPackage = {
-          agencies: [] /*res.Mission.Airspace[0]?.Orbits[0]?.Orbit.reduce(
+          agencies: res.Mission.Airspace.map((n) => n.Orbits).reduce<
+            OrbitsEntity[]
+          >((coll, curr) => {
+            //@ts-ignore
+            if (curr[0] !== "") return [...coll, ...curr]; // this is bad practice, don't do stuff like that if you're planning on getting paid.
+            return coll;
+          }, new Array<OrbitsEntity>()),
+
+          /*.reduce(
             (coll, curr) => {
               if (curr.Type.includes("AAR"))
                 coll.push({
@@ -67,8 +76,7 @@ export function processCF(payload: any /* cf file is a zip */) {
               return coll;
             },
             new Array()
-          ),*/,
-          airThreat: "NONE",
+          ),*/ airThreat: "NONE",
           bullseye: {
             name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
             lat:
@@ -83,7 +91,7 @@ export function processCF(payload: any /* cf file is a zip */) {
           packageTask: "Eat Burger",
           roe: "Don't Shoot Friendlies",
           ramrod: res.Mission.BlueRAMROD[0],
-          situation: "situation",
+          situation: res.Mission.Situation[0].replaceAll("&#x13&#x10;", "\n"),
           surfaceThreat: "AAA",
           metar: "",
           name: curr.Name ? curr.Name[0] : "Name Missing",
@@ -157,9 +165,9 @@ export function processCF(payload: any /* cf file is a zip */) {
               units: [...new Array(parseInt(mCurr.Units[0])).keys()].map(
                 (_n, i) => {
                   return {
-                    callsign: mCurr.Units[i],
+                    callsign: "TBA",
                     search: "",
-                    tacan: "",
+                    tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
                     laser: "",
                     m2: "",
                     tailNr: "",
