@@ -22,6 +22,8 @@ export const useFlightStore = defineStore("flight", () => {
     callsign: "",
     callsignNumber: NaN,
     flightTask: "",
+    fence_in: 0,
+    fence_out: 0,
     gameplan: "",
     MSNumber: "",
     missionType: "",

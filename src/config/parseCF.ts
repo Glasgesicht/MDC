@@ -152,6 +152,14 @@ export function processCF(payload: any /* cf file is a zip */) {
                 ELEV: "",
                 LEN: "",
               },
+
+              fence_in: mCurr.Waypoints[0].Waypoint.findIndex(
+                (wp) => wp.Type[0] === "Push Pt"
+              ),
+              fence_out: mCurr.Waypoints[0].Waypoint.findIndex(
+                (wp) => wp.Type[0] === "Exit Pt"
+              ),
+
               callsign:
                 mCurr.CallsignNameCustomIs[0] === "True"
                   ? mCurr.CallsignNameCustom[0]
