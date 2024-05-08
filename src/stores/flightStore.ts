@@ -25,10 +25,22 @@ export const useFlightStore = defineStore("flight", () => {
     fence_in: 0,
     fence_out: 0,
     comms: {
-      pri: "",
-      sec: "",
-      ter: "",
-      cs: "",
+      pri: {
+        freq: "",
+        name: "",
+      },
+      sec: {
+        freq: "",
+        name: "",
+      },
+      ter: {
+        freq: "",
+        name: "",
+      },
+      cx: {
+        freq: "",
+        name: "",
+      },
     },
     gameplan: "",
     MSNumber: "",
