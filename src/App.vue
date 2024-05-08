@@ -36,20 +36,22 @@ const active = ref(0);
 
 const makejpg = async () => {
   const oldactive = active.value;
-  for (let i = 1; i < 7; i++) {
+  for (let i = 1; i <= 4; i++) {
     active.value = i;
     await new Promise((r) =>
       setTimeout(() => {
         r(true);
       }, 0)
     );
-    await toJpeg(document.getElementsByName("mcdelement" + i)[0]).then(
-      function (dataUrl) {
-        var img = new Image();
-        img.src = dataUrl;
-        document.body.getElementsByClassName("mcdimages")[0].append(img);
-      }
-    );
+    try {
+      await toJpeg(document.getElementsByName("mdcelement" + i)[0])
+        .then(function (dataUrl) {
+          const img = new Image();
+          img.src = dataUrl;
+          document.body.getElementsByClassName("mcdimages")[0].append(img);
+        })
+        .catch();
+    } catch (err) {}
   }
   active.value = oldactive;
 };
@@ -86,7 +88,7 @@ const makejpg = async () => {
       <NewComms :pagenr="4" name="mdcelement4" />
     </TabPanel>
     <TabPanel header="Gameplan">
-      <Gameplan :pagenr="1" name="mcdelement1" />
+      <Gameplan :pagenr="1" name="mcdelement5" />
       Display ROE:
       <Checkbox label="Show ROE-Box" :binary="true" v-model="showROE" />
     </TabPanel>
@@ -94,10 +96,10 @@ const makejpg = async () => {
       <Waypoints :pagenr="2" />
     </TabPanel>
     <TabPanel header="Coordination">
-      <Coordination :pagenr="3" name="mcdelement3" />
+      <Coordination :pagenr="3" name="mcdelement6" />
     </TabPanel>
     <TabPanel header="Datacard">
-      <Datacard :pagenr="4" name="mcdelement4" />
+      <Datacard :pagenr="4" name="mcdelement7" />
     </TabPanel>
     <!--     <TabPanel header="Page 2">
       <Page2 :pagenr="5" name="mcdelement5" />
