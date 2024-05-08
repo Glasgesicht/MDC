@@ -203,10 +203,22 @@ export function processCF(payload: any /* cf file is a zip */) {
               ), // defaults to number of wingman per cf
 
               comms: {
-                cs: "",
-                pri: "",
-                sec: "",
-                ter: "",
+                cx: {
+                  freq: "",
+                  name: "",
+                },
+                pri: {
+                  freq: "",
+                  name: "",
+                },
+                sec: {
+                  freq: "",
+                  name: "",
+                },
+                ter: {
+                  freq: "",
+                  name: "",
+                },
               },
 
               flightTask: "", // not in cf
