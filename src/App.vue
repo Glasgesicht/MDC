@@ -4,6 +4,10 @@ import Waypoints from "./mdcpages/waypoints.vue";
 import Coordination from "./mdcpages/coordination.vue";
 import Dmpi from "./mdcpages/dmpi.vue";
 import Datacard from "./mdcpages/datacard.vue";
+import NewBriefing from "./mdcpages/newbriefing.vue";
+import NewDatacard from "./mdcpages/newdatacard.vue";
+import NewSteerpoints from "./mdcpages/newsteerpoints.vue";
+import NewComms from "./mdcpages/newcomms.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -69,6 +73,18 @@ const makejpg = async () => {
 
   <TabView v-model:activeIndex="active"
     ><TabPanel header="Settings"> <Settings /> </TabPanel>
+    <TabPanel header="New Briefing">
+      <NewBriefing :pagenr="1" name="mdcelement1" />
+    </TabPanel>
+    <TabPanel header="New Datacard">
+      <NewDatacard :pagenr="2" name="mdcelement2" />
+    </TabPanel>
+    <TabPanel header="New Steerpoints">
+      <NewSteerpoints :pagenr="3" name="mdcelement3" />
+    </TabPanel>
+    <TabPanel header="New Comms">
+      <NewComms :pagenr="4" name="mdcelement4" />
+    </TabPanel>
     <TabPanel header="Gameplan">
       <Gameplan :pagenr="1" name="mcdelement1" />
       Display ROE:
