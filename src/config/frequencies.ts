@@ -1,4 +1,4 @@
-const commTables = [
+export const commTables = [
   {
     //is an array, because these should be selectable in the future, especially considering collaborations
     name: "cJTF-13",
@@ -356,3 +356,37 @@ const commTables = [
     ],
   },
 ];
+
+export type freqNames =
+  | "AMBER"
+  | "AQUA"
+  | "BLACK"
+  | "BLUE"
+  | "BRONZE"
+  | "CARMINE"
+  | "COBALT"
+  | "CRIMSON"
+  | "EMERALD"
+  | "GARNET"
+  | "GOLD"
+  | "GREEN"
+  | "INDIGO"
+  | "IVORY"
+  | "JADE"
+  | "KHAKI"
+  | "MAGENTA"
+  | "OCHRE"
+  | "OLIVE"
+  | "ORANGE"
+  | "PINK"
+  | "PURPLE"
+  | "RED"
+  | "RUBY"
+  | "SAGE"
+  | "SAPPHIRE"
+  | "SCARLET"
+  | "SILVER"
+  | "TEAL"
+  | "VIOLET"
+  | "WHITE"
+  | "YELLOW";
