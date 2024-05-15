@@ -25,9 +25,9 @@ export const useFlightStore = defineStore("flight", () => {
     fence_in: 0,
     fence_out: 0,
     comms: {
-      // This is awfully F-16 specific
-      radio1: new Array<String>(20),
-      radio2: new Array<String>(20),
+      // This is awfully F-16 specific, but we can just overwrite this, might adjust the type though
+      radio1: new Array<{ freq: string; name: string }>(20),
+      radio2: new Array<{ freq: string; name: string }>(20),
     },
     gameplan: "",
     MSNumber: "",
