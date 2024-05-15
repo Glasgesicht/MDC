@@ -1,6 +1,6 @@
 # MDC
 
-Small project to genertate MDC's from Data import with many contextual presets.
+Small project to genertate MDC's from Data import with many contextual presets for the use in the flight simulator "DCS: World"
 
 This is in a heavy WIP state.
 The current programm represets a rough scaffold of what this will eventually become.
@@ -20,3 +20,5 @@ Currently planned features include:
 2. navigate to project folder
 3. install dependencied with `npm install`
 4. run project via `npx vite`
+
+Created with by and for [CJTF-13](https://discord.gg/tawdcs)
