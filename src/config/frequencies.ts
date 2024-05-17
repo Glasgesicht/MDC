@@ -390,3 +390,38 @@ export type freqNames =
   | "VIOLET"
   | "WHITE"
   | "YELLOW";
+
+export const freqNames = [
+  "AMBER",
+  "AQUA",
+  "BLACK",
+  "BLUE",
+  "BRONZE",
+  "CARMINE",
+  "COBALT",
+  "CRIMSON",
+  "EMERALD",
+  "GARNET",
+  "GOLD",
+  "GREEN",
+  "INDIGO",
+  "IVORY",
+  "JADE",
+  "KHAKI",
+  "MAGENTA",
+  "OCHRE",
+  "OLIVE",
+  "ORANGE",
+  "PINK",
+  "PURPLE",
+  "RED",
+  "RUBY",
+  "SAGE",
+  "SAPPHIRE",
+  "SCARLET",
+  "SILVER",
+  "TEAL",
+  "VIOLET",
+  "WHITE",
+  "YELLOW",
+];

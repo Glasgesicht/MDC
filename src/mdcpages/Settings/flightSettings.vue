@@ -18,10 +18,11 @@ import { getSTN } from "@/utils/utilFunctions";
 import { template } from "lodash";
 import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
-import InputMask from "primevue/inputmask";
+import InputMask from "primevue/inputmask"; //@ts-ignore this shouldnt error
+import CommsAssignment from "./commsAssignment.vue";
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
 const { updateFligh } = useFlightStore();
 const { file } = storeToRefs(useGlobalStore());
 
@@ -34,9 +35,8 @@ function callsignChangeEvent(event: any) {
   updateFligh();
 }
 
-watch(selectedFlight, () => {});
-
 function tacaninput() {
+  if (!useDefaults) return;
   const match = selectedFlight.value.units[0].tacan.match(/(\d{1,2})([YX])/);
   if (match && match[2]) {
     if (selectedFlight.value.units[1])
@@ -66,6 +66,7 @@ function FlightMemberUpdate() {
 }
 
 const isCustomCalsign = ref(false);
+
 const addFlightMemeber = () => {
   selectedFlight.value.units.push({
     tailNr: undefined,
@@ -211,6 +212,16 @@ const groupedFlights = computed(() =>
         outlined
       />
       <label for="customCheckbox">custom callsign</label>
+      <br />
+      <Checkbox
+        label="Add custom Callsign"
+        id="editDefautls"
+        class="c-height"
+        v-model="useDefaults"
+        :binary="true"
+        outlined
+      />
+      <label for="editDefautls">use defaults</label>
     </div>
 
     <p style="grid-row: 4 / span 1" class="mcd-s-2 mcd-m-a">
@@ -348,14 +359,17 @@ const groupedFlights = computed(() =>
       /></template>
     </DataTable>
 
-    <p style="grid-row: 12" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
+    <p style="grid-row: 11" class="mcd-s-2 mcd-m-a">COMMS ASSIGNMENT</p>
+    <div style="grid-row: 12" class="mcd-s-6 mcd-m-a"><CommsAssignment /></div>
+
+    <p style="grid-row: 17" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
     <DataTable
       showGridlines
       edit-mode="cell"
       :value="selectedFlight.waypoints"
       class="mcd-s-6 datatable textleft redefSize"
       style="
-        grid-row: 13 / span 8;
+        grid-row: 18 / span 8;
         align-content: left;
         margin-left: 0;
         text-align: left;
