@@ -95,9 +95,6 @@ onMounted(() => {
     "--mcd-header-font-weight"
   );
   mcd_font_weight.value = root.getPropertyValue("--mcd-text-font-weight");
-
-  console.log(mcd_font_size.value);
-  console.log(mcd_font_weight.value);
 });
 
 const fonz_weight = [

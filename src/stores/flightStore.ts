@@ -27,9 +27,19 @@ export const useFlightStore = defineStore("flight", () => {
     fence_out: 0,
     comms: {
       // This is awfully F-16 specific, but we can just overwrite this, might adjust the type though
-      radio1: new Array<{ freq: string; name: string; number?: number }>(20),
+      radio1: new Array<{
+        freq: string;
+        name: string;
+        number?: number;
+        description: string;
+      }>(20),
       // Also, those values are not computed, because we need to be able to freely set them if needed
-      radio2: new Array<{ freq: string; name: string; number?: number }>(20),
+      radio2: new Array<{
+        freq: string;
+        name: string;
+        number?: number;
+        description: string;
+      }>(20),
     },
     gameplan: "",
     MSNumber: "",
@@ -53,7 +63,11 @@ export const useFlightStore = defineStore("flight", () => {
     }>(),
     DEP: {
       NAME: "",
-      ARR: "",
+      ICAO: "",
+      ATIS: { uhf: "", vhf: "" },
+      APPR: { uhf: "", vhf: "" },
+      TOWER: { uhf: "", vhf: "" },
+      GROUND: { uhf: "", vhf: "" },
       TACAN: "",
       HDG: "",
       ILS: "",
@@ -62,7 +76,11 @@ export const useFlightStore = defineStore("flight", () => {
     },
     ARR: {
       NAME: "",
-      ARR: "",
+      ICAO: "",
+      ATIS: { uhf: "", vhf: "" },
+      APPR: { uhf: "", vhf: "" },
+      TOWER: { uhf: "", vhf: "" },
+      GROUND: { uhf: "", vhf: "" },
       TACAN: "",
       HDG: "",
       ILS: "",
@@ -71,7 +89,11 @@ export const useFlightStore = defineStore("flight", () => {
     },
     ALT: {
       NAME: "",
-      ARR: "",
+      ICAO: "",
+      ATIS: { uhf: "", vhf: "" },
+      APPR: { uhf: "", vhf: "" },
+      TOWER: { uhf: "", vhf: "" },
+      GROUND: { uhf: "", vhf: "" },
       TACAN: "",
       HDG: "",
       ILS: "",

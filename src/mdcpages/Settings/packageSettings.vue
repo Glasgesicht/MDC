@@ -47,17 +47,19 @@
       </Column>
       <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
         <template #body="{ index }">
-          {{ allFlightsFromPackage[index].comms.radio1[15 + index].name }}
-          {{ allFlightsFromPackage[index].comms.radio1[15 + index].number }}
-          <br />{{ allFlightsFromPackage[index].comms.radio1[15 + index].freq }}
+          {{ allFlightsFromPackage[index]?.comms.radio1[15 + index]?.name }}
+          {{ allFlightsFromPackage[index]?.comms.radio1[15 + index]?.number }}
+          <br />{{
+            allFlightsFromPackage[index]?.comms.radio1[15 + index]?.freq
+          }}
         </template></Column
       >
       <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
         <template #body="{ index }">
-          {{ allFlightsFromPackage[index].comms.radio2[15 + index].name }}
-          {{ allFlightsFromPackage[index].comms.radio2[15 + index].number
+          {{ allFlightsFromPackage[index]?.comms.radio2[15 + index]?.name }}
+          {{ allFlightsFromPackage[index]?.comms.radio2[15 + index]?.number
           }}<br />{{
-            allFlightsFromPackage[index].comms.radio2[15 + index].freq
+            allFlightsFromPackage[index]?.comms.radio2[15 + index]?.freq
           }}</template
         ></Column
       >

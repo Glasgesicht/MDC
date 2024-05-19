@@ -42,11 +42,12 @@ const showROE = inject("showROE");
 
 <template>
   <div class="mdcpage">
-    <div class="c36 r">RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE</div>
+    <div class="c36 r">
+      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+    </div>
     <div class="c3 y">PAGE {{ pagenr }}</div>
     <div class="c33 g">COMMUNICATIONS</div>
 
-    
     <div class="c2 g">UHF</div>
     <div class="c3 g">FREQ</div>
     <div class="c5 g">COLOUR</div>
@@ -62,26 +63,41 @@ const showROE = inject("showROE");
     <div class="c6 g">DESCRIPTION</div>
 
     <div class="c36 parent" v-for="index in new Array(20).keys()">
-      <div class="c2 g">{{index + 1}}</div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`"></div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`"></div>
+      <div class="c2 g">{{ index + 1 }}</div>
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.comms.radio1[index]?.freq }}
+      </div>
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.comms.radio1[index]?.name }}
+        {{ selectedFlight.comms.radio1[index]?.number }}
+      </div>
       <div :class="`c1 hr`"></div>
       <div :class="`c1 hr`"></div>
-      <div :class="`c6 ${index % 2 ? 'hg' : 'w'}`"></div>
+      <div :class="`c6 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.comms.radio1[index]?.description }}
+      </div>
 
-      <div class="c2 g">{{index + 1}}</div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`"></div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`"></div>
+      <div class="c2 g">{{ index + 1 }}</div>
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.comms.radio2[index]?.freq }}
+      </div>
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.comms.radio2[index]?.name }}
+        {{ selectedFlight.comms.radio2[index]?.number }}
+      </div>
       <div :class="`c1 hr`"></div>
       <div :class="`c1 hr`"></div>
-      <div :class="`c6 ${index % 2 ? 'hg' : 'w'}`"></div>
+      <div :class="`c6 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.comms.radio2[index]?.description }}
+      </div>
     </div>
 
-    <div class="c36 r">RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE</div>
+    <div class="c36 r">
+      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+    </div>
   </div>
 </template>
 <style scoped>
-
 @import "@/assets/newstyle.css";
 .parent {
   display: inline-grid;
