@@ -22,6 +22,7 @@
     <p style="grid-row: 4 / span 1" class="mcd-s-2 c-height mcd-m-a">
       Order Flights In Package
     </p>
+
     <DataTable
       class="mcd-s-6 datatable textleft redefSize g-height"
       :value="allFlightsFromPackage"
@@ -39,13 +40,27 @@
           >{{ props.data.callsign }} {{ props.data.callsignNumber }}</template
         >
       </Column>
-      <Column headerStyle="width: 4rem" header="Type" field="aircrafttype">
+      <Column headerStyle="width: 6rem" header="Type" field="aircrafttype">
         <template #editor="{ index }">
           <Input v-model="selectedPKG.flights[index].aircrafttype"
         /></template>
       </Column>
-      <Column headerStyle="width: 4rem" header="VHF" field="VHF" />
-      <Column headerStyle="width: 4rem" header="UHF" field="UHF" />
+      <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
+        <template #body="{ index }">
+          {{ allFlightsFromPackage[index].comms.radio1[15 + index].name }}
+          {{ allFlightsFromPackage[index].comms.radio1[15 + index].number }}
+          <br />{{ allFlightsFromPackage[index].comms.radio1[15 + index].freq }}
+        </template></Column
+      >
+      <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
+        <template #body="{ index }">
+          {{ allFlightsFromPackage[index].comms.radio2[15 + index].name }}
+          {{ allFlightsFromPackage[index].comms.radio2[15 + index].number
+          }}<br />{{
+            allFlightsFromPackage[index].comms.radio2[15 + index].freq
+          }}</template
+        ></Column
+      >
       <Column header="FLIGHTLEAD">
         <template #body="{ data }">
           {{ data.units[0]?.callsign }}

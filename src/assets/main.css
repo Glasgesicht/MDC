@@ -290,6 +290,14 @@ select {
   margin: auto;
 }
 
+.logo {
+  background-image: url("logo_16aew.png"), url("logo_16aew.png");
+  background-size: contain;
+  background-origin: inherit;
+  background-repeat: no-repeat;
+  background-position: left top, right top;
+}
+
 .mcd-m-0 {
   margin: 0;
 }

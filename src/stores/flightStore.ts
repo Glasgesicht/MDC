@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
-import { computed, ref, type Ref } from "vue";
+import { computed, ref, toRaw, watch, type Ref } from "vue";
 import { F15Flights, F16Flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
 
@@ -22,12 +22,14 @@ export const useFlightStore = defineStore("flight", () => {
     callsign: "",
     callsignNumber: NaN,
     flightTask: "",
+    //references steerpoint if applicable
     fence_in: 0,
     fence_out: 0,
     comms: {
       // This is awfully F-16 specific, but we can just overwrite this, might adjust the type though
-      radio1: new Array<{ freq: string; name: string }>(20),
-      radio2: new Array<{ freq: string; name: string }>(20),
+      radio1: new Array<{ freq: string; name: string; number?: number }>(20),
+      // Also, those values are not computed, because we need to be able to freely set them if needed
+      radio2: new Array<{ freq: string; name: string; number?: number }>(20),
     },
     gameplan: "",
     MSNumber: "",
@@ -83,6 +85,8 @@ export const useFlightStore = defineStore("flight", () => {
     selectedFlight.value = cloneDeep(initState);
   }
 
+  const useDefaults = ref(true);
+
   // Here goes all the data that only belongs to the currently selected flight
   const flightTask = computed({
     get() {
@@ -92,24 +96,6 @@ export const useFlightStore = defineStore("flight", () => {
       selectedFlight.value.flightTask = value;
     },
   });
-
-  // Might not need this because it's set in createFlights as a macro.
-  /*
-  const VHF = computed(() => {
-    if (f16callsigns.includes(selectedFlight.value.callsign))
-      return `141.${selectedFlight.value.callsignNumber}0`;
-    else if (f15callsigns.includes(selectedFlight.value.callsign))
-      return `144.${selectedFlight.value.callsignNumber}0`;
-    return "XXX.XX";
-    //need to figure out freq's for other wings
-  });
-  const UHF = computed(() => {
-    if (f16callsigns.includes(selectedFlight?.value.callsign))
-      return `267.${selectedFlight?.value.callsignNumber}0`;
-    else if (f15callsigns.includes(selectedFlight?.value.callsign))
-      return `269.${selectedFlight?.value.callsignNumber}0`;
-    return "XXX.XX";
-  });*/
 
   const updateFligh = () => {
     const callsign = selectedFlight.value.callsign;
@@ -156,5 +142,6 @@ export const useFlightStore = defineStore("flight", () => {
     setNewCallsign,
     updateFligh,
     reset,
+    useDefaults,
   };
 });

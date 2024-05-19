@@ -4,6 +4,7 @@ import type {
   Package,
   PackageEntity,
   RouteEntity,
+  WaypointEntity,
 } from "@/types/mdcDataTypes";
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
@@ -97,10 +98,10 @@ export function processCF(payload: any /* cf file is a zip */) {
     }
   }
 
-  function makeFlight(rt: RouteEntity[], pkg: any) {
+  function makeFlight(rt: RouteEntity[], pkg: PackageEntity) {
     return rt
       .filter((route) => route.PackageTag[0] === pkg.Tag[0])
-      .map((mCurr: any) => ({
+      .map((mCurr, i, pkg) => ({
         aircrafttype: getAircraftType(mCurr.Aircraft[0].Type[0]),
         DEP: getWaypoint(mCurr, "Take off"),
         ARR: getWaypoint(mCurr, "Landing"),
@@ -116,10 +117,7 @@ export function processCF(payload: any /* cf file is a zip */) {
         missionType: mCurr.Task[0],
         tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
         units: getUnits(mCurr),
-        comms: {
-          radio1: new Array(20),
-          radio2: new Array(20),
-        },
+        comms: assignComms(pkg, i),
         waypoints: getWaypoints(mCurr.Waypoints[0].Waypoint),
       }));
   }
@@ -170,7 +168,37 @@ export function processCF(payload: any /* cf file is a zip */) {
     }));
   }
 
-  function getWaypoints(waypoints: any[]): any[] {
+  function assignComms(pkg: RouteEntity[], i: number) {
+    const radio1 = new Array<{ freq: string; name: string; number?: number }>(
+      20
+    );
+    const radio2 = new Array<{ freq: string; name: string; number?: number }>(
+      20
+    );
+
+    pkg.forEach((flight, i) => {
+      const t = flights.find(
+        (f) => f.callsign === flight.CallsignNameCustom[0]
+      );
+
+      if (t) {
+        radio1[i + 15] = {
+          freq: t.pri.freq,
+          name: t.pri.name,
+          number: parseInt(t.pri.number),
+        };
+        radio2[i + 15] = {
+          freq: t.sec.freq,
+          name: t.sec.name,
+          number: parseInt(t.sec.number),
+        };
+      }
+    });
+
+    return { radio1: radio1, radio2: radio2 };
+  }
+
+  function getWaypoints(waypoints: WaypointEntity[]): any[] {
     return waypoints.slice(0, 24).map((wp: any, i: number) => ({
       activity: wp.Activity[0],
       airspeed_calibrated: parseFloat(wp.KCAS[0]),

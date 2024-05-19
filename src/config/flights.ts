@@ -19,12 +19,14 @@ const createFlight = (
         // TODO: replace 0 with selected table when selection becomes an option
         typeof pri === "string" ? pri : commTables[0][pri.name][pri.number - 1]
       }`,
+      number: typeof pri === "string" ? "" : pri.number + "",
     },
     sec: {
       name: `${typeof sec === "string" ? "" : sec.name}`,
       freq: `${
         typeof sec === "string" ? sec : commTables[0][sec.name][sec.number - 1]
       }`,
+      number: typeof sec === "string" ? "" : sec.number + "",
     },
   };
 };
@@ -136,7 +138,7 @@ export const flights = [
     { name: "TEAL", number: 5 }
   ),
   createFlight(
-    "COUGAR",
+    "DUDE",
     8,
     "F-15",
     { name: "GARNET", number: 2 },
