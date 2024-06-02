@@ -39,6 +39,20 @@ export const airports: {
   },
 ];
 
+export const airfieldEmpty = {
+  NAME: "",
+  ICAO: "",
+  ATIS: { uhf: "", vhf: "" },
+  APPR: { uhf: "", vhf: "" },
+  TOWER: { uhf: "", vhf: "" },
+  GROUND: { uhf: "", vhf: "" },
+  TACAN: "",
+  HDG: "",
+  ILS: "",
+  ELEV: "",
+  LEN: "",
+};
+
 export type Airport = (typeof airports)[0];
 
 type comm = { uhf: string; vhf: string };

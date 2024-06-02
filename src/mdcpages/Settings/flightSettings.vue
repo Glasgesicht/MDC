@@ -27,7 +27,7 @@ import {
   type freqNames,
 } from "@/config/frequencies";
 import { onMounted } from "vue";
-import { airports } from "@/config/airfields";
+import { airports, airfieldEmpty } from "@/config/airfields";
 
 function pushRadio(vals: RadioType) {
   let radio = selectedFlight.value.comms[vals.radio][vals.preset + 1];
@@ -164,7 +164,25 @@ function deleteMember(i: number) {
   tacaninput();
 }
 
+function deleteAirport(type: "DEP" | "ARR" | "ALT") {
+  assignAirport(type, structuredClone(airfieldEmpty));
+}
+
 function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
+  console.log(ap);
+
+  switch (type) {
+    case "DEP":
+      depart.value = null;
+      break;
+    case "ARR":
+      arr.value = null;
+    case "ALT":
+      alt.value = null;
+  }
+
+  selectedFlight.value[type] = ap;
+
   const offset = type === "DEP" ? 1 : type === "ARR" ? 6 : 9;
   const comms = selectedFlight.value.comms;
   if (type === "DEP") {
@@ -478,7 +496,7 @@ const groupedFlights = computed(() =>
       v-if="depart"
       style="grid-row: 15"
       icon="pi pi-times-circle"
-      @click="() => (depart = null)"
+      @click="deleteAirport('DEP')"
       text
     />
 
@@ -500,7 +518,7 @@ const groupedFlights = computed(() =>
       v-if="arr"
       style="grid-row: 17"
       icon="pi pi-times-circle"
-      @click="() => (arr = null)"
+      @click="deleteAirport('ARR')"
       text
     />
     <p style="grid-row: 19" class="mcd-s-1 mcd-m-a">ALTERNATE</p>
@@ -521,7 +539,7 @@ const groupedFlights = computed(() =>
       v-if="alt"
       style="grid-row: 19"
       icon="pi pi-times-circle"
-      @click="() => (alt = null)"
+      @click="deleteAirport('ALT')"
       text
     />
     <p style="grid-row: 21" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
