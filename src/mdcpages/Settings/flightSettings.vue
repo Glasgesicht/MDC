@@ -20,6 +20,7 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask"; //@ts-ignore this shouldnt error
 import CommsAssignment from "./commsAssignment.vue";
+import toDTC from "@/components/commsToDTC.vue";
 import {
   commTables,
   isPreset,
@@ -621,6 +622,8 @@ const groupedFlights = computed(() =>
             @click="clearComms(index, 'pri')" /></template
       ></Column>
     </DataTable>
+
+    <toDTC style="grid-row: 25; grid-column: 7 / span 2" />
 
     <p style="grid-row: 1; grid-column: 9 / span 2" class="mcd-m-a">Radio 2</p>
     <DataTable
