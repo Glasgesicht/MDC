@@ -170,45 +170,46 @@ function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
   if (type === "DEP") {
     comms.radio1[0] = {
       freq: ap.ATIS.uhf,
-      description: ap.ICAO + " " + "ATIS",
+      description: ap.ATIS.uhf ? ap.ICAO + " " + "ATIS" : "",
       name: "",
     };
     comms.radio2[0] = {
       freq: ap.ATIS.vhf,
-      description: ap.ICAO + " " + "ATIS",
+      description: ap.ATIS.vhf ? ap.ICAO + " " + "ATIS" : "",
       name: "",
     };
   }
+
   comms.radio1[offset] = {
     freq: ap.APPR.uhf,
-    description: ap.ICAO + " " + "APR",
+    description: ap.APPR.uhf ? ap.ICAO + " " + "APR" : "",
     name: "",
   };
   comms.radio2[offset] = {
     freq: ap.APPR.vhf,
-    description: ap.ICAO + " " + "APR",
+    description: ap.APPR.vhf ? ap.ICAO + " " + "APR" : "",
     name: "",
   };
 
   comms.radio1[offset + 1] = {
     freq: ap.TOWER.uhf,
-    description: ap.ICAO + " " + "TWR",
+    description: ap.TOWER.uhf ? ap.ICAO + " " + "TWR" : "",
     name: "",
   };
   comms.radio2[offset + 1] = {
     freq: ap.TOWER.vhf,
-    description: ap.ICAO + " " + "TWR",
+    description: ap.TOWER.vhf ? ap.ICAO + " " + "TWR" : "",
     name: "",
   };
 
   comms.radio1[offset + 2] = {
     freq: ap.GROUND.uhf,
-    description: ap.ICAO + " " + "GRND",
+    description: ap.GROUND.uhf ? ap.ICAO + " " + "GRND" : "",
     name: "",
   };
   comms.radio2[offset + 2] = {
     freq: ap.GROUND.vhf,
-    description: ap.ICAO + " " + "GRND",
+    description: ap.GROUND.vhf ? ap.ICAO + " " + "GRND" : "",
     name: "",
   };
 }
