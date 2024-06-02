@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 import { computed, ref, toRaw, watch, type Ref } from "vue";
-import { F15Flights, F16Flights } from "@/config/flights";
+import { F15Flights, F16Flights, flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
 
 import { cloneDeep } from "lodash";
@@ -40,6 +40,36 @@ export const useFlightStore = defineStore("flight", () => {
         number?: number;
         description: string;
       }>(20),
+    },
+    // This is for the individual flights, making is easier to shift flights around witout complicated logic, although this maybe cases some redundancies.
+    // Might refactor later :)
+    mycomm: {
+      pri: <
+        {
+          freq: string;
+          name: string;
+          number?: number;
+          description: string;
+        }
+      >{
+        freq: "",
+        name: "",
+        number: NaN,
+        description: "",
+      },
+      sec: <
+        {
+          freq: string;
+          name: string;
+          number?: number;
+          description: string;
+        }
+      >{
+        freq: "",
+        name: "",
+        number: NaN,
+        description: "",
+      },
     },
     gameplan: "",
     MSNumber: "",
@@ -101,7 +131,7 @@ export const useFlightStore = defineStore("flight", () => {
       LEN: "",
     },
   };
-  const selectedFlight: Ref<typeof initState> = ref(cloneDeep(initState));
+  const selectedFlight: Ref<typeof initState> = ref(structuredClone(initState));
 
   function reset() {
     selectedFlight.value = cloneDeep(initState);
@@ -135,7 +165,36 @@ export const useFlightStore = defineStore("flight", () => {
         selectedFlight.value.callsignNumber +
         (Number(i) + 1);
     });
+
+    const newComms = flights.find((n) => n.callsign === callsign);
+
+    selectedFlight.value.mycomm = {
+      pri: {
+        description: newComms?.callsign || "",
+        freq: newComms?.pri.freq || "",
+        name: newComms?.pri.name || "",
+        number: parseInt(newComms?.pri.number || ""),
+      },
+      sec: {
+        description: newComms?.callsign || "",
+        freq: newComms?.sec.freq || "",
+        name: newComms?.sec.name || "",
+        number: parseInt(newComms?.sec.number || ""),
+      },
+    };
   };
+
+  function updateLadder() {
+    const { selectedPKG } = storeToRefs(usePackageStore());
+
+    for (let i = 14; i < 20; i++) {
+      //update Radios
+      selectedFlight.value.comms.radio1[i] =
+        selectedPKG.value.flights[i - 14]?.mycomm.pri;
+      selectedFlight.value.comms.radio2[i] =
+        selectedPKG.value.flights[i - 14]?.mycomm.sec;
+    }
+  }
 
   // not enirely sure why i have an explicit getter/setter here, but that's okay
   const gameplan = computed({
@@ -165,5 +224,6 @@ export const useFlightStore = defineStore("flight", () => {
     updateFligh,
     reset,
     useDefaults,
+    updateLadder,
   };
 });

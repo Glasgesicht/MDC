@@ -4,5 +4,6 @@ import { ref } from "vue";
 // might populate if needed.
 export const useGlobalStore = defineStore("global", () => {
   const file = ref();
-  return { file };
+  const stateChanged = ref(0);
+  return { file, stateChanged };
 });

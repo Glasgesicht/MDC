@@ -20,11 +20,38 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask"; //@ts-ignore this shouldnt error
 import CommsAssignment from "./commsAssignment.vue";
+import {
+  commTables,
+  isPreset,
+  type RadioType,
+  type freqNames,
+} from "@/config/frequencies";
+import { onMounted } from "vue";
+import { airports } from "@/config/airfields";
+
+function pushRadio(vals: RadioType) {
+  let radio = selectedFlight.value.comms[vals.radio][vals.preset + 1];
+  if (isPreset(vals)) {
+    radio = {
+      description: vals.descr,
+      freq: commTables[0][vals.name][vals.number - 1],
+      name: vals.name,
+      number: vals.number + 1,
+    };
+  } else {
+    radio = {
+      description: vals.descr,
+      freq: vals.freq,
+      name: "",
+    };
+  }
+}
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
-const { updateFligh } = useFlightStore();
-const { file } = storeToRefs(useGlobalStore());
+const { selectedPKG } = storeToRefs(usePackageStore());
+const { updateFligh, updateLadder } = useFlightStore();
+const { file, stateChanged } = storeToRefs(useGlobalStore());
 
 function callsignChangeEvent(event: any) {
   if (event.value.callsign) {
@@ -33,10 +60,18 @@ function callsignChangeEvent(event: any) {
     selectedFlight.value.aircrafttype = event.value.type;
   }
   updateFligh();
+  updateLadder();
 }
 
+watch(stateChanged, () => {
+  {
+    updateLadder();
+  }
+});
+
 function tacaninput() {
-  if (!useDefaults) return;
+  if (!useDefaults.value) return;
+
   const match = selectedFlight.value.units[0].tacan.match(/(\d{1,2})([YX])/);
   if (match && match[2]) {
     if (selectedFlight.value.units[1])
@@ -50,6 +85,26 @@ function tacaninput() {
         parseInt(match[1]) + "" + (match[2] === "Y" ? "X" : "Y");
   }
 }
+
+function clearComms(index: number, radio: "pri" | "sec") {
+  if (radio === "pri")
+    selectedFlight.value.comms.radio1[index] = {
+      description: "",
+      freq: "",
+      name: "",
+    };
+  else {
+    selectedFlight.value.comms.radio2[index] = {
+      description: "",
+      freq: "",
+      name: "",
+    };
+  }
+}
+
+const depart = ref();
+const arr = ref();
+const alt = ref();
 
 function FlightMemberUpdate() {
   selectedFlight.value.units.forEach((unit) => {
@@ -107,6 +162,55 @@ function deleteMember(i: number) {
     n.L16 = n.L16.substring(0, n.L16.length - 1) + (i + 1);
   }); // corrects TACAN
   tacaninput();
+}
+
+function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
+  const offset = type === "DEP" ? 1 : type === "ARR" ? 6 : 9;
+  const comms = selectedFlight.value.comms;
+  if (type === "DEP") {
+    comms.radio1[0] = {
+      freq: ap.ATIS.uhf,
+      description: ap.ICAO + " " + "ATIS",
+      name: "",
+    };
+    comms.radio2[0] = {
+      freq: ap.ATIS.vhf,
+      description: ap.ICAO + " " + "ATIS",
+      name: "",
+    };
+  }
+  comms.radio1[offset] = {
+    freq: ap.APPR.uhf,
+    description: ap.ICAO + " " + "APR",
+    name: "",
+  };
+  comms.radio2[offset] = {
+    freq: ap.APPR.vhf,
+    description: ap.ICAO + " " + "APR",
+    name: "",
+  };
+
+  comms.radio1[offset + 1] = {
+    freq: ap.TOWER.uhf,
+    description: ap.ICAO + " " + "TWR",
+    name: "",
+  };
+  comms.radio2[offset + 1] = {
+    freq: ap.TOWER.vhf,
+    description: ap.ICAO + " " + "TWR",
+    name: "",
+  };
+
+  comms.radio1[offset + 2] = {
+    freq: ap.GROUND.uhf,
+    description: ap.ICAO + " " + "GRND",
+    name: "",
+  };
+  comms.radio2[offset + 2] = {
+    freq: ap.GROUND.vhf,
+    description: ap.ICAO + " " + "GRND",
+    name: "",
+  };
 }
 
 const _313ref = ref(rnlaf313members.map((n) => n.callsign));
@@ -244,10 +348,9 @@ const groupedFlights = computed(() =>
         ><template #body="{ index }">#{{ index + 1 }}</template></Column
       >
       <Column
-        headerStyle="width: 10rem"
+        style="width: 5rem; max-width: 5rem"
         header="Callsign"
         field="callsign"
-        style="max-height: fit-content"
       >
         <template #body="{ data, field }">
           {{ data[field] }}
@@ -265,9 +368,8 @@ const groupedFlights = computed(() =>
       </Column>
       <Column
         header="Search"
+        style="width: 5rem; max-width: 5rem"
         field="search"
-        headerStyle="min-width: 10rem;max-width: 10rem;"
-        style="max-height: fit-content"
       >
         <template #body="{ data, field }">
           {{ data[field] }}
@@ -276,12 +378,7 @@ const groupedFlights = computed(() =>
           <Input v-model="selectedFlight.units[index].search" /> </template
       ></Column>
 
-      <Column
-        field="STN"
-        header="STN"
-        headerStyle="width: 4rem"
-        style="max-height: fit-content"
-      >
+      <Column field="STN" header="STN" style="width: 5rem; max-width: 5rem">
         <template #body="{ data, field }">
           {{ data[field] }}
         </template>
@@ -317,9 +414,9 @@ const groupedFlights = computed(() =>
       >
         <template #editor="{ index }">
           <InputMask
-            mask="9?*a"
-            v-model="selectedFlight.units[0].tacan"
-            v-if="index === 0"
+            :disabled="index > 0 && useDefaults"
+            :mask="useDefaults ? '9?*a' : '99?*a'"
+            v-model="selectedFlight.units[index].tacan"
             @complete="tacaninput"
         /></template>
       </Column>
@@ -362,14 +459,78 @@ const groupedFlights = computed(() =>
     <p style="grid-row: 11" class="mcd-s-2 mcd-m-a">COMMS ASSIGNMENT</p>
     <div style="grid-row: 12" class="mcd-s-6 mcd-m-a"><CommsAssignment /></div>
 
-    <p style="grid-row: 17" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
+    <p style="grid-row: 15" class="mcd-s-1 mcd-m-a">DEPART</p>
+    <Dropdown
+      style="grid-row: 15; color: red"
+      :options="airports"
+      severity="danger"
+      option-label="NAME"
+      v-model="depart"
+      @change="
+        (e) => {
+          assignAirport('DEP', e.value);
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="depart"
+      style="grid-row: 15"
+      icon="pi pi-times-circle"
+      @click="() => (depart = null)"
+      text
+    />
+
+    <p style="grid-row: 17" class="mcd-s-1 mcd-m-a">ARRIVE</p>
+    <Dropdown
+      style="grid-row: 17; color: red"
+      :options="airports"
+      severity="danger"
+      option-label="NAME"
+      v-model="arr"
+      @change="
+        (e) => {
+          assignAirport('ARR', e.value);
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="arr"
+      style="grid-row: 17"
+      icon="pi pi-times-circle"
+      @click="() => (arr = null)"
+      text
+    />
+    <p style="grid-row: 19" class="mcd-s-1 mcd-m-a">ALTERNATE</p>
+    <Dropdown
+      style="grid-row: 19; color: red"
+      :options="airports"
+      severity="danger"
+      option-label="NAME"
+      v-model="alt"
+      @change="
+        (e) => {
+          assignAirport('ALT', e.value);
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="alt"
+      style="grid-row: 19"
+      icon="pi pi-times-circle"
+      @click="() => (alt = null)"
+      text
+    />
+    <p style="grid-row: 21" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
     <DataTable
       showGridlines
       edit-mode="cell"
       :value="selectedFlight.waypoints"
       class="mcd-s-6 datatable textleft redefSize"
       style="
-        grid-row: 18 / span 8;
+        grid-row: 22;
         align-content: left;
         margin-left: 0;
         text-align: left;
@@ -399,6 +560,88 @@ const groupedFlights = computed(() =>
             icon="pi pi-trash" /></template
       ></Column>
     </DataTable>
+
+    <p style="grid-row: 1; grid-column: 7 / span 2" class="mcd-m-a">Radio 1</p>
+    <DataTable
+      showGridlines
+      edit-mode="cell"
+      :value="selectedFlight.comms.radio1"
+      class="mcd-s-2 datatable textleft redefSize"
+      style="
+        grid-row: 2 / span 8;
+        grid-column: 7 / span 2;
+        align-content: left;
+        margin-left: 0;
+        text-align: left;
+      "
+    >
+      <Column header="#" headerStyle="width: 2rem" style="width: fit-content">
+        <template #body="{ index }"> {{ index + 1 }}</template>
+      </Column>
+      <Column header="Freq" field="freq" headerStyle="width: 2rem">
+        <template #body="{ data, index }"> {{ data?.freq }}</template>
+        <template #editor="{ data, index }">
+          <Input class="fixW" v-model="selectedFlight.comms.radio1[index].freq"
+        /></template>
+      </Column>
+      <Column header="Name" field="name">
+        <template #body="{ data }"> {{ data?.name }}</template></Column
+      >
+      <Column header="n°" field="number">
+        <template #body="{ data }"> {{ data?.number }}</template></Column
+      >
+      <Column header="Description" field="description">
+        <template #body="{ data }"> {{ data?.description }}</template></Column
+      >
+      <Column>
+        <template #body="{ index }"
+          ><Button
+            text
+            icon="pi pi-eraser"
+            @click="clearComms(index, 'pri')" /></template
+      ></Column>
+    </DataTable>
+
+    <p style="grid-row: 1; grid-column: 9 / span 2" class="mcd-m-a">Radio 2</p>
+    <DataTable
+      showGridlines
+      edit-mode="cell"
+      :value="selectedFlight.comms.radio2"
+      class="mcd-s-2 datatable textleft redefSize"
+      style="
+        grid-row: 2 / span 8;
+        grid-column: 9 / span 2;
+        align-content: left;
+        margin-left: 0;
+        text-align: left;
+      "
+    >
+      <Column header="#">
+        <template #body="{ index }"> {{ index + 1 }}</template>
+      </Column>
+      <Column header="Freq" field="freq">
+        <template #body="{ data }"> {{ data?.freq }}</template>
+        <template #editor="{ data, index }">
+          <Input class="fixW" v-model="selectedFlight.comms.radio1[index].freq"
+        /></template>
+      </Column>
+      <Column header="Name" field="name">
+        <template #body="{ data }"> {{ data?.name }}</template></Column
+      >
+      <Column header="n°" field="number">
+        <template #body="{ data }"> {{ data?.number }}</template></Column
+      >
+      <Column header="Description" field="description">
+        <template #body="{ data }"> {{ data?.description }}</template></Column
+      >
+      <Column>
+        <template #body="{ index }"
+          ><Button
+            text
+            icon="pi pi-eraser"
+            @click="clearComms(index, 'sec')" /></template
+      ></Column>
+    </DataTable>
   </div>
 
   <Button @click="console.log(selectedFlight.units)" />
@@ -416,5 +659,9 @@ const groupedFlights = computed(() =>
   border: 0 0;
   margin: auto;
   max-width: -moz-available;
+}
+
+.fixW {
+  max-width: 100%;
 }
 </style>

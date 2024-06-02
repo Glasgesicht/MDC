@@ -425,3 +425,28 @@ export const freqNames = [
   "WHITE",
   "YELLOW",
 ];
+
+interface WithPreset {
+  name: freqNames;
+  number: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+}
+
+interface WithFreq {
+  freq: string;
+}
+
+interface BaseRadio {
+  radio: "radio1" | "radio2";
+  descr: string;
+  preset: number; // Might make this a range through some hack, idk
+}
+
+export type RadioType = (BaseRadio & WithPreset) | (BaseRadio & WithFreq);
+
+export function isPreset(x: RadioType): x is BaseRadio & WithPreset {
+  return "name" in x && "number" in x;
+}
+
+export function isFreq(x: RadioType): x is BaseRadio & WithPreset {
+  return "freq" in x;
+}

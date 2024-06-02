@@ -47,19 +47,16 @@
       </Column>
       <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
         <template #body="{ index }">
-          {{ allFlightsFromPackage[index]?.comms.radio1[15 + index]?.name }}
-          {{ allFlightsFromPackage[index]?.comms.radio1[15 + index]?.number }}
-          <br />{{
-            allFlightsFromPackage[index]?.comms.radio1[15 + index]?.freq
-          }}
+          {{ selectedPKG.flights[index].mycomm.pri.name }}
+          {{ selectedPKG.flights[index].mycomm.pri.number }}
+          <br />{{ selectedPKG.flights[index].mycomm.pri.freq }}
         </template></Column
       >
       <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
         <template #body="{ index }">
-          {{ allFlightsFromPackage[index]?.comms.radio2[15 + index]?.name }}
-          {{ allFlightsFromPackage[index]?.comms.radio2[15 + index]?.number
-          }}<br />{{
-            allFlightsFromPackage[index]?.comms.radio2[15 + index]?.freq
+          {{ selectedPKG.flights[index].mycomm.sec.name }}
+          {{ selectedPKG.flights[index].mycomm.sec.number }}<br />{{
+            selectedPKG.flights[index].mycomm.sec.freq
           }}</template
         ></Column
       >
@@ -81,11 +78,21 @@
     <p style="grid-row: 12 / span 1" class="mcd-s-2 c-height mcd-m-a">
       RAMROD (selected)
     </p>
+
+    <p style="grid-row: 12 / span 1" class="mcd-s-2 c-height mcd-m-a">
+      Situation
+    </p>
     <Dropdown
-      style="grid-row: 13"
+      style="grid-row: 13 / span 1"
       :options="ramrods"
       v-model="ramrod"
       editable
+    />
+    <Textarea
+      style="grid-row: 13 / span 3; grid-column: 3 / span 3"
+      v-model="selectedPKG.situation"
+      rows="5"
+      draggable="false"
     />
   </div>
 </template>
@@ -96,10 +103,13 @@ import { storeToRefs } from "pinia";
 import { ramrods } from "@/config/ramrod";
 
 import DataTable from "primevue/datatable";
+import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Input from "primevue/inputtext";
 import Column from "primevue/column";
+import { flights } from "@/config/flights";
+const { stateChanged } = storeToRefs(useGlobalStore());
 
 const { packages, selectedPKG, allFlightsFromPackage, ramrod } = storeToRefs(
   usePackageStore()
@@ -111,6 +121,7 @@ const confirmDelete = (index: number) => {
 
 const onRowReorder = (event: any) => {
   allFlightsFromPackage.value = event.value;
+  stateChanged.value = Date.now();
 };
 
 const { file } = storeToRefs(useGlobalStore());

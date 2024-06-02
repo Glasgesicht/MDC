@@ -1,4 +1,4 @@
-export const airports: readonly {
+export const airports: {
   NAME: string;
   ICAO: string;
   GROUND: comm;

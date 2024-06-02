@@ -8,6 +8,8 @@ import NewBriefing from "./mdcpages/newbriefing.vue";
 import NewDatacard from "./mdcpages/newdatacard.vue";
 import NewSteerpoints from "./mdcpages/newsteerpoints.vue";
 import NewComms from "./mdcpages/newcomms.vue";
+import NineLine from "./mdcpages/not shared/9Line.vue";
+import CheckIn from "./mdcpages/not shared/CASCheckin.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -15,13 +17,11 @@ import Checkbox from "primevue/checkbox";
 import Dropdown from "primevue/dropdown";
 
 import { inject, provide, ref } from "vue";
-import Page2 from "./mdcpages/Page2.vue";
 import Settings from "./mdcpages/Settings.vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
 import { toJpeg } from "html-to-image";
-import { resolve } from "path";
 
 const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
@@ -36,7 +36,7 @@ const active = ref(0);
 
 const makejpg = async () => {
   const oldactive = active.value;
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 0; i <= 12; i++) {
     active.value = i;
     await new Promise((r) =>
       setTimeout(() => {
@@ -88,18 +88,24 @@ const makejpg = async () => {
       <NewComms :pagenr="4" name="mdcelement4" />
     </TabPanel>
     <TabPanel header="Gameplan">
-      <Gameplan :pagenr="1" name="mcdelement5" />
+      <Gameplan :pagenr="1" name="mdcelement5" />
       Display ROE:
       <Checkbox label="Show ROE-Box" :binary="true" v-model="showROE" />
     </TabPanel>
-    <TabPanel header="Waypoints">
+    <TabPanel header="Waypoints" name="mdcelement6">
       <Waypoints :pagenr="2" />
     </TabPanel>
     <TabPanel header="Coordination">
-      <Coordination :pagenr="3" name="mcdelement6" />
+      <Coordination :pagenr="3" name="mdcelement7" />
     </TabPanel>
     <TabPanel header="Datacard">
-      <Datacard :pagenr="4" name="mcdelement7" />
+      <Datacard :pagenr="4" name="mdcelement8" />
+    </TabPanel>
+    <TabPanel header="9Line">
+      <NineLine name="mdcelement9" />
+    </TabPanel>
+    <TabPanel header="Check-In">
+      <CheckIn name="mdcelement10" />
     </TabPanel>
     <!--     <TabPanel header="Page 2">
       <Page2 :pagenr="5" name="mcdelement5" />

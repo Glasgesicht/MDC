@@ -32,6 +32,7 @@ const createFlight = (
 };
 
 export const flights = [
+  // RNLAF 313 SQN
   createFlight(
     "APEX",
     1,
@@ -88,6 +89,9 @@ export const flights = [
     { name: "GREEN", number: 7 },
     { name: "CRIMSON", number: 1 }
   ),
+  // PolAF 6th SQN
+
+  // 494th FS
   createFlight(
     "PANTHER",
     1,
@@ -144,6 +148,8 @@ export const flights = [
     { name: "GARNET", number: 2 },
     { name: "YELLOW", number: 7 }
   ),
+
+  // 212 Carrier People
   //createFlight("VICTORY", 1, "F/A-18"),
   createFlight(
     "TEMPLAR",
@@ -180,6 +186,8 @@ export const flights = [
     { name: "JADE", number: 4 },
     { name: "COBALT", number: 5 }
   ),
+
+  // ADD Helicopters etc
 ];
 
 export type flightType = (typeof flights)[0];

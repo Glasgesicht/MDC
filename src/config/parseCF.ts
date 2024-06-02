@@ -1,5 +1,6 @@
 import { usePackageStore } from "@/stores/packageStore";
 import type {
+  Flight,
   Mission,
   Package,
   PackageEntity,
@@ -103,7 +104,7 @@ export function processCF(
               ),
               surfaceThreat: "AAA",
               metar: "",
-              name: curr.Name ? curr.Name[0] : "Name Missing",
+              name: curr.Name ? curr.Name[0] : "Name Missing", //
               flights: makeFlight(res.Mission.Routes[0].Route, curr),
             };
             if (newPackage.flights.length) coll.push(newPackage);
@@ -132,30 +133,62 @@ export function processCF(
     }
   }
 
-  function makeFlight(rt: RouteEntity[], pkg: PackageEntity) {
+  function makeFlight(rt: RouteEntity[], pkg: PackageEntity): Flight[] {
     return rt
       .filter((route) => route.PackageTag[0] === pkg.Tag[0])
-      .map((mCurr, i, pkg) => ({
-        aircrafttype: getAircraftType(mCurr.Aircraft[0].Type[0]),
-        DEP: getWaypoint(mCurr, "Take off"),
-        ARR: getWaypoint(mCurr, "Landing").NAME // Use Take Off, If landing not avail
-          ? getWaypoint(mCurr, "Landing")
-          : getWaypoint(mCurr, "Take off"),
-        ALT: getWaypoint(mCurr, "Alternate"),
-        fence_in: getWaypointIndex(mCurr, "Push Pt"),
-        fence_out: getWaypointIndex(mCurr, "Exit Pt"),
-        gameplan: "",
-        task: "",
-        flightTask: "",
-        callsign: getCallsign(mCurr),
-        callsignNumber: parseInt(mCurr.CallsignNumber[0]),
-        MSNumber: mCurr.MSNnumber[0],
-        missionType: mCurr.Task[0],
-        tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
-        units: getUnits(mCurr),
-        comms: assignComms(pkg, i),
-        waypoints: getWaypoints(mCurr.Waypoints[0].Waypoint),
-      }));
+      .map((mCurr, i, pkg): Flight => {
+        const comm = assignComms(pkg, i);
+        return {
+          aircrafttype: getAircraftType(mCurr.Aircraft[0].Type[0]),
+          DEP: getWaypoint(mCurr, "Take off"),
+          ARR: getWaypoint(mCurr, "Landing").NAME // Use Take Off, If landing not avail
+            ? getWaypoint(mCurr, "Landing")
+            : getWaypoint(mCurr, "Take off"),
+          ALT: getWaypoint(mCurr, "Alternate"),
+          fence_in: getWaypointIndex(mCurr, "Push Pt"),
+          fence_out: getWaypointIndex(mCurr, "Exit Pt"),
+          gameplan: "",
+          task: "",
+          flightTask: "",
+          callsign: getCallsign(mCurr),
+          callsignNumber: parseInt(mCurr.CallsignNumber[0]),
+          MSNumber: mCurr.MSNnumber[0],
+          missionType: mCurr.Task[0],
+          tacan: mCurr.Waypoints[0].Waypoint[0].AATCN[0],
+          units: getUnits(mCurr),
+          comms: comm,
+          waypoints: getWaypoints(mCurr.Waypoints[0].Waypoint),
+          mycomm: {
+            pri: {
+              description: comm.radio1[i + 14]?.description ?? "",
+              freq: comm.radio1[i + 14]?.freq ?? "",
+              name: comm.radio1[i + 14]?.name ?? "",
+              number: comm.radio1[i + 14]?.number ?? NaN,
+            },
+            sec: {
+              description: comm.radio2[i + 14]?.description ?? "",
+              freq: comm.radio2[i + 14]?.freq ?? "",
+              name: comm.radio2[i + 14]?.name ?? "",
+              number: comm.radio2[i + 14]?.number ?? NaN,
+            },
+          },
+
+          /*mycomm: {
+            pri: assignComms(pkg, i).radio1[i + 15] || {
+              freq: "",
+              name: "",
+              number: NaN,
+              description: "",
+            },
+            sec: assignComms(pkg, i).radio2[i + 15] || {
+              freq: "",
+              name: "",
+              number: NaN,
+              description: "",
+            },
+          },*/
+        };
+      });
   }
 
   function getWaypoint(mCurr: RouteEntity, type: string) {
@@ -212,18 +245,30 @@ export function processCF(
   }
 
   function assignComms(pkg: RouteEntity[], i: number) {
+    /**
+     * One of the problem here, is that
+     *
+     */
     const radio1 = new Array<{
       freq: string;
       name: string;
       number?: number;
       description: string;
-    }>(20);
+    }>(20).fill({
+      freq: "",
+      name: "",
+      description: "",
+    });
     const radio2 = new Array<{
       freq: string;
       name: string;
       number?: number;
       description: string;
-    }>(20);
+    }>(20).fill({
+      freq: "",
+      name: "",
+      description: "",
+    });
 
     const takeoff = getWaypoint(pkg[i], "Take off");
     const landing = getWaypoint(pkg[i], "Landing");
@@ -352,13 +397,13 @@ export function processCF(
       );
 
       if (t) {
-        radio1[i + 15] = {
+        radio1[i + 14] = {
           freq: t.pri.freq,
           name: t.pri.name,
           number: parseInt(t.pri.number),
           description: t.callsign + " " + t.number,
         };
-        radio2[i + 15] = {
+        radio2[i + 14] = {
           freq: t.sec.freq,
           name: t.sec.name,
           number: parseInt(t.sec.number),
