@@ -1,18 +1,19 @@
-import { gunzipSync, gzipSync } from "zlib";
+import { deflate, inflate } from "pako";
 import { toByteArray, fromByteArray, byteLength } from "base64-js";
-import { TextEncoder } from "util";
 
-function decompressString(compressedText: string): DTC {
+export function decompressString(compressedText: string): DTC {
   const gZipBuffer = toByteArray(compressedText);
-  const decompressedBuffer = gunzipSync(gZipBuffer.slice(4));
-  return JSON.parse(decompressedBuffer.toString("utf8"));
+  const decompressedBuffer = inflate(gZipBuffer.slice(4));
+
+  return JSON.parse(uint8ArrayToUtf8String(decompressedBuffer));
 }
 
-function compressString(input: DTC) {
+export function compressString(input: DTC) {
   const stringToCompress = JSON.stringify(input);
-  const asArray = new TextEncoder().encode(stringToCompress);
+
+  const asArray = utf8StringToUint8Array(stringToCompress);
   const lengthAsArray = encodeTo4Bytes(asArray.length);
-  const compressed = gzipSync(asArray);
+  const compressed = deflate(asArray);
 
   const compressedWithLength = new Uint8Array(compressed.length + 4);
   compressedWithLength.set(compressed, 4);
@@ -36,9 +37,89 @@ const encodedData = `3SkAAB+LCAAAAAAAAArtWmtu20YQvorA3wqxLz7/BDQtyYL1qkTFBQL/YGx
 
 console.log(
   JSON.stringify(
-    decompressString(compressString(decompressString(encodedData))).Aircraft
+    decompressString(compressString(decompressString(encodedData)))
   )
 );
+
+/**
+ * Converts a UTF-8 string to a Uint8Array without using TextEncoder.
+ *
+ * @param input - The UTF-8 string to be converted.
+ * @returns A Uint8Array representing the UTF-8 encoded string.
+ */
+function utf8StringToUint8Array(input: string): Uint8Array {
+  const utf8: number[] = [];
+
+  for (let i = 0; i < input.length; i++) {
+    let charCode = input.charCodeAt(i);
+
+    if (charCode < 0x80) {
+      utf8.push(charCode);
+    } else if (charCode < 0x800) {
+      utf8.push(0xc0 | (charCode >> 6), 0x80 | (charCode & 0x3f));
+    } else if (charCode < 0x10000) {
+      utf8.push(
+        0xe0 | (charCode >> 12),
+        0x80 | ((charCode >> 6) & 0x3f),
+        0x80 | (charCode & 0x3f)
+      );
+    } else {
+      utf8.push(
+        0xf0 | (charCode >> 18),
+        0x80 | ((charCode >> 12) & 0x3f),
+        0x80 | ((charCode >> 6) & 0x3f),
+        0x80 | (charCode & 0x3f)
+      );
+    }
+  }
+
+  return new Uint8Array(utf8);
+}
+
+/**
+ * Converts a Uint8Array to a UTF-8 string without using TextDecoder.
+ *
+ * @param uint8Array - The Uint8Array to be converted.
+ * @returns A UTF-8 string decoded from the Uint8Array.
+ */
+function uint8ArrayToUtf8String(uint8Array: Uint8Array): string {
+  let result = "";
+  let i = 0;
+
+  while (i < uint8Array.length) {
+    const byte1 = uint8Array[i++];
+
+    if (byte1 < 0x80) {
+      result += String.fromCharCode(byte1);
+    } else if (byte1 < 0xe0) {
+      const byte2 = uint8Array[i++];
+      result += String.fromCharCode(((byte1 & 0x1f) << 6) | (byte2 & 0x3f));
+    } else if (byte1 < 0xf0) {
+      const byte2 = uint8Array[i++];
+      const byte3 = uint8Array[i++];
+      result += String.fromCharCode(
+        ((byte1 & 0x0f) << 12) | ((byte2 & 0x3f) << 6) | (byte3 & 0x3f)
+      );
+    } else {
+      const byte2 = uint8Array[i++];
+      const byte3 = uint8Array[i++];
+      const byte4 = uint8Array[i++];
+      const codePoint =
+        (((byte1 & 0x07) << 18) |
+          ((byte2 & 0x3f) << 12) |
+          ((byte3 & 0x3f) << 6) |
+          (byte4 & 0x3f)) -
+        0x10000;
+
+      result += String.fromCharCode(
+        0xd800 + (codePoint >> 10),
+        0xdc00 + (codePoint & 0x3ff)
+      );
+    }
+  }
+
+  return result;
+}
 
 /** Types */
 

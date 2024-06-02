@@ -26,10 +26,10 @@ import {
   type RadioType,
   type freqNames,
 } from "@/config/frequencies";
-import { onMounted } from "vue";
 import { airports, airfieldEmpty } from "@/config/airfields";
 
 function pushRadio(vals: RadioType) {
+  // I forgot what I made this for lmao
   let radio = selectedFlight.value.comms[vals.radio][vals.preset + 1];
   if (isPreset(vals)) {
     radio = {
@@ -165,21 +165,22 @@ function deleteMember(i: number) {
 }
 
 function deleteAirport(type: "DEP" | "ARR" | "ALT") {
-  assignAirport(type, structuredClone(airfieldEmpty));
-}
-
-function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
-  console.log(ap);
-
   switch (type) {
     case "DEP":
       depart.value = null;
       break;
     case "ARR":
       arr.value = null;
+      break;
     case "ALT":
       alt.value = null;
   }
+
+  assignAirport(type, structuredClone(airfieldEmpty));
+}
+
+function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
+  console.log(ap);
 
   selectedFlight.value[type] = ap;
 

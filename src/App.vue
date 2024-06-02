@@ -9,7 +9,8 @@ import NewDatacard from "./mdcpages/newdatacard.vue";
 import NewSteerpoints from "./mdcpages/newsteerpoints.vue";
 import NewComms from "./mdcpages/newcomms.vue";
 import NineLine from "./mdcpages/not shared/9Line.vue";
-import CheckIn from "./mdcpages/not shared/CASCheckin.vue";
+import CheckIn from "./mdcpages/not shared/CASCheckin.vue"; //@ts-ignore
+import DTC from "./mdcpages/dtc.vue";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -117,6 +118,9 @@ const makejpg = async () => {
     <TabPanel header="Export to JPG">
       <button @click="makejpg">label="makejpg"</button>
       <div class="mcdimages"></div>
+    </TabPanel>
+    <TabPanel header="DTC">
+      <DTC />
     </TabPanel>
   </TabView>
 </template>
