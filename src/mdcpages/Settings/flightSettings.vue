@@ -273,30 +273,21 @@ const groupedFlights = computed(() =>
 </script>
 
 <template>
-  <div class="parent" v-if="file">
-    <p class="mcd-s-2 mcd-m-a">Select Flight To Edit</p>
-    <Dropdown
-      v-model="selectedFlight"
-      :options="allFlightsFromPackage"
-      optionLabel="callsign"
-      placeholder="Select A Flight"
-      class="redefSize mcd-s-2 c-height"
-      style="grid-row: 2"
-      ><template #value="value"
-        >{{ value.value.callsign || "Select a Flight" }}
-        {{ value.value.callsignNumber || "" }}</template
-      >
-      <template #option="option"
-        >{{ option.option.callsign }} {{ option.option.callsignNumber }}
-      </template></Dropdown
-    >
-
+  <p class="fitC">Select Flight To Edit</p>
+  <Dropdown
+    v-model="selectedFlight"
+    :options="allFlightsFromPackage"
+    optionLabel="callsign"
+    style="width: 251px"
+    placeholder="Select A Flight"
+  />
+  <div class="parent" v-if="file && selectedFlight.isActive">
     <Dropdown
       placeholder="select new callsign"
-      v-if="!isCustomCalsign"
-      style="grid-row: 2"
+      v-if="!isCustomCalsign && selectedFlight.isActive"
+      style="grid-column-start: 1"
       filter
-      class="redefSize mcd-s-2 c-height"
+      class="redefSize mcd-s-2 c-height fitC"
       :options="groupedFlights"
       optionLabel="callsign"
       optionGroupLabel="label"
@@ -310,25 +301,25 @@ const groupedFlights = computed(() =>
         </div>
       </template></Dropdown
     >
-
     <InputText
       v-model="selectedFlight.callsign"
-      style="grid-row: 2; text-align: left; height: fit-content"
+      style="grid-column-start: 2; text-align: left; height: fit-content"
       v-if="isCustomCalsign"
-      class="select mcd-s-1 in mcd-a-0"
+      class="select mcd-s-1 in mcd-a-0 fitC"
       @blur="updateFligh"
     />
     <InputNumber
       mask="9"
-      style="grid-row: 2; text-align: left"
-      class="select mcd-s-1 c-height in mcd-a-0"
-      v-if="isCustomCalsign"
+      style="grid-column-start: 3; text-align: left"
+      class="select mcd-s-1 c-height in mcd-a-0 fitC"
+      v-if="isCustomCalsign && selectedFlight"
       v-model="selectedFlight.callsignNumber"
       @blur="updateFligh"
     />
 
-    <div style="grid-row: 2; text-align: left">
+    <div style="grid-column-start: 1; text-align: left">
       <Checkbox
+        v-if="selectedFlight"
         label="Add custom Callsign"
         id="customCheckbox"
         class="c-height"
@@ -478,7 +469,9 @@ const groupedFlights = computed(() =>
     </DataTable>
 
     <p style="grid-row: 11" class="mcd-s-2 mcd-m-a">COMMS ASSIGNMENT</p>
-    <div style="grid-row: 12" class="mcd-s-6 mcd-m-a"><CommsAssignment /></div>
+    <div style="grid-row: 12" class="mcd-s-6 mcd-m-a">
+      <CommsAssignment />
+    </div>
 
     <p style="grid-row: 15" class="mcd-s-1 mcd-m-a">DEPART</p>
     <Dropdown
@@ -671,20 +664,21 @@ const groupedFlights = computed(() =>
 </template>
 
 <style scoped>
-.in * {
-  max-width: -moz-available;
-  padding: 0 0;
-  border: 0 0;
-  margin: auto;
+.parent {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
-.in {
-  padding: 0 0;
-  border: 0 0;
-  margin: auto;
-  max-width: -moz-available;
+
+.inline {
+  display: inline-grid;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
 .fixW {
   max-width: 100%;
+}
+
+.fitC {
+  height: fit-content;
 }
 </style>

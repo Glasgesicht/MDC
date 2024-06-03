@@ -1,7 +1,7 @@
 <template>
   <div class="parent" v-if="file">
-    <p class="mcd-s-1 mcd-m-a">Selected Package</p>
-    <p class="mcd-s-1 mcd-m-a">Package Name</p>
+    <p class="">Selected Package</p>
+    <p class="">Package Name</p>
     <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
@@ -10,26 +10,33 @@
       :options="packages"
       optionLabel="name"
       placeholder="Select A Package"
-      class="mcd-s-1 c-height"
+      class=""
       style="grid-row: 2"
     />
-    <Input
-      style="grid-row: 2"
-      class="mcd-s-1 c-height"
-      v-model="selectedPKG.name"
-    ></Input>
+    <Input style="grid-row: 2" class="" v-model="selectedPKG.name"></Input>
 
-    <p style="grid-row: 4 / span 1" class="mcd-s-2 c-height mcd-m-a">
+    <p style="grid-row: 1 / span 1; grid-column: 4" class="">
+      RAMROD (selected)
+    </p>
+    <Dropdown
+      style="grid-row: 2 / span 1; grid-column: 4"
+      :options="ramrods"
+      v-model="ramrod"
+      editable
+      class=""
+    />
+
+    <p style="grid-row: 4 / span 1; grid-column: 1 / span 2" class="">
       Order Flights In Package
     </p>
 
     <DataTable
-      class="mcd-s-6 datatable textleft redefSize g-height"
+      class=""
       :value="allFlightsFromPackage"
       showGridlines
       edit-mode="cell"
       @rowReorder="onRowReorder"
-      style="grid-row: 5 / span 5"
+      style="grid-row: 5 / span 10; grid-column: 1 / span 5"
     >
       <Column rowReorder headerStyle="width: 4rem" :reorderableColumn="false" />
       <Column header="FLIGHT" headerStyle="width: 10rem"
@@ -48,14 +55,14 @@
       <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
         <template #body="{ index }">
           {{ selectedPKG.flights[index].mycomm.pri.name }}
-          {{ selectedPKG.flights[index].mycomm.pri.number }}
+          {{ selectedPKG.flights[index].mycomm.pri.number || "" }}
           <br />{{ selectedPKG.flights[index].mycomm.pri.freq }}
         </template></Column
       >
       <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
         <template #body="{ index }">
           {{ selectedPKG.flights[index].mycomm.sec.name }}
-          {{ selectedPKG.flights[index].mycomm.sec.number }}<br />{{
+          {{ selectedPKG.flights[index].mycomm.sec.number || "" }}<br />{{
             selectedPKG.flights[index].mycomm.sec.freq
           }}</template
         ></Column
@@ -75,24 +82,15 @@
         /></template>
       </Column>
     </DataTable>
-    <p style="grid-row: 12 / span 1" class="mcd-s-2 c-height mcd-m-a">
-      RAMROD (selected)
-    </p>
 
-    <p style="grid-row: 12 / span 1" class="mcd-s-2 c-height mcd-m-a">
-      Situation
-    </p>
-    <Dropdown
-      style="grid-row: 13 / span 1"
-      :options="ramrods"
-      v-model="ramrod"
-      editable
-    />
-    <Textarea
-      style="grid-row: 13 / span 3; grid-column: 3 / span 3"
+    <p style="grid-row: 15 / span 1; grid-column: 1" class="">Situation</p>
+
+    <TextArea
+      style="grid-row: 16 / span 6; grid-column: 1 / span 7"
       v-model="selectedPKG.situation"
+      :draggable="false"
       rows="5"
-      draggable="false"
+      class=""
     />
   </div>
 </template>
@@ -103,7 +101,7 @@ import { storeToRefs } from "pinia";
 import { ramrods } from "@/config/ramrod";
 
 import DataTable from "primevue/datatable";
-import Textarea from "primevue/textarea";
+import TextArea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Input from "primevue/inputtext";
@@ -126,3 +124,12 @@ const onRowReorder = (event: any) => {
 
 const { file } = storeToRefs(useGlobalStore());
 </script>
+<style scoped>
+.parent {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(60, 25px);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+</style>

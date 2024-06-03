@@ -139,6 +139,7 @@ export function processCF(
       .map((mCurr, i, pkg): Flight => {
         const comm = assignComms(pkg, i);
         return {
+          isActive: true,
           aircrafttype: getAircraftType(mCurr.Aircraft[0].Type[0]),
           DEP: getWaypoint(mCurr, "Take off"),
           ARR: getWaypoint(mCurr, "Landing").NAME // Use Take Off, If landing not avail

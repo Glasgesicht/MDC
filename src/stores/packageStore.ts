@@ -1,7 +1,12 @@
-import { ref, computed, type WritableComputedRef, type Ref } from "vue";
-import { defineStore, type SubscriptionCallbackMutation } from "pinia";
+import { ref, computed, type WritableComputedRef, type Ref, watch } from "vue";
+import {
+  defineStore,
+  storeToRefs,
+  type SubscriptionCallbackMutation,
+} from "pinia";
 import type { Flight, Package } from "@/types/mdcDataTypes";
 import { cloneDeep } from "lodash";
+import { useFlightStore } from "./flightStore";
 
 export const usePackageStore = defineStore("package", () => {
   // Data for the entire mission goes here
@@ -27,6 +32,10 @@ export const usePackageStore = defineStore("package", () => {
   };
   const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
 
+  watch(selectedPKG, () => {
+    useFlightStore().reset();
+  });
+
   function reset() {
     selectedPKG.value = cloneDeep(initState);
   }
@@ -47,7 +56,6 @@ export const usePackageStore = defineStore("package", () => {
     },
   });
 
-  // is this per package? // Making Getters/Setters for each.
   const situation = computed({
     get() {
       return selectedPKG.value.situation;

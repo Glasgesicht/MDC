@@ -1,4 +1,4 @@
-import { deflate, inflate, gzip } from "pako";
+import { inflate, gzip } from "pako";
 
 import { toByteArray, fromByteArray, byteLength } from "base64-js";
 
@@ -9,46 +9,18 @@ export function decompressString(compressedText: string): DTC {
   return JSON.parse(new TextDecoder("utf-8").decode(decompressedBuffer));
 }
 
-/*export function compressString(input: any) {
-  const stringToCompress = JSON.stringify(input);
-
-  const asArray = new TextEncoder().encode(stringToCompress);
-  const lengthAsArray = encodeTo4Bytes(asArray.length);
-  const compressed = deflate(asArray);
-
-  const compressedWithLength = new Uint8Array(compressed.length + 4);
-  compressedWithLength.set(compressed, 4);
-  compressedWithLength.set(lengthAsArray, 0);
-
-  return fromByteArray(compressedWithLength);
-}
-
-function encodeTo4Bytes(number: number) {
-  const byteArray = new Uint8Array(4);
-
-  byteArray[3] = number >> 24;
-  byteArray[2] = number >> 16;
-  byteArray[1] = number >> 8;
-  byteArray[0] = number;
-
-  return byteArray;
-}*/
-
 export function compressString(text: any) {
   const encoder = new TextEncoder();
   const buffer = encoder.encode(JSON.stringify(text));
   const compressedData = gzip(buffer);
 
   const gZipBuffer = new Uint8Array(compressedData.length + 4);
-  const originalLength = buffer.length;
 
-  // Write the original length to the first 4 bytes
-  gZipBuffer[0] = (originalLength >> 0) & 0xff;
-  gZipBuffer[1] = (originalLength >> 8) & 0xff;
-  gZipBuffer[2] = (originalLength >> 16) & 0xff;
-  gZipBuffer[3] = (originalLength >> 24) & 0xff;
-
-  // Copy the compressed data to the new buffer starting from byte 4
+  // Write the length of the array to the beginning of the bufffer
+  gZipBuffer[0] = buffer.length & 0xff;
+  gZipBuffer[1] = (buffer.length >> 8) & 0xff;
+  gZipBuffer[2] = (buffer.length >> 16) & 0xff;
+  gZipBuffer[3] = (buffer.length >> 24) & 0xff;
   gZipBuffer.set(compressedData, 4);
 
   // Convert to Base64

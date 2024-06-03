@@ -3,26 +3,16 @@ import { usePackageStore } from "../stores/packageStore";
 import { computed, ref, toRaw, watch, type Ref } from "vue";
 import { F15Flights, F16Flights, flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
-
 import { cloneDeep } from "lodash";
 import { getSTN } from "@/utils/utilFunctions";
 
-const f15callsigns = F15Flights.map(
-  (flight) => flight.callsign + " " + flight.number
-);
-const f16callsigns = F16Flights.map(
-  (flight) => flight.callsign + " " + flight.number
-);
-
 export const useFlightStore = defineStore("flight", () => {
-  // const { selectedFlight } = storeToRefs(usePackageStore());
-
   const initState = {
     aircrafttype: "",
     callsign: "",
     callsignNumber: NaN,
+    isActive: false,
     flightTask: "",
-    //references steerpoint if applicable
     fence_in: 0,
     fence_out: 0,
     comms: {
@@ -42,7 +32,7 @@ export const useFlightStore = defineStore("flight", () => {
       }>(20),
     },
     // This is for the individual flights, making is easier to shift flights around witout complicated logic, although this maybe cases some redundancies.
-    // Might refactor later :)
+    // Might refactor later
     mycomm: {
       pri: <
         {
@@ -186,7 +176,6 @@ export const useFlightStore = defineStore("flight", () => {
 
   function updateLadder() {
     const { selectedPKG } = storeToRefs(usePackageStore());
-
     for (let i = 14; i < 20; i++) {
       //update Radios
       selectedFlight.value.comms.radio1[i] =
@@ -196,7 +185,6 @@ export const useFlightStore = defineStore("flight", () => {
     }
   }
 
-  // not enirely sure why i have an explicit getter/setter here, but that's okay
   const gameplan = computed({
     get() {
       return selectedFlight.value.gameplan ?? null;
