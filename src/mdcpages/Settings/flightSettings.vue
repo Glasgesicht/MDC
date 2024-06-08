@@ -22,7 +22,7 @@ import CommsAssignment from "./commsAssignment.vue";
 import toDTC from "@/components/commsToDTC.vue";
 import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
-import { reactive } from "vue";
+import type { WritableComputedRef } from "vue";
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
@@ -40,40 +40,53 @@ function callsignChangeEvent(event: any) {
   updateLadder();
 }
 
-const tanker: Ref<{
-  name: string;
-  freq: string;
-  type: string;
-  activity: string;
-  tacan: string;
-  lat: string;
-  lon: string;
-  alt: string;
-} | null> = ref(null);
+const tanker: WritableComputedRef<
+  | {
+      name: string;
+      freq: string;
+      type: string;
+      activity: string;
+      tacan: string;
+      lat: string;
+      lon: string;
+      alt: string;
+    }
+  | undefined
+> = computed({
+  get() {
+    return agencies.value.find(
+      (n) =>
+        selectedFlight.value.comms.radio1[12].freq === n.freq ||
+        selectedFlight.value.comms.radio2[12].freq === n.freq
+    );
+  },
+
+  set(value) {
+    if (!value) return;
+    const assignTo = parseFloat(value.freq) > 200 ? "radio1" : "radio2";
+
+    selectedFlight.value.comms[assignTo][12] = {
+      description: value.name + " / " + value.tacan,
+      freq: value.freq,
+      name:
+        Object.entries(commTables[0]).find(([name, freqs]) =>
+          freqs.find((freq: string) => freq === value!.freq)
+        )?.[0] || "",
+      number:
+        (Object.entries(commTables[0])
+          .find(([name, freqs]) =>
+            freqs.find((freq: string) => freq === value!.freq)
+          )?.[1]
+          .map((el) => el + "")
+          .indexOf(value?.freq) || 0) + 1,
+    };
+  },
+});
 
 watch(stateChanged, () => {
   {
     updateLadder();
   }
-});
-
-watch(tanker, () => {
-  if (tanker.value?.freq && parseFloat(tanker.value?.freq) > 200)
-    selectedFlight.value.comms.radio1[12] = {
-      description: tanker.value.name + " / " + tanker.value.tacan,
-      freq: tanker.value.freq,
-      name:
-        Object.entries(commTables[0]).find(([name, freqs]) =>
-          freqs.find((freq: string) => freq === tanker.value!.freq)
-        )?.[0] || "",
-      number:
-        (Object.entries(commTables[0])
-          .find(([name, freqs]) =>
-            freqs.find((freq: string) => freq === tanker.value!.freq)
-          )?.[1]
-          .map((el) => el + "")
-          .indexOf(tanker.value?.freq) || 0) + 1,
-    };
 });
 
 function tacaninput() {
@@ -109,11 +122,13 @@ function clearComms(index: number, radio: "pri" | "sec") {
   }
 }
 
-const selectedFreqs = reactive({
-  checkVHF: null,
-  checkUHF: null,
-  tactVHF: null,
-  tactUHF: null,
+const selectedFreqs = computed(() => {
+  return {
+    checkVHF: selectedFlight.value.comms.radio2[4],
+    checkUHF: selectedFlight.value.comms.radio1[4],
+    tactVHF: selectedFlight.value.comms.radio2[5],
+    tactUHF: selectedFlight.value.comms.radio1[5],
+  };
 });
 
 function FlightMemberUpdate() {
@@ -539,7 +554,7 @@ const groupedFlights = computed(() =>
       :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
       severity="danger"
       option-label="description"
-      v-model="selectedFreqs.checkUHF"
+      :model-value="selectedFreqs.checkUHF"
       @change="
         (e) => {
           selectedFlight.comms.radio1[4] = {
@@ -556,10 +571,7 @@ const groupedFlights = computed(() =>
       v-if="selectedFlight.comms.radio1[4].freq"
       style="grid-row: 19; grid-column: 3"
       icon="pi pi-times-circle"
-      @click="
-        clearComms(4, 'pri');
-        selectedFreqs.checkUHF = null;
-      "
+      @click="clearComms(4, 'pri')"
       text
     />
 
@@ -588,10 +600,7 @@ const groupedFlights = computed(() =>
       v-if="selectedFlight.comms.radio2[4].freq"
       style="grid-row: 19"
       icon="pi pi-times-circle"
-      @click="
-        clearComms(4, 'sec');
-        selectedFreqs.checkVHF = null;
-      "
+      @click="clearComms(4, 'sec')"
       text
     />
 
@@ -618,10 +627,7 @@ const groupedFlights = computed(() =>
       v-if="selectedFlight.comms.radio1[5].freq"
       style="grid-row: 20; grid-column: 3"
       icon="pi pi-times-circle"
-      @click="
-        clearComms(5, 'pri');
-        selectedFreqs.tactUHF = null;
-      "
+      @click="clearComms(5, 'pri')"
       text
     />
 
@@ -650,10 +656,7 @@ const groupedFlights = computed(() =>
       v-if="selectedFlight.comms.radio2[5].freq"
       style="grid-row: 20"
       icon="pi pi-times-circle"
-      @click="
-        clearComms(5, 'sec');
-        selectedFreqs.tactVHF = null;
-      "
+      @click="clearComms(5, 'sec')"
       text
     />
 
@@ -679,7 +682,7 @@ const groupedFlights = computed(() =>
       v-if="tanker"
       style="grid-row: 22"
       icon="pi pi-times-circle"
-      @click="tanker = null"
+      @click="clearComms(12, parseFloat(tanker.freq) > 200 ? 'pri' : 'sec')"
       text
     />
 
