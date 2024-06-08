@@ -211,8 +211,6 @@ function deleteAirport(type: "DEP" | "ARR" | "ALT") {
 }
 
 function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
-  console.log(ap);
-
   selectedFlight.value[type] = ap;
 
   const offset = type === "DEP" ? 1 : type === "ARR" ? 6 : 9;
@@ -230,12 +228,12 @@ function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
     };
   }
 
-  comms.radio1[offset + type === "DEP" ? 2 : 0] = {
+  comms.radio1[offset + (type === "DEP" ? 2 : 0)] = {
     freq: ap.APPR.uhf,
     description: ap.APPR.uhf ? ap.ICAO + " " + "APR" : "",
     name: "",
   };
-  comms.radio2[offset + type === "DEP" ? 2 : 0] = {
+  comms.radio2[offset + (type === "DEP" ? 2 : 0)] = {
     freq: ap.APPR.vhf,
     description: ap.APPR.vhf ? ap.ICAO + " " + "APR" : "",
     name: "",
@@ -252,12 +250,12 @@ function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
     name: "",
   };
 
-  comms.radio1[offset + type === "DEP" ? 0 : 2] = {
+  comms.radio1[offset + (type === "DEP" ? 0 : 2)] = {
     freq: ap.GROUND.uhf,
     description: ap.GROUND.uhf ? ap.ICAO + " " + "GRND" : "",
     name: "",
   };
-  comms.radio2[offset + type === "DEP" ? 0 : 2] = {
+  comms.radio2[offset + (type === "DEP" ? 0 : 2)] = {
     freq: ap.GROUND.vhf,
     description: ap.GROUND.vhf ? ap.ICAO + " " + "GRND" : "",
     name: "",
@@ -510,7 +508,7 @@ const groupedFlights = computed(() =>
       :options="airports"
       severity="danger"
       option-label="NAME"
-      v-model="depart"
+      v-model="selectedFlight.DEP"
       @change="
         (e) => {
           assignAirport('DEP', e.value);
@@ -519,7 +517,6 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="depart"
       style="grid-row: 15"
       icon="pi pi-times-circle"
       @click="deleteAirport('DEP')"
@@ -532,7 +529,7 @@ const groupedFlights = computed(() =>
       :options="airports"
       severity="danger"
       option-label="NAME"
-      v-model="arr"
+      v-model="selectedFlight.ARR"
       @change="
         (e) => {
           assignAirport('ARR', e.value);
@@ -541,7 +538,6 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="arr"
       style="grid-row: 16"
       icon="pi pi-times-circle"
       @click="deleteAirport('ARR')"
@@ -553,7 +549,7 @@ const groupedFlights = computed(() =>
       :options="airports"
       severity="danger"
       option-label="NAME"
-      v-model="alt"
+      v-model="selectedFlight.ALT"
       @change="
         (e) => {
           assignAirport('ALT', e.value);
@@ -562,7 +558,6 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="alt"
       style="grid-row: 17"
       icon="pi pi-times-circle"
       @click="deleteAirport('ALT')"
