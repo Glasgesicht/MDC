@@ -295,30 +295,32 @@ export function processCF(
      * One of the problem here, is that
      *
      */
-    const radio1 = new Array<{
+    const radio1: {
       freq: string;
       name: string;
       number?: number;
       description: string;
-    }>(20).fill(
-      structuredClone({
+    }[] = new Array(20).fill({}).map(() => {
+      return {
         freq: "",
         name: "",
         description: "",
-      })
-    );
-    const radio2 = new Array<{
+        number: NaN,
+      };
+    });
+    const radio2: {
       freq: string;
       name: string;
       number?: number;
       description: string;
-    }>(20).fill(
-      structuredClone({
+    }[] = new Array(20).fill({}).map(() => {
+      return {
         freq: "",
         name: "",
         description: "",
-      })
-    );
+        number: NaN,
+      };
+    });
 
     const takeoff = getWaypoint(pkg[i], "Take off");
     const landing = getWaypoint(pkg[i], "Landing");
@@ -489,6 +491,7 @@ export function processCF(
       }
     });
 
+    console.log(radio1);
     return { radio1: radio1, radio2: radio2 };
   }
 
