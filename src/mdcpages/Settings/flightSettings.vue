@@ -624,7 +624,12 @@ const groupedFlights = computed(() =>
       option-label="description"
       @change="
         (e) => {
-          assignAirport('ALT', e.value);
+          selectedFlight.comms.radio1[5] = {
+            description: e.value.description,
+            freq: e.value.freq,
+            name: e.value.name,
+            number: e.value.number ?? NaN,
+          };
         }
       "
       placeholder="select"
@@ -645,7 +650,12 @@ const groupedFlights = computed(() =>
       option-label="description"
       @change="
         (e) => {
-          assignAirport('ALT', e.value);
+          selectedFlight.comms.radio2[5] = {
+            description: e.value.description,
+            freq: e.value.freq,
+            name: e.value.name,
+            number: e.value.number ?? NaN,
+          };
         }
       "
       placeholder="select"
