@@ -145,6 +145,7 @@ export const useFlightStore = defineStore("flight", () => {
     selectedFlight.value.units.forEach((_n, i) => {
       selectedFlight.value.units[i].STN = getSTN(
         selectedFlight.value.aircrafttype,
+        selectedFlight.value.callsign,
         selectedFlight.value.callsignNumber % 8,
         i
       );

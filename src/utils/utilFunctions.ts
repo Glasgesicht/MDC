@@ -29,7 +29,12 @@ export function calculateHeading(
   return Math.round(bearing);
 }
 
-export function getSTN(type: string, no: number | string, i: number | string) {
+export function getSTN(
+  type: string,
+  callsign: string,
+  no: number | string,
+  i: number | string
+) {
   return (
     "" +
     String(
@@ -42,7 +47,7 @@ export function getSTN(type: string, no: number | string, i: number | string) {
         : "00"
     ) +
     "" +
-    (parseInt(no + "") % 7) +
+    (parseInt(no + "") % 8) +
     "" +
     (Number(i) + 1)
   );

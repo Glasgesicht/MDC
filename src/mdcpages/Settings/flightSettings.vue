@@ -142,6 +142,7 @@ const addFlightMemeber = () => {
     tacan: "",
     STN: getSTN(
       selectedFlight.value.aircrafttype,
+      selectedFlight.value.callsign,
       selectedFlight.value.callsignNumber,
       selectedFlight.value.units.length
     ),
@@ -780,7 +781,10 @@ const groupedFlights = computed(() =>
     <Button
       style="grid-row: 25; grid-column: 10 / span 1"
       label="update Ladder"
-      @click="updateLadder"
+      @click="
+        updateLadder();
+        updateFligh();
+      "
     />
 
     <p style="grid-row: 1; grid-column: 9 / span 1" class="mcd-m-a">Radio 2</p>

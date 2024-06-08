@@ -274,7 +274,12 @@ export function processCF(
       laser: "",
       m2: "",
       tailNr: "",
-      STN: getSTN(mCurr.Aircraft[0].Type[0], mCurr.CallsignNumber[0] ?? 1, i),
+      STN: getSTN(
+        mCurr.Aircraft[0].Type[0],
+        mCurr.CallsignNameCustom[0],
+        mCurr.CallsignNumber[0] ?? 1,
+        i
+      ),
       L16:
         getCallsign(mCurr).toUpperCase().charAt(0) +
         getCallsign(mCurr)
