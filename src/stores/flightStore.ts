@@ -175,14 +175,17 @@ export const useFlightStore = defineStore("flight", () => {
   };
 
   function updateLadder() {
-    const { selectedPKG } = storeToRefs(usePackageStore());
-    for (let i = 14; i < 20; i++) {
-      //update Radios
-      selectedFlight.value.comms.radio1[i] =
-        selectedPKG.value.flights[i - 14]?.mycomm.pri;
-      selectedFlight.value.comms.radio2[i] =
-        selectedPKG.value.flights[i - 14]?.mycomm.sec;
-    }
+    const { selectedPKG, allFlightsFromPackage } = storeToRefs(
+      usePackageStore()
+    );
+
+    allFlightsFromPackage.value.forEach((flight) => {
+      for (let i = 14; i < 19; i++) {
+        //update Radios
+        flight.comms.radio1[i] = selectedPKG.value.flights[i - 14]?.mycomm.pri;
+        flight.comms.radio2[i] = selectedPKG.value.flights[i - 14]?.mycomm.sec;
+      }
+    });
   }
 
   const gameplan = computed({

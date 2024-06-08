@@ -77,7 +77,7 @@ const hhmmss = (time: string) => {
       {{ getAirport(selectedFlight.DEP.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.DEP.NAME).ARR }}
+      {{ selectedFlight.DEP.APPR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.DEP.NAME).LEN }}
@@ -101,7 +101,7 @@ const hhmmss = (time: string) => {
       {{ getAirport(selectedFlight.ARR.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ARR.NAME).ARR }}
+      {{ selectedFlight.ARR.APPR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.ARR.NAME).LEN }}
@@ -125,7 +125,7 @@ const hhmmss = (time: string) => {
       {{ getAirport(selectedFlight.ALT.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ALT.NAME).ARR }}
+      {{ selectedFlight.ALT.APPR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.ALT.NAME).LEN }}

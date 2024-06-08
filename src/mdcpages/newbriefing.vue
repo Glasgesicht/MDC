@@ -31,7 +31,9 @@ const showROE = inject("showROE");
 
 <template>
   <div class="mdcpage" id="gameplan">
-    <div class="c36 r">RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE</div>
+    <div class="c36 r">
+      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+    </div>
     <div class="c3 y">PAGE {{ pagenr }}</div>
     <div class="c33 g">COMMUNICATIONS</div>
     <div class="c6 g">MISSION</div>
@@ -51,26 +53,17 @@ const showROE = inject("showROE");
       {{ pkgnr }}
     </div>
     <div class="c6 g">HOMEPLATE</div>
-    <input
-      v-model="selectedFlight.DEP.NAME"
-      class="c6 w tb"
-    />
+    <input v-model="selectedFlight.DEP.NAME" class="c6 w tb" />
     <div class="c24 r2 squad">RNLAF 313 SQUADRON</div>
     <div class="c6 g">MSN TYPE</div>
-    <input
-      class="c6 w"
-      v-model="selectedFlight.missionType"
-    />
+    <input class="c6 w" v-model="selectedFlight.missionType" />
 
     <div class="c6 g">PACKAGE TASK</div>
     <input v-model="packageTask" class="c30 w tb" />
     <div class="c6 g">FLIGHT TASK</div>
     <input v-model="selectedFlight.task" class="c30 w tb" />
     <div class="c36 g">SITUATION</div>
-    <textarea
-      v-model="situation"
-      class="r5 c36 w tb"
-    />
+    <textarea v-model="gameplan" class="r5 c36 w tb" />
 
     <div class="c18 g">SURFACE THREATS</div>
     <div class="c18 g">AIR THREATS</div>
@@ -98,7 +91,6 @@ const showROE = inject("showROE");
 </template>
 
 <style scoped>
-
 @import "@/assets/newstyle.css";
 .parent {
   display: inline-grid;

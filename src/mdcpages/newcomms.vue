@@ -69,7 +69,7 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
         {{ selectedFlight.comms.radio1[index]?.name }}
-        {{ selectedFlight.comms.radio1[index]?.number }}
+        {{ selectedFlight.comms.radio1[index]?.number || "" }}
       </div>
       <div :class="`c1 hr`"></div>
       <div :class="`c1 hr`"></div>
@@ -83,7 +83,7 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
         {{ selectedFlight.comms.radio2[index]?.name }}
-        {{ selectedFlight.comms.radio2[index]?.number }}
+        {{ selectedFlight.comms.radio2[index]?.number || "" }}
       </div>
       <div :class="`c1 hr`"></div>
       <div :class="`c1 hr`"></div>

@@ -65,7 +65,7 @@ export type Package = {
   packageTask: string;
   metar: string;
   ramrod: string;
-  agencies: Array<OrbitsEntity>;
+  // agencies: Array<OrbitsEntity>;
 };
 
 //** Combat Flite Export Types */

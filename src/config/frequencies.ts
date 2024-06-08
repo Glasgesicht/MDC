@@ -1,7 +1,7 @@
 export const commTables = [
   {
     //is an array, because these should be selectable in the future, especially considering collaborations
-    name: "cJTF-13",
+    //name: "cJTF-13",
     AMBER: [
       "79.350",
       "304.675",
@@ -450,3 +450,133 @@ export function isPreset(x: RadioType): x is BaseRadio & WithPreset {
 export function isFreq(x: RadioType): x is BaseRadio & WithPreset {
   return "freq" in x;
 }
+
+export const tacticalFreqs: {
+  description: string;
+  freq: string;
+  name: string;
+  number?: number;
+}[] = new Array();
+
+function makefreq(
+  input:
+    | { description: string; freq: string }
+    | { description: string; name: freqNames; number: number }
+) {
+  if ("freq" in input) {
+    tacticalFreqs.push({
+      description: input.description,
+      freq: input.freq,
+      name: "",
+    });
+  } else {
+    tacticalFreqs.push({
+      description: input.description,
+      freq: commTables[0][input.name][input.number - 1],
+      name: input.name,
+      number: input.number,
+    });
+  }
+}
+
+makefreq({
+  description: "SOLEX CHECK-IN",
+  name: "COBALT",
+  number: 2,
+});
+
+makefreq({
+  description: "SOLEX AIC 1",
+  name: "SILVER",
+  number: 4,
+});
+
+makefreq({
+  description: "SOLEX AIC 2",
+  name: "TEAL",
+  number: 1,
+});
+
+makefreq({
+  description: "SOLEX AIC 3",
+  name: "MAGENTA",
+  number: 6,
+});
+
+makefreq({
+  description: "IMAGE CHECK-IN",
+  name: "GREEN",
+  number: 9,
+});
+
+makefreq({
+  description: "IMAGE AIC 1",
+  name: "RUBY",
+  number: 9,
+});
+
+makefreq({
+  description: "IMAGE AIC 2",
+  name: "WHITE",
+  number: 6,
+});
+
+makefreq({
+  description: "IMAGE AIC 3",
+  name: "EMERALD",
+  number: 7,
+});
+
+makefreq({
+  description: "SENTRY CHECK-IN",
+  name: "GOLD",
+  number: 6,
+});
+
+makefreq({
+  description: "SENTRY AIC 1",
+  name: "KHAKI",
+  number: 6,
+});
+
+makefreq({
+  description: "SENTRY AIC 2",
+  name: "RED",
+  number: 5,
+});
+
+makefreq({
+  description: "SENTRY AIC 3",
+  name: "GARNET",
+  number: 3,
+});
+
+makefreq({
+  description: "TEL AVIV CENTER",
+  freq: "118.400",
+});
+
+makefreq({
+  description: "BEIRUT CENTER",
+  freq: "119.300",
+});
+
+makefreq({
+  description: "ANKARA CENTER",
+  freq: "124.075",
+});
+
+makefreq({
+  description: "ANKARA CENTER",
+  freq: "318.125",
+});
+
+makefreq({
+  description: "NICOSIA CENTER",
+  freq: "126.300",
+});
+
+makefreq({
+  description: "NICOSIA CENTER",
+  freq: "353.800",
+});

@@ -11,6 +11,18 @@ import { useFlightStore } from "./flightStore";
 export const usePackageStore = defineStore("package", () => {
   // Data for the entire mission goes here
   const packages: Ref<Package[]> = ref(new Array());
+  const agencies = ref(
+    new Array<{
+      name: string;
+      freq: string;
+      type: string;
+      activity: string;
+      tacan: string;
+      lat: string;
+      lon: string;
+      alt: string;
+    }>()
+  );
 
   // Data for only the selected package goes here
   const initState = {
@@ -28,7 +40,7 @@ export const usePackageStore = defineStore("package", () => {
     situation: "",
     surfaceThreat: "",
     ramrod: "",
-    agencies: new Array<any>(),
+    //agencies: new Array<any>(),
   };
   const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
 
@@ -38,6 +50,7 @@ export const usePackageStore = defineStore("package", () => {
 
   function reset() {
     selectedPKG.value = cloneDeep(initState);
+    agencies.value = new Array();
   }
   const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({
     set(value: Flight[]) {
@@ -111,6 +124,7 @@ export const usePackageStore = defineStore("package", () => {
   });
 
   return {
+    agencies,
     packages,
     selectedPKG,
     allFlightsFromPackage,

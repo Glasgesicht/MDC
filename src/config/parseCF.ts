@@ -15,6 +15,7 @@ import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
 import { clone, cloneDeep } from "lodash";
+import { toRaw } from "vue";
 
 export function processCF(
   payload:
@@ -68,7 +69,7 @@ export function processCF(
   }
 
   function parseCfXML(input: string) {
-    const { packages } = storeToRefs(usePackageStore());
+    const { packages, agencies } = storeToRefs(usePackageStore());
     const parser = new xml2js.Parser({
       explicitArray: true,
       ignoreAttrs: true,
@@ -82,7 +83,7 @@ export function processCF(
         const _packages: Package[] = res.Mission.Package?.reduce(
           (coll: Package[], curr: PackageEntity) => {
             const newPackage: Package = {
-              agencies: res.Mission.Airspace.flatMap((n) => n.Orbits),
+              //agencies: res.Mission.Airspace.flatMap((n) => n.Orbits),
               airThreat: "NONE",
               bullseye: {
                 name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
@@ -107,6 +108,7 @@ export function processCF(
               name: curr.Name ? curr.Name[0] : "Name Missing", //
               flights: makeFlight(res.Mission.Routes[0].Route, curr),
             };
+
             if (newPackage.flights.length) coll.push(newPackage);
             return coll;
           },
@@ -116,6 +118,8 @@ export function processCF(
         usePackageStore().reset();
         useFlightStore().reset();
         packages.value = _packages;
+        agencies.value = makeAgencies(res.Mission.Routes[0].Route);
+        console.log(toRaw(agencies.value));
       })
       .catch((error) => console.error("Error parsing XML:", error));
   }
@@ -133,9 +137,45 @@ export function processCF(
     }
   }
 
+  function makeAgencies(rt: RouteEntity[]) {
+    return rt
+      .filter((item) =>
+        ["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
+          item.Aircraft[0].Type[0]
+        )
+      )
+      .map((agency) => {
+        return {
+          name:
+            (agency.CallsignNameCustom[0] || agency.CallsignName[0]) +
+            " " +
+            agency.CallsignNumber[0],
+          freq: agency.Waypoints[0].Waypoint[0].Frq[0],
+          type: agency.Aircraft[0].Type[0],
+          activity: agency.Waypoints[0].Waypoint[0].Activity[0],
+          tacan: agency.Waypoints[0].Waypoint[0].AATCN[0],
+          lat: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+            agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
+          ].Lat[0],
+          lon: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+            agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
+          ].Lon[0],
+          alt: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+            agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
+          ].Altitude[0],
+        };
+      });
+  }
+
   function makeFlight(rt: RouteEntity[], pkg: PackageEntity): Flight[] {
     return rt
       .filter((route) => route.PackageTag[0] === pkg.Tag[0])
+      .filter(
+        (item) =>
+          !["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
+            item.Aircraft[0].Type[0]
+          )
+      )
       .map((mCurr, i, pkg): Flight => {
         const comm = assignComms(pkg, i);
         return {
@@ -255,21 +295,25 @@ export function processCF(
       name: string;
       number?: number;
       description: string;
-    }>(20).fill({
-      freq: "",
-      name: "",
-      description: "",
-    });
+    }>(20).fill(
+      structuredClone({
+        freq: "",
+        name: "",
+        description: "",
+      })
+    );
     const radio2 = new Array<{
       freq: string;
       name: string;
       number?: number;
       description: string;
-    }>(20).fill({
-      freq: "",
-      name: "",
-      description: "",
-    });
+    }>(20).fill(
+      structuredClone({
+        freq: "",
+        name: "",
+        description: "",
+      })
+    );
 
     const takeoff = getWaypoint(pkg[i], "Take off");
     const landing = getWaypoint(pkg[i], "Landing");
@@ -335,23 +379,23 @@ export function processCF(
         name: "",
       };
 
-      radio1[9] = {
+      radio1[7] = {
         freq: landing.TOWER.uhf,
         description: landing.ICAO + " " + "TOWR",
         name: "",
       };
-      radio2[9] = {
+      radio2[7] = {
         freq: landing.TOWER.vhf,
         description: landing.ICAO + " " + "TOWR",
         name: "",
       };
 
-      radio1[10] = {
+      radio1[6] = {
         freq: landing.APPR.uhf,
         description: landing.ICAO + " " + "APR",
         name: "",
       };
-      radio2[10] = {
+      radio2[6] = {
         freq: landing.APPR.vhf,
         description: landing.ICAO + " " + "APR",
         name: "",
@@ -370,25 +414,31 @@ export function processCF(
         name: "",
       };
 
-      radio1[12] = {
+      radio1[10] = {
         freq: alt.TOWER.uhf,
         description: alt.ICAO + " " + "TOWR",
         name: "",
       };
-      radio2[12] = {
+      radio2[10] = {
         freq: alt.TOWER.vhf,
         description: alt.ICAO + " " + "TOWR",
         name: "",
       };
 
-      radio1[13] = {
+      radio1[9] = {
         freq: alt.APPR.uhf,
         description: alt.ICAO + " " + "APR",
         name: "",
       };
-      radio2[13] = {
+      radio2[9] = {
         freq: alt.APPR.vhf,
         description: alt.ICAO + " " + "APR",
+        name: "",
+      };
+
+      radio1[19] = {
+        freq: "362.30",
+        description: "NATO COMBINED",
         name: "",
       };
     }
@@ -410,6 +460,27 @@ export function processCF(
           number: parseInt(t.sec.number),
           description: t.callsign + " " + t.number,
         };
+      } else if (flight.Waypoints[0].Waypoint[0].Frq) {
+        if (parseFloat(flight.Waypoints[0].Waypoint[0].Frq[0]) > 200)
+          radio1[i + 14] = {
+            freq: flight.Waypoints[0].Waypoint[0].Frq[0],
+            name: "",
+            number: NaN,
+            description:
+              (flight.CallsignNameCustom[0] || flight.CallsignName[0]) +
+              " " +
+              flight.CallsignNumber[0],
+          };
+        else
+          radio2[i + 14] = {
+            freq: flight.Waypoints[0].Waypoint[0].Frq[0],
+            name: "",
+            number: NaN,
+            description:
+              (flight.CallsignNameCustom[0] || flight.CallsignName[0]) +
+              " " +
+              flight.CallsignNumber[0],
+          };
       }
     });
 

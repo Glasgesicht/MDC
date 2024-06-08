@@ -15,7 +15,7 @@ export const airports: {
     NAME: "RAF AKROTIRI",
     ICAO: "LCRA",
     ATIS: { uhf: "", vhf: "125.00" },
-    APPR: { uhf: "235.05", vhf: "123.6" }, //"123.6",
+    APPR: { uhf: "235.05", vhf: "123.60" }, //"123.6",
     TOWER: { uhf: "399.85", vhf: "130.07" }, //"130.07",
     GROUND: { uhf: "240.10", vhf: "122.12" }, //"122.12",
     TACAN: "107X",

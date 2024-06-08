@@ -3,11 +3,11 @@ import { type freqNames, commTables } from "./frequencies";
 const createFlight = (
   callsign: string,
   number: number,
-  type: "F-16" | "F-15" | "F/A-18",
+  type: "F-16" | "F-15" | "F/A-18" | "HELO" | "F-4E",
   pri: { name: freqNames; number: number } | string,
-  sec: { name: freqNames; number: number } | string,
+  sec?: { name: freqNames; number: number } | string,
   ter?: { name: freqNames; number: number } | string, // TODO: Implement after someone explains me where these show up and what these are // Espere
-  cx?: { name: freqNames; number: number } | string
+  cx?: { name: freqNames; number: number } | string // If they have no meaning to our Kneeboard, we might just OMIT them.
 ) => {
   return {
     callsign: callsign,
@@ -21,13 +21,21 @@ const createFlight = (
       }`,
       number: typeof pri === "string" ? "" : pri.number + "",
     },
-    sec: {
-      name: `${typeof sec === "string" ? "" : sec.name}`,
-      freq: `${
-        typeof sec === "string" ? sec : commTables[0][sec.name][sec.number - 1]
-      }`,
-      number: typeof sec === "string" ? "" : sec.number + "",
-    },
+    sec: sec
+      ? {
+          name: `${typeof sec === "string" ? "" : sec.name}`,
+          freq: `${
+            typeof sec === "string"
+              ? sec
+              : commTables[0][sec.name][sec.number - 1]
+          }`,
+          number: typeof sec === "string" ? "" : sec.number + "",
+        }
+      : {
+          name: "",
+          freq: "",
+          number: "",
+        },
   };
 };
 
@@ -90,6 +98,64 @@ export const flights = [
     { name: "CRIMSON", number: 1 }
   ),
   // PolAF 6th SQN
+
+  createFlight(
+    "KHARMA",
+    1,
+    "F-16",
+    { name: "INDIGO", number: 2 },
+    { name: "SAGE", number: 9 }
+  ),
+  createFlight(
+    "DETOX",
+    2,
+    "F-16",
+    { name: "MAGENTA", number: 4 },
+    { name: "BLACK", number: 5 }
+  ),
+  createFlight(
+    "STALK",
+    3,
+    "F-16",
+    { name: "RED", number: 9 },
+    { name: "OCHRE", number: 1 }
+  ),
+  createFlight(
+    "ANGRY",
+    4,
+    "F-16",
+    { name: "AQUA", number: 5 },
+    { name: "SCARLET", number: 8 }
+  ),
+  createFlight(
+    "SKEET",
+    5,
+    "F-16",
+    { name: "GOLD", number: 1 },
+    { name: "SAPPHIRE", number: 6 }
+  ),
+
+  createFlight(
+    "BEAVER",
+    6,
+    "F-16",
+    { name: "RUBY", number: 6 },
+    { name: "BLACK", number: 9 }
+  ),
+  createFlight(
+    "EVADE",
+    7,
+    "F-16",
+    { name: "AMBER", number: 6 },
+    { name: "EMERALD", number: 2 }
+  ),
+  createFlight(
+    "INSANE",
+    8,
+    "F-16",
+    { name: "COBALT", number: 9 },
+    { name: "PURPLE", number: 5 }
+  ),
 
   // 494th FS
   createFlight(
@@ -188,6 +254,27 @@ export const flights = [
   ),
 
   // ADD Helicopters etc
+  createFlight(
+    "SNAKE",
+    6,
+    "HELO",
+    { name: "COBALT", number: 3 },
+    { name: "BRONZE", number: 3 },
+    { name: "RUBY", number: 8 },
+    { name: "CRIMSON", number: 7 }
+  ),
+  createFlight(
+    "PALEHORSE",
+    7,
+    "HELO",
+    { name: "OCHRE", number: 2 },
+    { name: "KHAKI", number: 2 }
+  ),
+
+  // F-4E
+  createFlight("PHANTOM", 1, "F-4E", { name: "PURPLE", number: 3 }),
+  createFlight("RHINO", 2, "HELO", { name: "PURPLE", number: 8 }),
+  createFlight("SMOKEY", 3, "F-4E", { name: "PURPLE", number: 9 }),
 ];
 
 export type flightType = (typeof flights)[0];

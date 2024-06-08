@@ -290,6 +290,14 @@ select {
   margin: auto;
 }
 
+.logo13 {
+  background-image: url("logo_cjtf13.png");
+  background-size: contain;
+  background-origin: inherit;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .logo {
   background-image: url("logo_16aew.png");
   background-size: contain;

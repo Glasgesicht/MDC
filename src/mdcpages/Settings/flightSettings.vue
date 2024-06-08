@@ -4,7 +4,7 @@ import { rnlaf313members } from "@/config/member";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, type Ref } from "vue";
 import { useGlobalStore } from "@/stores/theatreStore";
 
 import DataTable from "primevue/datatable";
@@ -12,20 +12,20 @@ import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Checkbox from "primevue/checkbox";
 
-import Input from "primevue/inputtext";
 import Column from "primevue/column";
 import { getSTN } from "@/utils/utilFunctions";
 import { template } from "lodash";
-import InputText from "primevue/inputtext";
+import Input from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask"; //@ts-ignore this shouldnt error
 import CommsAssignment from "./commsAssignment.vue";
 import toDTC from "@/components/commsToDTC.vue";
 import {
   commTables,
+  freqNames,
+  tacticalFreqs,
   isPreset,
   type RadioType,
-  type freqNames,
 } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
 
@@ -50,7 +50,7 @@ function pushRadio(vals: RadioType) {
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
-const { selectedPKG } = storeToRefs(usePackageStore());
+const { selectedPKG, agencies } = storeToRefs(usePackageStore());
 const { updateFligh, updateLadder } = useFlightStore();
 const { file, stateChanged } = storeToRefs(useGlobalStore());
 
@@ -64,10 +64,40 @@ function callsignChangeEvent(event: any) {
   updateLadder();
 }
 
+const tanker: Ref<{
+  name: string;
+  freq: string;
+  type: string;
+  activity: string;
+  tacan: string;
+  lat: string;
+  lon: string;
+  alt: string;
+} | null> = ref(null);
+
 watch(stateChanged, () => {
   {
     updateLadder();
   }
+});
+
+watch(tanker, () => {
+  if (tanker.value?.freq && parseFloat(tanker.value?.freq) > 200)
+    selectedFlight.value.comms.radio1[12] = {
+      description: tanker.value.name + " / " + tanker.value.tacan,
+      freq: tanker.value.freq,
+      name:
+        Object.entries(commTables[0]).find(([name, freqs]) =>
+          freqs.find((freq: string) => freq === tanker.value!.freq)
+        )?.[0] || "",
+      number:
+        (Object.entries(commTables[0])
+          .find(([name, freqs]) =>
+            freqs.find((freq: string) => freq === tanker.value!.freq)
+          )?.[1]
+          .map((el) => el + "")
+          .indexOf(tanker.value?.freq) || 0) + 1,
+    };
 });
 
 function tacaninput() {
@@ -200,12 +230,12 @@ function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
     };
   }
 
-  comms.radio1[offset] = {
+  comms.radio1[offset + type === "DEP" ? 2 : 0] = {
     freq: ap.APPR.uhf,
     description: ap.APPR.uhf ? ap.ICAO + " " + "APR" : "",
     name: "",
   };
-  comms.radio2[offset] = {
+  comms.radio2[offset + type === "DEP" ? 2 : 0] = {
     freq: ap.APPR.vhf,
     description: ap.APPR.vhf ? ap.ICAO + " " + "APR" : "",
     name: "",
@@ -222,12 +252,12 @@ function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
     name: "",
   };
 
-  comms.radio1[offset + 2] = {
+  comms.radio1[offset + type === "DEP" ? 0 : 2] = {
     freq: ap.GROUND.uhf,
     description: ap.GROUND.uhf ? ap.ICAO + " " + "GRND" : "",
     name: "",
   };
-  comms.radio2[offset + 2] = {
+  comms.radio2[offset + type === "DEP" ? 0 : 2] = {
     freq: ap.GROUND.vhf,
     description: ap.GROUND.vhf ? ap.ICAO + " " + "GRND" : "",
     name: "",
@@ -273,44 +303,45 @@ const groupedFlights = computed(() =>
 </script>
 
 <template>
-  <p class="fitC">Select Flight To Edit</p>
-  <Dropdown
-    v-model="selectedFlight"
-    :options="allFlightsFromPackage"
-    optionLabel="callsign"
-    style="width: 251px"
-    placeholder="Select A Flight"
-  />
-  <div class="parent" v-if="file && selectedFlight.isActive">
+  <div style="display: block">
+    <p class="">Select Flight To Edit</p>
+    <br />
+    <Dropdown
+      v-model="selectedFlight"
+      :options="allFlightsFromPackage"
+      optionLabel="callsign"
+      style="width: 253px"
+      placeholder="Select A Flight"
+    />
+
     <Dropdown
       placeholder="select new callsign"
       v-if="!isCustomCalsign && selectedFlight.isActive"
-      style="grid-column-start: 1"
       filter
-      class="redefSize mcd-s-2 c-height fitC"
       :options="groupedFlights"
       optionLabel="callsign"
+      style="width: 253px"
       optionGroupLabel="label"
       optionGroupChildren="items"
       @change="callsignChangeEvent"
     >
       <!-- -->
       <template #optiongroup="slotProps">
-        <div class="flex align-items-center">
-          <div>{{ slotProps.option.label }}</div>
-        </div>
+        <div>{{ slotProps.option.label }}</div>
       </template></Dropdown
     >
-    <InputText
+  </div>
+  <div class="parent" v-if="file && selectedFlight.isActive">
+    <Input
       v-model="selectedFlight.callsign"
-      style="grid-column-start: 2; text-align: left; height: fit-content"
+      style="grid-column: 1 / span 1; text-align: left"
       v-if="isCustomCalsign"
-      class="select mcd-s-1 in mcd-a-0 fitC"
+      class="select mcd-s-1 c-height in mcd-a-0 fitC"
       @blur="updateFligh"
     />
     <InputNumber
       mask="9"
-      style="grid-column-start: 3; text-align: left"
+      style="grid-column-start: 2 / span 1; text-align: left"
       class="select mcd-s-1 c-height in mcd-a-0 fitC"
       v-if="isCustomCalsign && selectedFlight"
       v-model="selectedFlight.callsignNumber"
@@ -340,19 +371,19 @@ const groupedFlights = computed(() =>
       <label for="editDefautls">use defaults</label>
     </div>
 
-    <p style="grid-row: 4 / span 1" class="mcd-s-2 mcd-m-a">
+    <p style="grid-row: 3 / span 1" class="mcd-s-2 mcd-m-a">
       Member in selected Flight
     </p>
     <DataTable
-      class="mcd-s-3 datatable textleft redefSize"
+      class="mcd-s-4 datatable textleft redefSize"
       :value="selectedFlight.units"
       showGridlines
       style="
-        grid-row: 5 / span 3;
+        grid-row: 4 / span 4;
         align-content: left;
         margin-left: 0;
         text-align: left;
-        grid-column: 1 / span 4;
+        grid-column: 1 / span 5;
       "
       edit-mode="cell"
     >
@@ -360,7 +391,7 @@ const groupedFlights = computed(() =>
         ><template #body="{ index }">#{{ index + 1 }}</template></Column
       >
       <Column
-        style="width: 5rem; max-width: 5rem"
+        style="width: 8rem; max-width: 8rem"
         header="Callsign"
         field="callsign"
       >
@@ -469,7 +500,7 @@ const groupedFlights = computed(() =>
     </DataTable>
 
     <p style="grid-row: 11" class="mcd-s-2 mcd-m-a">COMMS ASSIGNMENT</p>
-    <div style="grid-row: 12" class="mcd-s-6 mcd-m-a">
+    <div style="grid-row: 12" class="mcd-s-4 mcd-m-a">
       <CommsAssignment />
     </div>
 
@@ -495,9 +526,9 @@ const groupedFlights = computed(() =>
       text
     />
 
-    <p style="grid-row: 17" class="mcd-s-1 mcd-m-a">ARRIVE</p>
+    <p style="grid-row: 16" class="mcd-s-1 mcd-m-a">ARRIVE</p>
     <Dropdown
-      style="grid-row: 17; color: red"
+      style="grid-row: 16; color: red"
       :options="airports"
       severity="danger"
       option-label="NAME"
@@ -511,14 +542,14 @@ const groupedFlights = computed(() =>
     />
     <Button
       v-if="arr"
-      style="grid-row: 17"
+      style="grid-row: 16"
       icon="pi pi-times-circle"
       @click="deleteAirport('ARR')"
       text
     />
-    <p style="grid-row: 19" class="mcd-s-1 mcd-m-a">ALTERNATE</p>
+    <p style="grid-row: 17" class="mcd-s-1 mcd-m-a">ALTERNATE</p>
     <Dropdown
-      style="grid-row: 19; color: red"
+      style="grid-row: 17; color: red"
       :options="airports"
       severity="danger"
       option-label="NAME"
@@ -532,19 +563,140 @@ const groupedFlights = computed(() =>
     />
     <Button
       v-if="alt"
-      style="grid-row: 19"
+      style="grid-row: 17"
       icon="pi pi-times-circle"
       @click="deleteAirport('ALT')"
       text
     />
-    <p style="grid-row: 21" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
+
+    <p style="grid-row: 19" class="mcd-s-1 mcd-m-a">CHECK-IN UHF</p>
+    <Dropdown
+      style="grid-row: 19; color: red"
+      :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
+      severity="danger"
+      option-label="description"
+      @change="
+        (e) => {
+          selectedFlight.comms.radio1[4] = {
+            description: e.value.description,
+            freq: e.value.freq,
+            name: e.value.name,
+            number: e.value.number ?? NaN,
+          };
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="false"
+      style="grid-row: 19"
+      icon="pi pi-times-circle"
+      @click=""
+      text
+    />
+
+    <p style="grid-row: 19" class="mcd-s-1 mcd-m-a">CHECK-IN VHF</p>
+    <Dropdown
+      style="grid-row: 19; color: red"
+      :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
+      severity="danger"
+      option-label="description"
+      @change="
+        (e) => {
+          selectedFlight.comms.radio2[4] = {
+            description: e.value.description,
+            freq: e.value.freq,
+            name: e.value.name,
+            number: e.value.number ?? NaN,
+          };
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="false"
+      style="grid-row: 19"
+      icon="pi pi-times-circle"
+      @click=""
+      text
+    />
+
+    <p style="grid-row: 20" class="mcd-s-1 mcd-m-a">TACTICAL UHF</p>
+    <Dropdown
+      style="grid-row: 20; color: red"
+      :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
+      severity="danger"
+      option-label="description"
+      @change="
+        (e) => {
+          assignAirport('ALT', e.value);
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="false"
+      style="grid-row: 20"
+      icon="pi pi-times-circle"
+      @click=""
+      text
+    />
+
+    <p style="grid-row: 20" class="mcd-s-1 mcd-m-a">TACTICAL VHF</p>
+    <Dropdown
+      style="grid-row: 20; color: red"
+      :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
+      severity="danger"
+      option-label="description"
+      @change="
+        (e) => {
+          assignAirport('ALT', e.value);
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="false"
+      style="grid-row: 20"
+      icon="pi pi-times-circle"
+      @click=""
+      text
+    />
+
+    <p style="grid-row: 22" class="mcd-s-1 mcd-m-a">TANKER</p>
+    <Dropdown
+      style="grid-row: 22; color: red"
+      :options="
+        agencies
+          .filter((ag) => ['KC-135', 'KC135MPRS', 'KC130'].includes(ag.type))
+          .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+      "
+      severity="danger"
+      v-model="tanker"
+      option-label="name"
+      @change="
+        (e) => {
+          tanker = e.value;
+        }
+      "
+      placeholder="select"
+    />
+    <Button
+      v-if="alt"
+      style="grid-row: 22"
+      icon="pi pi-times-circle"
+      @click="tanker = null"
+      text
+    />
+
+    <p style="grid-row: 27" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
     <DataTable
       showGridlines
       edit-mode="cell"
       :value="selectedFlight.waypoints"
       class="mcd-s-6 datatable textleft redefSize"
       style="
-        grid-row: 22;
+        grid-row: 28;
         align-content: left;
         margin-left: 0;
         text-align: left;
@@ -575,7 +727,7 @@ const groupedFlights = computed(() =>
       ></Column>
     </DataTable>
 
-    <p style="grid-row: 1; grid-column: 7 / span 2" class="mcd-m-a">Radio 1</p>
+    <p style="grid-row: 1; grid-column: 6 / span 1" class="mcd-m-a">Radio 1</p>
     <DataTable
       showGridlines
       edit-mode="cell"
@@ -583,7 +735,7 @@ const groupedFlights = computed(() =>
       class="mcd-s-2 datatable textleft redefSize"
       style="
         grid-row: 2 / span 8;
-        grid-column: 7 / span 2;
+        grid-column: 6 / span 3;
         align-content: left;
         margin-left: 0;
         text-align: left;
@@ -599,14 +751,29 @@ const groupedFlights = computed(() =>
         /></template>
       </Column>
       <Column header="Name" field="name">
-        <template #body="{ data }"> {{ data?.name }}</template></Column
-      >
+        <template #body="{ data }"> {{ data?.name }}</template>
+        <template #editor="{ data, index }">
+          <Input
+            class="fixW"
+            v-model="selectedFlight.comms.radio1[index].name" /></template
+      ></Column>
+
       <Column header="n°" field="number">
-        <template #body="{ data }"> {{ data?.number }}</template></Column
-      >
+        <template #body="{ data }"> {{ data?.number || null }}</template>
+        <template #editor="{ data, index }">
+          <InputNumber
+            class="fixW"
+            v-model="selectedFlight.comms.radio1[index].number" /></template
+      ></Column>
       <Column header="Description" field="description">
-        <template #body="{ data }"> {{ data?.description }}</template></Column
-      >
+        <template #body="{ data }"> {{ data?.description }}</template>
+        <template #editor="{ data, index }">
+          <Input
+            class="fixW"
+            v-model="
+              selectedFlight.comms.radio1[index].description
+            " /></template
+      ></Column>
       <Column>
         <template #body="{ index }"
           ><Button
@@ -616,9 +783,14 @@ const groupedFlights = computed(() =>
       ></Column>
     </DataTable>
 
-    <toDTC style="grid-row: 25; grid-column: 7 / span 2" />
+    <toDTC style="grid-row: 25; grid-column: 9 / span 1" />
+    <Button
+      style="grid-row: 25; grid-column: 10 / span 1"
+      label="update Ladder"
+      @click="updateLadder"
+    />
 
-    <p style="grid-row: 1; grid-column: 9 / span 2" class="mcd-m-a">Radio 2</p>
+    <p style="grid-row: 1; grid-column: 9 / span 1" class="mcd-m-a">Radio 2</p>
     <DataTable
       showGridlines
       edit-mode="cell"
@@ -626,7 +798,7 @@ const groupedFlights = computed(() =>
       class="mcd-s-2 datatable textleft redefSize"
       style="
         grid-row: 2 / span 8;
-        grid-column: 9 / span 2;
+        grid-column: 9 / span 3;
         align-content: left;
         margin-left: 0;
         text-align: left;
@@ -638,18 +810,32 @@ const groupedFlights = computed(() =>
       <Column header="Freq" field="freq">
         <template #body="{ data }"> {{ data?.freq }}</template>
         <template #editor="{ data, index }">
-          <Input class="fixW" v-model="selectedFlight.comms.radio1[index].freq"
+          <Input class="fixW" v-model="selectedFlight.comms.radio2[index].freq"
         /></template>
       </Column>
       <Column header="Name" field="name">
-        <template #body="{ data }"> {{ data?.name }}</template></Column
-      >
+        <template #body="{ data }"> {{ data?.name }}</template>
+        <template #editor="{ data, index }">
+          <Input
+            class="fixW"
+            v-model="selectedFlight.comms.radio2[index].name" /></template
+      ></Column>
       <Column header="n°" field="number">
-        <template #body="{ data }"> {{ data?.number }}</template></Column
-      >
+        <template #body="{ data }"> {{ data?.number || null }}</template>
+        <template #editor="{ data, index }">
+          <InputNumber
+            class="fixW"
+            v-model="selectedFlight.comms.radio2[index].number" /></template
+      ></Column>
       <Column header="Description" field="description">
-        <template #body="{ data }"> {{ data?.description }}</template></Column
-      >
+        <template #body="{ data }"> {{ data?.description }}</template>
+        <template #editor="{ data, index }">
+          <Input
+            class="fixW"
+            v-model="
+              selectedFlight.comms.radio2[index].description
+            " /></template
+      ></Column>
       <Column>
         <template #body="{ index }"
           ><Button
@@ -659,13 +845,19 @@ const groupedFlights = computed(() =>
       ></Column>
     </DataTable>
   </div>
-
-  <Button @click="console.log(selectedFlight.units)" />
+  {{ selectedFlight }}
 </template>
 
 <style scoped>
+* {
+  padding: 0 0;
+  margin: 0 0;
+}
 .parent {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: inline-grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(69, minmax(auto, 26px));
+  gap: 4px;
 }
 
 .inline {
@@ -680,5 +872,14 @@ const groupedFlights = computed(() =>
 
 .fitC {
   height: fit-content;
+}
+
+* {
+  padding: 0 0;
+}
+
+.c-height {
+  height: auto;
+  width: auto;
 }
 </style>

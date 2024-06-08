@@ -1,28 +1,24 @@
 <script setup lang="ts">
-import Gameplan from "./mdcpages/Gameplan.vue";
-import Waypoints from "./mdcpages/waypoints.vue";
-import Coordination from "./mdcpages/coordination.vue";
-import Dmpi from "./mdcpages/dmpi.vue";
-import Datacard from "./mdcpages/datacard.vue";
-import NewBriefing from "./mdcpages/newbriefing.vue";
-import NewDatacard from "./mdcpages/newdatacard.vue";
-import NewSteerpoints from "./mdcpages/newsteerpoints.vue";
-import NewComms from "./mdcpages/newcomms.vue";
-import NineLine from "./mdcpages/not shared/9Line.vue";
-import CheckIn from "./mdcpages/not shared/CASCheckin.vue"; //@ts-ignore
-import DTC from "./mdcpages/dtc.vue";
+import GeneralSettings from "./mdcpages/Settings/generalSettings.vue";
+import PackageSettings from "./mdcpages/Settings/packageSettings.vue";
+import FlightSettings from "./mdcpages/Settings/flightSettings.vue";
 
-import TabView from "primevue/tabview";
-import TabPanel from "primevue/tabpanel";
-import Checkbox from "primevue/checkbox";
-import Dropdown from "primevue/dropdown";
-
-import { inject, provide, ref } from "vue";
-import Settings from "./mdcpages/Settings.vue";
+import Menu from "primevue/menu";
+import { ref, provide, computed } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
 import { toJpeg } from "html-to-image";
+import { useGlobalStore } from "./stores/theatreStore";
+import { processCF } from "./config/parseCF";
+import Waypoints from "./mdcpages/waypoints.vue";
+import Datacard from "./mdcpages/datacard.vue";
+import Newsteerpoints from "./mdcpages/newsteerpoints.vue";
+import Newdatacard from "./mdcpages/newdatacard.vue";
+import Newcomms from "./mdcpages/newcomms.vue";
+import Dmpi from "./mdcpages/dmpi.vue";
+import Gameplan from "./mdcpages/Gameplan.vue";
+import Newbriefing from "./mdcpages/newbriefing.vue";
 
 const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
@@ -32,95 +28,217 @@ const { selectedFlight } = storeToRefs(useFlightStore());
 
 provide("showROE", showROE);
 
-let pagenr = 0; // I'll rethink this so only exported pages get numbered.
 const active = ref(0);
+const pageActive = ref("");
+
+const { file } = storeToRefs(useGlobalStore());
+
+const filename = ref("Select File");
+
+const onChangedFile = async (payload: any) => {
+  file.value = true;
+  processCF(payload.target.files[0]);
+  filename.value = payload.target.files[0].name;
+  pageActive.value = "setting2";
+};
+
+const items = computed(() => [
+  {
+    label: "Settings",
+
+    items: [
+      {
+        icon: "pi pi-upload",
+        label: filename.value,
+
+        command: () => {
+          document.getElementById("fileUpload")?.click();
+        },
+      },
+      {
+        label: "Package Settings",
+        icon: "pi pi-users",
+        command: () => {
+          pageActive.value = "setting2";
+        },
+      },
+      {
+        label: "Flight Settings",
+        icon: "pi pi-user-edit",
+        command: () => {
+          pageActive.value = "setting3";
+        },
+      },
+    ],
+  },
+  {
+    label: "Preview",
+    items: [
+      {
+        label: "Gameplan",
+        command: () => {
+          pageActive.value = "gameplan";
+        },
+      },
+      {
+        label: "new Briefing",
+        command: () => {
+          pageActive.value = "newbriefing";
+        },
+      },
+      {
+        label: "Waypoints",
+        command: () => {
+          pageActive.value = "waypoints";
+        },
+      },
+      {
+        label: "new Steerpoints",
+        command: () => {
+          pageActive.value = "newsteerpoints";
+        },
+      },
+      {
+        label: "Datacard",
+        command: () => {
+          pageActive.value = "datacard";
+        },
+      },
+      {
+        label: "New Datacard",
+        command: () => {
+          pageActive.value = "newdatacard";
+        },
+      },
+      {
+        label: "new Comms",
+        command: () => {
+          pageActive.value = "newcomms";
+        },
+      },
+      {
+        label: "DMPI",
+        command: () => {
+          pageActive.value = "dmpi";
+        },
+      },
+    ],
+  },
+  {
+    label: "Export",
+    items: [
+      {
+        label: "to DTC",
+        command: () => {
+          // handle click
+        },
+      },
+      {
+        label: "to JPEG",
+        command: () => {
+          // handle click
+          makejpg();
+        },
+      },
+    ],
+  },
+]);
 
 const makejpg = async () => {
-  const oldactive = active.value;
+  /*const oldactive = active.value;
   for (let i = 0; i <= 12; i++) {
     active.value = i;
-    await new Promise((r) =>
-      setTimeout(() => {
-        r(true);
-      }, 0)
-    );
-    try {
-      await toJpeg(document.getElementsByName("mdcelement" + i)[0])
-        .then(function (dataUrl) {
+    await new Promise((r) => setTimeout(() => r(true), 0));
+      await toJpeg(document.getElementsByName("mdcpage" + i)[0])
+        .then((dataUrl) => {
           const img = new Image();
           img.src = dataUrl;
           document.body.getElementsByClassName("mcdimages")[0].append(img);
         })
         .catch();
-    } catch (err) {}
   }
-  active.value = oldactive;
+  active.value = oldactive;*/
+
+  await toJpeg(document.getElementsByName("mdcpage")[0])
+    .then((dataUrl) => {
+      const img = new Image();
+      img.src = dataUrl;
+      document.body.getElementsByClassName("mcdimages")[0].append(img);
+    })
+    .catch();
 };
 </script>
 
 <template>
-  <div style="position: absolute; top: 10px; right: 50px; z-index: 99">
-    <Dropdown
-      v-model="selectedPKG"
-      :options="packages"
-      optionLabel="name"
-      placeholder="Select A Package"
-    />
-    <Dropdown
-      v-model="selectedFlight"
-      :options="allFlightsFromPackage"
-      optionLabel="callsign"
-      placeholder="Select A Flight"
-    />
-  </div>
-
-  <TabView v-model:activeIndex="active"
-    ><TabPanel header="Settings"> <Settings /> </TabPanel>
-    <TabPanel header="New Briefing">
-      <NewBriefing :pagenr="1" name="mdcelement1" />
-    </TabPanel>
-    <TabPanel header="New Datacard">
-      <NewDatacard :pagenr="2" name="mdcelement2" />
-    </TabPanel>
-    <TabPanel header="New Steerpoints">
-      <NewSteerpoints :pagenr="3" name="mdcelement3" />
-    </TabPanel>
-    <TabPanel header="New Comms">
-      <NewComms :pagenr="4" name="mdcelement4" />
-    </TabPanel>
-    <TabPanel header="Gameplan">
-      <Gameplan :pagenr="1" name="mdcelement5" />
-      Display ROE:
-      <Checkbox label="Show ROE-Box" :binary="true" v-model="showROE" />
-    </TabPanel>
-    <TabPanel header="Waypoints" name="mdcelement6">
-      <Waypoints :pagenr="2" />
-    </TabPanel>
-    <TabPanel header="Coordination">
-      <Coordination :pagenr="3" name="mdcelement7" />
-    </TabPanel>
-    <TabPanel header="Datacard">
-      <Datacard :pagenr="4" name="mdcelement8" />
-    </TabPanel>
-    <TabPanel header="9Line">
-      <NineLine name="mdcelement9" />
-    </TabPanel>
-    <TabPanel header="Check-In">
-      <CheckIn name="mdcelement10" />
-    </TabPanel>
-    <!--     <TabPanel header="Page 2">
-      <Page2 :pagenr="5" name="mcdelement5" />
-    </TabPanel>-->>
-
-    <TabPanel header="DMPI">
-      <Dmpi :pagenr="5" name="mcdelement6" />
-    </TabPanel>
-    <TabPanel header="Export to JPG">
-      <button @click="makejpg">label="makejpg"</button>
+  <div id="app">
+    <div class="split left">
+      <div class="logo13" style="height: 150px"></div>
+      <Menu :model="items" style="border: none; background-color: #f4f4f4" />
+    </div>
+    <div class="split right">
+      <GeneralSettings v-if="pageActive === 'setting1'" name="mdcpage" />
+      <PackageSettings v-if="pageActive === 'setting2'" name="mdcpage" />
+      <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />
+      <Gameplan v-if="pageActive === 'gameplan'" :pagenr="1" name="mdcpage" />
+      <Newbriefing
+        v-if="pageActive === 'newbriefing'"
+        :pagenr="2"
+        name="mdcpage"
+      />
+      <Waypoints v-if="pageActive === 'waypoints'" :pagenr="3" name="mdcpage" />
+      <Newsteerpoints
+        v-if="pageActive === 'newsteerpoints'"
+        :pagenr="2"
+        name="mdcpage"
+      />
+      <Datacard v-if="pageActive === 'datacard'" :pagenr="5" name="mdcpage" />
+      <Newdatacard
+        v-if="pageActive === 'newdatacard'"
+        :pagenr="3"
+        name="mdcpage"
+      />
+      <Newcomms v-if="pageActive === 'newcomms'" :pagenr="3" name="mdcpage" />
+      <Dmpi v-if="pageActive === 'dmpi'" :pagenr="8" name="mdcpage" />
       <div class="mcdimages"></div>
-    </TabPanel>
-    <TabPanel header="DTC">
-      <DTC />
-    </TabPanel>
-  </TabView>
+    </div>
+  </div>
+  <input
+    style="display: none"
+    type="file"
+    id="fileUpload"
+    class="file-input"
+    v-on:change="onChangedFile"
+    accept=".cf"
+  />
 </template>
+
+<style scoped>
+body {
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.split {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.left {
+  min-width: 180px;
+  width: 9%;
+  max-width: 220px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+}
+
+.right {
+  flex: 1;
+  background-color: lightgray;
+}
+</style>
