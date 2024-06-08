@@ -20,33 +20,9 @@ import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask"; //@ts-ignore this shouldnt error
 import CommsAssignment from "./commsAssignment.vue";
 import toDTC from "@/components/commsToDTC.vue";
-import {
-  commTables,
-  freqNames,
-  tacticalFreqs,
-  isPreset,
-  type RadioType,
-} from "@/config/frequencies";
+import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
-
-function pushRadio(vals: RadioType) {
-  // I forgot what I made this for lmao
-  let radio = selectedFlight.value.comms[vals.radio][vals.preset + 1];
-  if (isPreset(vals)) {
-    radio = {
-      description: vals.descr,
-      freq: commTables[0][vals.name][vals.number - 1],
-      name: vals.name,
-      number: vals.number + 1,
-    };
-  } else {
-    radio = {
-      description: vals.descr,
-      freq: vals.freq,
-      name: "",
-    };
-  }
-}
+import { reactive } from "vue";
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
@@ -133,9 +109,12 @@ function clearComms(index: number, radio: "pri" | "sec") {
   }
 }
 
-const depart = ref();
-const arr = ref();
-const alt = ref();
+const selectedFreqs = reactive({
+  checkVHF: null,
+  checkUHF: null,
+  tactVHF: null,
+  tactUHF: null,
+});
 
 function FlightMemberUpdate() {
   selectedFlight.value.units.forEach((unit) => {
@@ -196,17 +175,6 @@ function deleteMember(i: number) {
 }
 
 function deleteAirport(type: "DEP" | "ARR" | "ALT") {
-  switch (type) {
-    case "DEP":
-      depart.value = null;
-      break;
-    case "ARR":
-      arr.value = null;
-      break;
-    case "ALT":
-      alt.value = null;
-  }
-
   assignAirport(type, structuredClone(airfieldEmpty));
 }
 
@@ -570,6 +538,7 @@ const groupedFlights = computed(() =>
       :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
       severity="danger"
       option-label="description"
+      v-model="selectedFreqs.checkUHF"
       @change="
         (e) => {
           selectedFlight.comms.radio1[4] = {
@@ -583,18 +552,24 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="false"
-      style="grid-row: 19"
+      v-if="selectedFlight.comms.radio1[4].freq"
+      style="grid-row: 19; grid-column: 3"
       icon="pi pi-times-circle"
-      @click=""
+      @click="
+        clearComms(4, 'pri');
+        selectedFreqs.checkUHF = null;
+      "
       text
     />
 
-    <p style="grid-row: 19" class="mcd-s-1 mcd-m-a">CHECK-IN VHF</p>
+    <p style="grid-row: 19; grid-column: 3" class="mcd-s-1 mcd-m-a">
+      CHECK-IN VHF
+    </p>
     <Dropdown
       style="grid-row: 19; color: red"
       :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
       severity="danger"
+      v-model="selectedFreqs.checkVHF"
       option-label="description"
       @change="
         (e) => {
@@ -609,10 +584,13 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="false"
+      v-if="selectedFlight.comms.radio2[4].freq"
       style="grid-row: 19"
       icon="pi pi-times-circle"
-      @click=""
+      @click="
+        clearComms(4, 'sec');
+        selectedFreqs.checkVHF = null;
+      "
       text
     />
 
@@ -621,6 +599,7 @@ const groupedFlights = computed(() =>
       style="grid-row: 20; color: red"
       :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
       severity="danger"
+      v-model="selectedFreqs.tactUHF"
       option-label="description"
       @change="
         (e) => {
@@ -635,18 +614,24 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="false"
-      style="grid-row: 20"
+      v-if="selectedFlight.comms.radio1[5].freq"
+      style="grid-row: 20; grid-column: 3"
       icon="pi pi-times-circle"
-      @click=""
+      @click="
+        clearComms(5, 'pri');
+        selectedFreqs.tactUHF = null;
+      "
       text
     />
 
-    <p style="grid-row: 20" class="mcd-s-1 mcd-m-a">TACTICAL VHF</p>
+    <p style="grid-row: 20; grid-column: 3" class="mcd-s-1 mcd-m-a">
+      TACTICAL VHF
+    </p>
     <Dropdown
       style="grid-row: 20; color: red"
       :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
       severity="danger"
+      v-model="selectedFreqs.tactVHF"
       option-label="description"
       @change="
         (e) => {
@@ -661,10 +646,13 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="false"
+      v-if="selectedFlight.comms.radio2[5].freq"
       style="grid-row: 20"
       icon="pi pi-times-circle"
-      @click=""
+      @click="
+        clearComms(5, 'sec');
+        selectedFreqs.tactVHF = null;
+      "
       text
     />
 
@@ -687,7 +675,7 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
-      v-if="alt"
+      v-if="tanker"
       style="grid-row: 22"
       icon="pi pi-times-circle"
       @click="tanker = null"
