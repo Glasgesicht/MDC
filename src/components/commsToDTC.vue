@@ -9,6 +9,12 @@ import Button from "primevue/button";
 import { toRaw } from "vue";
 const { selectedFlight } = storeToRefs(useFlightStore());
 
+function strToFreq(val: string) {
+  const [a, b] = val.split(".");
+  b.slice(0, 2);
+  return `${a}.${b}`;
+}
+
 function toDTC() {
   const toExport = {
     Aircraft: "F16C",
@@ -48,11 +54,10 @@ function toDTC() {
 
   toExport.Radios.Radio1.Presets = selectedFlight.value.comms.radio1
     .map((val, i) => {
-      console.log("val1", i, toRaw(val));
       return {
         Number: i + 1,
         Name: val.description,
-        Frequency: val.freq.slice(0, 6),
+        Frequency: strToFreq(val.freq),
       };
     })
     .filter((n) => n.Frequency !== "");
@@ -63,11 +68,10 @@ function toDTC() {
       return {
         Number: i + 1,
         Name: val.description,
-        Frequency: val.freq.slice(0, 6),
+        Frequency: strToFreq(val.freq),
       };
     })
     .filter((n) => n.Frequency !== "");
-  console.log(decompressString(compressString(toExport)));
 
   navigator.clipboard.writeText(compressString(toExport));
 }
