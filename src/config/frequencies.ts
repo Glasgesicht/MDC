@@ -468,6 +468,7 @@ function makefreq(
       description: input.description,
       freq: input.freq,
       name: "",
+      number: NaN,
     });
   } else {
     tacticalFreqs.push({
