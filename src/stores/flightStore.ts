@@ -181,10 +181,13 @@ export const useFlightStore = defineStore("flight", () => {
     );
 
     allFlightsFromPackage.value.forEach((flight) => {
-      for (let i = 14; i < 19; i++) {
+      for (let i = 14; i < 14 + allFlightsFromPackage.value.length; i++) {
         //update Radios
-        flight.comms.radio1[i] = selectedPKG.value.flights[i - 14]?.mycomm.pri;
-        flight.comms.radio2[i] = selectedPKG.value.flights[i - 14]?.mycomm.sec;
+        if (selectedPKG.value.flights[i - 14]?.mycomm.pri.freq)
+          //only if they've values assigned
+          flight.comms.radio1[i] = selectedPKG.value.flights[i - 14].mycomm.pri;
+        if (selectedPKG.value.flights[i - 14].mycomm.sec.freq)
+          flight.comms.radio2[i] = selectedPKG.value.flights[i - 14].mycomm.sec;
       }
     });
   }

@@ -4,20 +4,27 @@
 <script setup lang="ts">
 import { compressString, decompressString } from "@/config/dtc";
 import { useFlightStore } from "@/stores/flightStore";
+import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
 import Button from "primevue/button";
 import { toRaw } from "vue";
 const { selectedFlight } = storeToRefs(useFlightStore());
+const { selectedPKG } = storeToRefs(usePackageStore());
 
 function strToFreq(val: string) {
+  if (!val) return "";
   const [a, b] = val.split(".");
-  b.slice(0, 2);
-  return `${a}.${b}`;
+  console.log(val.split("."));
+  if (b) {
+    b.slice(0, 2);
+    return `${a}.${b}`;
+  }
+  return a;
 }
 
 function toDTC() {
   const toExport = {
-    Aircraft: "F16C",
+    Aircraft: "F16C", //this is F-16 only for now
     Upload: null,
     WaypointsCapture: null,
     Waypoints: null,
@@ -31,7 +38,7 @@ function toDTC() {
         SelectedFrequency: null,
         SelectedPreset: null,
         EnableGuard: true,
-        Mode: 2,
+        Mode: 0,
       },
       Radio2: {
         Presets: [
@@ -39,9 +46,12 @@ function toDTC() {
           { Number: 2, Name: "test3", Frequency: "125.00" },
         ],
         SelectedFrequency: null,
-        SelectedPreset: null,
+        SelectedPreset:
+          selectedPKG.value.flights.findIndex(
+            (fl) => fl.callsign === selectedFlight.value.callsign
+          ) + 15,
         EnableGuard: false,
-        Mode: 0,
+        Mode: 2,
       },
     },
     MFD: null,
@@ -56,8 +66,8 @@ function toDTC() {
     .map((val, i) => {
       return {
         Number: i + 1,
-        Name: val.description,
-        Frequency: strToFreq(val.freq),
+        Name: val?.description,
+        Frequency: strToFreq(val?.freq),
       };
     })
     .filter((n) => n.Frequency !== "");
@@ -67,8 +77,8 @@ function toDTC() {
       console.log("val2", i, toRaw(val));
       return {
         Number: i + 1,
-        Name: val.description,
-        Frequency: strToFreq(val.freq),
+        Name: val?.description,
+        Frequency: strToFreq(val?.freq),
       };
     })
     .filter((n) => n.Frequency !== "");
