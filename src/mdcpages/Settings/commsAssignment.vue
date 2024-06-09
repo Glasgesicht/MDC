@@ -11,41 +11,49 @@
       <Dropdown
         :options="freqNames"
         :disabled="useDefaults"
-        v-model="pri"
+        v-model="selectedFlight.mycomm.pri.name"
         placeholder="none"
       />
-      <InputText :disabled="useDefaults" />
+      <Dropdown
+        :disabled="useDefaults"
+        :options="numbers"
+        v-model="selectedFlight.mycomm.pri.number"
+      />
+      <Inputmask
+        v-model="selectedFlight.mycomm.pri.freq"
+        locale="en-US"
+        :min-fraction-digits="2"
+        :max="399.99"
+        :max-fraction-digits="2"
+      />
       SECONDARY
       <Dropdown
         :options="freqNames"
-        v-model="sec"
+        v-model="selectedFlight.mycomm.sec.name"
         placeholder="none"
         :disabled="useDefaults"
       />
-      <InputText :disabled="useDefaults" />
+      <Dropdown
+        :disabled="useDefaults"
+        :options="numbers"
+        v-model="selectedFlight.mycomm.sec.number"
+      />
+      <InputMask v-model="selectedFlight.mycomm.sec.freq" mask="9?99.999" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
 import Dropdown from "primevue/dropdown";
-import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
 import InputText from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask";
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { freqNames } from "@/config/frequencies";
 
-const pri = ref("YELLOW");
-const priN = ref(2);
-const sec = ref("AMBER");
-const secN = ref(6);
-
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
+
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 //manual assignment
 const manual = ref(false);

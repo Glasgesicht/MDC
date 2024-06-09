@@ -30,8 +30,6 @@
 import { storeToRefs } from "pinia";
 import { processCF } from "@/config/parseCF";
 import { useGlobalStore } from "@/stores/theatreStore";
-import Styles from "@/mdcpages/Settings/styles.vue";
-import Datacard from "@/mdcpages/datacard.vue";
 import { ref } from "vue";
 
 const { file } = storeToRefs(useGlobalStore());

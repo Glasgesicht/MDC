@@ -26,7 +26,7 @@ import type { WritableComputedRef } from "vue";
 
 const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
-const { selectedPKG, agencies } = storeToRefs(usePackageStore());
+const { agencies } = storeToRefs(usePackageStore());
 const { updateFligh, updateLadder } = useFlightStore();
 const { file, stateChanged } = storeToRefs(useGlobalStore());
 

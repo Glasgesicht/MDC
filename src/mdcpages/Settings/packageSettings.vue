@@ -106,7 +106,6 @@ import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Input from "primevue/inputtext";
 import Column from "primevue/column";
-import { flights } from "@/config/flights";
 const { stateChanged } = storeToRefs(useGlobalStore());
 
 const { packages, selectedPKG, allFlightsFromPackage, ramrod } = storeToRefs(
