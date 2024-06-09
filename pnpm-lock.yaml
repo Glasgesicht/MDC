@@ -11,9 +11,6 @@ importers:
       base64-js:
         specifier: ^1.5.1
         version: 1.5.1
-      events:
-        specifier: ^3.3.0
-        version: 3.3.0
       html-to-image:
         specifier: ^1.11.11
         version: 1.11.11
@@ -35,9 +32,6 @@ importers:
       primevue:
         specifier: ^3.49.1
         version: 3.51.0(vue@3.4.23(typescript@5.3.3))
-      ts-polyfill:
-        specifier: ^3.8.2
-        version: 3.8.2
       vue:
         specifier: ^3.4.15
         version: 3.4.23(typescript@5.3.3)
@@ -492,9 +486,6 @@ packages:
   constants-browserify@1.0.0:
     resolution: {integrity: sha512-xFxOwqIzR/e1k1gLiWEophSCMqXcwVHIH7akf7b/vxcUeGunlj3hvZaaqxwHsTgn+IndtkQJgSztIDWeumWJDQ==}
 
-  core-js@3.37.1:
-    resolution: {integrity: sha512-Xn6qmxrQZyB0FFY8E3bgRXei3lWDJHhvI+u0q9TKIYM49G8pAr0FgnnrFRAmsbptZL1yxRADVXn+x5AGsbBfyw==}
-
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
@@ -908,9 +899,6 @@ packages:
   to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
     engines: {node: '>=4'}
-
-  ts-polyfill@3.8.2:
-    resolution: {integrity: sha512-x0M4kx+FObO88sedZ1zld+YX+GvcgaYSVnHspNftI4GRT86FTBy41O89ztKfvue0XtaKpb8WBpPZsh82hy3Ncw==}
 
   tty-browserify@0.0.1:
     resolution: {integrity: sha512-C3TaO7K81YvjCgQH9Q1S3R3P3BtN3RIM8n+OvX4il1K1zgE8ZhI0op7kClgkxtutIE8hQrcrHBXvIheqKUUCxw==}
@@ -1387,8 +1375,6 @@ snapshots:
   console-browserify@1.2.0: {}
 
   constants-browserify@1.0.0: {}
-
-  core-js@3.37.1: {}
 
   core-util-is@1.0.3: {}
 
@@ -1914,10 +1900,6 @@ snapshots:
       setimmediate: 1.0.5
 
   to-fast-properties@2.0.0: {}
-
-  ts-polyfill@3.8.2:
-    dependencies:
-      core-js: 3.37.1
 
   tty-browserify@0.0.1: {}
 
