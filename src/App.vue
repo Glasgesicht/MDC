@@ -4,6 +4,7 @@ import PackageSettings from "./mdcpages/Settings/packageSettings.vue";
 import FlightSettings from "./mdcpages/Settings/flightSettings.vue";
 
 import Menu from "primevue/menu";
+import Dropdown from "primevue/dropdown";
 import { ref, provide, computed } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
@@ -174,8 +175,20 @@ const makejpg = async () => {
     <div class="split left">
       <div class="logo13" style="height: 150px"></div>
       <Menu :model="items" style="border: none; background-color: #f4f4f4" />
+      <Dropdown
+        v-model="selectedPKG"
+        :options="packages"
+        optionLabel="name"
+        placeholder="Select A Package"
+      />
+      <Dropdown
+        v-model="selectedFlight"
+        :options="allFlightsFromPackage"
+        optionLabel="callsign"
+        placeholder="Select A Flight"
+      />
     </div>
-    <div class="split right">
+    <div class="split right" style="padding: 8px 0 0 8px">
       <GeneralSettings v-if="pageActive === 'setting1'" name="mdcpage" />
       <PackageSettings v-if="pageActive === 'setting2'" name="mdcpage" />
       <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />
@@ -213,14 +226,11 @@ const makejpg = async () => {
 </template>
 
 <style scoped>
-body {
-  margin: 0;
-}
-
 #app {
   display: flex;
   min-height: 100vh;
   width: 100vw;
+  margin: 0;
 }
 
 .split {
@@ -230,8 +240,8 @@ body {
 }
 
 .left {
-  min-width: 180px;
-  width: 9%;
+  min-width: 190px;
+  width: 10%;
   max-width: 220px;
   background-color: #f4f4f4;
   border-right: 1px solid #ddd;
