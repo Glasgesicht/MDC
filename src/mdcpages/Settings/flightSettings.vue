@@ -501,6 +501,7 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
+      v-if="selectedFlight.DEP.ICAO"
       style="grid-row: 15"
       icon="pi pi-times-circle"
       @click="deleteAirport('DEP')"
@@ -522,6 +523,7 @@ const groupedFlights = computed(() =>
       placeholder="select"
     />
     <Button
+      v-if="selectedFlight.ARR.ICAO"
       style="grid-row: 16"
       icon="pi pi-times-circle"
       @click="deleteAirport('ARR')"
@@ -543,6 +545,7 @@ const groupedFlights = computed(() =>
     />
     <Button
       style="grid-row: 17"
+      v-if="selectedFlight.ALT.ICAO"
       icon="pi pi-times-circle"
       @click="deleteAirport('ALT')"
       text
