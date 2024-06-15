@@ -20,6 +20,7 @@ import Newcomms from "./mdcpages/newcomms.vue";
 import Dmpi from "./mdcpages/dmpi.vue";
 import Gameplan from "./mdcpages/Gameplan.vue";
 import Newbriefing from "./mdcpages/newbriefing.vue";
+import WaypointsSettings from "./mdcpages/Settings/waypoints.vue";
 
 const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
@@ -68,6 +69,13 @@ const items = computed(() => [
         icon: "pi pi-user-edit",
         command: () => {
           pageActive.value = "setting3";
+        },
+      },
+      {
+        label: "Steerpoints",
+        icon: "pi pi-user-edit",
+        command: () => {
+          pageActive.value = "setting4";
         },
       },
     ],
@@ -174,15 +182,20 @@ const makejpg = async () => {
   <div id="app">
     <div class="split left">
       <div class="logo13" style="height: 150px"></div>
+
       <Menu :model="items" style="border: none; background-color: #f4f4f4" />
+
+      <hr style="width: 100%" />
       <Dropdown
         v-model="selectedPKG"
         :options="packages"
+        class="m-5"
         optionLabel="name"
         placeholder="Select A Package"
       />
       <Dropdown
         v-model="selectedFlight"
+        class="m-5"
         :options="allFlightsFromPackage"
         optionLabel="callsign"
         placeholder="Select A Flight"
@@ -192,6 +205,7 @@ const makejpg = async () => {
       <GeneralSettings v-if="pageActive === 'setting1'" name="mdcpage" />
       <PackageSettings v-if="pageActive === 'setting2'" name="mdcpage" />
       <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />
+      <WaypointsSettings v-if="pageActive === 'setting4'" name="mdcpage" />
       <Gameplan v-if="pageActive === 'gameplan'" :pagenr="1" name="mdcpage" />
       <Newbriefing
         v-if="pageActive === 'newbriefing'"
@@ -231,6 +245,9 @@ const makejpg = async () => {
   min-height: 100vh;
   width: 100vw;
   margin: 0;
+  background-color: lightgray;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .split {
@@ -240,15 +257,20 @@ const makejpg = async () => {
 }
 
 .left {
-  min-width: 190px;
-  width: 10%;
+  min-width: 200px;
+  width: 220px;
   max-width: 220px;
   background-color: #f4f4f4;
   border-right: 1px solid #ddd;
 }
 
 .right {
+  min-width: 1200px;
+  max-width: 2000px;
   flex: 1;
-  background-color: lightgray;
+}
+
+.m-5 {
+  margin: 3px;
 }
 </style>

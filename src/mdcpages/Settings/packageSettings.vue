@@ -13,13 +13,17 @@
       class=""
       style="grid-row: 2"
     />
-    <Input style="grid-row: 2" class="" v-model="selectedPKG.name"></Input>
+    <Input
+      style="grid-row: 2; padding-left: 4px"
+      class=""
+      v-model="selectedPKG.name"
+    ></Input>
 
-    <p style="grid-row: 1 / span 1; grid-column: 4" class="">
+    <p style="grid-row: 1 / span 1; grid-column: 4 / span 2" class="">
       RAMROD (selected)
     </p>
     <Dropdown
-      style="grid-row: 2 / span 1; grid-column: 4"
+      style="grid-row: 2 / span 1; grid-column: 4 / span 2"
       :options="ramrods"
       v-model="ramrod"
       editable
@@ -36,7 +40,7 @@
       showGridlines
       edit-mode="cell"
       @rowReorder="onRowReorder"
-      style="grid-row: 5 / span 10; grid-column: 1 / span 5"
+      style="grid-row: 5 / span 10; grid-column: 1 / span 7"
     >
       <Column rowReorder headerStyle="width: 4rem" :reorderableColumn="false" />
       <Column header="FLIGHT" headerStyle="width: 10rem"
@@ -130,8 +134,9 @@ const { file } = storeToRefs(useGlobalStore());
 }
 .parent {
   display: grid;
-  grid-template-columns: repeat(8, 180px);
+  grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(64, 35px);
   text-align: left;
+  gap: 2px;
 }
 </style>
