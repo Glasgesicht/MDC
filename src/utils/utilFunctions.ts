@@ -29,6 +29,17 @@ export function calculateHeading(
   return Math.round(bearing);
 }
 
+const callsigns313 = [
+  "APEX",
+  "CANINE",
+  "CLAW",
+  "PLASMA",
+  "JACKAL",
+  "TIGER",
+  "BEAST",
+  "DEMON",
+];
+
 export function getSTN(
   type: string,
   callsign: string,
@@ -40,10 +51,12 @@ export function getSTN(
     String(
       type.includes("-15")
         ? "49"
-        : type.includes("16")
+        : callsigns313.includes(callsign)
         ? "31"
         : type.includes("18")
         ? "21"
+        : type.includes("16")
+        ? "60"
         : "00"
     ) +
     "" +
