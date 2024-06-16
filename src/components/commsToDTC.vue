@@ -16,7 +16,7 @@ function strToFreq(val: string) {
   const [a, b] = val.split(".");
   console.log(val.split("."));
   if (b) {
-    b.slice(0, 2);
+    b.slice(0, 1);
     return `${a}.${b}`;
   }
   return a;
