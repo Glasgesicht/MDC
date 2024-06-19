@@ -199,6 +199,7 @@ export function processCF(
           units: getUnits(mCurr),
           comms: comm,
           waypoints: getWaypoints(mCurr.Waypoints[0].Waypoint),
+          dmpis: new Array(),
           mycomm: {
             pri: {
               description: comm.radio1[i + 14]?.description ?? "",

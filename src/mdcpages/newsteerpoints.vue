@@ -57,6 +57,11 @@ const toLongString = (lon: number) => {
   return "";
 };
 
+const toLatLongString = (lat: number, long: number) => {
+  if (lat && long) return toLatString(lat) + " / " + toLongString(long);
+  return "";
+};
+
 const fuelRange = 10;
 const fuelEndurance = 4400;
 
@@ -246,18 +251,31 @@ const showROE = inject("showROE");
     <div class="c36 parent" v-for="index in new Array(19).keys()">
       <div class="c2 g">{{ index + 81 }}</div>
       <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'}`">
-        {{ index + 81 < 97 ? "" : "BULLS" }}
+        {{ index + 81 < 97 ? selectedFlight.dmpis[index]?.type : "BULLS" }}
       </div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
-        {{ index + 81 < 97 ? "" : getBullseyeName(index - 16) }}
+        {{
+          index + 81 < 97
+            ? selectedFlight.dmpis[index]?.name
+            : getBullseyeName(index - 16)
+        }}
       </div>
       <div :class="`c9 hr`">
-        {{ index + 81 < 97 ? "" : getBullseyeLocation(index - 16) }}
+        {{
+          index + 81 < 97
+            ? toLatLongString(
+                selectedFlight.dmpis[index]?.latitude,
+                selectedFlight.dmpis[index]?.longitude
+              )
+            : getBullseyeLocation(index - 16)
+        }}
       </div>
       <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'}`">
-        {{ index + 81 < 97 ? "" : "" }}
+        {{ index + 81 < 97 ? selectedFlight.dmpis[index]?.altitude : "" }}
       </div>
-      <div :class="`c14 noborder ${index % 2 ? 'hg' : 'w'}`">{{}}</div>
+      <div :class="`c14 noborder ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedFlight.dmpis[index]?.note }}
+      </div>
     </div>
 
     <div class="c36 r">

@@ -1,6 +1,6 @@
 <template>
   <div style="display: block">
-    <p style="grid-row: 27" class="mcd-s-2 mcd-m-a">Edit Waypoints</p>
+    <h3>Waypoints</h3>
     <DataTable
       showGridlines
       edit-mode="cell"
@@ -28,6 +28,14 @@
       <Column field="mach" header="Mach"></Column>
       <Column field="groundspeed" header="Groundspeed"></Column>
       <Column field="altitude" header="Altitude"></Column>
+
+      <Column header="DMPI">
+        <template #body="{ index }"
+          ><Button
+            @click="toDMPI(index)"
+            outlined
+            icon="pi pi-download" /></template
+      ></Column>
       <Column>
         <template #body="{ index }"
           ><Button
@@ -35,6 +43,24 @@
             severity="danger"
             outlined
             icon="pi pi-trash" /></template
+      ></Column>
+    </DataTable>
+    <h3>Designated Impact Points (DMPIs)</h3>
+    <DataTable showGridlines edit-mode="cell" :value="selectedFlight.dmpis">
+      <Column field="type" header="Type">
+        <template #editor="{ index }"
+          ><input v-model="selectedFlight.dmpis[index].type" /></template
+      ></Column>
+      <Column field="name" header="Name">
+        <template #editor="{ index }"
+          ><input v-model="selectedFlight.dmpis[index].name" /></template
+      ></Column>
+      <Column field="altitude" header="Altitude"></Column>
+      <Column field="latitude" header="Latitude"></Column>
+      <Column field="longitude" header="Longitude"></Column>
+      <Column field="note" header="Note"
+        ><template #editor="{ index }"
+          ><input v-model="selectedFlight.dmpis[index].note" /></template
       ></Column>
     </DataTable>
   </div>
@@ -49,6 +75,19 @@ import Input from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 const { selectedFlight } = storeToRefs(useFlightStore());
+
+function toDMPI(i: number) {
+  const tdmpi = selectedFlight.value.waypoints.splice(i, 1);
+
+  selectedFlight.value.dmpis.push({
+    altitude: tdmpi[0].altitude,
+    latitude: tdmpi[0].latitude,
+    longitude: tdmpi[0].longitude,
+    name: tdmpi[0].name,
+    note: tdmpi[0].activity,
+    type: tdmpi[0].type,
+  });
+}
 
 function deleteWaypoint(i: number) {
   selectedFlight.value.waypoints.splice(i, 1);
