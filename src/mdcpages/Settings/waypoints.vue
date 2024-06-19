@@ -63,7 +63,6 @@
           ><input v-model="selectedFlight.dmpis[index].note" /></template
       ></Column>
     </DataTable>
-    to DTC
     <SteerpointsToDTC />
   </div>
 </template>
