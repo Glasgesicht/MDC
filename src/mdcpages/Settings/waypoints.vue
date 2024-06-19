@@ -63,6 +63,8 @@
           ><input v-model="selectedFlight.dmpis[index].note" /></template
       ></Column>
     </DataTable>
+    to DTC
+    <SteerpointsToDTC />
   </div>
 </template>
 
@@ -74,6 +76,7 @@ import Input from "primevue/inputtext";
 
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
+import SteerpointsToDTC from "@/components/steerpointsToDTC.vue";
 const { selectedFlight } = storeToRefs(useFlightStore());
 
 function toDMPI(i: number) {
