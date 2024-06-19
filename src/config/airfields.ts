@@ -37,6 +37,19 @@ export const airports: {
     ELEV: "200 ft",
     LEN: "10.000 ft",
   },
+  {
+    NAME: "HATAY",
+    ICAO: "LTDA",
+    APPR: { vhf: "118.725", uhf: "" },
+    ATIS: { vhf: "", uhf: "" },
+    ELEV: "",
+    GROUND: { vhf: "121.700", uhf: "" },
+    HDG: "",
+    ILS: "",
+    LEN: "",
+    TACAN: "74X",
+    TOWER: { vhf: "128.525", uhf: "" },
+  },
 ];
 
 export const airfieldEmpty = {

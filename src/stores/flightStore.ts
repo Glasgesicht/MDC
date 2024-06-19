@@ -81,6 +81,15 @@ export const useFlightStore = defineStore("flight", () => {
       type: string;
       waypointNr: number;
     }>(),
+    dmpis: new Array<{
+      note: string;
+      altitude: number;
+      latitude: number;
+      longitude: number;
+      name: string;
+      type: string;
+    }>(20),
+
     DEP: {
       NAME: "",
       ICAO: "",
