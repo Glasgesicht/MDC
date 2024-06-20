@@ -16,14 +16,35 @@ function strToFreq(val: string) {
   const [a, b] = val.split(".");
   console.log(val.split("."));
   if (b) {
-    return `${a}.${b.slice(0, 2)}`;
+    if (getType() === "F15E")
+      switch (b[1]) {
+        case "2":
+        case "7":
+          return `${a}.${b.padEnd(3, "5")}`;
+        default:
+          return `${a}.${b.padEnd(3, "0")}`;
+      }
+    else {
+      return `${a}.${b.slice(0, 2)}`;
+    }
   }
   return a;
 }
 
+function getType() {
+  switch (selectedFlight.value.aircrafttype) {
+    case "F-16CM":
+      return "F16C";
+    case "F-15E":
+      return "F15E";
+    case "F/A-18C":
+      return "FA18C";
+  }
+}
+
 function toDTC() {
   const toExport = {
-    Aircraft: "F16C", //this is F-16 only for now
+    Aircraft: getType(), //this is F-16 only for now
     Upload: null,
     WaypointsCapture: null,
     Waypoints: null,
