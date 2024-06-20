@@ -58,7 +58,7 @@ const loadSTPS = () => {
       UseVRP: false,
       VIPtoPUP: null,
       VIPtoTGT: null,
-      TimeOverSteerpoint: stp.tot,
+      TimeOverSteerpoint: new Date(stp.tot).toLocaleTimeString("de-DE"),
     })
   );
 
@@ -82,6 +82,7 @@ const loadSTPS = () => {
       TimeOverSteerpoint: null,
     })
   );
+  console.log(defaultSTP);
   navigator.clipboard.writeText(compressString(defaultSTP));
 };
 </script>
