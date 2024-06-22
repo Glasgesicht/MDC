@@ -90,7 +90,7 @@
     <p style="grid-row: 15 / span 1; grid-column: 1" class="">Situation</p>
 
     <TextArea
-      style="grid-row: 16 / span 10; grid-column: 1 / span 7"
+      style="grid-row: 16 / span 20; grid-column: 1 / span 7"
       v-model="selectedPKG.situation"
       :draggable="false"
       rows="5"
@@ -135,7 +135,6 @@ const { file } = storeToRefs(useGlobalStore());
 .parent {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(64, 35px);
   text-align: left;
   gap: 2px;
 }

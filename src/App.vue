@@ -242,7 +242,7 @@ const makejpg = async () => {
 <style scoped>
 #app {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
   margin: 0;
   background-color: lightgray;
@@ -267,6 +267,8 @@ const makejpg = async () => {
 .right {
   min-width: 1200px;
   max-width: 2000px;
+  height: 100vh;
+  overflow-y: auto;
   flex: 1;
 }
 

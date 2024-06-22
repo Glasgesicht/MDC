@@ -689,7 +689,7 @@ const groupedFlights = computed(() =>
           showGridlines
           edit-mode="cell"
           :value="selectedFlight.comms.radio1"
-          style="width: 600px"
+          style="width: 450px"
         >
           <Column
             header="#"
@@ -742,7 +742,7 @@ const groupedFlights = computed(() =>
                   selectedFlight.comms.radio1[index].description
                 " /></template
           ></Column>
-          <Column style="padding: 2px 5px 2px 5px">
+          <Column style="padding: 2px 5px 2px 5px;width: 20px;">
             <template #body="{ index }"
               ><Button
                 text
@@ -766,7 +766,7 @@ const groupedFlights = computed(() =>
         <p>Radio 2</p>
         <DataTable
           showGridlines
-          style="width: 600px"
+          style="width: 450px"
           edit-mode="cell"
           :value="selectedFlight.comms.radio2"
         >
@@ -808,7 +808,7 @@ const groupedFlights = computed(() =>
                   selectedFlight.comms.radio2[index].description
                 " /></template
           ></Column>
-          <Column style="padding: 2px 5px 2px 5px">
+          <Column style="padding: 2px 5px 2px 5px;width: 20px;">
             <template #body="{ index }"
               ><Button
                 text
@@ -822,6 +822,8 @@ const groupedFlights = computed(() =>
 </template>
 
 <style scoped>
+
+* {font-size: 14px;}
 .parent {
   display: flex;
   flex-wrap: wrap;
@@ -839,7 +841,7 @@ const groupedFlights = computed(() =>
   width: 214px;
 }
 
-@media (1900px > width > 1710px) {
+@media (1700px > width > 1240px) {
   .freqs {
     max-width: 225px;
   }

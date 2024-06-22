@@ -28,7 +28,7 @@
           <Input v-model="selectedFlight.waypoints[index].type" /></template
       ></Column>
       <Column field="activity" header="Activity"></Column>
-      <Column field="tot" header="Time on Target"></Column>
+      <Column field="tot" header="Time on Target"><template #body="{data}">{{ new Date(data.tot).toLocaleTimeString("de-DE") }}</template></Column>
 
       <Column field="mach" header="Mach"></Column>
       <Column field="groundspeed" header="Groundspeed"></Column>
@@ -50,6 +50,7 @@
             icon="pi pi-trash" /></template
       ></Column>
     </DataTable>
+    <Button label="Increment" @click="incSelected" /><Button label="Decrement" @click="decrSelected"/>
     <h3>Designated Impact Points (DMPIs)</h3>
     <DataTable showGridlines edit-mode="cell" :value="selectedFlight.dmpis">
       <Column field="type" header="Type">
@@ -85,7 +86,13 @@ import { ref } from "vue";
 import InputNumber from "primevue/inputnumber";
 const { selectedFlight } = storeToRefs(useFlightStore());
 
-const selectedSteerpoints = ref(null)
+const selectedSteerpoints = ref(new Array())
+
+const incSelected = ()=> selectedSteerpoints.value.forEach(n => n.waypointNr +=1 )
+const decrSelected = ()=> selectedSteerpoints.value.sort((a,b)=> b.waypointNr -a.waypointNr).some(function(n){
+  console.log(n)
+  if(n.waypointNr==0) return;
+  n.waypointNr -=1 })
 
 function toDMPI(i: number) {
   const tdmpi = selectedFlight.value.waypoints.splice(i, 1);
