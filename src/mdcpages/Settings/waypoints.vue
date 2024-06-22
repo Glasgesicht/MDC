@@ -4,6 +4,10 @@
     <DataTable
       showGridlines
       edit-mode="cell"
+      selectionMode="multiple" :metaKeySelection="false"
+      sort-field="waypointNr"
+      :sortOrder="1"
+      v-model:selection="selectedSteerpoints"
       :value="selectedFlight.waypoints"
       class="mcd-s-6 datatable textleft redefSize"
       style="
@@ -13,7 +17,8 @@
         text-align: left;
       "
     >
-      <Column field="waypointNr" header="n°"></Column>
+      <Column field="waypointNr" header="n°"  >
+      <template #editor="{index}"><InputNumber v-model:model-value="selectedFlight.waypoints[index].waypointNr"></InputNumber></template></Column>
       <Column field="name" header="Name"
         ><template #editor="{ index }">
           <Input v-model="selectedFlight.waypoints[index].name" /></template
@@ -76,7 +81,11 @@ import Input from "primevue/inputtext";
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 import SteerpointsToDTC from "@/components/steerpointsToDTC.vue";
+import { ref } from "vue";
+import InputNumber from "primevue/inputnumber";
 const { selectedFlight } = storeToRefs(useFlightStore());
+
+const selectedSteerpoints = ref(null)
 
 function toDMPI(i: number) {
   const tdmpi = selectedFlight.value.waypoints.splice(i, 1);
