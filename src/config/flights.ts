@@ -3,7 +3,7 @@ import { type freqNames, commTables } from "./frequencies";
 const createFlight = (
   callsign: string,
   number: number,
-  type: "F-16" | "F-15" | "F/A-18" | "HELO" | "F-4E",
+  type: "F-16" | "F-15" | "F/A-18" | "AH-64D"| "OH-58D" | "F-4E",
   pri: { name: freqNames; number: number } | string,
   sec?: { name: freqNames; number: number } | string,
   ter?: { name: freqNames; number: number } | string, // TODO: Implement after someone explains me where these show up and what these are // Espere
@@ -257,23 +257,24 @@ export const flights = [
   createFlight(
     "SNAKE",
     6,
-    "HELO",
+    "AH-64D",
+    "",
     { name: "COBALT", number: 3 },
     { name: "BRONZE", number: 3 },
     { name: "RUBY", number: 8 },
-    { name: "CRIMSON", number: 7 }
   ),
   createFlight(
     "PALEHORSE",
     7,
-    "HELO",
+    "OH-58D",
+    "",
     { name: "OCHRE", number: 2 },
     { name: "KHAKI", number: 2 }
   ),
 
   // F-4E
   createFlight("PHANTOM", 1, "F-4E", { name: "PURPLE", number: 3 }),
-  createFlight("RHINO", 2, "HELO", { name: "PURPLE", number: 8 }),
+  createFlight("RHINO", 2, "F-4E", { name: "PURPLE", number: 8 }),
   createFlight("SMOKEY", 3, "F-4E", { name: "PURPLE", number: 9 }),
 ];
 
