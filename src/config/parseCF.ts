@@ -26,13 +26,13 @@ export function processCF(
     | Blob
     | NodeJS.ReadableStream
     | Promise<
-        | string
-        | number[]
-        | Uint8Array
-        | ArrayBuffer
-        | Blob
-        | NodeJS.ReadableStream
-      > /* cf file is a zip */
+      | string
+      | number[]
+      | Uint8Array
+      | ArrayBuffer
+      | Blob
+      | NodeJS.ReadableStream
+    > /* cf file is a zip */
 ) {
   readCF(payload).then((res) => parseCfXML(res));
 
@@ -45,13 +45,13 @@ export function processCF(
       | Blob
       | NodeJS.ReadableStream
       | Promise<
-          | string
-          | number[]
-          | Uint8Array
-          | ArrayBuffer
-          | Blob
-          | NodeJS.ReadableStream
-        >
+        | string
+        | number[]
+        | Uint8Array
+        | ArrayBuffer
+        | Blob
+        | NodeJS.ReadableStream
+      >
   ) {
     const zip = new JSZip();
     try {
@@ -509,7 +509,7 @@ export function processCF(
       name: wp.Name[0],
       tot: wp.TOT[0],
       type: wp.Type[0],
-      waypointNr: i,
+      waypointNr: i + 1,
     }));
   }
 }
