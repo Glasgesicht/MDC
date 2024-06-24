@@ -26,13 +26,13 @@ export function processCF(
     | Blob
     | NodeJS.ReadableStream
     | Promise<
-      | string
-      | number[]
-      | Uint8Array
-      | ArrayBuffer
-      | Blob
-      | NodeJS.ReadableStream
-    > /* cf file is a zip */
+        | string
+        | number[]
+        | Uint8Array
+        | ArrayBuffer
+        | Blob
+        | NodeJS.ReadableStream
+      > /* cf file is a zip */
 ) {
   readCF(payload).then((res) => parseCfXML(res));
 
@@ -45,13 +45,13 @@ export function processCF(
       | Blob
       | NodeJS.ReadableStream
       | Promise<
-        | string
-        | number[]
-        | Uint8Array
-        | ArrayBuffer
-        | Blob
-        | NodeJS.ReadableStream
-      >
+          | string
+          | number[]
+          | Uint8Array
+          | ArrayBuffer
+          | Blob
+          | NodeJS.ReadableStream
+        >
   ) {
     const zip = new JSZip();
     try {
@@ -314,14 +314,16 @@ export function processCF(
       name: string;
       number?: number;
       description: string;
-    }[] = new Array(20).fill({}).map(() => {
-      return {
-        freq: "",
-        name: "",
-        description: "",
-        number: NaN,
-      };
-    });
+    }[] = new Array(pkg[i].Aircraft[0].Type[0].includes("15") ? 40 : 20) // 40 Channels on F-15, 20 on F-16
+      .fill({})
+      .map(() => {
+        return {
+          freq: "",
+          name: "",
+          description: "",
+          number: NaN,
+        };
+      });
 
     const takeoff = getWaypoint(pkg[i], "Take off");
     const landing = getWaypoint(pkg[i], "Landing");
