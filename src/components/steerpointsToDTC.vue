@@ -6,41 +6,45 @@ import { storeToRefs } from "pinia";
 import Button from "primevue/button";
 const { selectedFlight } = storeToRefs(useFlightStore());
 
-const defaultSTP = {
-  Aircraft: "F16C",
-  Upload: null,
-  WaypointsCapture: null,
-  Waypoints: {
-    Waypoints: [] as Array<{
-      Sequence: number;
-      Name: string;
-      Latitude: string;
-      Longitude: string;
-      Elevation: number;
-      TimeOverSteerpoint: string | null;
-      Target: boolean;
-      UseOA: boolean;
-      OffsetAimpoint1: null;
-      OffsetAimpoint2: null;
-      UseVIP: boolean;
-      VIPtoTGT: null;
-      VIPtoPUP: null;
-      UseVRP: boolean;
-      TGTtoVRP: null;
-      TGTtoPUP: null;
-    }>,
-  },
-  CMS: null,
-  Radios: null,
-  MFD: null,
-  HARM: null,
-  HTS: null,
-  Datalink: null,
-  Misc: null,
-  Version: 2,
-};
+
 
 const loadSTPS = () => {
+
+  const defaultSTP = {
+    Aircraft: "F16C",
+    Upload: null,
+    WaypointsCapture: null,
+    Waypoints: {
+      Waypoints: [] as Array<{
+        Sequence: number;
+        Name: string;
+        Latitude: string;
+        Longitude: string;
+        Elevation: number;
+        TimeOverSteerpoint: string | null;
+        Target: boolean;
+        UseOA: boolean;
+        OffsetAimpoint1: null;
+        OffsetAimpoint2: null;
+        UseVIP: boolean;
+        VIPtoTGT: null;
+        VIPtoPUP: null;
+        UseVRP: boolean;
+        TGTtoVRP: null;
+        TGTtoPUP: null;
+      }>,
+    },
+    CMS: null,
+    Radios: null,
+    MFD: null,
+    HARM: null,
+    HTS: null,
+    Datalink: null,
+    Misc: null,
+    Version: 2,
+  };
+
+
   selectedFlight.value.waypoints.forEach((stp, i) =>
     defaultSTP.Waypoints.Waypoints.push({
       Elevation: stp.altitude,
