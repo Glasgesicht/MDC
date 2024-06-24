@@ -6,10 +6,7 @@ import { storeToRefs } from "pinia";
 import Button from "primevue/button";
 const { selectedFlight } = storeToRefs(useFlightStore());
 
-
-
 const loadSTPS = () => {
-
   const defaultSTP = {
     Aircraft: "F16C",
     Upload: null,
@@ -44,27 +41,28 @@ const loadSTPS = () => {
     Version: 2,
   };
 
-
-  selectedFlight.value.waypoints.forEach((stp, i) =>
-    defaultSTP.Waypoints.Waypoints.push({
-      Elevation: stp.altitude,
-      Latitude: toLatString(stp.latitude),
-      Longitude: toLongString(stp.longitude),
-      Name: stp.name,
-      OffsetAimpoint1: null,
-      OffsetAimpoint2: null,
-      Sequence: stp.waypointNr,
-      Target: false,
-      UseOA: false,
-      TGTtoPUP: null,
-      TGTtoVRP: null,
-      UseVIP: false,
-      UseVRP: false,
-      VIPtoPUP: null,
-      VIPtoTGT: null,
-      TimeOverSteerpoint: new Date(stp.tot).toLocaleTimeString("de-DE"),
-    })
-  );
+  selectedFlight.value.waypoints
+    .sort((a, b) => a.waypointNr - b.waypointNr)
+    .forEach((stp, i) =>
+      defaultSTP.Waypoints.Waypoints.push({
+        Elevation: stp.altitude,
+        Latitude: toLatString(stp.latitude),
+        Longitude: toLongString(stp.longitude),
+        Name: stp.name,
+        OffsetAimpoint1: null,
+        OffsetAimpoint2: null,
+        Sequence: stp.waypointNr,
+        Target: false,
+        UseOA: false,
+        TGTtoPUP: null,
+        TGTtoVRP: null,
+        UseVIP: false,
+        UseVRP: false,
+        VIPtoPUP: null,
+        VIPtoTGT: null,
+        TimeOverSteerpoint: new Date(stp.tot).toLocaleTimeString("de-DE"),
+      })
+    );
 
   selectedFlight.value.dmpis.forEach((dmpi, i) =>
     defaultSTP.Waypoints.Waypoints.push({
