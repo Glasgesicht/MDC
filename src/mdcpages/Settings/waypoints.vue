@@ -104,7 +104,7 @@ import Input from "primevue/inputtext";
 
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
-import SteerpointsToDTC from "@/components/steerpointsToDTC.vue";
+import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
 import { ref } from "vue";
 import InputNumber from "primevue/inputnumber";
 const { selectedFlight } = storeToRefs(useFlightStore());

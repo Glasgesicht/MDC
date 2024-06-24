@@ -266,10 +266,13 @@ const makejpg = async () => {
 
 .right {
   min-width: 1200px;
-  max-width: 2000px;
   height: 100vh;
   overflow-y: auto;
   flex: 1;
+}
+
+.right::after {
+  max-width: 2000px;
 }
 
 .m-5 {

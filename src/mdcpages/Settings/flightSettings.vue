@@ -20,7 +20,7 @@ import { getSTN } from "@/utils/utilFunctions";
 import { template } from "lodash";
 
 import CommsAssignment from "./commsAssignment.vue";
-import toDTC from "@/components/commsToDTC.vue";
+import toDTC from "@/components/DTCExports/commsToDTC.vue";
 import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
 import type { WritableComputedRef } from "vue";
@@ -858,7 +858,7 @@ const groupedFlights = computed(() =>
   width: 214px;
 }
 
-@media (1700px > width > 1240px) {
+@media (1700px > width > 1375px) {
   .freqs {
     max-width: 225px;
   }
