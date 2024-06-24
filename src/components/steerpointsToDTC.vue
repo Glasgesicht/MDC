@@ -48,7 +48,7 @@ const loadSTPS = () => {
         Elevation: stp.altitude,
         Latitude: toLatString(stp.latitude),
         Longitude: toLongString(stp.longitude),
-        Name: stp.name,
+        Name: stp.type === "Steerpoint" ? stp.name : stp.type,
         OffsetAimpoint1: null,
         OffsetAimpoint2: null,
         Sequence: stp.waypointNr,
