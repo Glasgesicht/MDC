@@ -17,7 +17,6 @@ import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask";
 
 import { getSTN } from "@/utils/utilFunctions";
-import { template } from "lodash";
 
 import CommsAssignment from "./commsAssignment.vue";
 import toDTC from "@/components/DTCExports/commsToDTC.vue";
@@ -305,12 +304,8 @@ const groupedFlights = computed(() =>
       </Dropdown>
       <div v-if="isCustomCalsign && selectedFlight" class="parent">
         <Input v-model="selectedFlight.callsign" @blur="updateFligh" />
-        <<<<<<< HEAD <InputMask mask="9" v-model="selectedFlight.callsignNumber" style="width: 75px;margin-left: 5px"
-          @blur="updateFligh" />
-        =======
         <InputNumber :min="1" :max="9" v-model="selectedFlight.callsignNumber" style="width: 75px; margin-left: 5px"
           @blur="updateFligh" />
-        >>>>>>> 8f4245728d1e703fc64631142a6c59f903a05ba4
       </div>
     </div>
     <div style="text-align: left; width: 150px" class="parent">
