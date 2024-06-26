@@ -104,7 +104,7 @@ export const useDTCexports = () => {
     navigator.clipboard.writeText(compressString(toExport));
   }
 
-  const loadSTPS = () => {
+  const loadSTPS = (mode: "waypoints" | "dmpi" | "all") => {
     const defaultSTP = {
       Aircraft: "F16C",
       Upload: null,
@@ -138,18 +138,39 @@ export const useDTCexports = () => {
       Misc: null,
       Version: 2,
     };
-
-    selectedFlight.value.waypoints
-      .sort((a, b) => a.waypointNr - b.waypointNr)
-      .forEach((stp, i) =>
+    if (mode === "all" || mode === "waypoints")
+      selectedFlight.value.waypoints
+        .sort((a, b) => a.waypointNr - b.waypointNr)
+        .forEach((stp, i) =>
+          defaultSTP.Waypoints.Waypoints.push({
+            Elevation: stp.altitude,
+            Latitude: toLatString(stp.latitude),
+            Longitude: toLongString(stp.longitude),
+            Name: stp.type === "Steerpoint" ? stp.name : stp.type,
+            OffsetAimpoint1: null,
+            OffsetAimpoint2: null,
+            Sequence: stp.waypointNr,
+            Target: false,
+            UseOA: false,
+            TGTtoPUP: null,
+            TGTtoVRP: null,
+            UseVIP: false,
+            UseVRP: false,
+            VIPtoPUP: null,
+            VIPtoTGT: null,
+            TimeOverSteerpoint: new Date(stp.tot).toLocaleTimeString("de-DE"),
+          })
+        );
+    if (mode === "all" || mode === "dmpi")
+      selectedFlight.value.dmpis.forEach((dmpi, i) =>
         defaultSTP.Waypoints.Waypoints.push({
-          Elevation: stp.altitude,
-          Latitude: toLatString(stp.latitude),
-          Longitude: toLongString(stp.longitude),
-          Name: stp.type === "Steerpoint" ? stp.name : stp.type,
+          Elevation: dmpi.altitude,
+          Latitude: toLatString(dmpi.latitude),
+          Longitude: toLongString(dmpi.longitude),
+          Name: dmpi.name,
           OffsetAimpoint1: null,
           OffsetAimpoint2: null,
-          Sequence: stp.waypointNr,
+          Sequence: i + 80,
           Target: false,
           UseOA: false,
           TGTtoPUP: null,
@@ -158,31 +179,9 @@ export const useDTCexports = () => {
           UseVRP: false,
           VIPtoPUP: null,
           VIPtoTGT: null,
-          TimeOverSteerpoint: new Date(stp.tot).toLocaleTimeString("de-DE"),
+          TimeOverSteerpoint: null,
         })
       );
-
-    selectedFlight.value.dmpis.forEach((dmpi, i) =>
-      defaultSTP.Waypoints.Waypoints.push({
-        Elevation: dmpi.altitude,
-        Latitude: toLatString(dmpi.latitude),
-        Longitude: toLongString(dmpi.longitude),
-        Name: dmpi.name,
-        OffsetAimpoint1: null,
-        OffsetAimpoint2: null,
-        Sequence: i + 80,
-        Target: false,
-        UseOA: false,
-        TGTtoPUP: null,
-        TGTtoVRP: null,
-        UseVIP: false,
-        UseVRP: false,
-        VIPtoPUP: null,
-        VIPtoTGT: null,
-        TimeOverSteerpoint: null,
-      })
-    );
-    console.log(defaultSTP);
     navigator.clipboard.writeText(compressString(defaultSTP));
   };
 
