@@ -186,20 +186,14 @@ const makejpg = async () => {
       <Menu :model="items" style="border: none; background-color: #f4f4f4" />
 
       <hr style="width: 100%" />
-      <Dropdown
-        v-model="selectedPKG"
-        :options="packages"
-        class="m-5"
-        optionLabel="name"
-        placeholder="Select A Package"
-      />
-      <Dropdown
-        v-model="selectedFlight"
-        class="m-5"
-        :options="allFlightsFromPackage"
-        optionLabel="callsign"
-        placeholder="Select A Flight"
-      />
+      <Dropdown v-model="selectedPKG" :options="packages" class="m-5" optionLabel="name"
+        placeholder="Select A Package" />
+      <Dropdown v-model="selectedFlight" class="m-5" :options="allFlightsFromPackage" optionLabel="callsign"
+        placeholder="Select A Flight"><template #option="{ option }">{{ option.callsign }} {{ option.callsignNumber
+          }}</template><template #value="{ value }">{{ value.callsign || 'Select A Flight' + ' ' + (value.callsignNumber
+            || ' ')
+          }}</template>
+      </Dropdown>
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
       <GeneralSettings v-if="pageActive === 'setting1'" name="mdcpage" />
@@ -207,36 +201,18 @@ const makejpg = async () => {
       <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />
       <WaypointsSettings v-if="pageActive === 'setting4'" name="mdcpage" />
       <Gameplan v-if="pageActive === 'gameplan'" :pagenr="1" name="mdcpage" />
-      <Newbriefing
-        v-if="pageActive === 'newbriefing'"
-        :pagenr="2"
-        name="mdcpage"
-      />
+      <Newbriefing v-if="pageActive === 'newbriefing'" :pagenr="2" name="mdcpage" />
       <Waypoints v-if="pageActive === 'waypoints'" :pagenr="3" name="mdcpage" />
-      <Newsteerpoints
-        v-if="pageActive === 'newsteerpoints'"
-        :pagenr="2"
-        name="mdcpage"
-      />
+      <Newsteerpoints v-if="pageActive === 'newsteerpoints'" :pagenr="2" name="mdcpage" />
       <Datacard v-if="pageActive === 'datacard'" :pagenr="5" name="mdcpage" />
-      <Newdatacard
-        v-if="pageActive === 'newdatacard'"
-        :pagenr="3"
-        name="mdcpage"
-      />
+      <Newdatacard v-if="pageActive === 'newdatacard'" :pagenr="3" name="mdcpage" />
       <Newcomms v-if="pageActive === 'newcomms'" :pagenr="3" name="mdcpage" />
       <Dmpi v-if="pageActive === 'dmpi'" :pagenr="8" name="mdcpage" />
       <div class="mcdimages"></div>
     </div>
   </div>
-  <input
-    style="display: none"
-    type="file"
-    id="fileUpload"
-    class="file-input"
-    v-on:change="onChangedFile"
-    accept=".cf"
-  />
+  <input style="display: none" type="file" id="fileUpload" class="file-input" v-on:change="onChangedFile"
+    accept=".cf" />
 </template>
 
 <style scoped>

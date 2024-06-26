@@ -286,7 +286,11 @@ const groupedFlights = computed(() =>
     <div class="item">
       <p class="">Select Flight To Edit</p>
       <Dropdown v-model="selectedFlight" :options="allFlightsFromPackage" optionLabel="callsign" style="width: 253px"
-        placeholder="Select A Flight" />
+        placeholder="Select A Flight"><template #option="{ option }">{{ option.callsign }} {{ option.callsignNumber
+          }}</template><template #value="{ value }">{{ value.callsign || 'Select A Flight' + ' ' + (value.callsignNumber
+            || ' ')
+          }}</template>
+      </Dropdown>
     </div>
     <div class="item">
       <p class="">Assign new Callsign</p>
@@ -299,8 +303,8 @@ const groupedFlights = computed(() =>
         </template>
       </Dropdown>
       <div v-if="isCustomCalsign && selectedFlight" class="parent">
-        <Input v-model="selectedFlight.callsign"  @blur="updateFligh" />
-        <InputMask mask="9"  v-model="selectedFlight.callsignNumber" style="width: 75px;margin-left: 5px"
+        <Input v-model="selectedFlight.callsign" @blur="updateFligh" />
+        <InputMask mask="9" v-model="selectedFlight.callsignNumber" style="width: 75px;margin-left: 5px"
           @blur="updateFligh" />
       </div>
     </div>

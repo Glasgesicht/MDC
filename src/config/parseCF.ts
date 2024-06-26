@@ -492,7 +492,7 @@ export function processCF(
       }
     });
 
-    console.log(radio1);
+   // console.log(radio1);
     return { radio1: radio1, radio2: radio2 };
   }
 
