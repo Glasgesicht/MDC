@@ -22,11 +22,17 @@
       <Column field="activity" header="Activity"></Column>
       <Column field="tot" header="Time on Target"><template #body="{ data }">{{
         new Date(data.tot).toLocaleTimeString("de-DE")
-      }}</template></Column>
+          }}</template></Column>
 
-      <Column field="mach" header="Mach"></Column>
-      <Column field="groundspeed" header="Groundspeed"></Column>
-      <Column field="altitude" header="Altitude"></Column>
+      <Column field="mach" header="Mach">
+        <template #body="{ data }">{{ Number(data.mach).toFixed(2) }}</template>
+      </Column>
+      <Column field="groundspeed" header="Groundspeed">
+        <template #body="{ data }">{{ Number(data.groundspeed).toFixed(0) }} kts</template>
+      </Column>
+      <Column field="altitude" header="Altitude">
+        <template #body="{ data }">{{ Number(data.altitude).toFixed(0) }} ft</template>
+      </Column>
 
       <Column header="DMPI">
         <template #body="{ index }"><Button @click="toDMPI(index)" outlined icon="pi pi-download" /></template>
@@ -46,9 +52,15 @@
       <Column field="name" header="Name">
         <template #editor="{ index }"><input v-model="selectedFlight.dmpis[index].name" /></template>
       </Column>
-      <Column field="altitude" header="Altitude"></Column>
-      <Column field="latitude" header="Latitude"></Column>
-      <Column field="longitude" header="Longitude"></Column>
+      <Column field="altitude" header="Altitude">
+        <template #body="{ data }">{{ Number(data.altitude).toFixed(0) }} ft</template>
+      </Column>
+      <Column field="latitude" header="Latitude">
+        <template #body="{ data }">{{ toLatString(data.latitude) }}</template>
+      </Column>
+      <Column field="longitude" header="Longitude">
+        <template #body="{ data }">{{ toLongString(data.longitude) }}</template>
+      </Column>
       <Column field="note" header="Note"><template #editor="{ index }"><input
             v-model="selectedFlight.dmpis[index].note" /></template></Column>
     </DataTable>
@@ -69,6 +81,7 @@ import { useFlightStore } from "@/stores/flightStore";
 import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
 import { ref } from "vue";
 import InputNumber from "primevue/inputnumber";
+import { toLatString, toLongString } from "@/utils/utilFunctions";
 const { selectedFlight } = storeToRefs(useFlightStore());
 
 const selectedSteerpoints = ref(new Array());
