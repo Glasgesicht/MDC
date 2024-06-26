@@ -20,7 +20,7 @@ import { getSTN } from "@/utils/utilFunctions";
 import { template } from "lodash";
 
 import CommsAssignment from "./commsAssignment.vue";
-import toDTC from "@/components/commsToDTC.vue";
+import toDTC from "@/components/DTCExports/commsToDTC.vue";
 import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
 import type { WritableComputedRef } from "vue";
@@ -291,6 +291,7 @@ const groupedFlights = computed(() =>
             || ' ')
           }}</template>
       </Dropdown>
+
     </div>
     <div class="item">
       <p class="">Assign new Callsign</p>
@@ -304,21 +305,24 @@ const groupedFlights = computed(() =>
       </Dropdown>
       <div v-if="isCustomCalsign && selectedFlight" class="parent">
         <Input v-model="selectedFlight.callsign" @blur="updateFligh" />
-        <InputMask mask="9" v-model="selectedFlight.callsignNumber" style="width: 75px;margin-left: 5px"
+        <<<<<<< HEAD <InputMask mask="9" v-model="selectedFlight.callsignNumber" style="width: 75px;margin-left: 5px"
           @blur="updateFligh" />
+        =======
+        <InputNumber :min="1" :max="9" v-model="selectedFlight.callsignNumber" style="width: 75px; margin-left: 5px"
+          @blur="updateFligh" />
+        >>>>>>> 8f4245728d1e703fc64631142a6c59f903a05ba4
       </div>
     </div>
-    <div style="text-align: left;width: 150px;" class="parent">
+    <div style="text-align: left; width: 150px" class="parent">
       <div class="item" style="align-items: last baseline">
         <Checkbox v-if="selectedFlight" label="Add custom Callsign" id="customCheckbox" v-model="isCustomCalsign"
-          :binary="true" outlined /> <label for="customCheckbox">custom callsign</label>
+          :binary="true" outlined />
+        <label for="customCheckbox">custom callsign</label>
       </div>
       <div class="item">
-
-        <Checkbox label="Add custom Callsign" id="editDefautls" v-model="useDefaults" :binary="true" outlined /> <label
-          for="editDefautls">use defaults</label>
+        <Checkbox label="Add custom Callsign" id="editDefautls" v-model="useDefaults" :binary="true" outlined />
+        <label for="editDefautls">use defaults</label>
       </div>
-
     </div>
   </div>
   <div class="parent" v-if="file && selectedFlight.isActive">
@@ -340,7 +344,8 @@ const groupedFlights = computed(() =>
             {{ data[field] }}
           </template>
           <template #editor="{ index }">
-            <Input v-model="selectedFlight.units[index].search" /> </template>
+            <Input v-model="selectedFlight.units[index].search" />
+          </template>
         </Column>
 
         <Column field="STN" header="STN" style="width: 5rem; max-width: 5rem">
@@ -356,7 +361,8 @@ const groupedFlights = computed(() =>
             {{ data[field] }}
           </template>
           <template #editor="{ index }">
-            <Input v-model="selectedFlight.units[index].tailNr" /> </template>
+            <Input v-model="selectedFlight.units[index].tailNr" />
+          </template>
         </Column>
         <Column field="L16" header="L16" headerStyle="max-width: 4rem" style="max-height: fit-content" />
         <Column field="tacan" header="TACAN" headerStyle="max-width: 4rem" style="max-height: fit-content">
@@ -527,10 +533,9 @@ const groupedFlights = computed(() =>
           <Column header="Description" field="description" style="padding: 2px 5px 2px 5px">
             <template #body="{ data }"> {{ data?.description }}</template>
             <template #editor="{ data, index }">
-              <Input class="fixW" v-model="selectedFlight.comms.radio1[index].description
-                " /></template>
+              <Input class="fixW" v-model="selectedFlight.comms.radio1[index].description" /></template>
           </Column>
-          <Column style="padding: 2px 5px 2px 5px;width: 20px;">
+          <Column style="padding: 2px 5px 2px 5px; width: 20px">
             <template #body="{ index }"><Button text icon="pi pi-eraser" @click="clearComms(index, 'pri')" /></template>
           </Column>
         </DataTable>
@@ -567,10 +572,9 @@ const groupedFlights = computed(() =>
           <Column header="Description" field="description" style="padding: 2px 5px 2px 5px">
             <template #body="{ data }"> {{ data?.description }}</template>
             <template #editor="{ data, index }">
-              <Input class="fixW" v-model="selectedFlight.comms.radio2[index].description
-                " /></template>
+              <Input class="fixW" v-model="selectedFlight.comms.radio2[index].description" /></template>
           </Column>
-          <Column style="padding: 2px 5px 2px 5px;width: 20px;">
+          <Column style="padding: 2px 5px 2px 5px; width: 20px">
             <template #body="{ index }"><Button text icon="pi pi-eraser" @click="clearComms(index, 'sec')" /></template>
           </Column>
         </DataTable>
@@ -603,7 +607,7 @@ const groupedFlights = computed(() =>
   width: 214px;
 }
 
-@media (1700px > width > 1240px) {
+@media (1700px > width > 1375px) {
   .freqs {
     max-width: 225px;
   }
