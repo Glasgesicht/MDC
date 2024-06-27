@@ -9,7 +9,8 @@ export function decompressString(compressedText: string): DTC {
   return JSON.parse(new TextDecoder("utf-8").decode(decompressedBuffer));
 }
 
-export function compressString(text: any) {
+// Takes Objects not Strings, should maybe rename...
+export function compressString<x extends Object>(text: x) {
   const encoder = new TextEncoder();
   const buffer = encoder.encode(JSON.stringify(text));
   const compressedData = gzip(buffer);
