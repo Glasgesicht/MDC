@@ -190,9 +190,8 @@ const makejpg = async () => {
         placeholder="Select A Package" />
       <Dropdown v-model="selectedFlight" class="m-5" :options="allFlightsFromPackage" optionLabel="callsign"
         placeholder="Select A Flight"><template #option="{ option }">{{ option.callsign }} {{ option.callsignNumber
-          }}</template><template #value="{ value }">{{ value.callsign || 'Select A Flight' + ' ' + (value.callsignNumber
-            || ' ')
-          }}</template>
+          }}</template><template #value="{ value }">{{ value.callsign || 'Select A Flight' }} {{ value.callsignNumber
+            || ' ' }}</template>
       </Dropdown>
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
