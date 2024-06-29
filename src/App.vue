@@ -12,6 +12,7 @@ import { storeToRefs } from "pinia";
 import { toJpeg } from "html-to-image";
 import { useGlobalStore } from "./stores/theatreStore";
 import { processCF } from "./config/parseCF";
+import { useDTCexports } from "@/components/DTCExports/dtc"
 import Waypoints from "./mdcpages/waypoints.vue";
 import Datacard from "./mdcpages/datacard.vue";
 import Newsteerpoints from "./mdcpages/newsteerpoints.vue";
@@ -140,6 +141,14 @@ const items = computed(() => [
         label: "to DTC",
         command: () => {
           // handle click
+          if (selectedFlight.value.callsign)
+            useDTCexports().loadDTC({
+              CMS: false,
+              Datalink: true,
+              HARM: false,
+              HTS: false,
+              MFD: false, Misc: false, Radios: true, Upload: false, Waypoints: "all"
+            })
         },
       },
       {
