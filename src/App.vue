@@ -22,6 +22,7 @@ import Dmpi from "./mdcpages/dmpi.vue";
 import Gameplan from "./mdcpages/Gameplan.vue";
 import Newbriefing from "./mdcpages/newbriefing.vue";
 import WaypointsSettings from "./mdcpages/Settings/waypoints.vue";
+import examplePage from "./mdcpages/examplePage/examplePage.vue";
 
 const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
@@ -132,6 +133,12 @@ const items = computed(() => [
           pageActive.value = "dmpi";
         },
       },
+      {
+        label: "example Page",
+        command: () => {
+          pageActive.value = "example";
+        },
+      },
     ],
   },
   {
@@ -217,6 +224,7 @@ const makejpg = async () => {
       <Newdatacard v-if="pageActive === 'newdatacard'" :pagenr="3" name="mdcpage" />
       <Newcomms v-if="pageActive === 'newcomms'" :pagenr="3" name="mdcpage" />
       <Dmpi v-if="pageActive === 'dmpi'" :pagenr="8" name="mdcpage" />
+      <examplePage v-if="pageActive === 'example'" />
       <div class="mcdimages"></div>
     </div>
   </div>
