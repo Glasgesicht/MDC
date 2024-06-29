@@ -32,6 +32,72 @@ const { pagenr } = defineProps({
   },
 });
 
+const hhmmss = (time: string) => {
+  if (!time) return "";
+  const date = new Date(time);
+  return `${date.toLocaleTimeString()}`;
+};
+
+const takeoffTime = (tot: string, activity: string) => {
+  var hour = parseInt( tot?.substring(0,2));
+  var minute = parseInt(tot?.substring(3,5));
+  var second = parseInt( tot?.substring(6,8));
+
+  hour += parseInt( activity?.substring(0,2));
+  minute += parseInt(activity?.substring(3,5));
+  second += parseInt( activity?.substring(6,8));
+  while (second > 60){
+    second -= 60;
+    minute += 1;
+  };
+  while (minute > 60){
+    minute -= 60;
+    hour += 1;
+  };
+  while (hour >= 24){
+    hour -= 24;
+  };
+  return hour.toFixed(0).padStart(2,"0") + ":" + minute.toFixed(0).padStart(2,"0") + ":" + second.toFixed(0).padStart(2,"0");
+}
+
+const actions = [
+  {}
+];
+
+const getActions = (index: number) => {
+  var length = 0;
+  for (var i = 0; i < 25; i++) {
+  if (selectedFlight?.value.waypoints[i]?.type && selectedFlight?.value.waypoints[i]?.type != "Steerpoint"){
+    actions.push({sp: i + 1, action: selectedFlight?.value.waypoints[i]?.type});
+    length++;
+  }
+};
+
+if (index <= length){
+  return actions[index];
+}
+
+};
+
+const AAR = [
+  {}
+];
+
+const getAAR = (index: number) => {
+  var length = 0;
+  for (var i = 0; i < 25; i++) {
+  if (selectedFlight?.value.waypoints[i]?.type == "AAR"){
+    AAR.push({time: selectedFlight?.value.waypoints[i]?.tot, activity: selectedFlight?.value.waypoints[i]?.activity});
+    length++;
+  }
+};
+
+if (index <= length){
+  return AAR[index];
+}
+
+};
+
 const showROE = inject("showROE");
 
 const array_name = [
@@ -46,7 +112,15 @@ const array_name = [
   <div class="mdcpage">
     <div class="c36 r">RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE</div>
     <div class="c3 y">PAGE {{ pagenr }}</div>
-    <div class="c33 g">DATA CARD</div>
+    <div class="c33 g">MISSION DATA</div>
+
+    <div class="c3 g">MSN</div>
+    <div class="c4 w">{{selectedFlight?.MSNumber}}</div>
+    <div class="c3 g">C/S</div>
+    <div class="c4 w">{{selectedFlight?.callsign}} {{ selectedFlight?.callsignNumber }}</div>
+    <div class="c3 g">PKG</div>
+    <div class="c4 w">{{selectedPKG?.name}}</div>
+    <div class="c15 g"></div>
 
     <div class="c2 g">#</div>
     <div class="c2 g">A/C</div>
@@ -75,7 +149,7 @@ const array_name = [
         {{ getUnit(index)?.STN }}
       </div>
       <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">
-        1{{ index + 1 }}
+        {{ selectedPKG?.flights.indexOf(selectedFlight)+5 }}{{index+1}}
       </div>
       <div :class="`c2 hr`">
         {{ getUnit(index)?.tacan }}
@@ -86,6 +160,85 @@ const array_name = [
       <input class="c3 tb hr" />
       <input class="c4 tb hr" />
     </div>
+
+    <div class="c3 g">DEP</div>
+    <div class="c6 w">{{selectedFlight?.DEP.NAME}}</div>
+    <div class="c3 g">ARR</div>
+    <div class="c6 w">{{selectedFlight?.ARR.NAME}}</div>
+    <div class="c3 g">ALT</div>
+    <div class="c6 w">{{selectedFlight?.ALT.NAME}}</div>
+    <div class="c3 g">DIV</div>
+    <input class="c6 tb w" />
+
+    <div class="c3 g">STEP</div>
+    <input class="c3 tb w" />
+    <div class="c3 g">START</div>
+    <input class="c3 tb w" />
+    <div class="c3 g">CX IN</div>
+    <input class="c3 tb w" />
+    <div class="c3 g">TAXI</div>
+    <input class="c3 tb w" />
+    <div class="c3 g">T/O</div>
+    <div class="c3 w">{{takeoffTime(hhmmss(selectedFlight?.waypoints[0]?.tot), selectedFlight?.waypoints[0]?.activity)}}</div>
+    <div class="c3 g">LAND</div>
+    <input class="c3 tb w" />
+    
+    <div class="c36 r9 w"></div>
+
+    <div class="c29 r7 w"></div>
+    <div class="c2 g">SP</div>
+    <div class="c5 g">ACTION</div>
+
+    <div class="c2 w">{{getActions(1)?.sp}}</div>
+    <div class="c5 w">{{getActions(1)?.action}}</div>
+
+    <div class="c2 w">{{getActions(2)?.sp}}</div>
+    <div class="c5 w">{{getActions(2)?.action}}</div>
+
+    
+    <div class="c2 w">{{getActions(3)?.sp}}</div>
+    <div class="c5 w">{{getActions(3)?.action}}</div>
+
+    <div class="c2 w">{{getActions(4)?.sp}}</div>
+    <div class="c5 w">{{getActions(4)?.action}}</div>
+
+    
+    <div class="c2 w">{{getActions(5)?.sp}}</div>
+    <div class="c5 w">{{getActions(5)?.action}}</div>
+
+    
+    <div class="c2 w">{{getActions(6)?.sp}}</div>
+    <div class="c5 w">{{getActions(6)?.action}}</div>
+
+    <div class="c4 g">AAR C/S</div>
+    <div class="c3 g">ALT</div>
+    <div class="c2 g">A/A</div>
+    <div class="c3 g">GIVE</div>
+    <div class="c7 g">TIME</div>
+    <div class="c7 g">POSITION</div>
+    <div class="c3 g">HOT</div>
+    <div class="c2 w">{{getActions(7)?.sp}}</div>
+    <div class="c5 w">{{getActions(7)?.action}}</div>
+
+    <div class="c4 w">{{ selectedFlight.comms.radio1[12]?.description }}</div>
+    <div class="c3 w"></div>
+    <div class="c2 w"></div>
+    <div class="c3 w"></div>
+    <div class="c7 w">{{getAAR(1)?.time ? hhmmss(getAAR(1)?.time)+"-"+takeoffTime(hhmmss(getAAR(1)?.time),getAAR(1)?.activity) : ""}}</div>
+    <div class="c7 w"></div>
+    <div class="c3 w"></div>
+    <div class="c2 w">{{getActions(8)?.sp}}</div>
+    <div class="c5 w">{{getActions(8)?.action}}</div>
+
+    <div class="c4 w"></div>
+    <div class="c3 w"></div>
+    <div class="c2 w"></div>
+    <div class="c3 w"></div>
+    <div class="c7 w">{{getAAR(2)?.time ? hhmmss(getAAR(2)?.time)+"-"+takeoffTime(hhmmss(getAAR(2)?.time),getAAR(2)?.activity) : ""}}</div>
+    <div class="c7 w"></div>
+    <div class="c3 w"></div>
+    <div class="c2 w">{{getActions(9)?.sp}}</div>
+    <div class="c5 w">{{getActions(9)?.action}}</div>
 
     <div class="c6 g">CODEWORD</div>
     <div class="c12 g">MEANING</div>
@@ -145,7 +298,7 @@ const array_name = [
       </div>
       <input class="c2 tb hr" />
       <input class="c3 tb hr" />
-      <input class="c3 tb hr" />
+      <div class="c3 hr ">{{ selectedPKG?.flights[index]?.aircrafttype === "F-16CM" ? selectedFlight.comms.radio2[index + 14]?.freq : selectedFlight.comms.radio1[index + 14]?.freq }}</div>
       <input class="c3 tb hr" />
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">        
         {{
@@ -154,7 +307,7 @@ const array_name = [
             .concat("X")
         }}</div>
       <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">
-        {{ index + 1 }}0
+        {{ selectedPKG.flights[index]?.aircrafttype === "F-16CM" ? index + 5 + "0" : "" }}
       </div>
       <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">001</div>
     </div>
@@ -164,7 +317,7 @@ const array_name = [
     <div class="c3 g">WPN</div>
     <div class="c11 g">ACTION</div>
     <div class="c7 g">TAKE IF SHUFFLE</div>
-    <div class="c3 g">STUD</div>
+    <div class="c3 g">PRE</div>
     <div class="c3 g">FRQ</div>
     <div class="c3 g">CMRK</div>
     <div class="c36 parent" v-for="index in new Array(4).keys()">
@@ -173,9 +326,9 @@ const array_name = [
       <input :class="`c3 tb ${index % 2 ? 'hg' : 'w'}`" />
       <input :class="`c11 tb ${index % 2 ? 'hg' : 'w'}`" />
       <div class="c2 g"> {{ (index + 1) % 4 ? ((index + 1) % 3 ? ((index + 1) % 2 ? "CX" : "PRI") : "SEC") : "TER" }} </div>
-      <input :class="`c5 ${(index + 1) > 2 ? 'hr' : (index + 1) % 2 ? 'w' : 'hg'}`" />
+      <div :class="`c5 w ${index < 2 ? 'w' : 'hr'}`">{{index < 2 && selectedFlight.comms.radio1[index + 4] !== undefined ? selectedFlight.comms.radio1[index + 4]?.name + " " + selectedFlight.comms.radio1[index + 4]?.number : ""}}</div>
       <div :class="`c3 g`">{{ "2" + (index) }}</div>
-      <input :class="`c3 ${(index + 1) > 2 ? 'hr' : (index + 1) % 2 ? 'w' : 'hg'}`" />
+      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}`">{{index < 2 ? selectedFlight.comms.radio1[index + 4]?.freq : ""}}</div>
       <input :class="`c3 hr`" />
     </div>
     <div class="c36 r">RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE</div>
