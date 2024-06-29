@@ -42,7 +42,7 @@ const toLatString = (lat: number) => {
       60
     )
       .toFixed(3)
-      .padStart(6, "0")}`;
+      .padStart(6, "0")}` + "'";
   return "";
 };
 
@@ -53,7 +53,7 @@ const toLongString = (lon: number) => {
       60
     )
       .toFixed(3)
-      .padStart(6, "0")}`;
+      .padStart(6, "0")}` + "'";
   return "";
 };
 
@@ -158,14 +158,7 @@ const showROE = inject("showROE");
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
-        {{
-          index === 0
-            ? takeoffTime(
-                selectedFlight?.waypoints[index]?.tot,
-                selectedFlight?.waypoints[index]?.activity
-              )
-            : hhmmss(selectedFlight?.waypoints[index]?.tot)
-        }}
+        {{ index === 0 ? takeoffTime(hhmmss(selectedFlight?.waypoints[index]?.tot), selectedFlight?.waypoints[index]?.activity) : hhmmss(selectedFlight?.waypoints[index]?.tot) }}
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}`">
         {{
@@ -194,12 +187,14 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
         {{
+          index !== 0 ?
           selectedFlight?.waypoints[index]?.groundspeed !== undefined
             ? selectedFlight?.waypoints[index]?.groundspeed?.toFixed(0) +
               " / " +
               selectedFlight?.waypoints[index]?.mach
                 ?.toFixed(2)
                 .replace("0.", ".")
+            : ""
             : ""
         }}
       </div>
@@ -208,7 +203,7 @@ const showROE = inject("showROE");
           selectedFlight?.waypoints[index]?.altitude
             ? selectedFlight?.waypoints[index]?.altitude?.toLocaleString(
                 "en-EN"
-              ) + "ft"
+              ) + " ft"
             : ""
         }}
       </div>

@@ -14,11 +14,11 @@ export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
     },
     {
       callsign: "Blaine",
-      tailnr: "887",
+      tailnr: "4043",
     },
     {
       callsign: "Prophet",
-      tailnr: "890",
+      tailnr: "4040",
     },
     {
       callsign: "Tommy",
@@ -30,7 +30,7 @@ export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
     },
     {
       callsign: "Espere",
-      tailnr: "894",
+      tailnr: "4042",
     },
     {
       callsign: "Brook",
@@ -38,7 +38,7 @@ export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
     },
     {
       callsign: "Skysheykh",
-      tailnr: "897",
+      tailnr: "4041",
     },
     {
       callsign: "Rotti",
@@ -46,18 +46,30 @@ export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
     },
     {
       callsign: "Python",
-      tailnr: "782",
+      tailnr: "4044",
     },
     {
       callsign: "Duka",
-      tailnr: "784",
-    },
-    {
-      callsign: "DJTaz",
-      tailnr: "785",
+      tailnr: "4045",
     },
     {
       callsign: "Knappy",
       tailnr: "786",
+    },
+    {
+      callsign: "Wicked",
+      tailnr: "898",
+    },
+    {
+      callsign: "Chiron",
+      tailnr: "4046",
+    },
+    {
+      callsign: "Hamyak",
+      tailnr: "4047",
+    },
+    {
+      callsign: "Wacky",
+      tailnr: "4048",
     },
   ];
