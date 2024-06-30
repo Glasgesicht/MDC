@@ -25,7 +25,7 @@ export const useDTCexports = () => {
   function strToFreq(val: string) {
     if (!val) return "";
     const [a, b] = val.split(".");
-    console.log(val.split("."));
+
     if (b) {
       if (getType() === "F15E")
         switch (b[1]) {
@@ -90,7 +90,6 @@ export const useDTCexports = () => {
 
     Radios.Radio2.Presets = selectedFlight.value.comms.radio2
       .map((val, i) => {
-        console.log("val2", i, toRaw(val));
         return {
           Number: i + 1,
           Name: val?.description,
@@ -187,7 +186,7 @@ export const useDTCexports = () => {
     if (input.Datalink)
       flight.Datalink = getDataLink()
 
-    console.log(flight)
+    console.log('exporting:', JSON.stringify(flight))
     return flight
   }
 
