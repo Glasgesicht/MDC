@@ -1,5 +1,9 @@
 <template>
-    <div class="border"><a>this is the inside of a child component</a></div>
+    <div>
+        <div v-for="index in new Array(6)">
+            <a class="border">this is the inside of a child component</a>
+        </div>
+    </div>
 </template>
 
 <style>
