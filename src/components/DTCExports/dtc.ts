@@ -155,12 +155,12 @@ export const useDTCexports = () => {
 
   // TODO: needs more granuality to be setup via Flight Settings.
   const getDataLink = (): Datalink => {
-    return {
+    const datalink = {
       DatalinkMode: 1,
       EnableMembers: true,
       EnableOwnCallsign: true,
       FlightLead: true,
-      Members: selectedFlight.value.units.map(unit => parseInt(unit.STN)),
+      Members: [...selectedFlight.value.units.map(unit => parseInt(unit.STN)), ...new Array<null>(8 - selectedFlight.value.units.length).fill(null)],
       OwnCallsign: selectedFlight.value.callsign.charAt(0) + selectedFlight.value.callsign.charAt(selectedFlight.value.callsign.length - 1) + selectedFlight.value.callsignNumber + '1',
       OwnshipIndex: 1, // Assumes Flight lead
       TDOAMembers: [...selectedFlight.value.units.map(() => true), ...new Array<boolean>(8 - selectedFlight.value.units.length).fill(false)]
@@ -186,6 +186,7 @@ export const useDTCexports = () => {
     if (input.Datalink)
       flight.Datalink = getDataLink()
 
+    console.log(flight)
     return flight
   }
 

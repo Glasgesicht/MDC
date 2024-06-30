@@ -186,7 +186,7 @@ export interface Datalink {
     FlightLead: boolean
     EnableMembers: boolean
     OwnshipIndex: number
-    Members: number[]
+    Members: (number | null)[]
     TDOAMembers: boolean[]
     DatalinkMode: number
 }
