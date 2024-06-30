@@ -155,7 +155,7 @@ export const useDTCexports = () => {
 
   // TODO: needs more granuality to be setup via Flight Settings.
   const getDataLink = (): Datalink => {
-    const datalink = {
+    return {
       DatalinkMode: 1,
       EnableMembers: true,
       EnableOwnCallsign: true,
@@ -165,6 +165,7 @@ export const useDTCexports = () => {
       OwnshipIndex: 1, // Assumes Flight lead
       TDOAMembers: [...selectedFlight.value.units.map(() => true), ...new Array<boolean>(8 - selectedFlight.value.units.length).fill(false)]
     } satisfies Datalink
+
   }
 
   function getDTC(input: {
