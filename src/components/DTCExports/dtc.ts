@@ -4,7 +4,7 @@ import { usePackageStore } from "@/stores/packageStore";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import { storeToRefs } from "pinia";
 import { toRaw } from "vue";
-import type { DTC, Datalink, Waypoint, Radios, Waypoints } from './dtcTypes'
+import type { DTC, Datalink, Waypoint, Radios, Waypoints } from "./dtcTypes";
 
 export const useDTCexports = () => {
   const { selectedFlight } = storeToRefs(useFlightStore());
@@ -43,11 +43,11 @@ export const useDTCexports = () => {
   }
 
   function makeDTC(flight: DTC) {
-    return compressString(flight)
+    return compressString(flight);
   }
 
   function toClipboard(input: string) {
-    navigator.clipboard.writeText(input)
+    navigator.clipboard.writeText(input);
   }
 
   /** Data Functions */
@@ -76,7 +76,7 @@ export const useDTCexports = () => {
         EnableGuard: false,
         Mode: 2,
       },
-    }
+    };
 
     Radios.Radio1.Presets = selectedFlight.value.comms.radio1
       .map((val, i) => {
@@ -98,11 +98,11 @@ export const useDTCexports = () => {
       })
       .filter((n) => n.Frequency !== "");
 
-    return Radios
+    return Radios;
   }
 
   const getWaypoints = (mode: "waypoints" | "dmpi" | "all") => {
-    const wpts: Waypoints = { Waypoints: new Array<Waypoint>() } //Weirdly nested per spec
+    const wpts: Waypoints = { Waypoints: new Array<Waypoint>() }; //Weirdly nested per spec
 
     if (mode === "all" || mode === "waypoints")
       selectedFlight.value.waypoints
@@ -149,7 +149,7 @@ export const useDTCexports = () => {
           TimeOverSteerpoint: null,
         })
       );
-    return wpts
+    return wpts;
   };
 
   // TODO: needs more granuality to be setup via Flight Settings.
@@ -159,64 +159,73 @@ export const useDTCexports = () => {
       EnableMembers: true,
       EnableOwnCallsign: true,
       FlightLead: true,
-      Members: [...selectedFlight.value.units.map(unit => parseInt(unit.STN)), ...new Array<null>(8 - selectedFlight.value.units.length).fill(null)],
-      OwnCallsign: selectedFlight.value.callsign.charAt(0) + selectedFlight.value.callsign.charAt(selectedFlight.value.callsign.length - 1) + selectedFlight.value.callsignNumber + '1',
+      Members: [
+        ...selectedFlight.value.units.map((unit) => parseInt(unit.STN)),
+        ...new Array(8 - selectedFlight.value.units.length).fill("0"),
+      ],
+      OwnCallsign:
+        selectedFlight.value.callsign.charAt(0) +
+        selectedFlight.value.callsign.charAt(
+          selectedFlight.value.callsign.length - 1
+        ) +
+        selectedFlight.value.callsignNumber +
+        "1",
       OwnshipIndex: 1, // Assumes Flight lead
-      TDOAMembers: [...selectedFlight.value.units.map(() => true), ...new Array<boolean>(8 - selectedFlight.value.units.length).fill(false)]
-    } satisfies Datalink
-
-  }
+      TDOAMembers: [
+        ...selectedFlight.value.units.map(() => true),
+        ...new Array<boolean>(8 - selectedFlight.value.units.length).fill(
+          false
+        ),
+      ],
+    } satisfies Datalink;
+  };
 
   function getDTC(input: {
-    CMS: boolean,
-    Datalink: boolean,
-    HARM: boolean,
-    HTS: boolean,
-    MFD: boolean,
-    Misc: boolean,
-    Radios: boolean,
-    Upload: boolean,
-    Waypoints: "all" | "dmpi" | "waypoints" | false,
+    CMS: boolean;
+    Datalink: boolean;
+    HARM: boolean;
+    HTS: boolean;
+    MFD: boolean;
+    Misc: boolean;
+    Radios: boolean;
+    Upload: boolean;
+    Waypoints: "all" | "dmpi" | "waypoints" | false;
   }) {
     const flight: DTC = newBasicFlight();
-    if (input.Waypoints)
-      flight.Waypoints = getWaypoints(input.Waypoints)
-    if (input.Radios)
-      flight.Radios = getComms()
-    if (input.Datalink)
-      flight.Datalink = getDataLink()
+    if (input.Waypoints) flight.Waypoints = getWaypoints(input.Waypoints);
+    if (input.Radios) flight.Radios = getComms();
+    if (input.Datalink) flight.Datalink = getDataLink();
 
-    console.log('exporting:', JSON.stringify(flight))
-    return flight
+    console.log("exporting:", JSON.stringify(flight));
+    return flight;
   }
 
   /** export Functions */
   function loadSTPS(mode: "all" | "dmpi" | "waypoints") {
     const flight: DTC = newBasicFlight();
-    flight.Waypoints = getWaypoints(mode)
-    toClipboard(makeDTC(flight))
+    flight.Waypoints = getWaypoints(mode);
+    toClipboard(makeDTC(flight));
   }
 
   function loadComms() {
     const flight: DTC = newBasicFlight();
-    flight.Radios = getComms()
-    toClipboard(makeDTC(flight))
+    flight.Radios = getComms();
+    toClipboard(makeDTC(flight));
   }
 
   function loadDTC(input: {
-    CMS: boolean,
-    Datalink: boolean,
-    HARM: boolean,
-    HTS: boolean,
-    MFD: boolean,
-    Misc: boolean,
-    Radios: boolean,
-    Upload: boolean,
-    Waypoints: "all" | "dmpi" | "waypoints" | false,
+    CMS: boolean;
+    Datalink: boolean;
+    HARM: boolean;
+    HTS: boolean;
+    MFD: boolean;
+    Misc: boolean;
+    Radios: boolean;
+    Upload: boolean;
+    Waypoints: "all" | "dmpi" | "waypoints" | false;
   }) {
-    toClipboard(makeDTC(getDTC(input)))
+    toClipboard(makeDTC(getDTC(input)));
   }
-
 
   /** Creates Empty DTC template */
   function newBasicFlight() {
@@ -232,7 +241,7 @@ export const useDTCexports = () => {
       Upload: null,
       Version: 2,
       Waypoints: null,
-    } as DTC
+    } as DTC;
   }
 
   return {
