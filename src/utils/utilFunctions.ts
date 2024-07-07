@@ -68,17 +68,20 @@ export function getSTN(
 
 export function toLatString(lat: number) {
   if (lat)
-    return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0)}°${((lat % 1) * 60).toFixed(
-      3
-    )}’`;
+    return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0)}°${((lat % 1) * 60)
+      .toFixed(3)
+      .padStart(6, "0")}’`;
   return "";
 }
 
 export function toLongString(lon: number) {
   if (lon)
-    return `${lon > 0 ? "E" : "W"} ${lon.toFixed(0)}°${((lon % 1) * 60).toFixed(
-      3
-    )}’`;
+    return `${lon > 0 ? "E" : "W"} ${lon.toFixed(0).padStart(3, "0")}°${(
+      (lon % 1) *
+      60
+    )
+      .toFixed(3)
+      .padStart(6, "0")}’`;
   return "";
 }
 
