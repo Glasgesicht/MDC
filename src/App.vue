@@ -12,7 +12,7 @@ import { storeToRefs } from "pinia";
 import { toJpeg } from "html-to-image";
 import { useGlobalStore } from "./stores/theatreStore";
 import { processCF } from "./config/parseCF";
-import { useDTCexports } from "@/components/DTCExports/dtc"
+import { useDTCexports } from "@/components/DTCExports/dtc";
 import Waypoints from "./mdcpages/waypoints.vue";
 import Datacard from "./mdcpages/datacard.vue";
 import Newsteerpoints from "./mdcpages/newsteerpoints.vue";
@@ -154,8 +154,12 @@ const items = computed(() => [
               Datalink: true,
               HARM: false,
               HTS: false,
-              MFD: false, Misc: false, Radios: true, Upload: false, Waypoints: "all"
-            })
+              MFD: false,
+              Misc: false,
+              Radios: true,
+              Upload: false,
+              Waypoints: "all",
+            });
         },
       },
       {
@@ -202,13 +206,27 @@ const makejpg = async () => {
       <Menu :model="items" style="border: none; background-color: #f4f4f4" />
 
       <hr style="width: 100%" />
-      <Dropdown v-model="selectedPKG" :options="packages" class="m-5" optionLabel="name"
-        placeholder="Select A Package" />
-      <Dropdown v-model="selectedFlight" class="m-5" :options="allFlightsFromPackage" optionLabel="callsign"
-        placeholder="Select A Flight"><template #option="{ option }">{{ option.callsign }} {{ option.callsignNumber
-          }}</template><template #value="{ value }">{{ value.callsign }} {{ value.callsignNumber > 0 ?
-            value.callsignNumber : `Select Flight`
-          }}</template>
+      <Dropdown
+        v-model="selectedPKG"
+        :options="packages"
+        class="m-5"
+        optionLabel="name"
+        placeholder="Select A Package"
+      />
+      <Dropdown
+        v-model="selectedFlight"
+        class="m-5"
+        :options="allFlightsFromPackage"
+        optionLabel="callsign"
+        placeholder="Select A Flight"
+        ><template #option="{ option }"
+          >{{ option.callsign }} {{ option.callsignNumber }}</template
+        ><template #value="{ value }"
+          >{{ value.callsign }}
+          {{
+            value.callsignNumber > 0 ? value.callsignNumber : `Select Flight`
+          }}</template
+        >
       </Dropdown>
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
@@ -217,19 +235,37 @@ const makejpg = async () => {
       <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />
       <WaypointsSettings v-if="pageActive === 'setting4'" name="mdcpage" />
       <Gameplan v-if="pageActive === 'gameplan'" :pagenr="1" name="mdcpage" />
-      <Newbriefing v-if="pageActive === 'newbriefing'" :pagenr="2" name="mdcpage" />
+      <Newbriefing
+        v-if="pageActive === 'newbriefing'"
+        :pagenr="1"
+        name="mdcpage"
+      />
       <Waypoints v-if="pageActive === 'waypoints'" :pagenr="3" name="mdcpage" />
-      <Newsteerpoints v-if="pageActive === 'newsteerpoints'" :pagenr="2" name="mdcpage" />
+      <Newsteerpoints
+        v-if="pageActive === 'newsteerpoints'"
+        :pagenr="2"
+        name="mdcpage"
+      />
       <Datacard v-if="pageActive === 'datacard'" :pagenr="5" name="mdcpage" />
-      <Newdatacard v-if="pageActive === 'newdatacard'" :pagenr="3" name="mdcpage" />
+      <Newdatacard
+        v-if="pageActive === 'newdatacard'"
+        :pagenr="3"
+        name="mdcpage"
+      />
       <Newcomms v-if="pageActive === 'newcomms'" :pagenr="3" name="mdcpage" />
       <Dmpi v-if="pageActive === 'dmpi'" :pagenr="8" name="mdcpage" />
       <examplePage v-if="pageActive === 'example'" />
       <div class="mcdimages"></div>
     </div>
   </div>
-  <input style="display: none" type="file" id="fileUpload" class="file-input" v-on:change="onChangedFile"
-    accept=".cf" />
+  <input
+    style="display: none"
+    type="file"
+    id="fileUpload"
+    class="file-input"
+    v-on:change="onChangedFile"
+    accept=".cf"
+  />
 </template>
 
 <style scoped>
