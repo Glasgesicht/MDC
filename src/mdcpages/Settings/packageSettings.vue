@@ -105,27 +105,29 @@
         class=""
       />
     </div>
-    <div>
-      <p style="min-width: 400px" class="">Aerial Threats</p>
+    <div class="parent">
+      <div>
+        <p style="min-width: 500px" class="">Aerial Threats</p>
 
-      <TextArea
-        style="min-width: 400px"
-        v-model="selectedPKG.airThreat"
-        :draggable="false"
-        rows="3"
-        class=""
-      />
-    </div>
-    <div>
-      <p style="min-width: 400px" class="">Surface Threats</p>
+        <TextArea
+          style="min-width: 500px; min-height: 120px"
+          v-model="selectedPKG.airThreat"
+          :draggable="false"
+          rows="3"
+          class=""
+        />
+      </div>
+      <div>
+        <p style="min-width: 500px" class="">Surface Threats</p>
 
-      <TextArea
-        style="min-width: 400px"
-        v-model="selectedPKG.surfaceThreat"
-        :draggable="false"
-        rows="3"
-        class=""
-      />
+        <TextArea
+          style="min-width: 500px; min-height: 120px"
+          v-model="selectedPKG.surfaceThreat"
+          :draggable="false"
+          rows="3"
+          class=""
+        />
+      </div>
     </div>
   </div>
 </template>
