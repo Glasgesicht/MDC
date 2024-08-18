@@ -499,6 +499,15 @@ const groupedFlights = computed(() =>
             /></template>
           </DataTable></div
       ></TabPanel>
+      <TabPanel header="Gameplan">
+        <TextArea
+          style="min-width: 500px; min-height: 120px"
+          v-model="selectedFlight.gameplan"
+          :draggable="false"
+          rows="3"
+          class=""
+        />
+      </TabPanel>
       <TabPanel header="COMMS Settings"></TabPanel>
     </TabView>
     <div class="parent" v-if="file && selectedFlight.isActive">
