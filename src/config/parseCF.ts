@@ -1,4 +1,5 @@
 import { usePackageStore } from "@/stores/packageStore";
+import { useGlobalStore } from "@/stores/theatreStore";
 import type {
   Flight,
   Mission,
@@ -70,6 +71,7 @@ export function processCF(
 
   function parseCfXML(input: string) {
     const { packages, agencies } = storeToRefs(usePackageStore());
+    const { theater } = storeToRefs(useGlobalStore());
     const parser = new xml2js.Parser({
       explicitArray: true,
       ignoreAttrs: true,
@@ -79,6 +81,7 @@ export function processCF(
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
         console.dir(res); // Data as Object
+        theater.value = res.Mission.Theater[0];
 
         const _packages: Package[] = res.Mission.Package?.reduce(
           (coll: Package[], curr: PackageEntity) => {
@@ -138,36 +141,39 @@ export function processCF(
   }
 
   function makeAgencies(rt: RouteEntity[]) {
-    return rt
-      .filter((item) =>
-        ["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
-          item.Aircraft[0].Type[0]
+    if (rt)
+      return rt
+        .filter((item) =>
+          ["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
+            item.Aircraft[0].Type[0]
+          )
         )
-      )
-      .map((agency) => {
-        return {
-          name:
-            (agency.CallsignNameCustom[0] || agency.CallsignName[0]) +
-            " " +
-            agency.CallsignNumber[0],
-          freq: agency.Waypoints[0].Waypoint[0].Frq[0],
-          type: agency.Aircraft[0].Type[0],
-          activity: agency.Waypoints[0].Waypoint[0].Activity[0],
-          tacan: agency.Waypoints[0].Waypoint[0].AATCN[0],
-          lat: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
-            agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
-          ].Lat[0],
-          lon: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
-            agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
-          ].Lon[0],
-          alt: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
-            agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
-          ].Altitude[0],
-        };
-      });
+        .map((agency) => {
+          return {
+            name:
+              (agency.CallsignNameCustom[0] || agency.CallsignName[0]) +
+              " " +
+              agency.CallsignNumber[0],
+            freq: agency.Waypoints[0].Waypoint[0].Frq[0],
+            type: agency.Aircraft[0].Type[0],
+            activity: agency.Waypoints[0].Waypoint[0].Activity[0],
+            tacan: agency.Waypoints[0].Waypoint[0].AATCN[0],
+            lat: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+              agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
+            ].Lat[0],
+            lon: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+              agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
+            ].Lon[0],
+            alt: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+              agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
+            ].Altitude[0],
+          };
+        });
+    return [];
   }
 
   function makeFlight(rt: RouteEntity[], pkg: PackageEntity): Flight[] {
+    if (!rt) return [];
     return rt
       .filter((route) => route.PackageTag[0] === pkg.Tag[0])
       .filter(
@@ -237,7 +243,6 @@ export function processCF(
     const wp = mCurr.Waypoints[0].Waypoint.find((wp) =>
       wp.Type[0].includes(type)
     );
-
     const ap = airports.find((n) =>
       wp?.Name[0].toUpperCase().includes(n?.NAME.toUpperCase())
     ) ?? {
@@ -445,13 +450,12 @@ export function processCF(
         description: alt.ICAO + " " + "APR",
         name: "",
       };
-
-      radio1[19] = {
-        freq: "362.30",
-        description: "NATO COMBINED",
-        name: "",
-      };
     }
+    radio1[19] = {
+      freq: "362.30",
+      description: "NATO COMBINED",
+      name: "",
+    };
     pkg.forEach((flight, i) => {
       const t = flights.find(
         (f) => f.callsign === flight.CallsignNameCustom[0]
@@ -494,7 +498,7 @@ export function processCF(
       }
     });
 
-   // console.log(radio1);
+    // console.log(radio1);
     return { radio1: radio1, radio2: radio2 };
   }
 
