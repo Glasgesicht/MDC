@@ -4,6 +4,9 @@ import { ref } from "vue";
 // might populate if needed.
 export const useGlobalStore = defineStore("global", () => {
   const file = ref();
+  const theater = ref("");
   const stateChanged = ref(0);
-  return { file, stateChanged };
+  return { file, stateChanged, theater };
 });
+
+type maps = "Syria" | "PersianGulf" | "Caucasus";
