@@ -1,4 +1,9 @@
-export const threatRanges: readonly { class: string, dor: number, dr: number, mar: number }[] = [
+export const threatRanges: {
+  class: string;
+  dor: number | null;
+  dr: number | null;
+  mar: number | null;
+}[] = [
   { class: "M29 / S27 (+7.1/-4.8)", dor: 30.3, dr: 20.8, mar: 19.3 },
   { class: "M25 / F1 (+1.0/-0.5)", dor: 23.0, dr: 13.5, mar: 12.0 },
   { class: "F4 (+0.3/-0.0)", dor: 22.6, dr: 13.1, mar: 11.6 },

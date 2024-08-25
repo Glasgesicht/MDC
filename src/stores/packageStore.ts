@@ -7,10 +7,17 @@ import {
 import type { Flight, Package } from "@/types/mdcDataTypes";
 import { cloneDeep } from "lodash";
 import { useFlightStore } from "./flightStore";
+import { threatRanges } from "@/config/threatRanges";
 
 export const usePackageStore = defineStore("package", () => {
   // Data for the entire mission goes here
   const packages: Ref<Package[]> = ref(new Array());
+
+  const threats = ref(
+    threatRanges.map((n) => {
+      return { ...n, display: true };
+    })
+  );
   const agencies = ref(
     new Array<{
       name: string;
@@ -134,6 +141,7 @@ export const usePackageStore = defineStore("package", () => {
     surfaceThreat,
     airThreat,
     roe,
+    threats,
 
     pkgnr,
     reset,

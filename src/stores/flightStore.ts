@@ -41,12 +41,12 @@ export const useFlightStore = defineStore("flight", () => {
           number?: number;
           description: string;
         }
-        >{
-          freq: "",
-          name: "",
-          number: NaN,
-          description: "",
-        },
+      >{
+        freq: "",
+        name: "",
+        number: NaN,
+        description: "",
+      },
       sec: <
         {
           freq: string;
@@ -54,12 +54,12 @@ export const useFlightStore = defineStore("flight", () => {
           number?: number;
           description: string;
         }
-        >{
-          freq: "",
-          name: "",
-          number: NaN,
-          description: "",
-        },
+      >{
+        freq: "",
+        name: "",
+        number: NaN,
+        description: "",
+      },
     },
     gameplan: "",
     MSNumber: "",
@@ -80,6 +80,7 @@ export const useFlightStore = defineStore("flight", () => {
       tot: string;
       type: string;
       waypointNr: number;
+      hideOnMDC: boolean;
     }>(),
     dmpis: new Array<{
       note: string;
@@ -170,7 +171,7 @@ export const useFlightStore = defineStore("flight", () => {
 
     selectedFlight.value.mycomm = {
       pri: {
-        description: (newComms?.callsign + ' ' + newComms?.number) || "",
+        description: newComms?.callsign + " " + newComms?.number || "",
         freq: newComms?.pri.freq || "",
         name: newComms?.pri.name || "",
         number: parseInt(newComms?.pri.number || ""),

@@ -105,7 +105,7 @@
         class=""
       />
     </div>
-    <div class="parent">
+    <div class="parent" style="width: 99%">
       <div>
         <p style="min-width: 500px" class="">Aerial Threats</p>
 
@@ -129,6 +129,61 @@
         />
       </div>
     </div>
+
+    <DataTable
+      :value="threats"
+      editMode="row"
+      v-model:editingRows="editingRows"
+      @row-edit-save="onRowEditSave"
+    >
+      <Column header="Active" #body="{ data }">
+        <Checkbox binary v-model="data.display"></Checkbox
+      ></Column>
+      <Column field="class" header="Class"
+        ><template #body="{ data }">{{ data.class }}</template>
+        <template #editor="{ data, field }">
+          <Input v-model="data[field]" fluid /> </template></Column
+      ><Column field="dor" header="DOR">
+        <template #editor="{ data, field }">
+          <InputNumber v-model="data[field]" fluid /> </template
+      ></Column>
+      <Column field="dr" header="DR">
+        <template #editor="{ data, field }">
+          <Input v-model="data[field]" fluid /> </template
+      ></Column>
+      <Column field="mar" header="MAR">
+        <template #editor="{ data, field }">
+          <Input v-model="data[field]" fluid /> </template
+      ></Column>
+      <Column
+        header="editor"
+        :rowEditor="true"
+        style="width: 10%; min-width: 8rem"
+        bodyStyle="text-align:center"
+      ></Column>
+      <template #footer style="align-items: end"
+        ><Button
+          label="Add Row"
+          @click="
+            threats.push({
+              class: '',
+              display: true,
+              dor: null,
+              dr: null,
+              mar: null,
+            })
+          "
+      /></template>
+      <Column>
+        <template #body="{ index }"
+          ><Button
+            @click="deleteThreat(index)"
+            severity="danger"
+            outlined
+            icon="pi pi-trash"
+        /></template>
+      </Column>
+    </DataTable>
   </div>
 </template>
 <script setup lang="ts">
@@ -136,18 +191,26 @@ import { usePackageStore } from "@/stores/packageStore";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { storeToRefs } from "pinia";
 import { ramrods } from "@/config/ramrod";
+import { ref } from "vue";
 
 import DataTable from "primevue/datatable";
 import TextArea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
+import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Input from "primevue/inputtext";
 import Column from "primevue/column";
-const { stateChanged } = storeToRefs(useGlobalStore());
+import Checkbox from "primevue/checkbox";
 
-const { packages, selectedPKG, allFlightsFromPackage, ramrod } = storeToRefs(
-  usePackageStore()
-);
+const { stateChanged } = storeToRefs(useGlobalStore());
+const editingRows = ref([]);
+
+const { packages, selectedPKG, allFlightsFromPackage, ramrod, threats } =
+  storeToRefs(usePackageStore());
+
+const deleteThreat = (index: number) => {
+  threats.value.splice(index, 1);
+};
 
 const confirmDelete = (index: number) => {
   allFlightsFromPackage.value.splice(index, 1);
@@ -156,6 +219,12 @@ const confirmDelete = (index: number) => {
 const onRowReorder = (event: any) => {
   allFlightsFromPackage.value = event.value;
   stateChanged.value = Date.now();
+};
+
+const onRowEditSave = (event: any) => {
+  let { newData, index } = event;
+
+  threats.value[index] = newData;
 };
 
 const { file } = storeToRefs(useGlobalStore());
