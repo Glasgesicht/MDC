@@ -1,59 +1,109 @@
 <template>
   <div style="display: block" class="parent">
     <h3>Waypoints</h3>
-    <DataTable showGridlines edit-mode="cell" selectionMode="multiple" :metaKeySelection="true" sort-field="waypointNr"
-      :sortOrder="1" v-model:selection="selectedSteerpoints" :value="selectedFlight.waypoints" class="item" style="
+    <DataTable
+      showGridlines
+      edit-mode="cell"
+      selectionMode="multiple"
+      :metaKeySelection="true"
+      sort-field="waypointNr"
+      :sortOrder="1"
+      v-model:selection="selectedSteerpoints"
+      :value="selectedFlight.waypoints"
+      class="item"
+      style="
         grid-row: 28;
         align-content: left;
         margin-left: 0;
         text-align: left;
-      ">
+      "
+    >
       <Column field="waypointNr" header="n°">
         <template #editor="{ index }">
-          <InputNumber v-model:model-value="selectedFlight.waypoints[index].waypointNr"></InputNumber>
+          <InputNumber
+            v-model:model-value="selectedFlight.waypoints[index].waypointNr"
+          ></InputNumber>
         </template>
       </Column>
-      <Column field="name" header="Name"><template #editor="{ index }">
-          <Input v-model="selectedFlight.waypoints[index].name" /></template></Column>
+      <Column field="name" header="Name"
+        ><template #editor="{ index }">
+          <Input v-model="selectedFlight.waypoints[index].name" /></template
+      ></Column>
       <Column field="type" header="Type">
         <template #editor="{ index }">
-          <Input v-model="selectedFlight.waypoints[index].type" /></template>
+          <Input v-model="selectedFlight.waypoints[index].type"
+        /></template>
       </Column>
       <Column field="activity" header="Activity"></Column>
-      <Column field="tot" header="Time on Target"><template #body="{ data }">{{
-        new Date(data.tot).toLocaleTimeString("de-DE")
-          }}</template></Column>
+      <Column field="tot" header="Time on Target"
+        ><template #body="{ data }">{{
+          new Date(data.tot).toLocaleTimeString("de-DE")
+        }}</template></Column
+      >
 
       <Column field="mach" header="Mach">
         <template #body="{ data }">{{ Number(data.mach).toFixed(2) }}</template>
       </Column>
       <Column field="groundspeed" header="Groundspeed">
-        <template #body="{ data }">{{ Number(data.groundspeed).toFixed(0) }} kts</template>
+        <template #body="{ data }"
+          >{{ Number(data.groundspeed).toFixed(0) }} kts</template
+        >
       </Column>
       <Column field="altitude" header="Altitude">
-        <template #body="{ data }">{{ Number(data.altitude).toFixed(0) }} ft</template>
+        <template #body="{ data }"
+          >{{ Number(data.altitude).toFixed(0) }} ft</template
+        >
+      </Column>
+      <Column header="Hide" field="hideOnMDC">
+        <template #body="{ data }">
+          <Checkbox binary v-model="data.hideOnMDC"></Checkbox> </template
+      ></Column>
+      <Column header="DMPI">
+        <template #body="{ index }"
+          ><Button @click="toDMPI(index)" outlined icon="pi pi-download"
+        /></template>
       </Column>
 
-      <Column header="DMPI">
-        <template #body="{ index }"><Button @click="toDMPI(index)" outlined icon="pi pi-download" /></template>
-      </Column>
       <Column>
-        <template #body="{ index }"><Button @click="deleteWaypoint(index)" severity="danger" outlined
-            icon="pi pi-trash" /></template>
+        <template #body="{ index }"
+          ><Button
+            @click="deleteWaypoint(index)"
+            severity="danger"
+            outlined
+            icon="pi pi-trash"
+        /></template>
       </Column>
     </DataTable>
-    <Button label="decrement" icon="pi pi-angle-up" @click="decrSelected()" class="item" />
-    <Button label="increment" icon="pi pi-chevron-down" @click="incSelected()" class="item" />
+    <Button
+      label="decrement"
+      icon="pi pi-angle-up"
+      @click="decrSelected()"
+      class="item"
+    />
+    <Button
+      label="increment"
+      icon="pi pi-chevron-down"
+      @click="incSelected()"
+      class="item"
+    />
+    <Button label="hide selected" @click="hideSelected()" class="item" />
+    <Button label="unhide selected" @click="unhideSelected()" class="item" />
     <h3>Designated Impact Points (DMPIs)</h3>
     <DataTable showGridlines edit-mode="cell" :value="selectedFlight.dmpis">
       <Column field="type" header="Type">
-        <template #editor="{ index }"><input v-model="selectedFlight.dmpis[index].type" /></template>
+        <template #editor="{ index }"
+          ><input v-model="selectedFlight.dmpis[index].type"
+        /></template>
       </Column>
       <Column field="name" header="Name">
-        <template #editor="{ index }"><input v-model="selectedFlight.dmpis[index].name" /></template>
+        <template #editor="{ index }"
+          ><input v-model="selectedFlight.dmpis[index].name"
+        /></template>
       </Column>
       <Column field="altitude" header="Altitude">
-        <template #body="{ data }">{{ Number(data.altitude).toFixed(0) }} ft</template>
+        <template #body="{ data }"
+          >{{ Number(data.altitude).toFixed(0) }} ft</template
+        >
       </Column>
       <Column field="latitude" header="Latitude">
         <template #body="{ data }">{{ toLatString(data.latitude) }}</template>
@@ -61,8 +111,10 @@
       <Column field="longitude" header="Longitude">
         <template #body="{ data }">{{ toLongString(data.longitude) }}</template>
       </Column>
-      <Column field="note" header="Note"><template #editor="{ index }"><input
-            v-model="selectedFlight.dmpis[index].note" /></template></Column>
+      <Column field="note" header="Note"
+        ><template #editor="{ index }"
+          ><input v-model="selectedFlight.dmpis[index].note" /></template
+      ></Column>
     </DataTable>
     <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
     <SteerpointsToDTC class="item" mode="waypoints" label="waypoints to DTC" />
@@ -75,6 +127,7 @@ import DataTable from "primevue/datatable";
 import Button from "primevue/button";
 import Column from "primevue/column";
 import Input from "primevue/inputtext";
+import Checkbox from "primevue/checkbox";
 
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
@@ -128,6 +181,18 @@ const decrSelected = () => {
       selectedFlight.value.waypoints[swapWith].waypointNr += 1;
     selectedSteerpoints.value[i].waypointNr -= 1;
   }
+};
+
+const hideSelected = () => {
+  if (!selectedSteerpoints.value) return;
+
+  selectedSteerpoints.value.forEach((n) => (n.hideOnMDC = true));
+};
+
+const unhideSelected = () => {
+  if (!selectedSteerpoints.value) return;
+
+  selectedSteerpoints.value.forEach((n) => (n.hideOnMDC = false));
 };
 
 function toDMPI(i: number) {

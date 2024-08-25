@@ -179,17 +179,25 @@ const hhmmss = (time: string) => {
       </div>
       <div :class="`border  mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.type === "Steerpoint"
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.type === "Steerpoint"
             ? selectedFlight?.waypoints[index]?.name
             : selectedFlight?.waypoints[index]?.type
         }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ hhmmss(selectedFlight?.waypoints[index]?.tot) }}
+        {{
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : hhmmss(selectedFlight?.waypoints[index]?.tot)
+        }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index + 1]?.longitude
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index + 1]?.longitude
             ? calculateHeading(
                 selectedFlight?.waypoints[index]?.latitude,
                 selectedFlight?.waypoints[index]?.longitude,
@@ -201,7 +209,9 @@ const hhmmss = (time: string) => {
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index + 1]?.longitude
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index + 1]?.longitude
             ? calculateDistance(
                 selectedFlight?.waypoints[index]?.latitude,
                 selectedFlight?.waypoints[index]?.longitude,
@@ -212,11 +222,17 @@ const hhmmss = (time: string) => {
         }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selectedFlight?.waypoints[index]?.mach?.toFixed(2) }}
+        {{
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.mach?.toFixed(2)
+        }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.altitude
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.altitude
             ? selectedFlight?.waypoints[index]?.altitude + "ft"
             : ""
         }}
@@ -225,7 +241,11 @@ const hhmmss = (time: string) => {
         {{}}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
-        {{ selectedFlight?.waypoints[index]?.activity }}
+        {{
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.activity
+        }}
       </div>
     </div>
 

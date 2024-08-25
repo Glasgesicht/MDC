@@ -516,6 +516,7 @@ export function processCF(
       tot: wp.TOT[0],
       type: wp.Type[0],
       waypointNr: i + 1,
+      hideOnMDC: false,
     }));
   }
 }

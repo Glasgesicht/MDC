@@ -37,23 +37,27 @@ const getBullseyeLocation = (index: number) => {
 
 const toLatString = (lat: number) => {
   if (lat)
-    return `${lat > 0 ? "N" : "S"} ${lat.toFixed(0).padStart(2, "0")}°${(
-      (lat % 1) *
-      60
-    )
-      .toFixed(3)
-      .padStart(6, "0")}` + "'";
+    return (
+      `${lat > 0 ? "N" : "S"} ${lat.toFixed(0).padStart(2, "0")}°${(
+        (lat % 1) *
+        60
+      )
+        .toFixed(3)
+        .padStart(6, "0")}` + "'"
+    );
   return "";
 };
 
 const toLongString = (lon: number) => {
   if (lon)
-    return `${lon > 0 ? "E" : "W"} ${lon.toFixed(0).padStart(3, "0")}°${(
-      (lon % 1) *
-      60
-    )
-      .toFixed(3)
-      .padStart(6, "0")}` + "'";
+    return (
+      `${lon > 0 ? "E" : "W"} ${lon.toFixed(0).padStart(3, "0")}°${(
+        (lon % 1) *
+        60
+      )
+        .toFixed(3)
+        .padStart(6, "0")}` + "'"
+    );
   return "";
 };
 
@@ -152,18 +156,31 @@ const showROE = inject("showROE");
       <div class="c2 g">{{ index + 1 }}</div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
         {{
-          selectedFlight?.waypoints[index]?.type === "Steerpoint"
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.type === "Steerpoint"
             ? selectedFlight?.waypoints[index]?.name
             : selectedFlight?.waypoints[index]?.type
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
-        {{ index === 0 ? takeoffTime(hhmmss(selectedFlight?.waypoints[index]?.tot), selectedFlight?.waypoints[index]?.activity) : hhmmss(selectedFlight?.waypoints[index]?.tot) }}
+        {{
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : index === 0
+            ? takeoffTime(
+                hhmmss(selectedFlight?.waypoints[index]?.tot),
+                selectedFlight?.waypoints[index]?.activity
+              )
+            : hhmmss(selectedFlight?.waypoints[index]?.tot)
+        }}
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}`">
         {{
-          selectedFlight?.waypoints[index]?.longitude &&
-          selectedFlight?.waypoints[index - 1]?.longitude
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.longitude &&
+              selectedFlight?.waypoints[index - 1]?.longitude
             ? calculateHeading(
                 selectedFlight?.waypoints[index - 1]?.latitude,
                 selectedFlight?.waypoints[index - 1]?.longitude,
@@ -187,20 +204,24 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
         {{
-          index !== 0 ?
-          selectedFlight?.waypoints[index]?.groundspeed !== undefined
-            ? selectedFlight?.waypoints[index]?.groundspeed?.toFixed(0) +
-              " / " +
-              selectedFlight?.waypoints[index]?.mach
-                ?.toFixed(2)
-                .replace("0.", ".")
-            : ""
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : index !== 0
+            ? selectedFlight?.waypoints[index]?.groundspeed !== undefined
+              ? selectedFlight?.waypoints[index]?.groundspeed?.toFixed(0) +
+                " / " +
+                selectedFlight?.waypoints[index]?.mach
+                  ?.toFixed(2)
+                  .replace("0.", ".")
+              : ""
             : ""
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
         {{
-          selectedFlight?.waypoints[index]?.altitude
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.altitude
             ? selectedFlight?.waypoints[index]?.altitude?.toLocaleString(
                 "en-EN"
               ) + " ft"
@@ -209,14 +230,18 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
         {{
-          selectedFlight?.waypoints[index]
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]
             ? parseInt(minimumFuel(index + 1)).toLocaleString("en-EN")
             : ""
         }}
       </div>
       <div :class="`c9 hr`">
         {{
-          selectedFlight?.waypoints[index]?.latitude !== undefined
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.latitude !== undefined
             ? toLatString(selectedFlight?.waypoints[index]?.latitude) +
               " // " +
               toLongString(selectedFlight?.waypoints[index]?.longitude)
@@ -225,7 +250,9 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}`">
         {{
-          selectedFlight?.waypoints[index]?.activity !== "00:00:00"
+          selectedFlight?.waypoints[index]?.hideOnMDC
+            ? ""
+            : selectedFlight?.waypoints[index]?.activity !== "00:00:00"
             ? index !== 0
               ? selectedFlight?.waypoints[index]?.activity
               : ""
