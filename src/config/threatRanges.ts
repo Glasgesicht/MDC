@@ -10,4 +10,5 @@ export const threatRanges: {
   { class: "S24 / S25 (+0.3/-0.0)", dor: 21.4, dr: 11.9, mar: 10.4 },
   { class: "M23 (+0.6/-0.3)", dor: 19.1, dr: 9.6, mar: 8.1 },
   { class: "M21 (+0.3/-0.0)", dor: 16.8, dr: 9.3, mar: 7.8 },
+  { class: "", dor: null, dr: null, mar: null },
 ];

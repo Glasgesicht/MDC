@@ -65,6 +65,12 @@ export type Package = {
   packageTask: string;
   metar: string;
   ramrod: string;
+  codewords: Array<{
+    name: string;
+    criteria: string;
+    authority: string;
+    action: string;
+  }>;
   // agencies: Array<OrbitsEntity>;
 };
 

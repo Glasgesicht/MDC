@@ -130,60 +130,76 @@
       </div>
     </div>
 
-    <DataTable
-      :value="threats"
-      editMode="row"
-      v-model:editingRows="editingRows"
-      @row-edit-save="onRowEditSave"
-    >
-      <Column header="Active" #body="{ data }">
-        <Checkbox binary v-model="data.display"></Checkbox
-      ></Column>
-      <Column field="class" header="Class"
-        ><template #body="{ data }">{{ data.class }}</template>
-        <template #editor="{ data, field }">
-          <Input v-model="data[field]" fluid /> </template></Column
-      ><Column field="dor" header="DOR">
-        <template #editor="{ data, field }">
-          <InputNumber v-model="data[field]" fluid /> </template
-      ></Column>
-      <Column field="dr" header="DR">
-        <template #editor="{ data, field }">
-          <Input v-model="data[field]" fluid /> </template
-      ></Column>
-      <Column field="mar" header="MAR">
-        <template #editor="{ data, field }">
-          <Input v-model="data[field]" fluid /> </template
-      ></Column>
-      <Column
-        header="editor"
-        :rowEditor="true"
-        style="width: 10%; min-width: 8rem"
-        bodyStyle="text-align:center"
-      ></Column>
-      <template #footer style="align-items: end"
-        ><Button
-          label="Add Row"
-          @click="
-            threats.push({
-              class: '',
-              display: true,
-              dor: null,
-              dr: null,
-              mar: null,
-            })
-          "
-      /></template>
-      <Column>
-        <template #body="{ index }"
-          ><Button
-            @click="deleteThreat(index)"
-            severity="danger"
-            outlined
-            icon="pi pi-trash"
-        /></template>
-      </Column>
-    </DataTable>
+    <div>
+      Threat Classes
+      <DataTable
+        :value="threats"
+        editMode="cell"
+        @cell-edit-complete="onCellEditComplete"
+        showGridlines
+      >
+        <Column header="Active" #body="{ data }">
+          <Checkbox binary v-model="data.display"></Checkbox
+        ></Column>
+        <Column field="class" header="Class"
+          ><template #body="{ data }">{{ data.class }}</template>
+          <template #editor="{ data, field }">
+            <Input v-model="data[field]" fluid /> </template></Column
+        ><Column field="dor" header="DOR">
+          <template #editor="{ data, field }">
+            <InputNumber v-model="data[field]" fluid /> </template
+        ></Column>
+        <Column field="dr" header="DR">
+          <template #editor="{ data, field }">
+            <Input v-model="data[field]" fluid /> </template
+        ></Column>
+        <Column field="mar" header="MAR">
+          <template #editor="{ data, field }">
+            <Input v-model="data[field]" fluid /> </template
+        ></Column>
+        <Column>
+          <template #body="{ index }"
+            ><Button
+              @click="deleteThreat(index)"
+              severity="danger"
+              link
+              style="padding: 0px"
+              icon="pi pi-eraser"
+          /></template>
+        </Column>
+      </DataTable>
+    </div>
+    <div>
+      Codewords
+      <DataTable
+        :value="selectedPKG.codewords"
+        editMode="cell"
+        showGridlines
+        @cell-edit-complete="onCellEditComplete"
+        style="width: 900px"
+      >
+        <Column header="Name" field="name" style="width: 25%"
+          ><template #body="{ data }">{{ data.name }}</template>
+          <template #editor="{ data, field }"
+            ><Input v-model="data[field]" /></template
+        ></Column>
+        <Column header="Criteria" field="criteria" style="width: 25%"
+          ><template #body="{ data }">{{ data.criteria }}</template
+          ><template #editor="{ data, field }"
+            ><Input v-model="data[field]" /></template
+        ></Column>
+        <Column header="Authority" field="authority" style="width: 25%"
+          ><template #body="{ data }">{{ data.authority }}</template
+          ><template #editor="{ data, field }"
+            ><Input v-model="data[field]" /></template
+        ></Column>
+        <Column header="Action" field="action" style="width: 25%"
+          ><template #body="{ data }">{{ data.action }}</template
+          ><template #editor="{ data, field }"
+            ><Input v-model="data[field]" /></template
+        ></Column>
+      </DataTable>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -209,7 +225,13 @@ const { packages, selectedPKG, allFlightsFromPackage, ramrod, threats } =
   storeToRefs(usePackageStore());
 
 const deleteThreat = (index: number) => {
-  threats.value.splice(index, 1);
+  threats.value[index] = {
+    display: false,
+    class: "",
+    dor: null,
+    dr: null,
+    mar: null,
+  };
 };
 
 const confirmDelete = (index: number) => {
@@ -225,6 +247,11 @@ const onRowEditSave = (event: any) => {
   let { newData, index } = event;
 
   threats.value[index] = newData;
+};
+
+const onCellEditComplete = (event: any) => {
+  let { data, newValue, field } = event;
+  data[field] = newValue;
 };
 
 const { file } = storeToRefs(useGlobalStore());
@@ -243,5 +270,9 @@ const { file } = storeToRefs(useGlobalStore());
 .parent > div {
   padding-right: 15px;
   padding-bottom: 5px;
+}
+
+td > .p-button {
+  font-size: 14px;
 }
 </style>

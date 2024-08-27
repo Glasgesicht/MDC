@@ -5,7 +5,6 @@ import {
   type SubscriptionCallbackMutation,
 } from "pinia";
 import type { Flight, Package } from "@/types/mdcDataTypes";
-import { cloneDeep } from "lodash";
 import { useFlightStore } from "./flightStore";
 import { threatRanges } from "@/config/threatRanges";
 
@@ -47,16 +46,18 @@ export const usePackageStore = defineStore("package", () => {
     situation: "",
     surfaceThreat: "",
     ramrod: "",
+    codewords: [],
+
     //agencies: new Array<any>(),
   };
-  const selectedPKG: Ref<Package> = ref(cloneDeep(initState));
+  const selectedPKG: Ref<Package> = ref(structuredClone(initState));
 
   watch(selectedPKG, () => {
     useFlightStore().reset();
   });
 
   function reset() {
-    selectedPKG.value = cloneDeep(initState);
+    selectedPKG.value = structuredClone(initState);
     agencies.value = new Array();
   }
   const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({

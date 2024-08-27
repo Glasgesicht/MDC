@@ -16,6 +16,7 @@ import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
 import { clone, cloneDeep } from "lodash";
+import { DateTime } from "luxon";
 import { toRaw } from "vue";
 
 export function processCF(
@@ -87,6 +88,15 @@ export function processCF(
           (coll: Package[], curr: PackageEntity) => {
             const newPackage: Package = {
               //agencies: res.Mission.Airspace.flatMap((n) => n.Orbits),
+              // Empty Codewords on start
+              codewords: [null, null, null, null, null, null].map((_n, i) => {
+                return {
+                  name: "⠀",
+                  criteria: "⠀",
+                  authority: "⠀",
+                  action: "⠀",
+                };
+              }),
               airThreat: "NONE",
               bullseye: {
                 name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
@@ -111,6 +121,14 @@ export function processCF(
               name: curr.Name ? curr.Name[0] : "Name Missing", //
               flights: makeFlight(res.Mission.Routes[0].Route, curr),
             };
+
+            // Add Demo Codeword, I guess?
+            newPackage.codewords.unshift({
+              name: "ARIZONA",
+              criteria: "NO ARM REMAINING",
+              authority: "ANY SEAD FLIGHT LEAD",
+              action: "-",
+            });
 
             if (newPackage.flights.length) coll.push(newPackage);
             return coll;
@@ -184,8 +202,30 @@ export function processCF(
       )
       .map((mCurr, i, pkg): Flight => {
         const comm = assignComms(pkg, i);
+        let startTime = DateTime.fromISO(mCurr.Waypoints[0].Waypoint[0].TOT[0]);
+        startTime.minus({ hours: 3 }); // TODO: HARDCODED SYRIA UTC TIME OFFSET
+        const taxiReg = mCurr.Waypoints[0].Waypoint[0].Activity[0].match(
+          /(\d{1,2}):(\d{1,2}):(\d{2})/
+        );
+
+        const takeoff =
+          taxiReg?.at(1) && taxiReg.at(2)
+            ? `${startTime.hour + Number(taxiReg.at(1))}${
+                startTime.minute + Number(taxiReg.at(2))
+              }Z`
+            : "";
+
+        startTime.minus({ minute: 6 });
+        const taxi =
+          taxiReg?.at(1) && taxiReg.at(2)
+            ? `${startTime.hour + Number(taxiReg.at(1))}${
+                startTime.minute + Number(taxiReg.at(2))
+              }Z`
+            : "";
+
         return {
           isActive: true,
+          // taxiTime:
           aircrafttype: getAircraftType(mCurr.Aircraft[0].Type[0]),
           DEP: getWaypoint(mCurr, "Take off"),
           ARR: getWaypoint(mCurr, "Landing").NAME // Use Take Off, If landing not avail
@@ -194,6 +234,9 @@ export function processCF(
           ALT: getWaypoint(mCurr, "Alternate"),
           fence_in: getWaypointIndex(mCurr, "Push Pt"),
           fence_out: getWaypointIndex(mCurr, "Exit Pt"),
+
+          takeoff: takeoff,
+          taxi: taxi,
           gameplan: "",
           task: "",
           flightTask: "",
