@@ -202,26 +202,24 @@ export function processCF(
       )
       .map((mCurr, i, pkg): Flight => {
         const comm = assignComms(pkg, i);
-        let startTime = DateTime.fromISO(mCurr.Waypoints[0].Waypoint[0].TOT[0]);
-        startTime.minus({ hours: 3 }); // TODO: HARDCODED SYRIA UTC TIME OFFSET
+
+        let startTime = DateTime.fromJSDate(
+          new Date(mCurr.Waypoints[0].Waypoint[0].TOT[0])
+        ).minus({ hours: 3 }); // TODO: HARDCODED SYRIA/ PG UTC TIME OFFSET
         const taxiReg = mCurr.Waypoints[0].Waypoint[0].Activity[0].match(
           /(\d{1,2}):(\d{1,2}):(\d{2})/
         );
-
-        const takeoff =
-          taxiReg?.at(1) && taxiReg.at(2)
-            ? `${startTime.hour + Number(taxiReg.at(1))}${
-                startTime.minute + Number(taxiReg.at(2))
-              }Z`
-            : "";
-
-        startTime.minus({ minute: 6 });
-        const taxi =
-          taxiReg?.at(1) && taxiReg.at(2)
-            ? `${startTime.hour + Number(taxiReg.at(1))}${
-                startTime.minute + Number(taxiReg.at(2))
-              }Z`
-            : "";
+        startTime = startTime.plus({
+          hours: parseInt(taxiReg?.at(1) || "0") || 0,
+          minute: parseInt(taxiReg?.at(2) || "0") || 0,
+        });
+        const takeoff = `${startTime.hour
+          .toString()
+          .padStart(2, "0")}:${startTime.minute.toString().padStart(2, "0")}Z`;
+        startTime = startTime.minus({ minute: 6 });
+        const taxi = `${startTime.hour
+          .toString()
+          .padStart(2, "0")}:${startTime.minute.toString().padStart(2, "0")}Z`;
 
         return {
           isActive: true,

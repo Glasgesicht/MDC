@@ -161,16 +161,9 @@ const array_name = [{}];
     <div class="c3 g">CX IN</div>
     <input class="c3 tb w" />
     <div class="c3 g">TAXI</div>
-    <input class="c3 tb w" />
+    <input class="c3 tb w" v-model="selectedFlight.taxi" />
     <div class="c3 g">T/O</div>
-    <div class="c3 w">
-      {{
-        takeoffTime(
-          hhmmss(selectedFlight?.waypoints[0]?.tot),
-          selectedFlight?.waypoints[0]?.activity
-        )
-      }}
-    </div>
+    <input class="c3 w" v-model="selectedFlight.takeoff" />
     <div class="c3 g">LAND</div>
     <input class="c3 tb w" />
 
