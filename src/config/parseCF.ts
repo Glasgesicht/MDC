@@ -71,7 +71,7 @@ export function processCF(
   }
 
   function parseCfXML(input: string) {
-    const { packages, agencies } = storeToRefs(usePackageStore());
+    const { packages } = storeToRefs(usePackageStore());
     const { theater } = storeToRefs(useGlobalStore());
     const parser = new xml2js.Parser({
       explicitArray: true,
@@ -97,6 +97,7 @@ export function processCF(
                   action: "⠀",
                 };
               }),
+              agencies: makeAgencies(res.Mission.Routes[0].Route),
               airThreat: "NONE",
               bullseye: {
                 name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
@@ -139,8 +140,7 @@ export function processCF(
         usePackageStore().reset();
         useFlightStore().reset();
         packages.value = _packages;
-        agencies.value = makeAgencies(res.Mission.Routes[0].Route);
-        console.log(toRaw(agencies.value));
+        //console.log(toRaw(agencies.value));
       })
       .catch((error) => console.error("Error parsing XML:", error));
   }
@@ -185,6 +185,7 @@ export function processCF(
             alt: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
               agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
             ].Altitude[0],
+            active: false,
           };
         });
     return [];

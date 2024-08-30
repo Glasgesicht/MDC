@@ -17,7 +17,7 @@ export const usePackageStore = defineStore("package", () => {
       return { ...n, display: true };
     })
   );
-  const agencies = ref(
+  /*const agencies = ref(
     new Array<{
       name: string;
       freq: string;
@@ -27,8 +27,9 @@ export const usePackageStore = defineStore("package", () => {
       lat: string;
       lon: string;
       alt: string;
+      active: boolean;
     }>()
-  );
+  );*/
 
   // Data for only the selected package goes here
   const initState = {
@@ -48,7 +49,7 @@ export const usePackageStore = defineStore("package", () => {
     ramrod: "",
     codewords: [],
 
-    //agencies: new Array<any>(),
+    agencies: new Array<any>(),
   };
   const selectedPKG: Ref<Package> = ref(structuredClone(initState));
 
@@ -58,7 +59,6 @@ export const usePackageStore = defineStore("package", () => {
 
   function reset() {
     selectedPKG.value = structuredClone(initState);
-    agencies.value = new Array();
   }
   const allFlightsFromPackage: WritableComputedRef<Flight[]> = computed({
     set(value: Flight[]) {
@@ -132,7 +132,6 @@ export const usePackageStore = defineStore("package", () => {
   });
 
   return {
-    agencies,
     packages,
     selectedPKG,
     allFlightsFromPackage,

@@ -213,6 +213,38 @@
         ></Column>
       </DataTable>
     </div>
+    <div>
+      Agencies
+      <!--     
+    name: string;
+    freq: string;
+    type: string;
+    activity: string;
+    tacan: string;
+    lat: string;
+    lon: string;
+    alt: string;
+    active: boolean;-->
+      <DataTable
+        :value="selectedPKG.agencies"
+        editMode="cell"
+        showGridlines
+        @cell-edit-complete="onCellEditComplete"
+        style="width: 1400px"
+      >
+        <Column header="Add" #body="{ data }" style="width: 5%">
+          <Checkbox binary v-model="data.active"></Checkbox
+        ></Column>
+
+        <Column header="Name" field="name" />
+        <Column header="Freq" field="freq" />
+        <Column header="Type" field="type" />
+        <!--Column header="activity" field="activity" />-->
+        <Column header="TACAN" field="tacan" />
+        <Column header="lat" field="lat" />
+        <Column header="lon" field="lon" />
+      </DataTable>
+    </div>
   </div>
 </template>
 <script setup lang="ts">

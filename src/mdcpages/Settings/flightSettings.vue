@@ -27,9 +27,10 @@ import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
 import type { WritableComputedRef } from "vue";
 
-const { allFlightsFromPackage, packages } = storeToRefs(usePackageStore());
+const { allFlightsFromPackage, packages, selectedPKG } = storeToRefs(
+  usePackageStore()
+);
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
-const { agencies } = storeToRefs(usePackageStore());
 const { updateFligh, updateLadder } = useFlightStore();
 const { file, stateChanged } = storeToRefs(useGlobalStore());
 
@@ -57,7 +58,7 @@ const tanker: WritableComputedRef<
   | undefined
 > = computed({
   get() {
-    return agencies.value.find(
+    return selectedPKG.value.agencies.find(
       (n) =>
         selectedFlight.value.comms.radio1[12].freq === n.freq ||
         selectedFlight.value.comms.radio2[12].freq === n.freq
@@ -702,7 +703,7 @@ const groupedFlights = computed(() =>
           <Dropdown
             style="grid-row: 22; color: red"
             :options="
-              agencies
+              selectedPKG.agencies
                 .filter((ag) =>
                   ['KC-135', 'KC135MPRS', 'KC130'].includes(ag.type)
                 )
