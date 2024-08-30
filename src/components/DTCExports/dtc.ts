@@ -1,4 +1,4 @@
-import { compressString } from "@/config/dtc";
+import { compressString } from "@/utils/dtc";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
