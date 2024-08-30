@@ -67,7 +67,6 @@ export function getSTN(
 }
 
 export function toLatString(lat: number) {
-  console.log(lat);
   if (lat)
     return `${lat > 0 ? "N" : "S"} ${Math.floor(lat)}°${((lat % 1) * 60)
       .toFixed(3)
