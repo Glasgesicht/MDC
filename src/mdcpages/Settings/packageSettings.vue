@@ -30,85 +30,95 @@
       </div>
     </div>
 
-    <div>
-      <p style="grid-row: 4 / span 1; grid-column: 1 / span 2" class="">
-        Order Flights In Package
-      </p>
-
-      <DataTable
-        class=""
-        :value="allFlightsFromPackage"
-        showGridlines
-        edit-mode="cell"
-        @rowReorder="onRowReorder"
-        style="
-          grid-row: 5 / span 10;
-          grid-column: 1 / span 7;
-          min-height: 200px;
-        "
-      >
-        <Column
-          rowReorder
-          headerStyle="width: 4rem"
-          :reorderableColumn="false"
-        />
-        <Column header="FLIGHT" headerStyle="width: 10rem"
-          ><template #body="{ index }"
-            >FLIGHT #{{ index + 1 }}</template
-          ></Column
+    <div class="container">
+      <div class="box">
+        <p
+          style="grid-row: 4 / span 1; grid-column: 1 / span 2"
+          class="textbox-label"
         >
-        <Column field="callsign" header="Callsign" key="callsign">
-          <template #body="props" style="text-align: unset; align-items: start"
-            >{{ props.data.callsign }} {{ props.data.callsignNumber }}</template
+          Order Flights In Package
+        </p>
+
+        <DataTable
+          class="content-box"
+          :value="allFlightsFromPackage"
+          showGridlines
+          edit-mode="cell"
+          @rowReorder="onRowReorder"
+          style="
+            grid-row: 5 / span 10;
+            grid-column: 1 / span 7;
+            min-height: 20px;
+          "
+        >
+          <Column
+            rowReorder
+            headerStyle="width: 4rem"
+            :reorderableColumn="false"
+          />
+          <Column header="FLIGHT" headerStyle="width: 10rem"
+            ><template #body="{ index }"
+              >FLIGHT #{{ index + 1 }}</template
+            ></Column
           >
-        </Column>
-        <Column headerStyle="width: 6rem" header="Type" field="aircrafttype">
-          <template #editor="{ index }">
-            <Input v-model="selectedPKG.flights[index].aircrafttype"
-          /></template>
-        </Column>
-        <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
-          <template #body="{ index }">
-            {{ selectedPKG.flights[index].mycomm.pri.name }}
-            {{ selectedPKG.flights[index].mycomm.pri.number || "" }}
-            <br />{{ selectedPKG.flights[index].mycomm.pri.freq }}
-          </template></Column
-        >
-        <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
-          <template #body="{ index }">
-            {{ selectedPKG.flights[index].mycomm.sec.name }}
-            {{ selectedPKG.flights[index].mycomm.sec.number || "" }}<br />{{
-              selectedPKG.flights[index].mycomm.sec.freq
-            }}</template
-          ></Column
-        >
-        <Column header="FLIGHTLEAD">
-          <template #body="{ data }">
-            {{ data.units[0]?.callsign }}
-          </template></Column
-        >
-        <Column headerStyle="width: 4.3rem">
-          <template #body="{ index }"
-            ><Button
-              icon="pi pi-trash"
-              severity="danger"
-              @click="confirmDelete(index)"
-              outlined
-          /></template>
-        </Column>
-      </DataTable>
-    </div>
-    <div>
-      <p style="grid-row: 15 / span 1; grid-column: 1" class="">Situation</p>
+          <Column field="callsign" header="Callsign" key="callsign">
+            <template
+              #body="props"
+              style="text-align: unset; align-items: start"
+              >{{ props.data.callsign }}
+              {{ props.data.callsignNumber }}</template
+            >
+          </Column>
+          <Column headerStyle="width: 6rem" header="Type" field="aircrafttype">
+            <template #editor="{ index }">
+              <Input v-model="selectedPKG.flights[index].aircrafttype"
+            /></template>
+          </Column>
+          <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
+            <template #body="{ index }">
+              {{ selectedPKG.flights[index].mycomm.pri.name }}
+              {{ selectedPKG.flights[index].mycomm.pri.number || "" }}
+              <br />{{ selectedPKG.flights[index].mycomm.pri.freq }}
+            </template></Column
+          >
+          <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
+            <template #body="{ index }">
+              {{ selectedPKG.flights[index].mycomm.sec.name }}
+              {{ selectedPKG.flights[index].mycomm.sec.number || "" }}<br />{{
+                selectedPKG.flights[index].mycomm.sec.freq
+              }}</template
+            ></Column
+          >
+          <Column header="FLIGHTLEAD">
+            <template #body="{ data }">
+              {{ data.units[0]?.callsign }}
+            </template></Column
+          >
+          <Column headerStyle="width: 4.3rem">
+            <template #body="{ index }"
+              ><Button
+                icon="pi pi-trash"
+                severity="danger"
+                @click="confirmDelete(index)"
+                outlined
+            /></template>
+          </Column>
+        </DataTable>
+      </div>
+      <div class="box">
+        <label for="situation" class="textbox-label">Situation</label>
 
-      <TextArea
-        style="width: 800pxw"
-        v-model="selectedPKG.situation"
-        :draggable="false"
-        rows="5"
-        class=""
-      />
+        <TextArea
+          id="situation"
+          class="content"
+          style="min-width: 800px; min-height: 180px"
+          v-model="selectedPKG.situation"
+          :draggable="false"
+          rows="5"
+        />
+      </div>
     </div>
+
     <div class="parent" style="width: 99%">
       <div>
         <p style="min-width: 500px" class="">Aerial Threats Briefing</p>
@@ -265,7 +275,6 @@ import { ref } from "vue";
 import DataTable from "primevue/datatable";
 import TextArea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
-import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Input from "primevue/inputtext";
 import Column from "primevue/column";
@@ -320,7 +329,6 @@ const { file } = storeToRefs(useGlobalStore());
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  /* Align items horizontally at the start */
 }
 .parent > div {
   padding-right: 15px;
@@ -329,5 +337,22 @@ const { file } = storeToRefs(useGlobalStore());
 
 td > .p-button {
   font-size: 14px;
+}
+
+.container {
+  display: flex;
+  gap: 20px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.content {
+  height: 110%;
+  box-sizing: border-box;
+  resize: none;
 }
 </style>
