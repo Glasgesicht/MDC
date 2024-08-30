@@ -210,16 +210,16 @@
           <template #editor="{ data, field }"
             ><Input v-model="data[field]" /></template
         ></Column>
-        <Column header="Criteria" field="criteria" style="width: 25%"
+        <!--<Column header="Criteria" field="criteria" style="width: 25%"
           ><template #body="{ data }">{{ data.criteria }}</template
           ><template #editor="{ data, field }"
             ><Input v-model="data[field]" /></template
-        ></Column>
-        <Column header="Authority" field="authority" style="width: 25%"
+        ></Column>-->
+        <!--<Column header="Authority" field="authority" style="width: 25%"
           ><template #body="{ data }">{{ data.authority }}</template
           ><template #editor="{ data, field }"
             ><Input v-model="data[field]" /></template
-        ></Column>
+        ></Column>-->
         <Column header="Action" field="action" style="width: 25%"
           ><template #body="{ data }">{{ data.action }}</template
           ><template #editor="{ data, field }"

@@ -204,15 +204,6 @@ export const useFlightStore = defineStore("flight", () => {
     });
   }
 
-  const gameplan = computed({
-    get() {
-      return selectedFlight.value.gameplan ?? null;
-    },
-    set(value: string) {
-      selectedFlight.value.gameplan = value;
-    },
-  });
-
   const setNewCallsign = (opts: {
     aircrafttype: string;
     callsign: string;
@@ -226,7 +217,6 @@ export const useFlightStore = defineStore("flight", () => {
   return {
     selectedFlight,
     flightTask,
-    gameplan,
     setNewCallsign,
     updateFligh,
     reset,

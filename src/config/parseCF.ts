@@ -89,14 +89,16 @@ export function processCF(
             const newPackage: Package = {
               //agencies: res.Mission.Airspace.flatMap((n) => n.Orbits),
               // Empty Codewords on start
-              codewords: [null, null, null, null, null, null].map((_n, i) => {
-                return {
-                  name: "⠀",
-                  criteria: "⠀",
-                  authority: "⠀",
-                  action: "⠀",
-                };
-              }),
+              codewords: [null, null, null, null, null, null, null].map(
+                (_n, i) => {
+                  return {
+                    name: "⠀",
+                    criteria: "⠀",
+                    authority: "⠀",
+                    action: "⠀",
+                  };
+                }
+              ),
               agencies: makeAgencies(res.Mission.Routes[0].Route),
               airThreat: "NONE",
               bullseye: {
@@ -122,14 +124,6 @@ export function processCF(
               name: curr.Name ? curr.Name[0] : "Name Missing", //
               flights: makeFlight(res.Mission.Routes[0].Route, curr),
             };
-
-            // Add Demo Codeword, I guess?
-            newPackage.codewords.unshift({
-              name: "ARIZONA",
-              criteria: "NO ARM REMAINING",
-              authority: "ANY SEAD FLIGHT LEAD",
-              action: "-",
-            });
 
             if (newPackage.flights.length) coll.push(newPackage);
             return coll;

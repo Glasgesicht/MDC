@@ -18,7 +18,7 @@ const {
   selectedPKG,
 } = storeToRefs(usePackageStore());
 
-const { selectedFlight, gameplan } = storeToRefs(useFlightStore());
+const { selectedFlight } = storeToRefs(useFlightStore());
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -83,7 +83,7 @@ const showROE = inject("showROE");
     <textarea
       type="text"
       :class="`mcd-s-col  textbox ${showROE ? 'mcd-row-10' : 'mcd-row-16'}`"
-      v-model="gameplan"
+      v-model="selectedFlight.gameplan"
     />
     <div v-if="showROE" class="border roehead mcd-s-col" style="width: 100%">
       RULES OF ENGAGEMENT

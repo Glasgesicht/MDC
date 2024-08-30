@@ -16,7 +16,7 @@ import {
 import { useFlightStore } from "@/stores/flightStore";
 import { threatRanges } from "@/config/threatRanges";
 
-const { selectedPKG } = storeToRefs(usePackageStore());
+const { selectedPKG, threats } = storeToRefs(usePackageStore());
 
 const { selectedFlight } = storeToRefs(useFlightStore());
 
@@ -253,14 +253,26 @@ const array_name = [{}];
     <div class="c2 g">MAR</div>
 
     <div class="c36 parent" v-for="index in new Array(8).keys()">
-      <input :class="`c6 tb ${index % 2 ? 'hg' : 'w'}`" />
-      <input :class="`c12 tb ${index % 2 ? 'hg' : 'w'}`" />
-      <div class="c8 hr">{{ threatRanges[index]?.class }}</div>
+      <div :class="`c6 tb ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedPKG.codewords[index]?.name }}
+      </div>
+      <div :class="`c12 tb ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedPKG.codewords[index]?.action }}
+      </div>
+      <div class="c8 hr">
+        {{ !threats[index]?.display ? "" : threats[index]?.class }}
+      </div>
       <input class="c2 tb hr" />
       <input class="c2 tb hr" />
-      <div class="c2 hr">{{ threatRanges[index]?.dor?.toFixed(1) }}</div>
-      <div class="c2 hr">{{ threatRanges[index]?.dr?.toFixed(1) }}</div>
-      <div class="c2 hr">{{ threatRanges[index]?.mar?.toFixed(1) }}</div>
+      <div class="c2 hr">
+        {{ !threats[index]?.display ? "" : threats[index]?.dor?.toFixed(1) }}
+      </div>
+      <div class="c2 hr">
+        {{ !threats[index]?.display ? "" : threats[index]?.dr?.toFixed(1) }}
+      </div>
+      <div class="c2 hr">
+        {{ !threats[index]?.display ? "" : threats[index]?.mar?.toFixed(1) }}
+      </div>
     </div>
 
     <div class="c5 g">C/S</div>

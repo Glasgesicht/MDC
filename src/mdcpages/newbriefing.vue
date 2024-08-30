@@ -17,7 +17,7 @@ const {
   selectedPKG,
 } = storeToRefs(usePackageStore());
 
-const { selectedFlight, gameplan } = storeToRefs(useFlightStore());
+const { selectedFlight } = storeToRefs(useFlightStore());
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -63,7 +63,7 @@ const showROE = inject("showROE");
     <div class="c6 g">FLIGHT TASK</div>
     <input v-model="selectedFlight.task" class="c30 w tb" />
     <div class="c36 g">SITUATION</div>
-    <textarea v-model="gameplan" class="r5 c36 w tb" />
+    <textarea v-model="situation" class="r5 c36 w tb" />
 
     <div class="c18 g">SURFACE THREATS</div>
     <div class="c18 g">AIR THREATS</div>
@@ -76,7 +76,7 @@ const showROE = inject("showROE");
     <textarea
       type="text"
       :class="`c36 tb ${showROE ? 'r28' : 'r34'}`"
-      v-model="situation"
+      v-model="selectedFlight.gameplan"
     />
     <div v-if="showROE" class="roehead c36" style="width: 100%">
       RULES OF ENGAGEMENT

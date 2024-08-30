@@ -15,6 +15,7 @@ import Column from "primevue/column";
 import Input from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import InputMask from "primevue/inputmask";
+import TextArea from "primevue/textarea";
 
 import TabView from "primevue/tabview";
 import TabPanel from "primevue/tabpanel";
@@ -502,7 +503,7 @@ const groupedFlights = computed(() =>
       ></TabPanel>
       <TabPanel header="Gameplan">
         <TextArea
-          style="min-width: 500px; min-height: 120px"
+          style="min-width: 600px; min-height: 200px; resize: none"
           v-model="selectedFlight.gameplan"
           :draggable="false"
           rows="3"
@@ -510,6 +511,48 @@ const groupedFlights = computed(() =>
         />
       </TabPanel>
       <TabPanel header="COMMS Settings"></TabPanel>
+      <TabPanel header="MISC Settings">
+        <div class="griddy">
+          <Checkbox />
+          <a>Bingo</a>
+          <InputNumber />
+          <Checkbox />
+          <a>Enable Bullseye</a>
+          <InputNumber />
+          <Checkbox /> <a>CARA ALLOW</a> <InputNumber /> <Checkbox /><a>
+            MSL Floor</a
+          >
+          <InputNumber /> <Checkbox /> <a>Laser Settings</a>
+          <div />
+          <div />
+          <a>TGP Code</a>
+          <div style="display: flex">
+            <Dropdown /><Dropdown /><Dropdown /><Dropdown />
+          </div>
+          <div />
+          <a>LST Code</a>
+          <div style="display: flex">
+            <Dropdown /><Dropdown /><Dropdown /><Dropdown />
+          </div>
+          <div />
+          <a>Laser Start Time</a> <InputNumber /> <Checkbox /> <a>TACAN</a>
+
+          <div style="display: flex; width: 50%">
+            <InputMask mask="9?9" style="width: 50%" /><Dropdown
+              style="width: 50%"
+              :options="['X', 'Y']"
+            />
+          </div>
+
+          <Checkbox /> <a>ILS</a>
+          <div />
+          <div />
+          <a>Frequency</a> <InputNumber />
+          <div />
+          <a>Course</a>
+          <InputNumber />
+        </div>
+      </TabPanel>
     </TabView>
     <div class="parent" v-if="file && selectedFlight.isActive">
       <!--<div class="item">
@@ -923,5 +966,13 @@ const groupedFlights = computed(() =>
 
 .input {
   width: 100%;
+}
+
+.griddy {
+  display: grid;
+  grid-template-columns: 100px 100px 300px;
+  grid-template-rows: repeat(12, 24px);
+  grid-column-gap: 1px;
+  grid-row-gap: 4px;
 }
 </style>
