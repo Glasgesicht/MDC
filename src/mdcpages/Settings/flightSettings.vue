@@ -511,11 +511,11 @@ const groupedFlights = computed(() =>
       <TabPanel header="COMMS Settings"></TabPanel>
     </TabView>
     <div class="parent" v-if="file && selectedFlight.isActive">
-      <div class="item">
+      <!--<div class="item">
         <p>COMMS ASSIGNMENT</p>
 
         <CommsAssignment />
-      </div>
+      </div>-->
       <div class="freqs">
         <div class="item5">
           <p>DEPART</p>
