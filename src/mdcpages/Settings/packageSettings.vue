@@ -41,7 +41,11 @@
         showGridlines
         edit-mode="cell"
         @rowReorder="onRowReorder"
-        style="grid-row: 5 / span 10; grid-column: 1 / span 7"
+        style="
+          grid-row: 5 / span 10;
+          grid-column: 1 / span 7;
+          min-height: 200px;
+        "
       >
         <Column
           rowReorder
@@ -98,7 +102,7 @@
       <p style="grid-row: 15 / span 1; grid-column: 1" class="">Situation</p>
 
       <TextArea
-        style="width: 800px"
+        style="width: 800pxw"
         v-model="selectedPKG.situation"
         :draggable="false"
         rows="5"
@@ -230,7 +234,7 @@
         editMode="cell"
         showGridlines
         @cell-edit-complete="onCellEditComplete"
-        style="width: 1400px"
+        style="width: 1100px"
       >
         <Column header="Add" #body="{ data }" style="width: 5%">
           <Checkbox binary v-model="data.active"></Checkbox
@@ -241,8 +245,12 @@
         <Column header="Type" field="type" />
         <!--Column header="activity" field="activity" />-->
         <Column header="TACAN" field="tacan" />
-        <Column header="lat" field="lat" />
-        <Column header="lon" field="lon" />
+        <Column header="Location"
+          ><template #body="{ data }"
+            >{{ toLatString(data.lat) }} /
+            {{ toLongString(data.lon) }}</template
+          ></Column
+        >
       </DataTable>
     </div>
   </div>
@@ -262,6 +270,8 @@ import Button from "primevue/button";
 import Input from "primevue/inputtext";
 import Column from "primevue/column";
 import Checkbox from "primevue/checkbox";
+
+import { toLatString, toLongString } from "@/utils/utilFunctions";
 
 const { stateChanged } = storeToRefs(useGlobalStore());
 const editingRows = ref([]);
