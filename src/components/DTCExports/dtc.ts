@@ -3,8 +3,13 @@ import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import { storeToRefs } from "pinia";
-import { toRaw } from "vue";
-import type { DTC, Datalink, Waypoint, Radios, Waypoints } from "./dtcTypes";
+import type {
+  DTC,
+  Datalink,
+  Waypoint,
+  Radios,
+  Waypoints,
+} from "../../types/dtcTypes";
 
 export const useDTCexports = () => {
   const { selectedFlight } = storeToRefs(useFlightStore());
@@ -195,6 +200,15 @@ export const useDTCexports = () => {
     if (input.Waypoints) flight.Waypoints = getWaypoints(input.Waypoints);
     if (input.Radios) flight.Radios = getComms();
     if (input.Datalink) flight.Datalink = getDataLink();
+    flight.Upload = {
+      CMS: false,
+      Datalink: input.Datalink,
+      Radios: input.Radios,
+      Waypoints: !!input.Waypoints,
+      HARMHTS: false,
+      MFDs: false,
+      Misc: true,
+    };
 
     console.log("exporting:", JSON.stringify(flight));
     return flight;
