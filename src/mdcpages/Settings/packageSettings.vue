@@ -98,7 +98,7 @@
       <p style="grid-row: 15 / span 1; grid-column: 1" class="">Situation</p>
 
       <TextArea
-        style="min-width: 700px"
+        style="width: 800px"
         v-model="selectedPKG.situation"
         :draggable="false"
         rows="5"
@@ -107,10 +107,10 @@
     </div>
     <div class="parent" style="width: 99%">
       <div>
-        <p style="min-width: 500px" class="">Aerial Threats</p>
+        <p style="min-width: 500px" class="">Aerial Threats Briefing</p>
 
         <TextArea
-          style="min-width: 500px; min-height: 120px"
+          style="min-width: 800px; min-height: 120px"
           v-model="selectedPKG.airThreat"
           :draggable="false"
           rows="3"
@@ -118,10 +118,10 @@
         />
       </div>
       <div>
-        <p style="min-width: 500px" class="">Surface Threats</p>
+        <p style="min-width: 500px" class="">Surface Threats Briefing</p>
 
         <TextArea
-          style="min-width: 500px; min-height: 120px"
+          style="min-width: 800px; min-height: 120px"
           v-model="selectedPKG.surfaceThreat"
           :draggable="false"
           rows="3"
@@ -134,31 +134,44 @@
       Threat Classes
       <DataTable
         :value="threats"
+        style="min-width: 700px"
         editMode="cell"
         @cell-edit-complete="onCellEditComplete"
         showGridlines
       >
-        <Column header="Active" #body="{ data }">
+        <Column header="Active" #body="{ data }" style="width: 5%">
           <Checkbox binary v-model="data.display"></Checkbox
         ></Column>
-        <Column field="class" header="Class"
+        <Column field="class" header="Class" style="width: 45%"
           ><template #body="{ data }">{{ data.class }}</template>
           <template #editor="{ data, field }">
             <Input v-model="data[field]" fluid /> </template></Column
-        ><Column field="dor" header="DOR">
+        ><Column field="dor" header="DOR" style="width: 15%">
           <template #editor="{ data, field }">
-            <InputNumber v-model="data[field]" fluid /> </template
+            <Input
+              v-model="data[field]"
+              style="max-width: 50px"
+              fluid
+            /> </template
         ></Column>
-        <Column field="dr" header="DR">
+        <Column field="dr" header="DR" style="width: 15%">
           <template #editor="{ data, field }">
-            <Input v-model="data[field]" fluid /> </template
+            <Input
+              v-model="data[field]"
+              style="max-width: 50px"
+              fluid
+            /> </template
         ></Column>
-        <Column field="mar" header="MAR">
+        <Column field="mar" header="MAR" style="width: 15%">
           <template #editor="{ data, field }">
-            <Input v-model="data[field]" fluid /> </template
+            <Input
+              v-model="data[field]"
+              fluid
+              style="max-width: 50px"
+            /> </template
         ></Column>
         <Column>
-          <template #body="{ index }"
+          <template #body="{ index }" style="width: 5%"
             ><Button
               @click="deleteThreat(index)"
               severity="danger"
