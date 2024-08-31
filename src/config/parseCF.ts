@@ -289,8 +289,8 @@ export function processCF(
       TOWER: { uhf: "", vhf: "" },
       GROUND: { uhf: "", vhf: "" },
       TACAN: "",
-      HDG: "",
-      ILS: "",
+      COURSE: [""],
+      ILS: [""],
       ELEV: "",
       LEN: "",
     };
