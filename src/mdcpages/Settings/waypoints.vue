@@ -18,7 +18,7 @@
         text-align: left;
       "
     >
-      <Column field="waypointNr" header="n°">
+      <Column field="waypointNr" header="WPN NR" style="width: 100px">
         <template #editor="{ index }">
           <InputNumber
             v-model:model-value="selectedFlight.waypoints[index].waypointNr"
@@ -53,6 +53,11 @@
         <template #body="{ data }"
           >{{ Number(data.altitude).toFixed(0) }} ft</template
         >
+        <template #editor="{ index }"
+          ><InputNumber
+            v-model:model-value="selectedFlight.waypoints[index].altitude"
+          ></InputNumber
+        ></template>
       </Column>
       <Column header="Hide" field="hideOnMDC">
         <template #body="{ data }">
@@ -73,23 +78,27 @@
             icon="pi pi-trash"
         /></template>
       </Column>
+      <template #footer>
+        <Button
+          label="decrement"
+          icon="pi pi-angle-up"
+          @click="decrSelected()"
+          class="item" />
+        <Button
+          label="increment"
+          icon="pi pi-chevron-down"
+          @click="incSelected()"
+          class="item" />
+        <Button label="hide selected" @click="hideSelected()" class="item" />
+        <Button label="unhide selected" @click="unhideSelected()" class="item"
+      /></template>
     </DataTable>
-    <Button
-      label="decrement"
-      icon="pi pi-angle-up"
-      @click="decrSelected()"
-      class="item"
-    />
-    <Button
-      label="increment"
-      icon="pi pi-chevron-down"
-      @click="incSelected()"
-      class="item"
-    />
-    <Button label="hide selected" @click="hideSelected()" class="item" />
-    <Button label="unhide selected" @click="unhideSelected()" class="item" />
+
     <h3>Designated Impact Points (DMPIs)</h3>
     <DataTable showGridlines edit-mode="cell" :value="selectedFlight.dmpis">
+      <Column header="WPN NR" style="width: 100px"
+        ><template #body="{ index }">{{ index + 80 }}</template></Column
+      >
       <Column field="type" header="Type">
         <template #editor="{ index }"
           ><input v-model="selectedFlight.dmpis[index].type"
@@ -115,10 +124,25 @@
         ><template #editor="{ index }"
           ><input v-model="selectedFlight.dmpis[index].note" /></template
       ></Column>
+      <template #footer>
+        <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
+        <SteerpointsToDTC
+          class="item"
+          mode="waypoints"
+          label="waypoints to DTC" />
+        <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC"
+      /></template>
     </DataTable>
-    <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
-    <SteerpointsToDTC class="item" mode="waypoints" label="waypoints to DTC" />
-    <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" />
+
+    <h3>Bullzeye Locations</h3>
+    <DataTable>
+      <Column header="Select">
+        <template #body="{}"><Checkbox /></template
+      ></Column>
+      <Column header="Name"></Column>
+      <Column header="Location"></Column>
+      <template #footer></template>
+    </DataTable>
   </div>
 </template>
 
