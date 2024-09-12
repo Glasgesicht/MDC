@@ -553,6 +553,7 @@ const groupedFlights = computed(() =>
           <InputNumber />
         </div>
       </TabPanel>
+      <TabPanel header="HARM/HTS"> Work in Progress</TabPanel>
     </TabView>
     <div class="parent" v-if="file && selectedFlight.isActive">
       <!--<div class="item">
