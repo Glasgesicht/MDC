@@ -188,7 +188,7 @@ const makejpg = async () => {
   }
   active.value = oldactive;*/
 
-  await toJpeg(document.getElementsByName("mdcpage")[0])
+  await toJpeg(document.getElementsByName("mdcpage")[0], { pixelRatio: 1 })
     .then((dataUrl) => {
       const img = new Image();
       img.src = dataUrl;
