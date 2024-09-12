@@ -16,7 +16,7 @@
       </div>
       <div style="padding-right: 15px">
         <p class="">Package Name</p>
-        <Input class="" v-model="selectedPKG.name"></Input>
+        <Input style="height: 31px" v-model="selectedPKG.name"></Input>
       </div>
       <div>
         <p>RAMROD (selected)</p>
