@@ -18,6 +18,8 @@ import { threatRanges } from "@/config/threatRanges";
 
 const { selectedPKG, threats } = storeToRefs(usePackageStore());
 
+const threatsVisible = threats.value.filter((n) => n.display);
+
 const { selectedFlight } = storeToRefs(useFlightStore());
 
 const getUnit = computed(() => (i: number) => {
@@ -260,18 +262,18 @@ const array_name = [{}];
         {{ selectedPKG.codewords[index]?.action }}
       </div>
       <div class="c8 hr">
-        {{ !threats[index]?.display ? "" : threats[index]?.class }}
+        {{ threatsVisible[index]?.class }}
       </div>
       <input class="c2 tb hr" />
       <input class="c2 tb hr" />
       <div class="c2 hr">
-        {{ !threats[index]?.display ? "" : threats[index]?.dor?.toFixed(1) }}
+        {{ threatsVisible[index]?.dor?.toFixed(1) }}
       </div>
       <div class="c2 hr">
-        {{ !threats[index]?.display ? "" : threats[index]?.dr?.toFixed(1) }}
+        {{ threatsVisible[index]?.dr?.toFixed(1) }}
       </div>
       <div class="c2 hr">
-        {{ !threats[index]?.display ? "" : threats[index]?.mar?.toFixed(1) }}
+        {{ threatsVisible[index]?.mar?.toFixed(1) }}
       </div>
     </div>
 
