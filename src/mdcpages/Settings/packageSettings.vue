@@ -2,7 +2,8 @@
   <div class="parent" v-if="file">
     <div style="min-width: 100%" class="parent">
       <div class="item" style="padding-right: 15px">
-        <p class="">Selected Package</p>
+        <p class="" v-if="selectedPKG.name">Selected Package</p>
+        <p class="" v-else>Please select a package to edit first</p>
         <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
@@ -14,11 +15,11 @@
           class=""
         />
       </div>
-      <div style="padding-right: 15px">
+      <div style="padding-right: 15px" v-if="selectedPKG.name">
         <p class="">Package Name</p>
         <Input style="height: 31px" v-model="selectedPKG.name"></Input>
       </div>
-      <div>
+      <div v-if="selectedPKG.name">
         <p>RAMROD (selected)</p>
         <Dropdown
           style="grid-row: 2 / span 1; grid-column: 4 / span 2"
@@ -30,7 +31,7 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" v-if="selectedPKG.name">
       <div class="box">
         <p
           style="grid-row: 4 / span 1; grid-column: 1 / span 2"
@@ -119,7 +120,7 @@
       </div>
     </div>
 
-    <div class="parent" style="width: 99%">
+    <div class="parent" style="width: 99%" v-if="selectedPKG.name">
       <div>
         <p style="min-width: 500px" class="">Aerial Threats Briefing</p>
 
@@ -144,7 +145,7 @@
       </div>
     </div>
 
-    <div>
+    <div v-if="selectedPKG.name">
       Threat Classes
       <DataTable
         :value="threats"
@@ -196,7 +197,7 @@
         </Column>
       </DataTable>
     </div>
-    <div>
+    <div v-if="selectedPKG.name">
       Codewords
       <DataTable
         :value="selectedPKG.codewords"
@@ -227,7 +228,7 @@
         ></Column>
       </DataTable>
     </div>
-    <div>
+    <div v-if="selectedPKG.name">
       Agencies
       <!--     
     name: string;
