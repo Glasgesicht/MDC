@@ -1,7 +1,7 @@
 <template>
   <div class="parent" v-if="file">
     <div style="min-width: 100%" class="parent">
-      <div class="item" style="padding-right: 15px">
+      <div class="" style="padding-right: 15px">
         <p class="" v-if="selectedPKG.name">Selected Package</p>
         <p class="" v-else>Please select a package to edit first</p>
         <!--<select v-model="selectedPKG">
@@ -146,7 +146,7 @@
     </div>
 
     <div v-if="selectedPKG.name">
-      Threat Classes
+      <p>Threat Classes</p>
       <DataTable
         :value="threats"
         style="min-width: 700px"
@@ -198,7 +198,7 @@
       </DataTable>
     </div>
     <div v-if="selectedPKG.name">
-      Codewords
+      <p>Codewords</p>
       <DataTable
         :value="selectedPKG.codewords"
         editMode="cell"
@@ -229,7 +229,7 @@
       </DataTable>
     </div>
     <div v-if="selectedPKG.name">
-      Agencies
+      <p>Agencies</p>
       <!--     
     name: string;
     freq: string;
@@ -322,14 +322,13 @@ const onCellEditComplete = (event: any) => {
 const { file } = storeToRefs(useGlobalStore());
 </script>
 <style scoped>
-* {
-  padding: 0 0;
-  margin: 0 0;
-}
 .parent {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+
+  padding: 0 0;
+  margin: 0 0;
 }
 .parent > div {
   padding-right: 15px;

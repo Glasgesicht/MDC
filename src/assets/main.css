@@ -62,7 +62,7 @@ select {
   height: 100%;
 }
 
-.mcdpage>div {
+.mcdpage > div {
   overflow: auto;
 }
 
@@ -71,7 +71,6 @@ select {
 }
 
 .mcdpage * {
-
   height: 100%;
   width: 100%;
   align-items: center;
