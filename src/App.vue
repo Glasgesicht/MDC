@@ -5,7 +5,7 @@ import FlightSettings from "./mdcpages/Settings/flightSettings.vue";
 
 import Menu from "primevue/menu";
 import Dropdown from "primevue/dropdown";
-import { ref, provide, computed } from "vue";
+import { ref, provide, computed, type Ref } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -23,6 +23,7 @@ import Gameplan from "./mdcpages/Gameplan.vue";
 import Newbriefing from "./mdcpages/newbriefing.vue";
 import WaypointsSettings from "./mdcpages/Settings/waypoints.vue";
 import examplePage from "./mdcpages/examplePage/examplePage.vue";
+import type { MenuItem } from "primevue/menuitem";
 
 const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
@@ -46,7 +47,7 @@ const onChangedFile = async (payload: any) => {
   pageActive.value = "setting2";
 };
 
-const items = computed(() => [
+const items: Ref<MenuItem[]> = computed(() => [
   {
     label: "Settings",
 
@@ -84,6 +85,7 @@ const items = computed(() => [
   },
   {
     label: "Preview",
+    visible: file.value,
     items: [
       {
         label: "Gameplan",
@@ -143,6 +145,7 @@ const items = computed(() => [
   },
   {
     label: "Export",
+    visible: file.value,
     items: [
       {
         label: "to DTC",
@@ -205,8 +208,9 @@ const makejpg = async () => {
 
       <Menu :model="items" style="border: none; background-color: #f4f4f4" />
 
-      <hr style="width: 100%" />
+      <hr style="width: 100%" v-if="file" />
       <Dropdown
+        v-if="file"
         v-model="selectedPKG"
         :options="packages"
         class="m-5"
@@ -214,6 +218,7 @@ const makejpg = async () => {
         placeholder="Select A Package"
       />
       <Dropdown
+        v-if="file"
         v-model="selectedFlight"
         class="m-5"
         :options="allFlightsFromPackage"
