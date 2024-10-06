@@ -1,3 +1,4 @@
+<!--
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
@@ -85,7 +86,7 @@ const hhmmss = (time: string) => {
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.DEP.NAME).ELEV }}
     </div>
-    <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.DEP.NAME).HDG }}
     </div>
@@ -109,7 +110,7 @@ const hhmmss = (time: string) => {
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.ARR.NAME).ELEV }}
     </div>
-    <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.ARR.NAME).HDG }}
     </div>
@@ -133,7 +134,7 @@ const hhmmss = (time: string) => {
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.ALT.NAME).ELEV }}
     </div>
-    <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>-->
+    <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
       {{ getAirport(selectedFlight.ALT.NAME).HDG }}
     </div>
@@ -157,7 +158,7 @@ const hhmmss = (time: string) => {
     <div class="border  mcd-s-3 mcd-row-1 mcd-bow">{{ alternateLength }}</div>
     <div class="border  mcd-s-3 mcd-row-1 mcd-bow">{{ alternateElevation }}</div>
     <div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ alternateRunway }}</div>
-    <div class="border  mcd-s-3 mcd-row-1 mcd-bow">{{ alternateILS }}</div>-->
+    <div class="border  mcd-s-3 mcd-row-1 mcd-bow">{{ alternateILS }}</div>
 
     <div class="border mcd-row-26 mcd-s-1 mcd-wog text-rotate-left">
       STEERPOINTS
@@ -294,3 +295,4 @@ p {
   font-weight: 600;
 }
 </style>
+-->
