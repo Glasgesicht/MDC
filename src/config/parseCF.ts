@@ -28,13 +28,13 @@ export function processCF(
     | Blob
     | NodeJS.ReadableStream
     | Promise<
-      | string
-      | number[]
-      | Uint8Array
-      | ArrayBuffer
-      | Blob
-      | NodeJS.ReadableStream
-    > /* cf file is a zip */
+        | string
+        | number[]
+        | Uint8Array
+        | ArrayBuffer
+        | Blob
+        | NodeJS.ReadableStream
+      > /* cf file is a zip */
 ) {
   readCF(payload).then((res) => parseCfXML(res));
 
@@ -47,13 +47,13 @@ export function processCF(
       | Blob
       | NodeJS.ReadableStream
       | Promise<
-        | string
-        | number[]
-        | Uint8Array
-        | ArrayBuffer
-        | Blob
-        | NodeJS.ReadableStream
-      >
+          | string
+          | number[]
+          | Uint8Array
+          | ArrayBuffer
+          | Blob
+          | NodeJS.ReadableStream
+        >
   ) {
     const zip = new JSZip();
     try {
@@ -155,10 +155,13 @@ export function processCF(
   function makeAgencies(rt: RouteEntity[]) {
     if (rt)
       return rt
-        .filter((item) => // Filter out tankers/AWACS
-          ["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
-            item.Aircraft[0].Type[0]
-          )
+        .filter(
+          (
+            item // Filter out tankers/AWACS
+          ) =>
+            ["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
+              item.Aircraft[0].Type[0]
+            )
         )
         .map((agency) => {
           return {
@@ -487,9 +490,14 @@ export function processCF(
         name: "",
       };
     }
+    radio1[14] = {
+      freq: "243.00",
+      description: "GUARD",
+      name: "",
+    };
     radio1[19] = {
       freq: "362.30",
-      description: "NATO COMBINED",
+      description: "NATO CATF",
       name: "",
     };
     pkg.forEach((flight, i) => {
