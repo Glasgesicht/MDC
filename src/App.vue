@@ -13,7 +13,7 @@ import { toJpeg } from "html-to-image";
 import { useGlobalStore } from "./stores/theatreStore";
 import { processCF } from "./config/parseCF";
 import { useDTCexports } from "@/components/DTCExports/dtc";
-import Waypoints from "./mdcpages/waypoints.vue";
+// import Waypoints from "./mdcpages/waypoints.vue";
 import Datacard from "./mdcpages/datacard.vue";
 import Newsteerpoints from "./mdcpages/newsteerpoints.vue";
 import Newdatacard from "./mdcpages/newdatacard.vue";
@@ -87,44 +87,44 @@ const items: Ref<MenuItem[]> = computed(() => [
     label: "Preview",
     visible: file.value,
     items: [
-      {
+      /*{
         label: "Gameplan",
         command: () => {
           pageActive.value = "gameplan";
         },
-      },
+      },*/
       {
-        label: "new Briefing",
+        label: "Briefing",
         command: () => {
           pageActive.value = "newbriefing";
         },
       },
-      {
+      /*{
         label: "Waypoints",
         command: () => {
           pageActive.value = "waypoints";
         },
-      },
+      },*/
       {
-        label: "new Steerpoints",
+        label: "Steerpoints",
         command: () => {
           pageActive.value = "newsteerpoints";
         },
       },
-      {
+      /*{
         label: "Datacard",
         command: () => {
           pageActive.value = "datacard";
         },
-      },
+      },*/
       {
-        label: "New Datacard",
+        label: "Datacard",
         command: () => {
           pageActive.value = "newdatacard";
         },
       },
       {
-        label: "new Comms",
+        label: "Comms",
         command: () => {
           pageActive.value = "newcomms";
         },
@@ -245,7 +245,7 @@ const makejpg = async () => {
         :pagenr="1"
         name="mdcpage"
       />
-      <Waypoints v-if="pageActive === 'waypoints'" :pagenr="3" name="mdcpage" />
+      <!--<Waypoints v-if="pageActive === 'waypoints'" :pagenr="3" name="mdcpage" />-->
       <Newsteerpoints
         v-if="pageActive === 'newsteerpoints'"
         :pagenr="2"
