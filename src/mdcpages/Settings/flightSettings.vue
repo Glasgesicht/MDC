@@ -286,657 +286,645 @@ const groupedFlights = computed(() =>
 </script>
 
 <template>
-  <div class="main">
-    <div class="parent item">
-      <div class="item">
-        <p class="">Select Flight To Edit</p>
-        <Dropdown
-          v-model="selectedFlight"
-          :options="allFlightsFromPackage"
-          optionLabel="callsign"
-          style="width: 253px"
-          placeholder="Select A Flight"
-          ><template #option="{ option }"
-            >{{ option.callsign }} {{ option.callsignNumber }}</template
-          ><template #value="{ value }">{{
-            value.callsign ||
-            "Select A Flight" + " " + (value.callsignNumber || " ")
-          }}</template>
-        </Dropdown>
-      </div>
-      <div class="item">
-        <p class="">Assign new Callsign</p>
-        <Dropdown
-          placeholder="select new callsign"
-          v-if="!isCustomCalsign && selectedFlight.isActive"
-          filter
-          :options="groupedFlights"
-          optionLabel="callsign"
-          style="width: 253px"
-          optionGroupLabel="label"
-          optionGroupChildren="items"
-          @change="callsignChangeEvent"
-        >
-          <!-- -->
-          <template #optiongroup="slotProps">
-            <div>{{ slotProps.option.label }}</div>
-          </template>
-        </Dropdown>
-        <div
-          v-if="isCustomCalsign && selectedFlight"
-          class="parent"
-          style="max-width: 250px"
-        >
-          <Input v-model="selectedFlight.callsign" @blur="updateFligh" />
-          <InputNumber
-            :min="1"
-            :max="9"
-            v-model="selectedFlight.callsignNumber"
-            class="fixW"
-            style="max-width: 75px; margin-left: 5px"
-            @blur="updateFligh"
-          />
-        </div>
-      </div>
-      <div
-        style="text-align: left; margin-top: 14px; width: 200px"
-        class="parent"
+  <div class="parent" style="max-width: 2000px">
+    <div class="">
+      <p class="" v-if="file && selectedFlight.isActive">
+        Select Flight To Edit
+      </p>
+      <p class="" v-else>Please select a flight first</p>
+      <Dropdown
+        v-model="selectedFlight"
+        :options="allFlightsFromPackage"
+        optionLabel="callsign"
+        style="width: 253px"
+        placeholder="Select A Flight"
+        ><template #option="{ option }"
+          >{{ option.callsign }} {{ option.callsignNumber }}</template
+        ><template #value="{ value }">{{
+          value.callsign ||
+          "Select A Flight" + " " + (value.callsignNumber || " ")
+        }}</template>
+      </Dropdown>
+    </div>
+    <div class="" v-if="file && selectedFlight.isActive">
+      <p class="">Assign new Callsign</p>
+      <Dropdown
+        placeholder="select new callsign"
+        v-if="!isCustomCalsign && selectedFlight.isActive"
+        filter
+        :options="groupedFlights"
+        optionLabel="callsign"
+        style="width: 253px"
+        optionGroupLabel="label"
+        optionGroupChildren="items"
+        @change="callsignChangeEvent"
       >
-        <div class="item">
-          <Checkbox
-            v-if="selectedFlight"
-            label="Add custom Callsign"
-            id="customCheckbox"
-            v-model="isCustomCalsign"
-            :binary="true"
-            outlined
-          />
-          <label for="customCheckbox" class="item">Use Custom Callsign</label>
-        </div>
-        <div class="item">
-          <Checkbox
-            label="Add custom Callsign"
-            id="editDefautls"
-            v-model="useDefaults"
-            :binary="true"
-            outlined
-          />
-          <label class="item" for="editDefautls">Use Defaults</label>
-        </div>
+        <!-- -->
+        <template #optiongroup="slotProps">
+          <div>{{ slotProps.option.label }}</div>
+        </template>
+      </Dropdown>
+      <div
+        v-if="isCustomCalsign && selectedFlight"
+        class="parent"
+        style="max-width: 250px"
+      >
+        <Input v-model="selectedFlight.callsign" @blur="updateFligh" />
+        <InputNumber
+          :min="1"
+          :max="9"
+          v-model="selectedFlight.callsignNumber"
+          class="fixW"
+          style="max-width: 75px; margin-left: 5px"
+          @blur="updateFligh"
+        />
       </div>
     </div>
-
-    <TabView>
-      <TabPanel header="Common Settings">
-        <div class="item">
-          <p>Member in selected Flight</p>
-          <DataTable
-            :value="selectedFlight.units"
-            showGridlines
-            edit-mode="cell"
-            style="width: 800px"
-          >
-            <Column header="n°" headerStyle="width: 3rem"
-              ><template #body="{ index }">#{{ index + 1 }}</template></Column
-            >
-            <Column
-              style="width: 8rem; max-width: 8rem"
-              header="Callsign"
-              field="callsign"
-            >
-              <template #body="{ data, field }">
-                {{ data[field] }}
-              </template>
-              <template #editor="{ data, field, index }">
-                <Dropdown
-                  editable
-                  @change="FlightMemberUpdate"
-                  class="redefSize"
-                  :options="_313ref"
-                  v-model="selectedFlight.units[index].callsign"
-                  autofocus
-                />
-              </template>
-            </Column>
-            <Column
-              header="Search"
-              style="width: 5rem; max-width: 5rem"
-              field="search"
-            >
-              <template #body="{ data, field }">
-                {{ data[field] }}
-              </template>
-              <template #editor="{ index }">
-                <Input v-model="selectedFlight.units[index].search" />
-              </template>
-            </Column>
-
-            <Column
-              field="STN"
-              header="STN"
-              style="width: 5rem; max-width: 5rem"
-            >
-              <template #body="{ data, field }">
-                {{ data[field] }}
-              </template>
-              <template #editor="{ index }">
-                <InputMask
-                  mask="9?99999"
-                  :autoClear="false"
-                  v-model="selectedFlight.units[index].STN"
-                />
-              </template>
-            </Column>
-            <Column
-              field="tailNr"
-              header="TailNr"
-              headerStyle="max-width: 4rem"
-              style="max-height: fit-content"
-            >
-              <template #body="{ data, field }">
-                {{ data[field] }}
-              </template>
-              <template #editor="{ index }">
-                <Input v-model="selectedFlight.units[index].tailNr" />
-              </template>
-            </Column>
-            <Column
-              field="L16"
-              header="L16"
-              headerStyle="max-width: 4rem"
-              style="max-height: fit-content"
-            />
-            <Column
-              field="tacan"
-              header="TACAN"
-              headerStyle="max-width: 4rem"
-              style="max-height: fit-content"
-            >
-              <template #editor="{ index }">
-                <InputMask
-                  :disabled="index > 0 && useDefaults"
-                  :mask="useDefaults ? '9?*a' : '99?*a'"
-                  v-model="selectedFlight.units[index].tacan"
-                  @complete="tacaninput"
-                />
-              </template>
-            </Column>
-
-            <Column
-              field="laser"
-              header="Laser"
-              headerStyle="max-width: 4rem"
-              style="max-height: fit-content"
-            >
-              <template #body="{ data, field }">
-                {{ data[field] }}
-              </template>
-              <template #editor="{ index }">
-                <InputMask
-                  mask="9999"
-                  v-model="selectedFlight.units[index].laser"
-                />
-              </template>
-            </Column>
-
-            <Column headerStyle="width: 2rem" style="max-height: fit-content">
-              <template #header><i icon="pi pi-trash" /> ></template>
-              <template #body="{ index }"
-                ><Button
-                  :disabled="selectedFlight.units.length < 2"
-                  @click="deleteMember(index)"
-                  severity="danger"
-                  outlined
-                  icon="pi pi-trash"
-              /></template>
-            </Column>
-
-            <template #footer
-              ><Button
-                v-if="
-                  selectedFlight.units[0] && selectedFlight.units.length < 4
-                "
-                label="Add member to flight"
-                @click="addFlightMemeber"
-            /></template>
-          </DataTable></div
-      ></TabPanel>
-      <TabPanel header="Gameplan">
-        <TextArea
-          style="min-width: 600px; min-height: 200px; resize: none"
-          v-model="selectedFlight.gameplan"
-          :draggable="false"
-          rows="3"
-          class=""
+    <div
+      style="text-align: left; margin-top: 14px; width: 200px"
+      class="parent"
+      v-if="file && selectedFlight.isActive"
+    >
+      <div class="">
+        <Checkbox
+          v-if="selectedFlight"
+          label="Add custom Callsign"
+          id="customCheckbox"
+          v-model="isCustomCalsign"
+          :binary="true"
+          outlined
         />
-      </TabPanel>
-      <TabPanel header="COMMS Settings"></TabPanel>
-      <TabPanel header="MISC Settings">
-        <div class="griddy">
-          <Checkbox />
-          <a>Bingo</a>
-          <InputNumber />
-          <Checkbox />
-          <a>Enable Bullseye</a>
-          <InputNumber />
-          <Checkbox /> <a>CARA ALLOW</a> <InputNumber /> <Checkbox /><a>
-            MSL Floor</a
+        <label for="customCheckbox" class="">Use Custom Callsign</label>
+      </div>
+      <div class="">
+        <Checkbox
+          label="Add custom Callsign"
+          id="editDefautls"
+          v-model="useDefaults"
+          :binary="true"
+          outlined
+        />
+        <label class="" for="editDefautls">Use Defaults</label>
+      </div>
+    </div>
+  </div>
+
+  <TabView v-if="file && selectedFlight.isActive" style="margin-top: 10px">
+    <TabPanel header="Common Settings">
+      <div class="">
+        <p>Member in selected Flight</p>
+        <DataTable
+          :value="selectedFlight.units"
+          showGridlines
+          edit-mode="cell"
+          style="width: 800px"
+        >
+          <Column header="n°" headerStyle="width: 3rem"
+            ><template #body="{ index }">#{{ index + 1 }}</template></Column
           >
-          <InputNumber /> <Checkbox /> <a>Laser Settings</a>
-          <div />
-          <div />
-          <a>TGP Code</a>
-          <div style="display: flex">
-            <Dropdown /><Dropdown /><Dropdown /><Dropdown />
-          </div>
-          <div />
-          <a>LST Code</a>
-          <div style="display: flex">
-            <Dropdown /><Dropdown /><Dropdown /><Dropdown />
-          </div>
-          <div />
-          <a>Laser Start Time</a> <InputNumber /> <Checkbox /> <a>TACAN</a>
+          <Column
+            style="width: 8rem; max-width: 8rem"
+            header="Callsign"
+            field="callsign"
+          >
+            <template #body="{ data, field }">
+              {{ data[field] }}
+            </template>
+            <template #editor="{ data, field, index }">
+              <Dropdown
+                editable
+                @change="FlightMemberUpdate"
+                class="redefSize"
+                :options="_313ref"
+                v-model="selectedFlight.units[index].callsign"
+                autofocus
+              />
+            </template>
+          </Column>
+          <Column
+            header="Search"
+            style="width: 5rem; max-width: 5rem"
+            field="search"
+          >
+            <template #body="{ data, field }">
+              {{ data[field] }}
+            </template>
+            <template #editor="{ index }">
+              <Input v-model="selectedFlight.units[index].search" />
+            </template>
+          </Column>
 
-          <div style="display: flex; width: 50%">
-            <InputMask mask="9?9" style="width: 50%" /><Dropdown
-              style="width: 50%"
-              :options="['X', 'Y']"
-            />
-          </div>
+          <Column field="STN" header="STN" style="width: 5rem; max-width: 5rem">
+            <template #body="{ data, field }">
+              {{ data[field] }}
+            </template>
+            <template #editor="{ index }">
+              <InputMask
+                mask="9?99999"
+                :autoClear="false"
+                v-model="selectedFlight.units[index].STN"
+              />
+            </template>
+          </Column>
+          <Column
+            field="tailNr"
+            header="TailNr"
+            headerStyle="max-width: 4rem"
+            style="max-height: fit-content"
+          >
+            <template #body="{ data, field }">
+              {{ data[field] }}
+            </template>
+            <template #editor="{ index }">
+              <Input v-model="selectedFlight.units[index].tailNr" />
+            </template>
+          </Column>
+          <Column
+            field="L16"
+            header="L16"
+            headerStyle="max-width: 4rem"
+            style="max-height: fit-content"
+          />
+          <Column
+            field="tacan"
+            header="TACAN"
+            headerStyle="max-width: 4rem"
+            style="max-height: fit-content"
+          >
+            <template #editor="{ index }">
+              <InputMask
+                :disabled="index > 0 && useDefaults"
+                :mask="useDefaults ? '9?*a' : '99?*a'"
+                v-model="selectedFlight.units[index].tacan"
+                @complete="tacaninput"
+              />
+            </template>
+          </Column>
 
-          <Checkbox /> <a>ILS</a>
-          <div />
-          <div />
-          <a>Frequency</a> <InputNumber />
-          <div />
-          <a>Course</a>
-          <InputNumber />
+          <Column
+            field="laser"
+            header="Laser"
+            headerStyle="max-width: 4rem"
+            style="max-height: fit-content"
+          >
+            <template #body="{ data, field }">
+              {{ data[field] }}
+            </template>
+            <template #editor="{ index }">
+              <InputMask
+                mask="9999"
+                v-model="selectedFlight.units[index].laser"
+              />
+            </template>
+          </Column>
+
+          <Column headerStyle="width: 2rem" style="max-height: fit-content">
+            <template #header><i icon="pi pi-trash" /> ></template>
+            <template #body="{ index }"
+              ><Button
+                :disabled="selectedFlight.units.length < 2"
+                @click="deleteMember(index)"
+                severity="danger"
+                outlined
+                icon="pi pi-trash"
+            /></template>
+          </Column>
+
+          <template #footer
+            ><Button
+              v-if="selectedFlight.units[0] && selectedFlight.units.length < 4"
+              label="Add member to flight"
+              @click="addFlightMemeber"
+          /></template>
+        </DataTable></div
+    ></TabPanel>
+    <TabPanel header="Gameplan">
+      <TextArea
+        style="min-width: 600px; min-height: 200px; resize: none"
+        v-model="selectedFlight.gameplan"
+        :draggable="false"
+        rows="3"
+        class=""
+      />
+    </TabPanel>
+    <TabPanel header="COMMS Settings"></TabPanel>
+    <TabPanel header="MISC Settings">
+      <div class="miscSettings">
+        <Checkbox />
+        <a>Bingo</a>
+        <InputNumber />
+        <Checkbox />
+        <a>Enable Bullseye</a>
+        <InputNumber />
+        <Checkbox /> <a>CARA ALLOW</a> <InputNumber /> <Checkbox /><a>
+          MSL Floor</a
+        >
+        <InputNumber /> <Checkbox /> <a>Laser Settings</a>
+        <div />
+        <div />
+        <a>TGP Code</a>
+        <div style="display: flex">
+          <Dropdown /><Dropdown /><Dropdown /><Dropdown />
         </div>
-      </TabPanel>
-      <TabPanel header="HARM/HTS"> Work in Progress</TabPanel>
-    </TabView>
-    <div class="parent" v-if="file && selectedFlight.isActive">
-      <!--<div class="item">
+        <div />
+        <a>LST Code</a>
+        <div style="display: flex">
+          <Dropdown /><Dropdown /><Dropdown /><Dropdown />
+        </div>
+        <div />
+        <a>Laser Start Time</a> <InputNumber /> <Checkbox /> <a>TACAN</a>
+
+        <div style="display: flex; width: 50%">
+          <InputMask mask="9?9" style="width: 50%" /><Dropdown
+            style="width: 50%"
+            :options="['X', 'Y']"
+          />
+        </div>
+
+        <Checkbox /> <a>ILS</a>
+        <div />
+        <div />
+        <a>Frequency</a> <InputNumber />
+        <div />
+        <a>Course</a>
+        <InputNumber />
+      </div>
+    </TabPanel>
+    <TabPanel header="HARM/HTS"> Work in Progress</TabPanel>
+  </TabView>
+  <div class="parent" v-if="file && selectedFlight.isActive">
+    <!--<div class="item">
         <p>COMMS ASSIGNMENT</p>
 
         <CommsAssignment />
       </div>-->
-      <div class="freqs">
-        <div class="item5">
-          <p>DEPART</p>
-          <Dropdown
-            :options="airports"
-            class="dropdown"
-            severity="danger"
-            option-label="NAME"
-            v-model="selectedFlight.DEP"
-            @change="
-              (e) => {
-                assignAirport('DEP', e.value);
-              }
-            "
-            placeholder="select"
-          />
-          <Button
-            style="grid-row: 15"
-            v-if="selectedFlight.DEP.ICAO"
-            icon="pi pi-times-circle"
-            @click="deleteAirport('DEP')"
-            text
-          />
-        </div>
+    <div class="freqs">
+      <div class="item5">
+        <p>DEPART</p>
+        <Dropdown
+          :options="airports"
+          class="dropdown"
+          severity="danger"
+          option-label="NAME"
+          v-model="selectedFlight.DEP"
+          @change="
+            (e) => {
+              assignAirport('DEP', e.value);
+            }
+          "
+          placeholder="select"
+        />
+        <Button
+          style="grid-row: 15"
+          v-if="selectedFlight.DEP.ICAO"
+          icon="pi pi-times-circle"
+          @click="deleteAirport('DEP')"
+          text
+        />
+      </div>
 
-        <div class="item5">
-          <p>ARRIVE</p>
+      <div class="item5">
+        <p>ARRIVE</p>
+        <Dropdown
+          :options="airports"
+          severity="danger"
+          option-label="NAME"
+          v-model="selectedFlight.ARR"
+          @change="
+            (e) => {
+              assignAirport('ARR', e.value);
+            }
+          "
+          placeholder="select"
+        />
+        <Button
+          style="grid-row: 16"
+          v-if="selectedFlight.ARR.ICAO"
+          icon="pi pi-times-circle"
+          @click="deleteAirport('ARR')"
+          text
+        />
+      </div>
+      <div class="item5">
+        <p>ALTERNATE</p>
+        <Dropdown
+          :options="airports"
+          severity="danger"
+          option-label="NAME"
+          v-model="selectedFlight.ALT"
+          @change="
+            (e) => {
+              assignAirport('ALT', e.value);
+            }
+          "
+          placeholder="select"
+        />
+        <Button
+          style="grid-row: 17"
+          v-if="selectedFlight.ALT.ICAO"
+          icon="pi pi-times-circle"
+          @click="deleteAirport('ALT')"
+          text
+        />
+      </div>
+      <div class="parent">
+        <div class="item5 comm-box">
+          <p>CHECK-IN UHF</p>
           <Dropdown
-            :options="airports"
+            :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
             severity="danger"
-            option-label="NAME"
-            v-model="selectedFlight.ARR"
+            option-label="description"
+            :model-value="selectedFreqs.checkUHF"
             @change="
               (e) => {
-                assignAirport('ARR', e.value);
+                selectedFlight.comms.radio1[4] = {
+                  description: e.value.description,
+                  freq: e.value.freq,
+                  name: e.value.name,
+                  number: e.value.number ?? NaN,
+                };
               }
             "
             placeholder="select"
           />
           <Button
-            style="grid-row: 16"
-            v-if="selectedFlight.ARR.ICAO"
+            v-if="selectedFlight.comms.radio1[4].freq"
+            style="grid-row: 19; grid-column: 3"
             icon="pi pi-times-circle"
-            @click="deleteAirport('ARR')"
+            @click="clearComms(4, 'pri')"
             text
           />
         </div>
         <div class="item5">
-          <p>ALTERNATE</p>
+          <p>CHECK-IN VHF</p>
           <Dropdown
-            :options="airports"
+            :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
             severity="danger"
-            option-label="NAME"
-            v-model="selectedFlight.ALT"
+            v-model="selectedFreqs.checkVHF"
+            option-label="description"
             @change="
               (e) => {
-                assignAirport('ALT', e.value);
+                selectedFlight.comms.radio2[4] = {
+                  description: e.value.description,
+                  freq: e.value.freq,
+                  name: e.value.name,
+                  number: e.value.number ?? NaN,
+                };
               }
             "
             placeholder="select"
           />
           <Button
-            style="grid-row: 17"
-            v-if="selectedFlight.ALT.ICAO"
+            v-if="selectedFlight.comms.radio2[4].freq"
+            style="grid-row: 19"
             icon="pi pi-times-circle"
-            @click="deleteAirport('ALT')"
-            text
-          />
-        </div>
-        <div class="parent">
-          <div class="item5 comm-box">
-            <p>CHECK-IN UHF</p>
-            <Dropdown
-              :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
-              severity="danger"
-              option-label="description"
-              :model-value="selectedFreqs.checkUHF"
-              @change="
-                (e) => {
-                  selectedFlight.comms.radio1[4] = {
-                    description: e.value.description,
-                    freq: e.value.freq,
-                    name: e.value.name,
-                    number: e.value.number ?? NaN,
-                  };
-                }
-              "
-              placeholder="select"
-            />
-            <Button
-              v-if="selectedFlight.comms.radio1[4].freq"
-              style="grid-row: 19; grid-column: 3"
-              icon="pi pi-times-circle"
-              @click="clearComms(4, 'pri')"
-              text
-            />
-          </div>
-          <div class="item5">
-            <p>CHECK-IN VHF</p>
-            <Dropdown
-              :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
-              severity="danger"
-              v-model="selectedFreqs.checkVHF"
-              option-label="description"
-              @change="
-                (e) => {
-                  selectedFlight.comms.radio2[4] = {
-                    description: e.value.description,
-                    freq: e.value.freq,
-                    name: e.value.name,
-                    number: e.value.number ?? NaN,
-                  };
-                }
-              "
-              placeholder="select"
-            />
-            <Button
-              v-if="selectedFlight.comms.radio2[4].freq"
-              style="grid-row: 19"
-              icon="pi pi-times-circle"
-              @click="clearComms(4, 'sec')"
-              text
-            />
-          </div>
-        </div>
-        <div class="parent freq">
-          <div class="item5 comm-box">
-            <p>TACTICAL UHF</p>
-            <Dropdown
-              style="grid-row: 20; color: red"
-              :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
-              severity="danger"
-              v-model="selectedFreqs.tactUHF"
-              option-label="description"
-              @change="
-                (e) => {
-                  selectedFlight.comms.radio1[5] = {
-                    description: e.value.description,
-                    freq: e.value.freq,
-                    name: e.value.name,
-                    number: e.value.number ?? NaN,
-                  };
-                }
-              "
-              placeholder="select"
-            />
-            <Button
-              v-if="selectedFlight.comms.radio1[5].freq"
-              icon="pi pi-times-circle"
-              @click="clearComms(5, 'pri')"
-              text
-            />
-          </div>
-          <div class="item5">
-            <p>TACTICAL VHF</p>
-            <Dropdown
-              :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
-              severity="danger"
-              v-model="selectedFreqs.tactVHF"
-              option-label="description"
-              @change="
-                (e) => {
-                  selectedFlight.comms.radio2[5] = {
-                    description: e.value.description,
-                    freq: e.value.freq,
-                    name: e.value.name,
-                    number: e.value.number ?? NaN,
-                  };
-                }
-              "
-              placeholder="select"
-            />
-            <Button
-              v-if="selectedFlight.comms.radio2[5].freq"
-              style="grid-row: 20"
-              icon="pi pi-times-circle"
-              @click="clearComms(5, 'sec')"
-              text
-            />
-          </div>
-        </div>
-        <div class="item5">
-          <p>TANKER</p>
-          <Dropdown
-            style="grid-row: 22; color: red"
-            :options="
-              selectedPKG.agencies
-                .filter((ag) =>
-                  ['KC-135', 'KC135MPRS', 'KC130'].includes(ag.type)
-                )
-                .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
-            "
-            severity="danger"
-            v-model="tanker"
-            option-label="name"
-            @change="
-              (e) => {
-                tanker = e.value;
-              }
-            "
-            placeholder="select"
-          />
-          <Button
-            v-if="tanker"
-            style="grid-row: 22"
-            icon="pi pi-times-circle"
-            @click="
-              clearComms(12, parseFloat(tanker.freq) > 200 ? 'pri' : 'sec')
-            "
+            @click="clearComms(4, 'sec')"
             text
           />
         </div>
       </div>
-      <div class="parent item">
-        <div class="item">
-          <p>Radio 1</p>
-          <DataTable
-            showGridlines
-            edit-mode="cell"
-            :value="selectedFlight.comms.radio1"
-            style="width: 450px"
-          >
-            <Column
-              header="#"
-              headerStyle="width: 2rem"
-              style="width: fit-content; padding: 2px 5px 2px 5px"
-            >
-              <template #body="{ index }"> {{ index + 1 }}</template>
-            </Column>
-            <Column
-              header="Freq"
-              field="freq"
-              headerStyle="width: 2rem"
-              style="width: fit-content; padding: 2px 5px 2px 5px"
-            >
-              <template #body="{ data, index }"> {{ data?.freq }}</template>
-              <template #editor="{ data, index }">
-                <Input
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio1[index].freq"
-              /></template>
-            </Column>
-            <Column
-              header="Name"
-              field="name"
-              style="width: fit-content; padding: 2px 5px 2px 5px"
-            >
-              <template #body="{ data }"> {{ data?.name }}</template>
-              <template #editor="{ data, index }">
-                <Input v-model="selectedFlight.comms.radio1[index].name"
-              /></template>
-            </Column>
-
-            <Column
-              header="n°"
-              field="number"
-              style="padding: 2px 5px 2px 5px; max-width: 70px"
-            >
-              <template #body="{ data }"> {{ data?.number || null }}</template>
-              <template #editor="{ data, index }">
-                <InputNumber
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio1[index].number"
-                />
-              </template>
-            </Column>
-            <Column
-              header="Description"
-              field="description"
-              style="padding: 2px 5px 2px 5px"
-            >
-              <template #body="{ data }"> {{ data?.description }}</template>
-              <template #editor="{ data, index }">
-                <Input
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio1[index].description"
-              /></template>
-            </Column>
-            <Column style="padding: 2px 5px 2px 5px; width: 20px">
-              <template #body="{ index }"
-                ><Button
-                  text
-                  icon="pi pi-eraser"
-                  @click="clearComms(index, 'pri')"
-              /></template>
-            </Column>
-          </DataTable>
-
-          <toDTC class="item" />
-          <Button
-            class="item"
-            label="update Ladder"
-            @click="
-              updateLadder();
-              updateFligh();
+      <div class="parent freq">
+        <div class="item5 comm-box">
+          <p>TACTICAL UHF</p>
+          <Dropdown
+            style="grid-row: 20; color: red"
+            :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
+            severity="danger"
+            v-model="selectedFreqs.tactUHF"
+            option-label="description"
+            @change="
+              (e) => {
+                selectedFlight.comms.radio1[5] = {
+                  description: e.value.description,
+                  freq: e.value.freq,
+                  name: e.value.name,
+                  number: e.value.number ?? NaN,
+                };
+              }
             "
+            placeholder="select"
+          />
+          <Button
+            v-if="selectedFlight.comms.radio1[5].freq"
+            icon="pi pi-times-circle"
+            @click="clearComms(5, 'pri')"
+            text
           />
         </div>
-
-        <div class="item">
-          <p>Radio 2</p>
-          <DataTable
-            showGridlines
-            style="width: 450px"
-            edit-mode="cell"
-            :value="selectedFlight.comms.radio2"
-          >
-            <Column header="#" style="padding: 2px 5px 2px 5px">
-              <template #body="{ index }"> {{ index + 1 }}</template>
-            </Column>
-            <Column header="Freq" field="freq" style="padding: 2px 5px 2px 5px">
-              <template #body="{ data }"> {{ data?.freq }}</template>
-              <template #editor="{ data, index }">
-                <Input
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio2[index].freq"
-              /></template>
-            </Column>
-            <Column header="Name" field="name" style="padding: 2px 5px 2px 5px">
-              <template #body="{ data }"> {{ data?.name }}</template>
-              <template #editor="{ data, index }">
-                <Input
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio2[index].name"
-              /></template>
-            </Column>
-            <Column header="n°" field="number" style="padding: 2px 5px 2px 5px">
-              <template #body="{ data }"> {{ data?.number || null }}</template>
-              <template #editor="{ data, index }">
-                <InputNumber
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio2[index].number"
-                />
-              </template>
-            </Column>
-            <Column
-              header="Description"
-              field="description"
-              style="padding: 2px 5px 2px 5px"
-            >
-              <template #body="{ data }"> {{ data?.description }}</template>
-              <template #editor="{ data, index }">
-                <Input
-                  class="fixW"
-                  v-model="selectedFlight.comms.radio2[index].description"
-              /></template>
-            </Column>
-            <Column style="padding: 2px 5px 2px 5px; width: 20px">
-              <template #body="{ index }"
-                ><Button
-                  text
-                  icon="pi pi-eraser"
-                  @click="clearComms(index, 'sec')"
-              /></template>
-            </Column>
-          </DataTable>
+        <div class="item5">
+          <p>TACTICAL VHF</p>
+          <Dropdown
+            :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
+            severity="danger"
+            v-model="selectedFreqs.tactVHF"
+            option-label="description"
+            @change="
+              (e) => {
+                selectedFlight.comms.radio2[5] = {
+                  description: e.value.description,
+                  freq: e.value.freq,
+                  name: e.value.name,
+                  number: e.value.number ?? NaN,
+                };
+              }
+            "
+            placeholder="select"
+          />
+          <Button
+            v-if="selectedFlight.comms.radio2[5].freq"
+            style="grid-row: 20"
+            icon="pi pi-times-circle"
+            @click="clearComms(5, 'sec')"
+            text
+          />
         </div>
+      </div>
+      <div class="item5">
+        <p>TANKER</p>
+        <Dropdown
+          style="grid-row: 22; color: red"
+          :options="
+            selectedPKG.agencies
+              .filter((ag) =>
+                ['KC-135', 'KC135MPRS', 'KC130'].includes(ag.type)
+              )
+              .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+          "
+          severity="danger"
+          v-model="tanker"
+          option-label="name"
+          @change="
+            (e) => {
+              tanker = e.value;
+            }
+          "
+          placeholder="select"
+        />
+        <Button
+          v-if="tanker"
+          style="grid-row: 22"
+          icon="pi pi-times-circle"
+          @click="clearComms(12, parseFloat(tanker.freq) > 200 ? 'pri' : 'sec')"
+          text
+        />
+      </div>
+    </div>
+    <div class="parent item">
+      <div class="item">
+        <p>Radio 1</p>
+        <DataTable
+          showGridlines
+          edit-mode="cell"
+          :value="selectedFlight.comms.radio1"
+          style="width: 450px"
+        >
+          <Column
+            header="#"
+            headerStyle="width: 2rem"
+            style="width: fit-content; padding: 2px 5px 2px 5px"
+          >
+            <template #body="{ index }"> {{ index + 1 }}</template>
+          </Column>
+          <Column
+            header="Freq"
+            field="freq"
+            headerStyle="width: 2rem"
+            style="width: fit-content; padding: 2px 5px 2px 5px"
+          >
+            <template #body="{ data, index }"> {{ data?.freq }}</template>
+            <template #editor="{ data, index }">
+              <Input
+                class="fixW"
+                v-model="selectedFlight.comms.radio1[index].freq"
+            /></template>
+          </Column>
+          <Column
+            header="Name"
+            field="name"
+            style="width: fit-content; padding: 2px 5px 2px 5px"
+          >
+            <template #body="{ data }"> {{ data?.name }}</template>
+            <template #editor="{ data, index }">
+              <Input v-model="selectedFlight.comms.radio1[index].name"
+            /></template>
+          </Column>
+
+          <Column
+            header="n°"
+            field="number"
+            style="padding: 2px 5px 2px 5px; max-width: 70px"
+          >
+            <template #body="{ data }"> {{ data?.number || null }}</template>
+            <template #editor="{ data, index }">
+              <InputNumber
+                class="fixW"
+                v-model="selectedFlight.comms.radio1[index].number"
+              />
+            </template>
+          </Column>
+          <Column
+            header="Description"
+            field="description"
+            style="padding: 2px 5px 2px 5px"
+          >
+            <template #body="{ data }"> {{ data?.description }}</template>
+            <template #editor="{ data, index }">
+              <Input
+                class="fixW"
+                v-model="selectedFlight.comms.radio1[index].description"
+            /></template>
+          </Column>
+          <Column style="padding: 2px 5px 2px 5px; width: 20px">
+            <template #body="{ index }"
+              ><Button
+                text
+                icon="pi pi-eraser"
+                @click="clearComms(index, 'pri')"
+            /></template>
+          </Column>
+        </DataTable>
+
+        <toDTC class="item" />
+        <Button
+          class="item"
+          label="update Ladder"
+          @click="
+            updateLadder();
+            updateFligh();
+          "
+        />
+      </div>
+
+      <div class="item">
+        <p>Radio 2</p>
+        <DataTable
+          showGridlines
+          style="width: 450px"
+          edit-mode="cell"
+          :value="selectedFlight.comms.radio2"
+        >
+          <Column header="#" style="padding: 2px 5px 2px 5px">
+            <template #body="{ index }"> {{ index + 1 }}</template>
+          </Column>
+          <Column header="Freq" field="freq" style="padding: 2px 5px 2px 5px">
+            <template #body="{ data }"> {{ data?.freq }}</template>
+            <template #editor="{ data, index }">
+              <Input
+                class="fixW"
+                v-model="selectedFlight.comms.radio2[index].freq"
+            /></template>
+          </Column>
+          <Column header="Name" field="name" style="padding: 2px 5px 2px 5px">
+            <template #body="{ data }"> {{ data?.name }}</template>
+            <template #editor="{ data, index }">
+              <Input
+                class="fixW"
+                v-model="selectedFlight.comms.radio2[index].name"
+            /></template>
+          </Column>
+          <Column header="n°" field="number" style="padding: 2px 5px 2px 5px">
+            <template #body="{ data }"> {{ data?.number || null }}</template>
+            <template #editor="{ data, index }">
+              <InputNumber
+                class="fixW"
+                v-model="selectedFlight.comms.radio2[index].number"
+              />
+            </template>
+          </Column>
+          <Column
+            header="Description"
+            field="description"
+            style="padding: 2px 5px 2px 5px"
+          >
+            <template #body="{ data }"> {{ data?.description }}</template>
+            <template #editor="{ data, index }">
+              <Input
+                class="fixW"
+                v-model="selectedFlight.comms.radio2[index].description"
+            /></template>
+          </Column>
+          <Column style="padding: 2px 5px 2px 5px; width: 20px">
+            <template #body="{ index }"
+              ><Button
+                text
+                icon="pi pi-eraser"
+                @click="clearComms(index, 'sec')"
+            /></template>
+          </Column>
+        </DataTable>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-* {
-  font-size: 14px;
-}
-
 .parent {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  /* Align items horizontally at the start */
-}
 
-.main {
-  max-width: 2000px;
+  padding: 0 0;
+  margin: 0 0;
 }
 
 .fixW {
@@ -969,9 +957,9 @@ const groupedFlights = computed(() =>
   width: 100%;
 }
 
-.griddy {
+.miscSettings {
   display: grid;
-  grid-template-columns: 100px 100px 300px;
+  grid-template-columns: 100px 140px 300px;
   grid-template-rows: repeat(12, 24px);
   grid-column-gap: 1px;
   grid-row-gap: 4px;

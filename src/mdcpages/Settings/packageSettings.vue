@@ -1,8 +1,9 @@
 <template>
-  <div class="parent" v-if="file">
-    <div style="min-width: 100%" class="parent">
-      <div class="item" style="padding-right: 15px">
-        <p class="">Selected Package</p>
+  <div class="settings-parent" v-if="file">
+    <div class="container">
+      <div class="box" style="max-width: 250px">
+        <p class="" v-if="selectedPKG.name">Selected Package</p>
+        <p class="" v-else>Please select a package to edit first</p>
         <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
@@ -14,11 +15,11 @@
           class=""
         />
       </div>
-      <div style="padding-right: 15px">
+      <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p class="">Package Name</p>
         <Input style="height: 31px" v-model="selectedPKG.name"></Input>
       </div>
-      <div>
+      <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p>RAMROD (selected)</p>
         <Dropdown
           style="grid-row: 2 / span 1; grid-column: 4 / span 2"
@@ -30,8 +31,8 @@
       </div>
     </div>
 
-    <div class="container">
-      <div class="box">
+    <div class="container" v-if="selectedPKG.name">
+      <div class="box" style="max-width: 1100px">
         <p
           style="grid-row: 4 / span 1; grid-column: 1 / span 2"
           class="textbox-label"
@@ -40,16 +41,11 @@
         </p>
 
         <DataTable
-          class="content-box"
           :value="allFlightsFromPackage"
           showGridlines
           edit-mode="cell"
           @rowReorder="onRowReorder"
-          style="
-            grid-row: 5 / span 10;
-            grid-column: 1 / span 7;
-            min-height: 20px;
-          "
+          style="min-height: 20px; max-width: 1100px"
         >
           <Column
             rowReorder
@@ -106,12 +102,12 @@
         </DataTable>
       </div>
       <div class="box">
-        <label for="situation" class="textbox-label">Situation</label>
+        <p>Situation</p>
 
         <TextArea
           id="situation"
           class="content"
-          style="min-width: 800px; min-height: 180px"
+          style="min-width: 800px; min-height: 250px; max-width: 1100px"
           v-model="selectedPKG.situation"
           :draggable="false"
           rows="5"
@@ -119,36 +115,73 @@
       </div>
     </div>
 
-    <div class="parent" style="width: 99%">
-      <div>
-        <p style="min-width: 500px" class="">Aerial Threats Briefing</p>
+    <div class="container">
+      <div class="box">
+        <p>Aerial Threats Briefing</p>
 
         <TextArea
-          style="min-width: 800px; min-height: 120px"
+          style="min-width: 800px; max-width: 1100px; min-height: 120px"
           v-model="selectedPKG.airThreat"
           :draggable="false"
           rows="3"
-          class=""
+          class="content"
         />
       </div>
-      <div>
-        <p style="min-width: 500px" class="">Surface Threats Briefing</p>
+      <div class="box">
+        <p>Surface Threats Briefing</p>
 
         <TextArea
-          style="min-width: 800px; min-height: 120px"
+          style="min-width: 800px; max-width: 1100px; min-height: 120px"
           v-model="selectedPKG.surfaceThreat"
           :draggable="false"
           rows="3"
-          class=""
+          class="content"
         />
       </div>
     </div>
+  </div>
+  <div class="container">
+    <div v-if="selectedPKG.name" class="box">
+      <p>Agencies</p>
+      <!--     
+    name: string;
+    freq: string;
+    type: string;
+    activity: string;
+    tacan: string;
+    lat: string;
+    lon: string;
+    alt: string;
+    active: boolean;-->
+      <DataTable
+        :value="selectedPKG.agencies"
+        editMode="cell"
+        showGridlines
+        @cell-edit-complete="onCellEditComplete"
+        style="max-width: 1100px"
+      >
+        <Column header="Add" #body="{ data }" style="width: 5%">
+          <Checkbox binary v-model="data.active"></Checkbox
+        ></Column>
 
-    <div>
-      Threat Classes
+        <Column header="Name" field="name" />
+        <Column header="Freq" field="freq" />
+        <Column header="Type" field="type" />
+        <!--Column header="activity" field="activity" />-->
+        <Column header="TACAN" field="tacan" />
+        <Column header="Location"
+          ><template #body="{ data }"
+            >{{ toLatString(data.lat) }} /
+            {{ toLongString(data.lon) }}</template
+          ></Column
+        >
+      </DataTable>
+    </div>
+    <div v-if="selectedPKG.name" class="box">
+      <p>Threat Classes</p>
       <DataTable
         :value="threats"
-        style="min-width: 700px"
+        style="min-width: 600px"
         editMode="cell"
         @cell-edit-complete="onCellEditComplete"
         showGridlines
@@ -195,73 +228,38 @@
           /></template>
         </Column>
       </DataTable>
-    </div>
-    <div>
-      Codewords
-      <DataTable
-        :value="selectedPKG.codewords"
-        editMode="cell"
-        showGridlines
-        @cell-edit-complete="onCellEditComplete"
-        style="width: 900px"
-      >
-        <Column header="Name" field="name" style="width: 25%"
-          ><template #body="{ data }">{{ data.name }}</template>
-          <template #editor="{ data, field }"
-            ><Input v-model="data[field]" /></template
-        ></Column>
-        <!--<Column header="Criteria" field="criteria" style="width: 25%"
+
+      <div class="box">
+        <p>Codewords</p>
+        <DataTable
+          :value="selectedPKG.codewords"
+          editMode="cell"
+          showGridlines
+          @cell-edit-complete="onCellEditComplete"
+          style="width: 900px"
+        >
+          <Column header="Name" field="name" style="width: 25%"
+            ><template #body="{ data }">{{ data.name }}</template>
+            <template #editor="{ data, field }"
+              ><Input v-model="data[field]" /></template
+          ></Column>
+          <!--<Column header="Criteria" field="criteria" style="width: 25%"
           ><template #body="{ data }">{{ data.criteria }}</template
           ><template #editor="{ data, field }"
             ><Input v-model="data[field]" /></template
         ></Column>-->
-        <!--<Column header="Authority" field="authority" style="width: 25%"
+          <!--<Column header="Authority" field="authority" style="width: 25%"
           ><template #body="{ data }">{{ data.authority }}</template
           ><template #editor="{ data, field }"
             ><Input v-model="data[field]" /></template
         ></Column>-->
-        <Column header="Action" field="action" style="width: 25%"
-          ><template #body="{ data }">{{ data.action }}</template
-          ><template #editor="{ data, field }"
-            ><Input v-model="data[field]" /></template
-        ></Column>
-      </DataTable>
-    </div>
-    <div>
-      Agencies
-      <!--     
-    name: string;
-    freq: string;
-    type: string;
-    activity: string;
-    tacan: string;
-    lat: string;
-    lon: string;
-    alt: string;
-    active: boolean;-->
-      <DataTable
-        :value="selectedPKG.agencies"
-        editMode="cell"
-        showGridlines
-        @cell-edit-complete="onCellEditComplete"
-        style="width: 1100px"
-      >
-        <Column header="Add" #body="{ data }" style="width: 5%">
-          <Checkbox binary v-model="data.active"></Checkbox
-        ></Column>
-
-        <Column header="Name" field="name" />
-        <Column header="Freq" field="freq" />
-        <Column header="Type" field="type" />
-        <!--Column header="activity" field="activity" />-->
-        <Column header="TACAN" field="tacan" />
-        <Column header="Location"
-          ><template #body="{ data }"
-            >{{ toLatString(data.lat) }} /
-            {{ toLongString(data.lon) }}</template
-          ></Column
-        >
-      </DataTable>
+          <Column header="Action" field="action" style="width: 25%"
+            ><template #body="{ data }">{{ data.action }}</template
+            ><template #editor="{ data, field }"
+              ><Input v-model="data[field]" /></template
+          ></Column>
+        </DataTable>
+      </div>
     </div>
   </div>
 </template>
@@ -321,20 +319,6 @@ const onCellEditComplete = (event: any) => {
 const { file } = storeToRefs(useGlobalStore());
 </script>
 <style scoped>
-* {
-  padding: 0 0;
-  margin: 0 0;
-}
-.parent {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.parent > div {
-  padding-right: 15px;
-  padding-bottom: 5px;
-}
-
 td > .p-button {
   font-size: 14px;
 }
@@ -342,6 +326,8 @@ td > .p-button {
 .container {
   display: flex;
   gap: 20px;
+  padding-right: 5%;
+  flex-wrap: wrap;
 }
 
 .box {

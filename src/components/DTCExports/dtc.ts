@@ -10,6 +10,7 @@ import type {
   Radios,
   Waypoints,
 } from "../../types/dtcTypes";
+import { bullseyes } from "@/config/bullseye";
 
 export const useDTCexports = () => {
   const { selectedFlight } = storeToRefs(useFlightStore());
@@ -106,7 +107,7 @@ export const useDTCexports = () => {
     return Radios;
   }
 
-  const getWaypoints = (mode: "waypoints" | "dmpi" | "all") => {
+  const getWaypoints = (mode: "waypoints" | "bullseye" | "dmpi" | "all") => {
     const wpts: Waypoints = { Waypoints: new Array<Waypoint>() }; //Weirdly nested per spec
 
     if (mode === "all" || mode === "waypoints")
@@ -134,7 +135,9 @@ export const useDTCexports = () => {
         );
 
     if (mode === "all" || mode === "dmpi")
-      selectedFlight.value.dmpis.forEach((dmpi, i) =>
+      selectedFlight.value.dmpis.forEach((dmpi, i) => {
+        console.log(toLatString(dmpi.latitude));
+
         wpts.Waypoints.push({
           Elevation: dmpi.altitude,
           Latitude: toLatString(dmpi.latitude),
@@ -152,8 +155,33 @@ export const useDTCexports = () => {
           VIPtoPUP: null,
           VIPtoTGT: null,
           TimeOverSteerpoint: null,
-        })
-      );
+        });
+      });
+
+    if (mode === "all" || mode === "bullseye")
+      bullseyes.forEach((bullzeye, i) => {
+        const lat = bullzeye.location.substring(0, 12);
+        const lon = bullzeye.location.substring(16, 30);
+
+        wpts.Waypoints.push({
+          Elevation: 0,
+          Latitude: lat,
+          Longitude: lon,
+          Name: bullzeye.name,
+          OffsetAimpoint1: null,
+          OffsetAimpoint2: null,
+          Sequence: i + 97,
+          Target: false,
+          UseOA: false,
+          TGTtoPUP: null,
+          TGTtoVRP: null,
+          UseVIP: false,
+          UseVRP: false,
+          VIPtoPUP: null,
+          VIPtoTGT: null,
+          TimeOverSteerpoint: null,
+        });
+      });
     return wpts;
   };
 

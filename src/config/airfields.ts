@@ -50,6 +50,32 @@ export const airports: {
     TOWER: { vhf: "128.525", uhf: "" },
     COURSE: ["039", "216"],
   },
+  {
+    NAME: "BEIRUT",
+    ICAO: "OLBA",
+    APPR: { vhf: "120.300", uhf: "" },
+    ATIS: { vhf: "120.650", uhf: "" },
+    ELEV: "",
+    GROUND: { vhf: "121.925", uhf: "" },
+    ILS: ["108.90", ""],
+    LEN: "",
+    TACAN: "74X",
+    TOWER: { vhf: "118.900", uhf: "" },
+    COURSE: ["039", "216"],
+  },
+  {
+    NAME: "GAZIPASA",
+    ICAO: "LTFG",
+    APPR: { vhf: "119.025", uhf: "" },
+    ATIS: { vhf: "120.950", uhf: "" },
+    ELEV: "90ft",
+    GROUND: { vhf: "121.800", uhf: "" },
+    ILS: ["", ""],
+    LEN: "2350",
+    TACAN: "89X",
+    TOWER: { vhf: "119.250", uhf: "" },
+    COURSE: ["039", "216"],
+  },
 ];
 
 export const airfieldEmpty = {
