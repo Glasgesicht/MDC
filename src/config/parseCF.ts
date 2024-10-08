@@ -15,9 +15,7 @@ import { flights } from "./flights";
 import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
-import { clone, cloneDeep } from "lodash";
 import { DateTime } from "luxon";
-import { toRaw } from "vue";
 
 export function processCF(
   payload:
@@ -112,14 +110,14 @@ export function processCF(
                     parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? "0")
                   ) ?? "",
               },
-              packageTask: "Eat Burger",
+              packageTask: "",
               roe: "Don't Shoot Friendlies",
               ramrod: res.Mission.BlueRAMROD[0],
               situation: res.Mission.Situation[0].replaceAll(
                 "&#x13&#x10;",
                 "\n"
               ),
-              surfaceThreat: "AAA",
+              surfaceThreat: "",
               metar: "",
               name: curr.Name ? curr.Name[0] : "Name Missing", //
               flights: makeFlight(res.Mission.Routes[0].Route, curr),
@@ -295,7 +293,7 @@ export function processCF(
       LEN: "",
     };
 
-    return cloneDeep(ap);
+    return structuredClone(ap);
   }
 
   function getWaypointIndex(mCurr: RouteEntity, type: string): number {
