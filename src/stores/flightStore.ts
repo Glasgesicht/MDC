@@ -3,7 +3,6 @@ import { usePackageStore } from "../stores/packageStore";
 import { computed, ref, toRaw, watch, type Ref } from "vue";
 import { F15Flights, F16Flights, flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
-import { cloneDeep } from "lodash";
 import { getSTN } from "@/utils/utilFunctions";
 
 export const useFlightStore = defineStore("flight", () => {
@@ -43,12 +42,12 @@ export const useFlightStore = defineStore("flight", () => {
           number?: number;
           description: string;
         }
-      >{
-        freq: "",
-        name: "",
-        number: NaN,
-        description: "",
-      },
+        >{
+          freq: "",
+          name: "",
+          number: NaN,
+          description: "",
+        },
       sec: <
         {
           freq: string;
@@ -56,12 +55,12 @@ export const useFlightStore = defineStore("flight", () => {
           number?: number;
           description: string;
         }
-      >{
-        freq: "",
-        name: "",
-        number: NaN,
-        description: "",
-      },
+        >{
+          freq: "",
+          name: "",
+          number: NaN,
+          description: "",
+        },
     },
     gameplan: "",
     MSNumber: "",
@@ -136,7 +135,7 @@ export const useFlightStore = defineStore("flight", () => {
   const selectedFlight: Ref<typeof initState> = ref(structuredClone(initState));
 
   function reset() {
-    selectedFlight.value = cloneDeep(initState);
+    selectedFlight.value = structuredClone(initState);
   }
 
   const useDefaults = ref(true);

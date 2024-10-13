@@ -68,8 +68,4 @@ export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
       callsign: "Hamyak",
       tailnr: "4047",
     },
-    {
-      callsign: "Wacky",
-      tailnr: "4048",
-    },
   ];

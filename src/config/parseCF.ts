@@ -15,7 +15,6 @@ import { flights } from "./flights";
 import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
-import { clone, cloneDeep } from "lodash";
 import { DateTime } from "luxon";
 import { toRaw } from "vue";
 import type { theatre } from "@/types/theatre";
@@ -142,7 +141,7 @@ export function processCF(
                   };
                 }),
               ],
-              packageTask: "Eat Burger",
+              packageTask: "",
               roe: "Don't Shoot Friendlies",
               ramrod: res.Mission.BlueRAMROD[0],
               situation: res.Mission.Situation[0].replaceAll(
@@ -329,7 +328,7 @@ export function processCF(
       LEN: "",
     };
 
-    return cloneDeep(ap);
+    return structuredClone(ap);
   }
 
   function getWaypointIndex(mCurr: RouteEntity, type: string): number {
