@@ -119,7 +119,8 @@ export function processCF(
               selectedBullseye: 0,
               bullseyes: [
                 {
-                  wp: 24,
+                  wp: 25,
+                  note: "",
                   name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
                   lat:
                     toLatString(
@@ -138,6 +139,7 @@ export function processCF(
                     name: val.name,
                     lat: lat,
                     long: lon,
+                    note: val.note,
                   };
                 }),
               ],

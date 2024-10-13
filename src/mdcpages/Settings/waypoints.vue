@@ -147,19 +147,25 @@
       >
     </h3>
 
-    <DataTable :value="bullseyes">
+    <DataTable
+      :value="bullseyes"
+      edit-mode="cell"
+      show-gridlines
+      style="max-width: 1000px"
+    >
       <Column header="Select" style="width: 3rem">
         <template #body="{}">
           <Checkbox />
         </template>
       </Column>
-      <Column header="STP #" style="width: 5rem"
-        ><template #body="{ data }">{{ data.wp + 1 }}</template></Column
-      >
+      <Column header="STP #" style="width: 5rem" field="wp"></Column>
       <Column header="Name" field="name"></Column>
       <Column header="Latitude" field="lat"></Column>
       <Column header="Longitde" field="long"></Column>
-      <Column header="" field="long"> <template></template></Column>
+      <Column header="Note" field="note">
+        <template #editor="{ index }">
+          <Input v-model:model-value="bullseyes[index].note" /> </template
+      ></Column>
       <Column>
         <template #body="{ index }"
           ><Button
@@ -169,15 +175,22 @@
             icon="pi pi-trash"
         /></template>
       </Column>
+      <template #footer>
+        <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
+        <SteerpointsToDTC
+          class="item"
+          mode="waypoints"
+          label="waypoints to DTC"
+        />
+        <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" />
+        <Button
+          class="item"
+          label="Copy DMPI to other flights"
+          @click="showDia = !showDia"
+        />
+      </template>
     </DataTable>
-    <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
-    <SteerpointsToDTC class="item" mode="waypoints" label="waypoints to DTC" />
-    <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" />
-    <Button
-      class="item"
-      label="Copy DMPI to other flights"
-      @click="showDia = !showDia"
-    />
+
     <Dialog v-model:visible="showDia">
       <template #header>
         <a style="font-weight: bold">Copy DMPI to Flights</a>

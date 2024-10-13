@@ -53,6 +53,7 @@ export type Package = {
     name: string;
     lat: string; // Make them String to have them editable, convert to String on Import.
     long: string;
+    note: string;
   }[];
   selectedBullseye: Number;
   /** Flights in Package */

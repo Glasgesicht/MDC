@@ -150,7 +150,7 @@ const showROE = inject("showROE");
     <div class="c9 g">LAT / LONG</div>
     <div class="c4 g">ACTIVITY</div>
 
-    <div class="c36 parent" v-for="index in new Array(25).keys()">
+    <div class="c36 parent" v-for="index in new Array(24).keys()">
       <div class="c2 g">{{ index + 1 }}</div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
         {{
@@ -268,7 +268,7 @@ const showROE = inject("showROE");
     <div class="c3 g">ELEV</div>
     <div class="c14 g">NOTES</div>
 
-    <div class="c36 parent" v-for="index in new Array(19).keys()">
+    <div class="c36 parent" v-for="index in new Array(16).keys()">
       <div class="c2 g">{{ index + 81 }}</div>
       <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'}`">
         {{ index + 81 < 97 ? selectedFlight.dmpis[index]?.type : "BULLS" }}
@@ -295,6 +295,21 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c14 noborder ${index % 2 ? 'hg' : 'w'}`">
         {{ selectedFlight.dmpis[index]?.note }}
+      </div>
+    </div>
+    <div class="c36 parent" v-for="index in new Array(3).keys()">
+      <div class="c2 g">{{ selectedPKG.bullseyes[index].wp }}</div>
+      <div class="c3 g">BULLS</div>
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedPKG.bullseyes[index].name }}
+      </div>
+      <div :class="`c9 hr`">
+        {{ selectedPKG.bullseyes[index].lat }} /
+        {{ selectedPKG.bullseyes[index].long }}
+      </div>
+      <div class="c3 hg"></div>
+      <div :class="`c14 noborder ${index % 2 ? 'hg' : 'w'}`">
+        {{ selectedPKG.bullseyes[index].note }}
       </div>
     </div>
 
