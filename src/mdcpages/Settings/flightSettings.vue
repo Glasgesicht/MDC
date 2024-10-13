@@ -598,7 +598,6 @@ const groupedFlights = computed(() =>
           placeholder="select"
         />
         <Button
-          style="grid-row: 16"
           v-if="selectedFlight.ARR.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('ARR')"
@@ -620,7 +619,6 @@ const groupedFlights = computed(() =>
           placeholder="select"
         />
         <Button
-          style="grid-row: 17"
           v-if="selectedFlight.ALT.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('ALT')"
@@ -649,7 +647,6 @@ const groupedFlights = computed(() =>
           />
           <Button
             v-if="selectedFlight.comms.radio1[4].freq"
-            style="grid-row: 19; grid-column: 3"
             icon="pi pi-times-circle"
             @click="clearComms(4, 'pri')"
             text
@@ -676,7 +673,6 @@ const groupedFlights = computed(() =>
           />
           <Button
             v-if="selectedFlight.comms.radio2[4].freq"
-            style="grid-row: 19"
             icon="pi pi-times-circle"
             @click="clearComms(4, 'sec')"
             text
@@ -687,7 +683,6 @@ const groupedFlights = computed(() =>
         <div class="item5 comm-box">
           <p>TACTICAL UHF</p>
           <Dropdown
-            style="grid-row: 20; color: red"
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
             severity="danger"
             v-model="selectedFreqs.tactUHF"
@@ -732,7 +727,6 @@ const groupedFlights = computed(() =>
           />
           <Button
             v-if="selectedFlight.comms.radio2[5].freq"
-            style="grid-row: 20"
             icon="pi pi-times-circle"
             @click="clearComms(5, 'sec')"
             text
@@ -742,7 +736,6 @@ const groupedFlights = computed(() =>
       <div class="item5">
         <p>TANKER</p>
         <Dropdown
-          style="grid-row: 22; color: red"
           :options="
             selectedPKG.agencies
               .filter((ag) =>
@@ -762,13 +755,24 @@ const groupedFlights = computed(() =>
         />
         <Button
           v-if="tanker"
-          style="grid-row: 22"
           icon="pi pi-times-circle"
           @click="clearComms(12, parseFloat(tanker.freq) > 200 ? 'pri' : 'sec')"
           text
         />
       </div>
+      <div class="parent freq">
+        <div class="item5 comm-box">
+          <Button style="width: 175px" label="Copy to other Flights" />
+        </div>
+        <div class="item5">
+          <Button style="width: 175px" label="Copy to all Flights" />
+        </div>
+      </div>
+      <div class="item5">
+        <Button style="width: 175px" label="Copy to other Flights" />
+      </div>
     </div>
+
     <div class="parent item">
       <div class="item">
         <p>Radio 1</p>

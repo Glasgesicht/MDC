@@ -48,11 +48,13 @@ export type Flight = typeof flight;
 export type Package = {
   /** Name of Package */
   name: string;
-  bullseye: {
+  bullseyes: {
+    wp: number;
     name: string;
     lat: string; // Make them String to have them editable, convert to String on Import.
     long: string;
-  };
+  }[];
+  selectedBullseye: Number;
   /** Flights in Package */
   flights: Flight[];
 

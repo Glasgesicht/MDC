@@ -85,6 +85,8 @@ const AAR = selectedFlight?.value.waypoints
     return { time: n.tot, activity: n.activity };
   });
 
+const agencies = selectedPKG.value.agencies;
+
 const showROE = inject("showROE");
 
 const array_name = [{}];

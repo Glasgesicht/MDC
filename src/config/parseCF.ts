@@ -18,6 +18,8 @@ import { airports } from "./airfields";
 import { clone, cloneDeep } from "lodash";
 import { DateTime } from "luxon";
 import { toRaw } from "vue";
+import type { theatre } from "@/types/theatre";
+import { bullseyes } from "./bullseye";
 
 export function processCF(
   payload:
@@ -82,7 +84,21 @@ export function processCF(
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
         console.dir(res); // Data as Object
-        theater.value = res.Mission.Theater[0];
+        theater.value = (() => {
+          if (res.Mission.Theater[0].toLowerCase().includes("caucasus"))
+            return "Caucasus";
+          if (res.Mission.Theater[0].toLowerCase().includes("syria"))
+            return "Syria";
+          if (res.Mission.Theater[0].toLowerCase().includes("kola"))
+            return "Kola";
+          if (res.Mission.Theater[0].toLowerCase().includes("nevada"))
+            return "Nevada";
+          if (res.Mission.Theater[0].toLowerCase().includes("sinai"))
+            return "Sinai";
+          if (res.Mission.Theater[0].toLowerCase().includes("gulf"))
+            return "PG";
+          return "Caucasus";
+        })();
 
         const _packages: Package[] = res.Mission.Package?.reduce(
           (coll: Package[], curr: PackageEntity) => {
@@ -100,18 +116,32 @@ export function processCF(
                 }
               ),
               agencies: makeAgencies(res.Mission.Routes[0].Route),
-              airThreat: "NONE",
-              bullseye: {
-                name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
-                lat:
-                  toLatString(
-                    parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? "0")
-                  ) ?? "",
-                long:
-                  toLongString(
-                    parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? "0")
-                  ) ?? "",
-              },
+              airThreat: "",
+              selectedBullseye: 0,
+              bullseyes: [
+                {
+                  wp: 24,
+                  name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
+                  lat:
+                    toLatString(
+                      parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? "0")
+                    ) ?? "",
+                  long:
+                    toLongString(
+                      parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? "0")
+                    ) ?? "",
+                },
+                ...bullseyes[theater.value].map((val, i) => {
+                  const lat = val.location.substring(0, 12);
+                  const lon = val.location.substring(16, 30);
+                  return {
+                    wp: i + 97,
+                    name: val.name,
+                    lat: lat,
+                    long: lon,
+                  };
+                }),
+              ],
               packageTask: "Eat Burger",
               roe: "Don't Shoot Friendlies",
               ramrod: res.Mission.BlueRAMROD[0],
@@ -119,7 +149,7 @@ export function processCF(
                 "&#x13&#x10;",
                 "\n"
               ),
-              surfaceThreat: "AAA",
+              surfaceThreat: "",
               metar: "",
               name: curr.Name ? curr.Name[0] : "Name Missing", //
               flights: makeFlight(res.Mission.Routes[0].Route, curr),
@@ -135,6 +165,7 @@ export function processCF(
         useFlightStore().reset();
         packages.value = _packages;
         //console.log(toRaw(agencies.value));
+        console.log(_packages);
       })
       .catch((error) => console.error("Error parsing XML:", error));
   }
@@ -490,7 +521,7 @@ export function processCF(
         name: "",
       };
     }
-    radio1[14] = {
+    radio1[13] = {
       freq: "243.00",
       description: "GUARD",
       name: "",

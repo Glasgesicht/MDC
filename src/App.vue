@@ -30,6 +30,7 @@ const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
   usePackageStore()
 );
 const { selectedFlight } = storeToRefs(useFlightStore());
+const { theater } = storeToRefs(useGlobalStore());
 
 provide("showROE", showROE);
 
@@ -235,6 +236,7 @@ const makejpg = async () => {
       </Dropdown>
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
+      {{ theater }}
       <GeneralSettings v-if="pageActive === 'setting1'" name="mdcpage" />
       <PackageSettings v-if="pageActive === 'setting2'" name="mdcpage" />
       <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />

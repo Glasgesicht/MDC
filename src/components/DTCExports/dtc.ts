@@ -11,10 +11,13 @@ import type {
   Waypoints,
 } from "../../types/dtcTypes";
 import { bullseyes } from "@/config/bullseye";
+import type { theatre } from "@/types/theatre";
+import { useGlobalStore } from "@/stores/theatreStore";
 
 export const useDTCexports = () => {
   const { selectedFlight } = storeToRefs(useFlightStore());
   const { selectedPKG } = storeToRefs(usePackageStore());
+  const { theater } = storeToRefs(useGlobalStore());
 
   /** Util Functions */
   function getType() {
@@ -159,18 +162,15 @@ export const useDTCexports = () => {
       });
 
     if (mode === "all" || mode === "bullseye")
-      bullseyes.forEach((bullzeye, i) => {
-        const lat = bullzeye.location.substring(0, 12);
-        const lon = bullzeye.location.substring(16, 30);
-
+      selectedPKG.value.bullseyes.forEach((bullzeye) => {
         wpts.Waypoints.push({
           Elevation: 0,
-          Latitude: lat,
-          Longitude: lon,
+          Latitude: bullzeye.lat,
+          Longitude: bullzeye.long,
           Name: bullzeye.name,
           OffsetAimpoint1: null,
           OffsetAimpoint2: null,
-          Sequence: i + 97,
+          Sequence: bullzeye.wp,
           Target: false,
           UseOA: false,
           TGTtoPUP: null,

@@ -5,10 +5,9 @@ import { usePackageStore } from "../stores/packageStore";
 
 import { calculateHeading, calculateDistance } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
-import { bullseyes } from "@/config/bullseye";
 
 const { selectedFlight } = storeToRefs(useFlightStore());
-
+const { selectedPKG } = storeToRefs(usePackageStore());
 const { pagenr } = defineProps({
   pagenr: {
     required: true,
@@ -23,16 +22,15 @@ const hhmmss = (time: string) => {
 };
 
 const getBullseyeName = (index: number) => {
-  if (bullseyes.at(index)) {
-    return bullseyes?.at(index)?.name;
-  }
-  return "";
+  selectedPKG.value.bullseyes.at(Number(selectedPKG.value.selectedBullseye))
+    ?.name;
 };
 const getBullseyeLocation = (index: number) => {
-  if (bullseyes.at(index)) {
-    return bullseyes?.at(index)?.location;
-  }
-  return "";
+  const bullz = selectedPKG.value.bullseyes.at(
+    Number(selectedPKG.value.selectedBullseye)
+  );
+
+  return bullz?.lat + " " + bullz?.lat;
 };
 
 const toLatString = (lat: number) => {

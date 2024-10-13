@@ -7,6 +7,7 @@ import {
 import type { Flight, Package } from "@/types/mdcDataTypes";
 import { useFlightStore } from "./flightStore";
 import { threatRanges } from "@/config/threatRanges";
+import type { bullseyes } from "@/config/bullseye";
 
 export const usePackageStore = defineStore("package", () => {
   // Data for the entire mission goes here
@@ -34,11 +35,8 @@ export const usePackageStore = defineStore("package", () => {
   // Data for only the selected package goes here
   const initState = {
     airThreat: "",
-    bullseye: {
-      lat: "",
-      long: "",
-      name: "Bullseye",
-    },
+    bullseyes: [],
+    selectedBullseye: 0,
     flights: new Array(),
     metar: "",
     name: "",
