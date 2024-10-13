@@ -12,7 +12,8 @@ Currently planned features include:
 3. Save and Load Presets, independently of CF Files.
 4. Chooseable Airfields with their properties.
 5. DTC export
-6. Many more features.
+6. import .miz files, as well as DTC json and .cf files [currently only .cf is supported]
+7. Many more features.
 
 ### to get started:
 
