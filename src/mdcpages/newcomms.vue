@@ -48,7 +48,7 @@ const showROE = inject("showROE");
     <div class="c3 y bdr">PAGE {{ pagenr }}</div>
     <div class="c33 g bdr">COMMUNICATIONS</div>
 
-    <div class="c2 g bdr/div>
+    <div class="c2 g bdr"></div>
     <div class="c3 g bdr">FREQ</div>
     <div class="c5 g bdr">COLOUR</div>
     <div class="c1 g bdr">F</div>

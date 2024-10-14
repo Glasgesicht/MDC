@@ -106,7 +106,7 @@ const array_name = [{}];
     <div class="c4 w bdr">
       {{ selectedFlight?.callsign }} {{ selectedFlight?.callsignNumber }}
     </div>
-    <div class="c3 g bdrKG</div>
+    <div class="c3 g bdr">PKG</div>
     <div class="c4 w bdr">{{ selectedPKG?.name }}</div>
     <div class="c15 g bdr"></div>
 
@@ -123,7 +123,7 @@ const array_name = [{}];
     <div class="c3 g bdr">BLOCK</div>
     <div class="c4 g bdr">SANC</div>
     <div class="c36 parent" v-for="index in new Array(4).keys()">
-      <div class="c2 g">{{ index + 1 }}</div>
+      <div class="c2 g bdr">{{ index + 1 }}</div>
       <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ getUnit(index)?.tailNr }}
       </div>
@@ -143,7 +143,7 @@ const array_name = [{}];
         {{ getUnit(index)?.tacan }}
       </div>
       <Input class="c3 tb hr bdr" />
-      <input class="c3 tb hr bdr
+      <input class="c3 tb hr bdr" />
       <input class="c3 tb hr bdr" />
       <input class="c3 tb hr bdr" />
       <input class="c4 tb hr bdr" />
@@ -178,7 +178,7 @@ const array_name = [{}];
     <div class="c5 g bdr">ACTION</div>
 
     <div class="c2 w bdr">{{ actions.at(1)?.sp }}</div>
-    <div class="c5 w bdrctions.at(1)?.action }}</div>
+    <div class="c5 w bdr">{{ actions.at(1)?.action }}</div>
 
     <div class="c2 w bdr">{{ actions.at(2)?.sp }}</div>
     <div class="c5 w bdr">{{ actions.at(2)?.action }}</div>
@@ -228,7 +228,7 @@ const array_name = [{}];
     <div class="c2 w bdr">{{ actions.at(8)?.sp }}</div>
     <div class="c5 w bdr">{{ actions.at(8)?.action }}</div>
 
-    <div class="c4 w bdrv>
+    <div class="c4 w bdr"></div>
     <div class="c3 w bdr"></div>
     <div class="c2 w bdr"></div>
     <div class="c3 w bdr"></div>
@@ -285,7 +285,7 @@ const array_name = [{}];
     <div class="c3 g bdr">TASK</div>
     <div class="c1 g bdr">#</div>
     <div class="c3 g bdr">TYPE</div>
-    <div class="c3 g bdr/div>
+    <div class="c3 g bdr">WPN</div>
     <div class="c3 g bdr">STN</div>
     <div class="c2 g bdr">M1</div>
     <div class="c3 g bdr">CAP</div>
@@ -379,8 +379,8 @@ const array_name = [{}];
             : ""
         }}
       </div>
-      <div :class="`c3 g bdr`">{{ "2" + index }}</div>
-      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'} bdr`">
+      <div :class="`c3 g`">{{ "2" + index }}</div>
+      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr`">
         {{ index < 2 ? selectedFlight.comms.radio1[index + 4]?.freq : "" }}
       </div>
       <input :class="`c3 hr bdr`" />
