@@ -264,7 +264,7 @@ const downloadImagesAsZip = async (images: HTMLImageElement[]) => {
   zip.generateAsync({ type: "blob" }).then((blob) => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "images.zip";
+    link.download = `${selectedFlight.value.callsign}.zip`;
     link.click();
 
     // Clean up
