@@ -67,9 +67,7 @@ const showROE = inject("showROE");
 
     <div class="c18 g bdr">SURFACE THREATS</div>
     <div class="c18 g bdr">AIR THREATS</div>
-    <div class="r3 c18 w bdr">
-      {{ surfaceThreat }}
-    </div>
+    <textarea v-model="surfaceThreat" class="r3 c18 w tb bdr" />
     <textarea v-model="airThreat" class="r3 c18 w tb bdr" />
     <div class="c36 g bdr">GAMEPLAN</div>
 
