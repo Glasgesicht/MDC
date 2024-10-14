@@ -210,7 +210,7 @@ const makejpg = async () => {
       const img = new Image();
       img.src = dataUrl;
       images.push(img);
-      document.body.getElementsByClassName("mcdimages")[0].append(img);
+      // document.body.getElementsByClassName("mcdimages")[0].append(img); // preview the printed image
     });
   }
   await downloadImagesAsZip(images).then(() => {
