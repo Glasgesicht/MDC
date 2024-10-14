@@ -24,6 +24,7 @@ import Newbriefing from "./mdcpages/newbriefing.vue";
 import WaypointsSettings from "./mdcpages/Settings/waypoints.vue";
 import examplePage from "./mdcpages/examplePage/examplePage.vue";
 import type { MenuItem } from "primevue/menuitem";
+import JSZip from "jszip";
 
 const showROE = ref(false);
 const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
@@ -191,14 +192,84 @@ const makejpg = async () => {
         .catch();
   }
   active.value = oldactive;*/
+  let images = new Array<HTMLImageElement>();
+  const pagesToPrint = [
+    "newbriefing",
+    "newsteerpoints",
+    "newdatacard",
+    "newcomms",
+  ];
 
-  await toJpeg(document.getElementsByName("mdcpage")[0], { pixelRatio: 1 })
-    .then((dataUrl) => {
+  for (let i = 0; i < pagesToPrint.length; i++) {
+    pageActive.value = pagesToPrint[i];
+    await new Promise((r) => setTimeout(() => r(true), 50));
+    console.log(pageActive.value);
+    await toJpeg(document.getElementsByName("mdcpage")[0], {
+      pixelRatio: 1,
+    }).then((dataUrl) => {
       const img = new Image();
       img.src = dataUrl;
+      images.push(img);
       document.body.getElementsByClassName("mcdimages")[0].append(img);
-    })
-    .catch();
+    });
+  }
+  await downloadImagesAsZip(images).then(() => {
+    images = new Array();
+  });
+};
+
+const imageToBlob = (image: HTMLImageElement): Promise<Blob> => {
+  return new Promise((resolve, reject) => {
+    // Create an offscreen canvas to convert image to Blob
+    const canvas = document.createElement("canvas");
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      return reject(new Error("Could not create canvas context"));
+    }
+
+    // Draw the image onto the canvas
+    ctx.drawImage(image, 0, 0);
+
+    // Convert the canvas to a Blob (PNG format)
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob);
+      } else {
+        reject(new Error("Failed to convert image to blob"));
+      }
+    }, "image/png");
+  });
+};
+
+// Main function to create and download the ZIP file
+const downloadImagesAsZip = async (images: HTMLImageElement[]) => {
+  const zip = new JSZip();
+
+  // Loop through the images and add them to the ZIP file with a name
+  for (let i = 0; i < images.length; i++) {
+    const image = images[i];
+    const imageName = `page_${i + 1}.png`; // Name format: image_1.png, image_2.png, etc.
+    try {
+      const imageBlob = await imageToBlob(image);
+      zip.file(imageName, imageBlob);
+    } catch (error) {
+      console.error(`Error processing image ${i + 1}:`, error);
+    }
+  }
+
+  // Generate the ZIP file and trigger download
+  zip.generateAsync({ type: "blob" }).then((blob) => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "images.zip";
+    link.click();
+
+    // Clean up
+    URL.revokeObjectURL(link.href);
+  });
 };
 </script>
 
