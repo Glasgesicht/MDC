@@ -150,7 +150,7 @@ const items: Ref<MenuItem[]> = computed(() => [
     visible: file.value,
     items: [
       {
-        label: "to DTC",
+        label: "To DTC",
         command: () => {
           // handle click
           if (selectedFlight.value.callsign)
@@ -168,7 +168,7 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
-        label: "to JPEG",
+        label: "Get .ZIP",
         command: () => {
           // handle click
           makejpg();
