@@ -7,7 +7,7 @@ The current programm represets a rough scaffold of what this will eventually bec
 
 Currently planned features include:
 
-1. Full set of Kneeboard pages for export. [Done in collaboration with @iProphet]
+1. Full set of Kneeboard pages for export. [Done in collaboration with @github/iProphet]
 2. Selective export to JPEG/ZIP for single pages, flights and packages. [60%]
 3. Save and Load Presets, independently of CF Files. [Requires Backend work eventually]
 4. Chooseable Airfields with their properties. [Just a matter of adding them]
