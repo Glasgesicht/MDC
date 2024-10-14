@@ -30,62 +30,62 @@ const showROE = inject("showROE");
 </script>
 
 <template>
-  <div class="mdcpage" id="gameplan">
-    <div class="c36 r">
+  <div class="mdcpage bdr" id="gameplan">
+    <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
-    <div class="c3 y">PAGE {{ pagenr }}</div>
-    <div class="c33 g">COMMUNICATIONS</div>
-    <div class="c6 g">MISSION</div>
-    <div class="c6 w">
+    <div class="c3 y bdr">PAGE {{ pagenr }}</div>
+    <div class="c33 g bdr">COMMUNICATIONS</div>
+    <div class="c6 g bdr">MISSION</div>
+    <div class="c6 w bdr">
       {{ selectedFlight.MSNumber }}
     </div>
-    <div class="c5 g">CALLSIGN</div>
-    <div class="c7 w">
+    <div class="c5 g bdr">CALLSIGN</div>
+    <div class="c7 w bdr">
       {{ selectedFlight.callsign }} {{ selectedFlight.callsignNumber }}
     </div>
     <!-- 
     <select v-model="selectedFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
       <option v-for="flight of flights">{{ flight.callsignRaw }}</option>
     </select>-->
-    <div class="c5 g">PACKAGE</div>
-    <div class="c7 w">
+    <div class="c5 g bdr">PACKAGE</div>
+    <div class="c7 w bdr">
       {{ pkgnr }}
     </div>
-    <div class="c6 g">HOMEPLATE</div>
-    <input v-model="selectedFlight.DEP.NAME" class="c6 w tb" />
-    <div class="c24 r2 squad">RNLAF 313 SQUADRON</div>
-    <div class="c6 g">MSN TYPE</div>
-    <input class="c6 w" v-model="selectedFlight.missionType" />
+    <div class="c6 g bdr">HOMEPLATE</div>
+    <input v-model="selectedFlight.DEP.NAME" class="c6 w tb bdr" />
+    <div class="c24 r2 squad bdr">RNLAF 313 SQUADRON</div>
+    <div class="c6 g bdr">MSN TYPE</div>
+    <input class="c6 w bdr" v-model="selectedFlight.missionType" />
 
-    <div class="c6 g">PACKAGE TASK</div>
-    <input v-model="packageTask" class="c30 w tb" />
-    <div class="c6 g">FLIGHT TASK</div>
-    <input v-model="selectedFlight.task" class="c30 w tb" />
-    <div class="c36 g">SITUATION</div>
-    <textarea v-model="situation" class="r5 c36 w tb" />
+    <div class="c6 g bdr">PACKAGE TASK</div>
+    <input v-model="packageTask" class="c30 w tb bdr" />
+    <div class="c6 g bdr">FLIGHT TASK</div>
+    <input v-model="selectedFlight.task" class="c30 w tb bdr" />
+    <div class="c36 g bdr">SITUATION</div>
+    <textarea v-model="situation" class="r5 c36 w tb bdr" />
 
-    <div class="c18 g">SURFACE THREATS</div>
-    <div class="c18 g">AIR THREATS</div>
-    <div class="r2 c18 w">
+    <div class="c18 g bdr">SURFACE THREATS</div>
+    <div class="c18 g bdr">AIR THREATS</div>
+    <div class="r2 c18 w bdr">
       {{ surfaceThreat }}
     </div>
-    <textarea v-model="airThreat" class="r2 c18 w tb" />
-    <div class="c36 g">GAMEPLAN</div>
+    <textarea v-model="airThreat" class="r2 c18 w tb bdr" />
+    <div class="c36 g bdr">GAMEPLAN</div>
 
     <textarea
       type="text"
-      :class="`c36 tb ${showROE ? 'r28' : 'r34'}`"
+      :class="`c36 tb ${showROE ? 'r28' : 'r34'} bdr`"
       v-model="selectedFlight.gameplan"
     />
-    <div v-if="showROE" class="roehead c36" style="width: 100%">
+    <div v-if="showROE" class="roehead c36 bdr" style="width: 100%">
       RULES OF ENGAGEMENT
     </div>
     <textarea
       v-if="showROE"
       type="text"
       v-model="roe"
-      class="c36 roe textbox non-resizable r6"
+      class="c36 roe textbox non-resizable r6 bdr"
     />
   </div>
 </template>

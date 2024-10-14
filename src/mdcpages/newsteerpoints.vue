@@ -129,26 +129,26 @@ const showROE = inject("showROE");
 </script>
 
 <template>
-  <div class="mdcpage">
-    <div class="c36 r">
+  <div class="mdcpage bdr">
+    <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
-    <div class="c3 y">PAGE {{ pagenr }}</div>
-    <div class="c33 g">STEERPOINTS</div>
+    <div class="c3 y bdr">PAGE {{ pagenr }}</div>
+    <div class="c33 g bdr">STEERPOINTS</div>
 
-    <div class="c2 g">SP</div>
-    <div class="c5 g">NAME</div>
-    <div class="c3 g">TOS</div>
-    <div class="c4 g">HDG / DIST</div>
-    <div class="c3 g">GS / M</div>
-    <div class="c3 g">ALT</div>
-    <div class="c3 g">>FUEL</div>
-    <div class="c9 g">LAT / LONG</div>
-    <div class="c4 g">ACTIVITY</div>
+    <div class="c2 g bdr">SP</div>
+    <div class="c5 g bdr">NAME</div>
+    <div class="c3 g bdr">TOS</div>
+    <div class="c4 g bdr">HDG / DIST</div>
+    <div class="c3 g bdr">GS / M</div>
+    <div class="c3 g bdr">ALT</div>
+    <div class="c3 g bdr">>FUEL</div>
+    <div class="c9 g bdr">LAT / LONG</div>
+    <div class="c4 g bdr">ACTIVITY</div>
 
     <div class="c36 parent" v-for="index in new Array(25).keys()">
-      <div class="c2 g">{{ index + 1 }}</div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+      <div class="c2 g bdr">{{ index + 1 }}</div>
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -157,7 +157,7 @@ const showROE = inject("showROE");
             : selectedFlight?.waypoints[index]?.type
         }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -169,7 +169,7 @@ const showROE = inject("showROE");
             : hhmmss(selectedFlight?.waypoints[index]?.tot)
         }}
       </div>
-      <div :class="`c4 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c4 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -196,7 +196,7 @@ const showROE = inject("showROE");
             : ""
         }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -211,7 +211,7 @@ const showROE = inject("showROE");
             : ""
         }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -222,7 +222,7 @@ const showROE = inject("showROE");
             : ""
         }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -231,7 +231,7 @@ const showROE = inject("showROE");
             : ""
         }}
       </div>
-      <div :class="`c9 hr`">
+      <div :class="`c9 hr  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -242,7 +242,7 @@ const showROE = inject("showROE");
             : ""
         }}
       </div>
-      <div :class="`c4 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c4 ${index % 2 ? 'hg' : 'w'}  bdr`">
         {{
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
@@ -255,28 +255,30 @@ const showROE = inject("showROE");
       </div>
     </div>
 
-    <div class="c36 g">OPEN STEERPOINTS</div>
+    <div class="c36 g bdr">OPEN STEERPOINTS</div>
 
-    <div class="c2 g">SP</div>
-    <div class="c3 g">TYPE</div>
-    <div class="c5 g">NAME</div>
-    <div class="c9 g">LAT / LONG</div>
-    <div class="c3 g">ELEV</div>
-    <div class="c14 g">NOTES</div>
+    <div class="c2 g bdr">SP</div>
+    <div class="c3 g bdr">TYPE</div>
+    <div class="c5 g bdr">NAME</div>
+    <div class="c9 g bdr">LAT / LONG</div>
+    <div class="c3 g bdr">ELEV</div>
+    <div class="c14 g bdr">NOTES</div>
 
     <div class="c36 parent" v-for="index in new Array(16).keys()">
-      <div class="c2 g">{{ index + 81 }}</div>
-      <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'}`">
+      <div class="c2 g bdr">{{ index + 81 }}</div>
+      <div
+        :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'} bdr`"
+      >
         {{ index + 81 < 97 ? selectedFlight.dmpis[index]?.type : "BULLS" }}
       </div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{
           index + 81 < 97
             ? selectedFlight.dmpis[index]?.name
             : getBullseyeName(index - 16)
         }}
       </div>
-      <div :class="`c9 hr`">
+      <div :class="`c9 hr bdr`">
         {{
           index + 81 < 97
             ? toLatLongString(
@@ -286,30 +288,32 @@ const showROE = inject("showROE");
             : getBullseyeLocation(index - 16)
         }}
       </div>
-      <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'}`">
+      <div
+        :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'} bdr`"
+      >
         {{ index + 81 < 97 ? selectedFlight.dmpis[index]?.altitude : "" }}
       </div>
-      <div :class="`c14 noborder ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedFlight.dmpis[index]?.note }}
       </div>
     </div>
     <div class="c36 parent" v-for="index in new Array(3).keys()">
-      <div class="c2 g">{{ selectedPKG.bullseyes[index].wp }}</div>
-      <div class="c3 g">BULLS</div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+      <div class="c2 g bdr">{{ selectedPKG.bullseyes[index].wp }}</div>
+      <div class="c3 g bdr">BULLS</div>
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.bullseyes[index].name }}
       </div>
-      <div :class="`c9 hr`">
+      <div :class="`c9 hr bdr`">
         {{ selectedPKG.bullseyes[index].lat }} /
         {{ selectedPKG.bullseyes[index].long }}
       </div>
-      <div class="c3 hg"></div>
-      <div :class="`c14 noborder ${index % 2 ? 'hg' : 'w'}`">
+      <div class="c3 hg bdr"></div>
+      <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.bullseyes[index].note }}
       </div>
     </div>
 
-    <div class="c36 r">
+    <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
   </div>

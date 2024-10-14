@@ -93,123 +93,125 @@ const array_name = [{}];
 </script>
 
 <template>
-  <div class="mdcpage">
-    <div class="c36 r">
+  <div class="mdcpage bdr">
+    <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
-    <div class="c3 y">PAGE {{ pagenr }}</div>
-    <div class="c33 g">MISSION DATA</div>
+    <div class="c3 y bdr">PAGE {{ pagenr }}</div>
+    <div class="c33 g bdr">MISSION DATA</div>
 
-    <div class="c3 g">MSN</div>
-    <div class="c4 w">{{ selectedFlight?.MSNumber }}</div>
-    <div class="c3 g">C/S</div>
-    <div class="c4 w">
+    <div class="c3 g bdr">MSN</div>
+    <div class="c4 w bdr">{{ selectedFlight?.MSNumber }}</div>
+    <div class="c3 g bdr">C/S</div>
+    <div class="c4 w bdr">
       {{ selectedFlight?.callsign }} {{ selectedFlight?.callsignNumber }}
     </div>
-    <div class="c3 g">PKG</div>
-    <div class="c4 w">{{ selectedPKG?.name }}</div>
-    <div class="c15 g"></div>
+    <div class="c3 g bdrKG</div>
+    <div class="c4 w bdr">{{ selectedPKG?.name }}</div>
+    <div class="c15 g bdr"></div>
 
-    <div class="c2 g">#</div>
-    <div class="c2 g">A/C</div>
-    <div class="c7 g">PILOT</div>
-    <div class="c3 g">STN</div>
-    <div class="c2 g">M3</div>
-    <div class="c2 g">IDM</div>
-    <div class="c2 g">A/A</div>
-    <div class="c3 g">LASER</div>
-    <div class="c3 g">SRCH</div>
-    <div class="c3 g">CAP</div>
-    <div class="c3 g">BLOCK</div>
-    <div class="c4 g">SANC</div>
+    <div class="c2 g bdr">#</div>
+    <div class="c2 g bdr">A/C</div>
+    <div class="c7 g bdr">PILOT</div>
+    <div class="c3 g bdr">STN</div>
+    <div class="c2 g bdr">M3</div>
+    <div class="c2 g bdr">IDM</div>
+    <div class="c2 g bdr">A/A</div>
+    <div class="c3 g bdr">LASER</div>
+    <div class="c3 g bdr">SRCH</div>
+    <div class="c3 g bdr">CAP</div>
+    <div class="c3 g bdr">BLOCK</div>
+    <div class="c4 g bdr">SANC</div>
     <div class="c36 parent" v-for="index in new Array(4).keys()">
       <div class="c2 g">{{ index + 1 }}</div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ getUnit(index)?.tailNr }}
       </div>
-      <div :class="`c7 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c7 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ getUnit(index)?.callsign }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ getUnit(index)?.STN.padStart(5, "0") }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ getUnit(index)?.STN }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG?.flights.indexOf(selectedFlight) + 5 }}{{ index + 1 }}
       </div>
-      <div :class="`c2 hr`">
+      <div :class="`c2 hr bdr`">
         {{ getUnit(index)?.tacan }}
       </div>
-      <Input class="c3 tb hr" />
-      <input class="c3 tb hr" />
-      <input class="c3 tb hr" />
-      <input class="c3 tb hr" />
-      <input class="c4 tb hr" />
+      <Input class="c3 tb hr bdr" />
+      <input class="c3 tb hr bdr
+      <input class="c3 tb hr bdr" />
+      <input class="c3 tb hr bdr" />
+      <input class="c4 tb hr bdr" />
     </div>
 
-    <div class="c3 g">DEP</div>
-    <div class="c6 w">{{ selectedFlight?.DEP.NAME }}</div>
-    <div class="c3 g">ARR</div>
-    <div class="c6 w">{{ selectedFlight?.ARR.NAME }}</div>
-    <div class="c3 g">ALT</div>
-    <div class="c6 w">{{ selectedFlight?.ALT.NAME }}</div>
-    <div class="c3 g">DIV</div>
-    <input class="c6 tb w" />
+    <div class="c3 g bdr">DEP</div>
+    <div class="c6 w bdr">{{ selectedFlight?.DEP.NAME }}</div>
+    <div class="c3 g bdr">ARR</div>
+    <div class="c6 w bdr">{{ selectedFlight?.ARR.NAME }}</div>
+    <div class="c3 g bdr">ALT</div>
+    <div class="c6 w bdr">{{ selectedFlight?.ALT.NAME }}</div>
+    <div class="c3 g bdr">DIV</div>
+    <input class="c6 tb w bdr" />
 
-    <div class="c3 g">STEP</div>
-    <input class="c3 tb w" />
-    <div class="c3 g">START</div>
-    <input class="c3 tb w" />
-    <div class="c3 g">CX IN</div>
-    <input class="c3 tb w" />
-    <div class="c3 g">TAXI</div>
-    <input class="c3 tb w" v-model="selectedFlight.taxi" />
-    <div class="c3 g">T/O</div>
-    <input class="c3 w" v-model="selectedFlight.takeoff" />
-    <div class="c3 g">LAND</div>
-    <input class="c3 tb w" />
+    <div class="c3 g bdr">STEP</div>
+    <input class="c3 tb w bdr" />
+    <div class="c3 g bdr">START</div>
+    <input class="c3 tb w bdr" />
+    <div class="c3 g bdr">CX IN</div>
+    <input class="c3 tb w bdr" />
+    <div class="c3 g bdr">TAXI</div>
+    <input class="c3 tb w bdr" v-model="selectedFlight.taxi" />
+    <div class="c3 g bdr">T/O</div>
+    <input class="c3 w bdr" v-model="selectedFlight.takeoff" />
+    <div class="c3 g bdr">LAND</div>
+    <input class="c3 tb w bdr" />
 
-    <div class="c36 r9 w"></div>
+    <div class="c36 r9 w bdr"></div>
 
-    <div class="c29 r7 w"></div>
-    <div class="c2 g">SP</div>
-    <div class="c5 g">ACTION</div>
+    <div class="c29 r7 w bdr"></div>
+    <div class="c2 g bdr">SP</div>
+    <div class="c5 g bdr">ACTION</div>
 
-    <div class="c2 w">{{ actions.at(1)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(1)?.action }}</div>
+    <div class="c2 w bdr">{{ actions.at(1)?.sp }}</div>
+    <div class="c5 w bdrctions.at(1)?.action }}</div>
 
-    <div class="c2 w">{{ actions.at(2)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(2)?.action }}</div>
+    <div class="c2 w bdr">{{ actions.at(2)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(2)?.action }}</div>
 
-    <div class="c2 w">{{ actions.at(3)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(3)?.action }}</div>
+    <div class="c2 w bdr">{{ actions.at(3)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(3)?.action }}</div>
 
-    <div class="c2 w">{{ actions.at(4)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(4)?.action }}</div>
+    <div class="c2 w bdr">{{ actions.at(4)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(4)?.action }}</div>
 
-    <div class="c2 w">{{ actions.at(5)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(5)?.action }}</div>
+    <div class="c2 w bdr">{{ actions.at(5)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(5)?.action }}</div>
 
-    <div class="c2 w">{{ actions.at(6)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(6)?.action }}</div>
+    <div class="c2 w bdr">{{ actions.at(6)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(6)?.action }}</div>
 
-    <div class="c4 g">AAR C/S</div>
-    <div class="c3 g">ALT</div>
-    <div class="c2 g">A/A</div>
-    <div class="c3 g">GIVE</div>
-    <div class="c7 g">TIME</div>
-    <div class="c7 g">POSITION</div>
-    <div class="c3 g">HOT</div>
-    <div class="c2 w">{{ actions.at(7)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(7)?.action }}</div>
+    <div class="c4 g bdr">AAR C/S</div>
+    <div class="c3 g bdr">ALT</div>
+    <div class="c2 g bdr">A/A</div>
+    <div class="c3 g bdr">GIVE</div>
+    <div class="c7 g bdr">TIME</div>
+    <div class="c7 g bdr">POSITION</div>
+    <div class="c3 g bdr">HOT</div>
+    <div class="c2 w bdr">{{ actions.at(7)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(7)?.action }}</div>
 
-    <div class="c4 w">{{ selectedFlight.comms.radio1[12]?.description }}</div>
-    <div class="c3 w"></div>
-    <div class="c2 w"></div>
-    <div class="c3 w"></div>
-    <div class="c7 w">
+    <div class="c4 w bdr">
+      {{ selectedFlight.comms.radio1[12]?.description }}
+    </div>
+    <div class="c3 w bdr"></div>
+    <div class="c2 w bdr"></div>
+    <div class="c3 w bdr"></div>
+    <div class="c7 w bdr">
       {{
         AAR.at(1)?.time
           ? hhmmss(AAR.at(1)?.time ?? "") +
@@ -221,16 +223,16 @@ const array_name = [{}];
           : ""
       }}
     </div>
-    <div class="c7 w"></div>
-    <div class="c3 w"></div>
-    <div class="c2 w">{{ actions.at(8)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(8)?.action }}</div>
+    <div class="c7 w bdr"></div>
+    <div class="c3 w bdr"></div>
+    <div class="c2 w bdr">{{ actions.at(8)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(8)?.action }}</div>
 
-    <div class="c4 w"></div>
-    <div class="c3 w"></div>
-    <div class="c2 w"></div>
-    <div class="c3 w"></div>
-    <div class="c7 w">
+    <div class="c4 w bdrv>
+    <div class="c3 w bdr"></div>
+    <div class="c2 w bdr"></div>
+    <div class="c3 w bdr"></div>
+    <div class="c7 w bdr">
       {{
         AAR.at(2)?.time
           ? hhmmss(AAR.at(2)?.time ?? "") +
@@ -242,120 +244,122 @@ const array_name = [{}];
           : ""
       }}
     </div>
-    <div class="c7 w"></div>
-    <div class="c3 w"></div>
-    <div class="c2 w">{{ actions.at(9)?.sp }}</div>
-    <div class="c5 w">{{ actions.at(9)?.action }}</div>
+    <div class="c7 w bdr"></div>
+    <div class="c3 w bdr"></div>
+    <div class="c2 w bdr">{{ actions.at(9)?.sp }}</div>
+    <div class="c5 w bdr">{{ actions.at(9)?.action }}</div>
 
-    <div class="c6 g">CODEWORD</div>
-    <div class="c12 g">MEANING</div>
-    <div class="c8 g">CLASS</div>
-    <div class="c2 g">MTR</div>
-    <div class="c2 g">FR</div>
-    <div class="c2 g">DOR</div>
-    <div class="c2 g">DR</div>
-    <div class="c2 g">MAR</div>
+    <div class="c6 g bdr">CODEWORD</div>
+    <div class="c12 g bdr">MEANING</div>
+    <div class="c8 g bdr">CLASS</div>
+    <div class="c2 g bdr">MTR</div>
+    <div class="c2 g bdr">FR</div>
+    <div class="c2 g bdr">DOR</div>
+    <div class="c2 g bdr">DR</div>
+    <div class="c2 g bdr">MAR</div>
 
     <div class="c36 parent" v-for="index in new Array(8).keys()">
-      <div :class="`c6 tb ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c6 tb ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.codewords[index]?.name }}
       </div>
-      <div :class="`c12 tb ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c12 tb ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.codewords[index]?.action }}
       </div>
-      <div class="c8 hr">
+      <div class="c8 hr bdr">
         {{ threatsVisible[index]?.class }}
       </div>
-      <input class="c2 tb hr" />
-      <input class="c2 tb hr" />
-      <div class="c2 hr">
+      <input class="c2 tb hr bdr" />
+      <input class="c2 tb hr bdr" />
+      <div class="c2 hr bdr">
         {{ threatsVisible[index]?.dor?.toFixed(1) }}
       </div>
-      <div class="c2 hr">
+      <div class="c2 hr bdr">
         {{ threatsVisible[index]?.dr?.toFixed(1) }}
       </div>
-      <div class="c2 hr">
+      <div class="c2 hr bdr">
         {{ threatsVisible[index]?.mar?.toFixed(1) }}
       </div>
     </div>
 
-    <div class="c5 g">C/S</div>
-    <div class="c3 g">TASK</div>
-    <div class="c1 g">#</div>
-    <div class="c3 g">TYPE</div>
-    <div class="c3 g">WPN</div>
-    <div class="c3 g">STN</div>
-    <div class="c2 g">M1</div>
-    <div class="c3 g">CAP</div>
-    <div class="c3 g">PRI</div>
-    <div class="c3 g">SANC</div>
-    <div class="c3 g">M3</div>
-    <div class="c2 g">IDM</div>
-    <div class="c2 g">FC</div>
+    <div class="c5 g bdr">C/S</div>
+    <div class="c3 g bdr">TASK</div>
+    <div class="c1 g bdr">#</div>
+    <div class="c3 g bdr">TYPE</div>
+    <div class="c3 g bdr/div>
+    <div class="c3 g bdr">STN</div>
+    <div class="c2 g bdr">M1</div>
+    <div class="c3 g bdr">CAP</div>
+    <div class="c3 g bdr">PRI</div>
+    <div class="c3 g bdr">SANC</div>
+    <div class="c3 g bdr">M3</div>
+    <div class="c2 g bdr">IDM</div>
+    <div class="c2 g bdr">FC</div>
 
     <div class="c36 parent" v-for="index in new Array(5).keys()">
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.flights[index]?.callsign }}
         {{ selectedPKG.flights[index]?.callsignNumber }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.flights[index]?.missionType }}
       </div>
-      <div :class="`c1 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c1 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.flights[index]?.units.length }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ selectedPKG.flights[index]?.aircrafttype }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`"></div>
-      <div :class="`c3 hr`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`"></div>
+      <div :class="`c3 hr bdr`">
         {{
           selectedPKG.flights[index]?.units[0].STN.padStart(5, "0")
             .substring(0, 4)
             .concat("X")
         }}
       </div>
-      <input class="c2 tb hr" />
-      <input class="c3 tb hr" />
-      <div class="c3 hr">
+      <input class="c2 tb hr bdr" />
+      <input class="c3 tb hr bdr" />
+      <div class="c3 hr bdr">
         {{
           selectedPKG?.flights[index]?.aircrafttype === "F-16CM"
             ? selectedFlight.comms.radio2[index + 14]?.freq
             : selectedFlight.comms.radio1[index + 14]?.freq
         }}
       </div>
-      <input class="c3 tb hr" />
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'}`">
+      <input class="c3 tb hr bdr" />
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{
           selectedPKG.flights[index]?.units[0].STN.padStart(5, "0")
             .substring(1, 4)
             .concat("X")
         }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
         {{
           selectedPKG.flights[index]?.aircrafttype === "F-16CM"
             ? index + 5 + "0"
             : ""
         }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'}`">001</div>
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">001</div>
     </div>
 
-    <div class="c3 g">JKR</div>
-    <div class="c3 g">FUEL</div>
-    <div class="c3 g">WPN</div>
-    <div class="c11 g">ACTION</div>
-    <div class="c7 g">TAKE IF SHUFFLE</div>
-    <div class="c3 g">PRE</div>
-    <div class="c3 g">FRQ</div>
-    <div class="c3 g">CMRK</div>
+    <div class="c3 g bdr">JKR</div>
+    <div class="c3 g bdr">FUEL</div>
+    <div class="c3 g bdr">WPN</div>
+    <div class="c11 g bdr">ACTION</div>
+    <div class="c7 g bdr">TAKE IF SHUFFLE</div>
+    <div class="c3 g bdr">PRE</div>
+    <div class="c3 g bdr">FRQ</div>
+    <div class="c3 g bdr">CMRK</div>
     <div class="c36 parent" v-for="index in new Array(4).keys()">
-      <div class="c3 g">{{ (index + 1) % 4 ? "J" + (index + 1) : "BGO" }}</div>
-      <input :class="`c3 tb ${(index + 1) % 4 ? 'hr' : 'hg'}`" />
-      <input :class="`c3 tb ${index % 2 ? 'hg' : 'w'}`" />
-      <input :class="`c11 tb ${index % 2 ? 'hg' : 'w'}`" />
-      <div class="c2 g">
+      <div class="c3 g bdr">
+        {{ (index + 1) % 4 ? "J" + (index + 1) : "BGO" }}
+      </div>
+      <input :class="`c3 tb ${(index + 1) % 4 ? 'hr' : 'hg'} bdr`" />
+      <input :class="`c3 tb ${index % 2 ? 'hg' : 'w'} bdr`" />
+      <input :class="`c11 tb ${index % 2 ? 'hg' : 'w'} bdr`" />
+      <div class="c2 g bdr">
         {{
           (index + 1) % 4
             ? (index + 1) % 3
@@ -366,7 +370,7 @@ const array_name = [{}];
             : "TER"
         }}
       </div>
-      <div :class="`c5 w ${index < 2 ? 'w' : 'hr'}`">
+      <div :class="`c5 w ${index < 2 ? 'w' : 'hr'} bdr`">
         {{
           index < 2 && selectedFlight.comms.radio1[index + 4] !== undefined
             ? selectedFlight.comms.radio1[index + 4]?.name +
@@ -375,13 +379,13 @@ const array_name = [{}];
             : ""
         }}
       </div>
-      <div :class="`c3 g`">{{ "2" + index }}</div>
-      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}`">
+      <div :class="`c3 g bdr`">{{ "2" + index }}</div>
+      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'} bdr`">
         {{ index < 2 ? selectedFlight.comms.radio1[index + 4]?.freq : "" }}
       </div>
-      <input :class="`c3 hr`" />
+      <input :class="`c3 hr bdr`" />
     </div>
-    <div class="c36 r">
+    <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
   </div>
