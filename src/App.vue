@@ -244,7 +244,6 @@ const imageToBlob = (image: HTMLImageElement): Promise<Blob> => {
   });
 };
 
-// Main function to create and download the ZIP file
 const downloadImagesAsZip = async (images: HTMLImageElement[]) => {
   const zip = new JSZip();
 
@@ -260,7 +259,6 @@ const downloadImagesAsZip = async (images: HTMLImageElement[]) => {
     }
   }
 
-  // Generate the ZIP file and trigger download
   zip.generateAsync({ type: "blob" }).then((blob) => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
