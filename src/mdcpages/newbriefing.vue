@@ -63,19 +63,19 @@ const showROE = inject("showROE");
     <div class="c6 g bdr">FLIGHT TASK</div>
     <input v-model="selectedFlight.task" class="c30 w tb bdr" />
     <div class="c36 g bdr">SITUATION</div>
-    <textarea v-model="situation" class="r5 c36 w tb bdr" />
+    <textarea v-model="situation" class="r9 c36 w tb bdr" />
 
     <div class="c18 g bdr">SURFACE THREATS</div>
     <div class="c18 g bdr">AIR THREATS</div>
-    <div class="r2 c18 w bdr">
+    <div class="r3 c18 w bdr">
       {{ surfaceThreat }}
     </div>
-    <textarea v-model="airThreat" class="r2 c18 w tb bdr" />
+    <textarea v-model="airThreat" class="r3 c18 w tb bdr" />
     <div class="c36 g bdr">GAMEPLAN</div>
 
     <textarea
       type="text"
-      :class="`c36 tb ${showROE ? 'r28' : 'r34'} bdr`"
+      :class="`c36 tb ${showROE ? 'r23' : 'r34'} bdr`"
       v-model="selectedFlight.gameplan"
     />
     <div v-if="showROE" class="roehead c36 bdr" style="width: 100%">

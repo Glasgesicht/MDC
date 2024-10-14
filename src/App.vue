@@ -27,15 +27,12 @@ import type { MenuItem } from "primevue/menuitem";
 import JSZip from "jszip";
 
 const showROE = ref(false);
-const { roe, selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
+const { selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
   usePackageStore()
 );
 const { selectedFlight } = storeToRefs(useFlightStore());
-const { theater } = storeToRefs(useGlobalStore());
 
 provide("showROE", showROE);
-
-const active = ref(0);
 const pageActive = ref("");
 
 const { file } = storeToRefs(useGlobalStore());
@@ -150,7 +147,7 @@ const items: Ref<MenuItem[]> = computed(() => [
     visible: file.value,
     items: [
       {
-        label: "To DTC",
+        label: "Get DTC",
         command: () => {
           // handle click
           if (selectedFlight.value.callsign)
@@ -168,72 +165,93 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
+        label: "Get PNG",
+        disabled: ![
+          "newbriefing",
+          "newsteerpoints",
+          "newdatacard",
+          "newcomms",
+        ].includes(pageActive.value),
+        command: () => {
+          // handle click
+          downloadPageAsImage();
+        },
+      },
+      {
         label: "Get .ZIP",
         command: () => {
           // handle click
-          makejpg();
+          createZip();
         },
       },
     ],
   },
 ]);
 
-const makejpg = async () => {
-  /*const oldactive = active.value;
-  for (let i = 0; i <= 12; i++) {
-    active.value = i;
-    await new Promise((r) => setTimeout(() => r(true), 0));
-      await toJpeg(document.getElementsByName("mdcpage" + i)[0])
-        .then((dataUrl) => {
-          const img = new Image();
-          img.src = dataUrl;
-          document.body.getElementsByClassName("mcdimages")[0].append(img);
-        })
-        .catch();
-  }
-  active.value = oldactive;*/
-  let images = new Array<HTMLImageElement>();
-  const pagesToPrint = [
+// Helper function to ensure the image has loaded before proceeding
+const loadImage = (image: HTMLImageElement): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Failed to load image"));
+  });
+};
+
+const downloadPageAsImage = async () => {
+  const pageElement = document.getElementsByName("mdcpage")[0];
+  const dataUrl = await toJpeg(pageElement, { pixelRatio: 1 });
+  const image = new Image();
+  image.src = dataUrl;
+
+  // Ensure the image has loaded before attempting to convert it to a blob
+  await loadImage(image);
+
+  const imageBlob = await imageToBlob(image);
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(imageBlob);
+  link.download = `${selectedFlight.value.callsign}_${pageActive.value}.png`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+};
+
+const createZip = async () => {
+  const pagesToInclude = [
     "newbriefing",
     "newsteerpoints",
     "newdatacard",
     "newcomms",
   ];
 
-  for (let i = 0; i < pagesToPrint.length; i++) {
-    pageActive.value = pagesToPrint[i];
-    await new Promise((r) => setTimeout(() => r(true), 50));
-    console.log(pageActive.value);
-    await toJpeg(document.getElementsByName("mdcpage")[0], {
+  let images = new Array();
+
+  for (let i = 0; i < pagesToInclude.length; i++) {
+    pageActive.value = pagesToInclude[i];
+    await new Promise((resolve) => setTimeout(() => resolve(true), 100));
+    const dataUrl = await toJpeg(document.getElementsByName("mdcpage")[0], {
       pixelRatio: 1,
-    }).then((dataUrl) => {
-      const img = new Image();
-      img.src = dataUrl;
-      images.push(img);
-      // document.body.getElementsByClassName("mcdimages")[0].append(img); // preview the printed image
     });
+    const image = new Image();
+    image.src = dataUrl;
+    images.push(await loadImage(image));
   }
   await downloadImagesAsZip(images).then(() => {
     images = new Array();
   });
 };
 
-const imageToBlob = (image: HTMLImageElement): Promise<Blob> => {
+const imageToBlob = async (image: HTMLImageElement): Promise<Blob> => {
+  const canvas = document.createElement("canvas");
+  canvas.width = image.naturalWidth;
+  canvas.height = image.naturalHeight;
+
+  const context = canvas.getContext("2d");
+  if (!context) {
+    throw new Error("Could not create canvas context");
+  }
+
+  context.drawImage(image, 0, 0);
+
   return new Promise((resolve, reject) => {
-    // Create an offscreen canvas to convert image to Blob
-    const canvas = document.createElement("canvas");
-    canvas.width = image.naturalWidth;
-    canvas.height = image.naturalHeight;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      return reject(new Error("Could not create canvas context"));
-    }
-
-    // Draw the image onto the canvas
-    ctx.drawImage(image, 0, 0);
-
-    // Convert the canvas to a Blob (PNG format)
     canvas.toBlob((blob) => {
       if (blob) {
         resolve(blob);
@@ -244,19 +262,16 @@ const imageToBlob = (image: HTMLImageElement): Promise<Blob> => {
   });
 };
 
-const downloadImagesAsZip = async (images: HTMLImageElement[]) => {
+const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
   const zip = new JSZip();
 
-  // Loop through the images and add them to the ZIP file with a name
-  for (let i = 0; i < images.length; i++) {
-    const image = images[i];
-    const imageName = `page_${i + 1}.png`; // Name format: image_1.png, image_2.png, etc.
-    try {
-      const imageBlob = await imageToBlob(image);
-      zip.file(imageName, imageBlob);
-    } catch (error) {
-      console.error(`Error processing image ${i + 1}:`, error);
-    }
+  for (let i = 0; i < pageImages.length; i++) {
+    const image = pageImages[i];
+    const imageName = `page_${i + 1}.png`;
+
+    // Ensure the image is converted to a blob before adding it to the zip file
+    const imageBlob = await imageToBlob(image);
+    zip.file(imageName, imageBlob);
   }
 
   zip.generateAsync({ type: "blob" }).then((blob) => {
