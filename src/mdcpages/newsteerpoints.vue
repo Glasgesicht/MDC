@@ -67,66 +67,62 @@ const toLatLongString = (lat: number, long: number) => {
 const fuelRange = 10;
 const fuelEndurance = 4400;
 
-const minimumFuel = (steerpoint: number) => {
-  var routeFuel = 1200;
-  for (let i = steerpoint; i < selectedFlight.value.waypoints.length; i++) {
-    routeFuel +=
-      fuelRange *
-      parseFloat(
-        calculateDistance(
-          selectedFlight?.value.waypoints[i - 1]?.latitude,
-          selectedFlight?.value.waypoints[i - 1]?.longitude,
-          selectedFlight?.value.waypoints[i]?.latitude,
-          selectedFlight?.value.waypoints[i]?.longitude
-        )
+const calculateMinimumFuel = (steerpoint: number): string => {
+  let routeFuel = 1200;
+  const landingIndex = selectedFlight.value.waypoints.findIndex((n) =>
+    n.type.includes("Landing")
+  );
+  if (landingIndex !== -1) {
+    for (let i = steerpoint; i < landingIndex; i++) {
+      const distance = calculateDistance(
+        selectedFlight.value.waypoints[i - 1]?.latitude,
+        selectedFlight.value.waypoints[i - 1]?.longitude,
+        selectedFlight.value.waypoints[i]?.latitude,
+        selectedFlight.value.waypoints[i]?.longitude
       );
-    if (i !== 1) {
-      routeFuel +=
-        (parseInt(
-          selectedFlight?.value.waypoints[i - 1].activity.substring(6, 8)
-        ) /
-          60 /
-          60) *
-          fuelEndurance +
-        (parseInt(
-          selectedFlight?.value.waypoints[i - 1].activity.substring(3, 5)
-        ) /
-          60) *
-          fuelEndurance +
-        parseInt(
-          selectedFlight?.value.waypoints[i - 1].activity.substring(0, 2)
-        ) *
-          fuelEndurance;
+      routeFuel += fuelRange * parseFloat(distance);
+      if (i !== 1) {
+        const activity = selectedFlight.value.waypoints[i - 1].activity;
+        const hours = parseInt(activity.substring(0, 2));
+        const minutes = parseInt(activity.substring(3, 5));
+        const seconds = parseInt(activity.substring(6, 8));
+        routeFuel += (seconds / 60 / 60 + minutes / 60 + hours) * fuelEndurance;
+      }
     }
   }
   return routeFuel.toFixed(0);
 };
 
-const takeoffTime = (tot: string, activity: string) => {
-  var hour = parseInt(tot?.substring(0, 2));
-  var minute = parseInt(tot?.substring(3, 5));
-  var second = parseInt(tot?.substring(6, 8));
-  hour += parseInt(activity?.substring(0, 2));
-  minute += parseInt(activity?.substring(3, 5));
-  second += parseInt(activity?.substring(6, 8));
-  while (second > 60) {
-    second -= 60;
-    minute += 1;
+const calculateTakeoffTime = (
+  takeoffTimeStr: string,
+  activityStr: string
+): string => {
+  const takeoffTime = takeoffTimeStr.split(":").map(Number);
+  const activity = activityStr.split(":").map(Number);
+
+  const hour = takeoffTime[0] + activity[0];
+  const minute = takeoffTime[1] + activity[1];
+  const second = takeoffTime[2] + activity[2];
+
+  let newHour = hour;
+  let newMinute = minute;
+  let newSecond = second;
+
+  if (newSecond >= 60) {
+    newMinute += Math.floor(newSecond / 60);
+    newSecond %= 60;
   }
-  while (minute > 60) {
-    minute -= 60;
-    hour += 1;
+  if (newMinute >= 60) {
+    newHour += Math.floor(newMinute / 60);
+    newMinute %= 60;
   }
-  while (hour > 24) {
-    hour -= 24;
+  if (newHour >= 24) {
+    newHour %= 24;
   }
-  return (
-    hour?.toFixed(0).padStart(2, "0") +
-    ":" +
-    minute?.toFixed(0).padStart(2, "0") +
-    ":" +
-    second?.toFixed(0).padStart(2, "0")
-  );
+
+  return `${newHour.toString().padStart(2, "0")}:${newMinute
+    .toString()
+    .padStart(2, "0")}:${newSecond.toString().padStart(2, "0")}`;
 };
 
 const showROE = inject("showROE");
@@ -150,7 +146,7 @@ const showROE = inject("showROE");
     <div class="c9 g">LAT / LONG</div>
     <div class="c4 g">ACTIVITY</div>
 
-    <div class="c36 parent" v-for="index in new Array(24).keys()">
+    <div class="c36 parent" v-for="index in new Array(25).keys()">
       <div class="c2 g">{{ index + 1 }}</div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}`">
         {{
@@ -166,7 +162,7 @@ const showROE = inject("showROE");
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
             : index === 0
-            ? takeoffTime(
+            ? calculateTakeoffTime(
                 hhmmss(selectedFlight?.waypoints[index]?.tot),
                 selectedFlight?.waypoints[index]?.activity
               )
@@ -231,7 +227,7 @@ const showROE = inject("showROE");
           selectedFlight?.waypoints[index]?.hideOnMDC
             ? ""
             : selectedFlight?.waypoints[index]
-            ? parseInt(minimumFuel(index + 1)).toLocaleString("en-EN")
+            ? parseInt(calculateMinimumFuel(index + 1)).toLocaleString("en-EN")
             : ""
         }}
       </div>

@@ -220,10 +220,10 @@ export function processCF(
     return [];
   }
 
-  function makeFlight(rt: RouteEntity[], pkg: PackageEntity): Flight[] {
+  function makeFlight(rt: RouteEntity[], packge: PackageEntity): Flight[] {
     if (!rt) return [];
     return rt
-      .filter((route) => route.PackageTag[0] === pkg.Tag[0])
+      .filter((route) => route.PackageTag[0] === packge.Tag[0])
       .filter(
         (item) =>
           !["KC-135", "KC135MPRS", "KC130", "E-3A"].includes(
@@ -268,6 +268,9 @@ export function processCF(
           gameplan: "",
           task: "",
           flightTask: "",
+          misc: {
+            selectedBullseye: 25, // default value
+          },
           callsign: getCallsign(mCurr),
           callsignNumber: parseInt(mCurr.CallsignNumber[0]),
           MSNumber: mCurr.MSNnumber[0],
@@ -291,21 +294,6 @@ export function processCF(
               number: comm.radio2[i + 14]?.number ?? NaN,
             },
           },
-
-          /*mycomm: {
-            pri: assignComms(pkg, i).radio1[i + 15] || {
-              freq: "",
-              name: "",
-              number: NaN,
-              description: "",
-            },
-            sec: assignComms(pkg, i).radio2[i + 15] || {
-              freq: "",
-              name: "",
-              number: NaN,
-              description: "",
-            },
-          },*/
         };
       });
   }

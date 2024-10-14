@@ -12,6 +12,7 @@
       :value="selectedFlight.waypoints"
       class="item"
       style="
+        max-width: 2050px;
         grid-row: 28;
         align-content: left;
         margin-left: 0;
@@ -167,8 +168,14 @@
           style="max-width: 1000px; min-width: 800px"
         >
           <Column header="Select" style="width: 3rem">
-            <template #body="{}">
-              <Checkbox />
+            <template #body="{ data }">
+              <Checkbox
+                binary
+                :trueValue="data.wp"
+                v-model="selectedBullseye"
+                :value="selectedBullseye"
+                :falseValue="null"
+              />
             </template>
           </Column>
           <Column header="STP #" style="width: 5rem" field="wp"></Column>
@@ -224,7 +231,7 @@ import Checkbox from "primevue/checkbox";
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import InputNumber from "primevue/inputnumber";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
@@ -249,6 +256,17 @@ const sortSelected = () =>
 
 const bullseyes = computed(() => {
   return selectedPKG.value.bullseyes;
+});
+
+const selectedBullseye = computed({
+  get(): number {
+    return selectedFlight.value.misc.selectedBullseye;
+  },
+
+  set(v: number) {
+    selectedFlight.value.misc.selectedBullseye = v;
+    selectedPKG.value.flights.forEach((n) => (n.misc.selectedBullseye = v));
+  },
 });
 
 const deleteBullseye = (index: number) => {

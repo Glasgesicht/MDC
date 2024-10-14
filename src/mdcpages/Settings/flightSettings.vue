@@ -28,6 +28,11 @@ import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
 import type { WritableComputedRef } from "vue";
 
+/**
+ * Misc
+ */
+const enableBullz = ref(true);
+
 const { allFlightsFromPackage, packages, selectedPKG } = storeToRefs(
   usePackageStore()
 );
@@ -513,9 +518,25 @@ const groupedFlights = computed(() =>
         <Checkbox />
         <a>Bingo</a>
         <InputNumber />
-        <Checkbox />
+        <Checkbox v-model="enableBullz" binary />
         <a>Enable Bullseye</a>
-        <InputNumber />
+        <Dropdown
+          :options="selectedPKG.bullseyes"
+          option-value="wp"
+          v-model:model-value="selectedFlight.misc.selectedBullseye"
+        >
+          <template #value
+            >{{ selectedFlight.misc.selectedBullseye }}:
+            {{
+              selectedPKG.bullseyes.find(
+                (n) => n.wp === selectedFlight.misc.selectedBullseye
+              )?.name
+            }}</template
+          ><template #option="{ option }"
+            >{{ option.wp }}: {{ option.name }}</template
+          ></Dropdown
+        >
+
         <Checkbox /> <a>CARA ALLOW</a> <InputNumber /> <Checkbox /><a>
           MSL Floor</a
         >

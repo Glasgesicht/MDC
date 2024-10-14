@@ -42,12 +42,12 @@ export const useFlightStore = defineStore("flight", () => {
           number?: number;
           description: string;
         }
-        >{
-          freq: "",
-          name: "",
-          number: NaN,
-          description: "",
-        },
+      >{
+        freq: "",
+        name: "",
+        number: NaN,
+        description: "",
+      },
       sec: <
         {
           freq: string;
@@ -55,12 +55,12 @@ export const useFlightStore = defineStore("flight", () => {
           number?: number;
           description: string;
         }
-        >{
-          freq: "",
-          name: "",
-          number: NaN,
-          description: "",
-        },
+      >{
+        freq: "",
+        name: "",
+        number: NaN,
+        description: "",
+      },
     },
     gameplan: "",
     MSNumber: "",
@@ -130,6 +130,9 @@ export const useFlightStore = defineStore("flight", () => {
       ILS: [""],
       ELEV: "",
       LEN: "",
+    },
+    misc: {
+      selectedBullseye: 25,
     },
   };
   const selectedFlight: Ref<typeof initState> = ref(structuredClone(initState));
