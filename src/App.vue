@@ -257,8 +257,7 @@ const makejpg = async () => {
         :pagenr="3"
         name="mdcpage"
       />
-      <Newcomms v-if="pageActive === 'newcomms'" :pagenr="3" name="mdcpage" />
-      <Dmpi v-if="pageActive === 'dmpi'" :pagenr="8" name="mdcpage" />
+      <Newcomms v-if="pageActive === 'newcomms'" :pagenr="4" name="mdcpage" />
       <examplePage v-if="pageActive === 'example'" />
       <div class="mcdimages"></div>
     </div>
