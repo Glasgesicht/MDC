@@ -511,7 +511,7 @@ export function processCF(
       };
     }
     radio1[13] = {
-      freq: "243.00",
+      freq: "243.000",
       description: "GUARD",
       name: "",
     };
