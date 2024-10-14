@@ -35,12 +35,12 @@ select {
 .mdcpage {
   border: 1px solid rgb(209, 209, 209);
   background-color: var(--white);
-  max-width: 768px;
-  max-height: 1024px;
-  min-width: 768px;
-  min-height: 1024px;
-  width: 768px;
-  height: 1024px;
+  max-width: 960px;
+  max-height: 1280px;
+  min-width: 960px;
+  min-height: 1280px;
+  width: 960px;
+  height: 1280px;
   color: black;
   display: grid;
   grid-template-columns: repeat(36, 1fr);
