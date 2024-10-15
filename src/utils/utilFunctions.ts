@@ -24,7 +24,7 @@ export function calculateHeading(
   // Convert the bearing from radians to degrees
   bearing = toDegrees(bearing);
 
-  bearing = (bearing + 360) % 360;
+  bearing = bearing % 360;
 
   return Math.round(bearing);
 }

@@ -4,6 +4,7 @@ import { computed, ref, toRaw, watch, type Ref } from "vue";
 import { F15Flights, F16Flights, flights } from "@/config/flights";
 import type { FlightMember } from "@/types/mdcDataTypes";
 import { getSTN } from "@/utils/utilFunctions";
+import type { Misc } from "@/types/dtcTypes";
 
 export const useFlightStore = defineStore("flight", () => {
   const initState = {
@@ -132,8 +133,25 @@ export const useFlightStore = defineStore("flight", () => {
       LEN: "",
     },
     misc: {
-      selectedBullseye: 25,
-    },
+      Bingo: 2400,
+      BingoToBeUpdated: false,
+      BullseyeToBeUpdated: true,
+      BullseyeWP: 25,
+      CARAALOW: 700,
+      CARAALOWToBeUpdated: true,
+      ILSCourse: 0,
+      ILSFrequency: 0,
+      ILSToBeUpdated: false,
+      LaserSettingsToBeUpdated: false,
+      LaserStartTime: 0,
+      LSTCode: 0,
+      MSLFloor: 0,
+      MSLFloorToBeUpdated: false,
+      TACANBand: 0,
+      TACANChannel: 0,
+      TACANToBeUpdated: false,
+      TGPCode: 1688,
+    } satisfies Misc,
   };
   const selectedFlight: Ref<typeof initState> = ref(structuredClone(initState));
 

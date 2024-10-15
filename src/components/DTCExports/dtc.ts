@@ -9,6 +9,7 @@ import type {
   Waypoint,
   Radios,
   Waypoints,
+  Misc,
 } from "../../types/dtcTypes";
 import { bullseyes } from "@/config/bullseye";
 import type { theatre } from "@/types/theatre";
@@ -213,6 +214,10 @@ export const useDTCexports = () => {
     } satisfies Datalink;
   };
 
+  const getMISC = (): Misc => {
+    return selectedFlight.value.misc;
+  };
+
   function getDTC(input: {
     CMS: boolean;
     Datalink: boolean;
@@ -228,6 +233,7 @@ export const useDTCexports = () => {
     if (input.Waypoints) flight.Waypoints = getWaypoints(input.Waypoints);
     if (input.Radios) flight.Radios = getComms();
     if (input.Datalink) flight.Datalink = getDataLink();
+    if (input.Misc) flight.Misc = getMISC();
     flight.Upload = {
       CMS: false,
       Datalink: input.Datalink,
@@ -235,7 +241,7 @@ export const useDTCexports = () => {
       Waypoints: !!input.Waypoints,
       HARMHTS: false,
       MFDs: false,
-      Misc: true,
+      Misc: input.Misc,
     };
 
     console.log("exporting:", JSON.stringify(flight));

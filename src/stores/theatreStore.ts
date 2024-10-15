@@ -1,11 +1,14 @@
 import type { theatre } from "@/types/theatre";
 import { defineStore } from "pinia";
 import { ref, type Ref } from "vue";
-// kinda not used since packages are used as top level for now.
-// might populate if needed.
+
 export const useGlobalStore = defineStore("global", () => {
+  // this is used to show that a file has been laoded for the UI
   const file = ref(false);
+  // globally define used theatre, to filter out dropdowns etc
   const theater: Ref<theatre> = ref("Caucasus");
+  // I used this to arbitrarily force reloads using watch functions. Technicially should be here
   const stateChanged = ref(0);
-  return { file, stateChanged, theater };
+  const missionStartTime = ref(0);
+  return { file, stateChanged, theater, missionStartTime };
 });

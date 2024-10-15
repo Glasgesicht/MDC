@@ -1,5 +1,5 @@
 <template>
-  <div style="display: block" class="parent">
+  <div style="display: block" class="parent" v-if="selectedFlight.callsign">
     <h3>Waypoints</h3>
     <DataTable
       showGridlines
@@ -94,7 +94,7 @@
         <Button label="unhide selected" @click="unhideSelected()" class="item"
       /></template>
     </DataTable>
-    <div class="content parent">
+    <div class="content parent" v-if="selectedFlight.callsign">
       <div class="content">
         <h3 style="padding-bottom: 11px; min-width: 400px">
           Designated Impact Points (DMPIs)
@@ -149,6 +149,7 @@
         </DataTable>
       </div>
       <div>
+        a{{ selectedFlight.misc }}
         <h3 style="line-height: 90%">
           Bullseye locations<br /><a
             style="
@@ -173,7 +174,7 @@
                 binary
                 :trueValue="data.wp"
                 v-model="selectedBullseye"
-                :value="selectedBullseye"
+                :value="selectedBullseye || 0"
                 :falseValue="null"
               />
             </template>
@@ -219,6 +220,7 @@
       </template>
     </Dialog>
   </div>
+  <div v-else><h2>Please select a flight to edit</h2></div>
 </template>
 
 <script setup lang="ts">
@@ -231,7 +233,7 @@ import Checkbox from "primevue/checkbox";
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, type WritableComputedRef } from "vue";
 import InputNumber from "primevue/inputnumber";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
@@ -258,14 +260,17 @@ const bullseyes = computed(() => {
   return selectedPKG.value.bullseyes;
 });
 
-const selectedBullseye = computed({
-  get(): number {
-    return selectedFlight.value.misc.selectedBullseye;
+const selectedBullseye: WritableComputedRef<number | null> = computed({
+  get(): number | null {
+    if (!selectedFlight.value) return null;
+    return selectedFlight.value.misc.BullseyeWP;
   },
 
-  set(v: number) {
-    selectedFlight.value.misc.selectedBullseye = v;
-    selectedPKG.value.flights.forEach((n) => (n.misc.selectedBullseye = v));
+  set(v: number | null) {
+    if (!v) return;
+    if (selectedFlight.value.misc.BullseyeWP)
+      selectedFlight.value.misc.BullseyeWP = v;
+    selectedPKG.value.flights.forEach((n) => (n.misc.BullseyeWP = v));
   },
 });
 
