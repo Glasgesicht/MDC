@@ -19,6 +19,7 @@ import { DateTime } from "luxon";
 import { toRaw } from "vue";
 import type { theatre } from "@/types/theatre";
 import { bullseyes } from "./bullseye";
+import { get } from "lodash";
 
 export function processCF(
   payload:
@@ -72,8 +73,9 @@ export function processCF(
   }
 
   function parseCfXML(input: string) {
+    const { selectedFlight } = storeToRefs(useFlightStore());
     const { packages } = storeToRefs(usePackageStore());
-    const { theater } = storeToRefs(useGlobalStore());
+    const { theater, missionStartTime } = storeToRefs(useGlobalStore());
     const parser = new xml2js.Parser({
       explicitArray: true,
       ignoreAttrs: true,
@@ -82,6 +84,9 @@ export function processCF(
     parser
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
+        missionStartTime.value = parseInt(
+          res.Mission.Environment[0].Starttime[0]
+        );
         console.dir(res); // Data as Object
         theater.value = (() => {
           if (res.Mission.Theater[0].toLowerCase().includes("caucasus"))
@@ -221,6 +226,7 @@ export function processCF(
   }
 
   function makeFlight(rt: RouteEntity[], packge: PackageEntity): Flight[] {
+    const { selectedFlight } = storeToRefs(useFlightStore());
     if (!rt) return [];
     return rt
       .filter((route) => route.PackageTag[0] === packge.Tag[0])
@@ -268,9 +274,26 @@ export function processCF(
           gameplan: "",
           task: "",
           flightTask: "",
-          misc: {
-            selectedBullseye: 25, // default value
-          },
+          misc: structuredClone({
+            Bingo: 2400,
+            BingoToBeUpdated: false,
+            BullseyeToBeUpdated: true,
+            BullseyeWP: 25,
+            CARAALOW: 700,
+            CARAALOWToBeUpdated: true,
+            ILSCourse: 0,
+            ILSFrequency: 0,
+            ILSToBeUpdated: false,
+            LaserSettingsToBeUpdated: false,
+            LaserStartTime: 0,
+            LSTCode: 0,
+            MSLFloor: 0,
+            MSLFloorToBeUpdated: false,
+            TACANBand: 0,
+            TACANChannel: 0,
+            TACANToBeUpdated: false,
+            TGPCode: 1688,
+          }),
           callsign: getCallsign(mCurr),
           callsignNumber: parseInt(mCurr.CallsignNumber[0]),
           MSNumber: mCurr.MSNnumber[0],

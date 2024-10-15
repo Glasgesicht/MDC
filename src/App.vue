@@ -5,7 +5,7 @@ import FlightSettings from "./mdcpages/Settings/flightSettings.vue";
 
 import Menu from "primevue/menu";
 import Dropdown from "primevue/dropdown";
-import { ref, provide, computed, type Ref } from "vue";
+import { ref, provide, computed, type Ref, watch } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -27,10 +27,9 @@ import type { MenuItem } from "primevue/menuitem";
 import JSZip from "jszip";
 
 const showROE = ref(false);
-const { selectedPKG, packages, allFlightsFromPackage } = storeToRefs(
-  usePackageStore()
-);
+const { selectedPKG, packages } = storeToRefs(usePackageStore());
 const { selectedFlight } = storeToRefs(useFlightStore());
+const { reset } = useFlightStore();
 
 provide("showROE", showROE);
 const pageActive = ref("");
@@ -306,7 +305,7 @@ const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
         v-if="file"
         v-model="selectedFlight"
         class="m-5"
-        :options="allFlightsFromPackage"
+        :options="selectedPKG.flights"
         optionLabel="callsign"
         placeholder="Select A Flight"
         ><template #option="{ option }"

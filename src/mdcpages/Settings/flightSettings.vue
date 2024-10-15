@@ -523,13 +523,13 @@ const groupedFlights = computed(() =>
         <Dropdown
           :options="selectedPKG.bullseyes"
           option-value="wp"
-          v-model:model-value="selectedFlight.misc.selectedBullseye"
+          v-model:model-value="selectedFlight.misc.BullseyeWP"
         >
           <template #value
-            >{{ selectedFlight.misc.selectedBullseye }}:
+            >{{ selectedFlight.misc.BullseyeWP }}:
             {{
               selectedPKG.bullseyes.find(
-                (n) => n.wp === selectedFlight.misc.selectedBullseye
+                (n) => n.wp === selectedFlight.misc.BullseyeWP
               )?.name
             }}</template
           ><template #option="{ option }"
@@ -589,7 +589,7 @@ const groupedFlights = computed(() =>
           option-label="NAME"
           v-model="selectedFlight.DEP"
           @change="
-            (e) => {
+            (e:any) => {
               assignAirport('DEP', e.value);
             }
           "
@@ -612,7 +612,7 @@ const groupedFlights = computed(() =>
           option-label="NAME"
           v-model="selectedFlight.ARR"
           @change="
-            (e) => {
+            (e:any) => {
               assignAirport('ARR', e.value);
             }
           "
@@ -633,7 +633,7 @@ const groupedFlights = computed(() =>
           option-label="NAME"
           v-model="selectedFlight.ALT"
           @change="
-            (e) => {
+            (e:any) => {
               assignAirport('ALT', e.value);
             }
           "
@@ -655,7 +655,7 @@ const groupedFlights = computed(() =>
             option-label="description"
             :model-value="selectedFreqs.checkUHF"
             @change="
-              (e) => {
+              (e:any) => {
                 selectedFlight.comms.radio1[4] = {
                   description: e.value.description,
                   freq: e.value.freq,
@@ -681,7 +681,7 @@ const groupedFlights = computed(() =>
             v-model="selectedFreqs.checkVHF"
             option-label="description"
             @change="
-              (e) => {
+              (e:any) => {
                 selectedFlight.comms.radio2[4] = {
                   description: e.value.description,
                   freq: e.value.freq,
@@ -709,7 +709,7 @@ const groupedFlights = computed(() =>
             v-model="selectedFreqs.tactUHF"
             option-label="description"
             @change="
-              (e) => {
+              (e:any) => {
                 selectedFlight.comms.radio1[5] = {
                   description: e.value.description,
                   freq: e.value.freq,
@@ -735,7 +735,7 @@ const groupedFlights = computed(() =>
             v-model="selectedFreqs.tactVHF"
             option-label="description"
             @change="
-              (e) => {
+              (e:any) => {
                 selectedFlight.comms.radio2[5] = {
                   description: e.value.description,
                   freq: e.value.freq,
@@ -768,7 +768,7 @@ const groupedFlights = computed(() =>
           v-model="tanker"
           option-label="name"
           @change="
-            (e) => {
+            (e:any) => {
               tanker = e.value;
             }
           "
