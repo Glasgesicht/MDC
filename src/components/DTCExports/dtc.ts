@@ -140,7 +140,7 @@ export const useDTCexports = () => {
 
     if (mode === "all" || mode === "dmpi")
       selectedFlight.value.dmpis.forEach((dmpi, i) => {
-        console.log(toLatString(dmpi.latitude));
+        // console.log(toLatString(dmpi.latitude));
 
         wpts.Waypoints.push({
           Elevation: dmpi.altitude,
@@ -244,7 +244,7 @@ export const useDTCexports = () => {
       Misc: input.Misc,
     };
 
-    console.log("exporting:", JSON.stringify(flight));
+    // console.log("exporting:", JSON.stringify(flight));
     return flight;
   }
 

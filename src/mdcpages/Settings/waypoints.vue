@@ -149,7 +149,6 @@
         </DataTable>
       </div>
       <div>
-        a{{ selectedFlight.misc }}
         <h3 style="line-height: 90%">
           Bullseye locations<br /><a
             style="
@@ -158,7 +157,8 @@
               font-size: 13px;
               margin-top: 0px;
             "
-            >(These are package-wide)</a
+            >(These are package-wide but can be overwritten in the flight's
+            settings)</a
           >
         </h3>
 

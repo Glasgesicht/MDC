@@ -171,13 +171,15 @@ export function processCF(
         useFlightStore().reset();
         packages.value = _packages;
         //console.log(toRaw(agencies.value));
-        console.log(_packages);
+        // console.log(_packages);
       })
       .catch((error) => console.error("Error parsing XML:", error));
   }
 
   function getAircraftType(type: string): string {
     switch (type) {
+      case "AH-64D_BLK":
+        return "AH-64D";
       case "F-16C_50":
         return "F-16CM";
       case "F-15ESE":
