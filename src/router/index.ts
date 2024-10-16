@@ -73,7 +73,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const { selectedFlight } = storeToRefs(useFlightStore());
   if (!selectedFlight.value) return false;
-  return false;
+  return true;
 });
 
 export default router;

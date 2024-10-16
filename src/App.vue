@@ -20,8 +20,9 @@ import { RouterView } from "vue-router";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
+const { reset: resetPackage } = usePackageStore();
 const { selectedFlight } = storeToRefs(useFlightStore());
-const { reset } = useFlightStore();
+const { reset: resetFlight } = useFlightStore();
 
 provide("showROE", showROE);
 
@@ -47,6 +48,17 @@ const items: Ref<MenuItem[]> = computed(() => [
 
         command: () => {
           document.getElementById("fileUpload")?.click();
+        },
+      },
+      {
+        icon: "pi pi-times",
+        label: "Reset App",
+        visible: file.value,
+
+        command: () => {
+          file.value = false;
+          resetFlight();
+          resetPackage();
         },
       },
       {
