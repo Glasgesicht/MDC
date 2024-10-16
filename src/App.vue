@@ -1,30 +1,22 @@
 <script setup lang="ts">
-import GeneralSettings from "./mdcpages/Settings/generalSettings.vue";
-import PackageSettings from "./mdcpages/Settings/packageSettings.vue";
-import FlightSettings from "./mdcpages/Settings/flightSettings.vue";
-
 import Menu from "primevue/menu";
 import Dropdown from "primevue/dropdown";
 import { ref, provide, computed, type Ref, watch } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
-import { toJpeg } from "html-to-image";
 import { useGlobalStore } from "./stores/theatreStore";
 import { processCF } from "./config/parseCF";
 import { useDTCexports } from "@/components/DTCExports/dtc";
-// import Waypoints from "./mdcpages/waypoints.vue";
-import Datacard from "./mdcpages/datacard.vue";
 import Newsteerpoints from "./mdcpages/newsteerpoints.vue";
 import Newdatacard from "./mdcpages/newdatacard.vue";
 import Newcomms from "./mdcpages/newcomms.vue";
-import Dmpi from "./mdcpages/dmpi.vue";
-import Gameplan from "./mdcpages/Gameplan.vue";
 import Newbriefing from "./mdcpages/newbriefing.vue";
-import WaypointsSettings from "./mdcpages/Settings/waypoints.vue";
-import examplePage from "./mdcpages/examplePage/examplePage.vue";
 import type { MenuItem } from "primevue/menuitem";
-import JSZip from "jszip";
+import EditHistory from "./components/editHistory.vue";
+import router from "./router";
+import { download } from "./utils/download";
+import { RouterView } from "vue-router";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
@@ -32,7 +24,6 @@ const { selectedFlight } = storeToRefs(useFlightStore());
 const { reset } = useFlightStore();
 
 provide("showROE", showROE);
-const pageActive = ref("");
 
 const { file } = storeToRefs(useGlobalStore());
 
@@ -42,7 +33,7 @@ const onChangedFile = async (payload: any) => {
   file.value = true;
   processCF(payload.target.files[0]);
   filename.value = payload.target.files[0].name;
-  pageActive.value = "setting2";
+  router.push({ name: "packageSettings" });
 };
 
 const items: Ref<MenuItem[]> = computed(() => [
@@ -62,51 +53,40 @@ const items: Ref<MenuItem[]> = computed(() => [
         label: "Package Settings",
         icon: "pi pi-users",
         command: () => {
-          pageActive.value = "setting2";
+          router.push({ name: "packageSettings" });
         },
       },
       {
         label: "Flight Settings",
         icon: "pi pi-user-edit",
         command: () => {
-          pageActive.value = "setting3";
+          router.push({ name: "flightSettings" });
         },
       },
       {
         label: "Steerpoints",
         icon: "pi pi-user-edit",
         command: () => {
-          pageActive.value = "setting4";
+          router.push({ name: "waypointsSettings" });
         },
       },
     ],
   },
   {
     label: "Preview",
-    visible: file.value,
     items: [
-      /*{
-        label: "Gameplan",
-        command: () => {
-          pageActive.value = "gameplan";
-        },
-      },*/
       {
         label: "Briefing",
+        disabled: !selectedFlight.value.callsign,
         command: () => {
-          pageActive.value = "newbriefing";
+          router.push({ name: "briefing" });
         },
       },
-      /*{
-        label: "Waypoints",
-        command: () => {
-          pageActive.value = "waypoints";
-        },
-      },*/
       {
         label: "Steerpoints",
+        disabled: !selectedFlight.value.callsign,
         command: () => {
-          pageActive.value = "newsteerpoints";
+          router.push({ name: "steerpoints" });
         },
       },
       /*{
@@ -117,36 +97,33 @@ const items: Ref<MenuItem[]> = computed(() => [
       },*/
       {
         label: "Datacard",
+        disabled: !selectedFlight.value.callsign,
         command: () => {
-          pageActive.value = "newdatacard";
+          router.push({ name: "datacard" });
         },
       },
       {
         label: "Comms",
+        disabled: !selectedFlight.value.callsign,
         command: () => {
-          pageActive.value = "newcomms";
+          router.push({ name: "comms" });
         },
       },
-      {
-        label: "DMPI",
-        command: () => {
-          pageActive.value = "dmpi";
-        },
-      },
-      {
+      /*{
         label: "example Page",
         command: () => {
           pageActive.value = "example";
         },
-      },
+      },*/
     ],
   },
   {
     label: "Export",
-    visible: file.value,
+    disabled: !selectedFlight.value.callsign,
     items: [
       {
         label: "Get DTC",
+        disabled: !selectedFlight.value.callsign,
         command: () => {
           // handle click
           if (selectedFlight.value.callsign)
@@ -166,123 +143,38 @@ const items: Ref<MenuItem[]> = computed(() => [
       {
         label: "Get PNG",
         disabled: ![
-          "newbriefing",
-          "newsteerpoints",
-          "newdatacard",
-          "newcomms",
-        ].includes(pageActive.value),
+          "briefing",
+          "steerpoints",
+          "datacard",
+          "comms", // TODO, clear this up and use route meta instead
+        ].includes(router.currentRoute.value.name as string),
         command: () => {
           // handle click
-          downloadPageAsImage();
+          download().downloadPageAsImage();
         },
       },
       {
         label: "Get .ZIP",
+        disabled: !selectedFlight.value.callsign,
         command: () => {
           // handle click
-          createZip();
+          showExport.value = true;
+          download()
+            .createZip()
+            .then(() => {
+              showExport.value = false;
+            });
         },
       },
     ],
   },
 ]);
+// @ts-ignore
+const version = `${__APP_VERSION__} (${new Date( // @ts-ignore
+  __APP_VERSION_DATE__
+).toLocaleDateString("se-SE")})`;
 
-// Helper function to ensure the image has loaded before proceeding
-const loadImage = (image: HTMLImageElement): Promise<HTMLImageElement> => {
-  return new Promise((resolve, reject) => {
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("Failed to load image"));
-  });
-};
-
-const downloadPageAsImage = async () => {
-  const pageElement = document.getElementsByName("mdcpage")[0];
-  const dataUrl = await toJpeg(pageElement, { pixelRatio: 1 });
-  const image = new Image();
-  image.src = dataUrl;
-
-  // Ensure the image has loaded before attempting to convert it to a blob
-  await loadImage(image);
-
-  const imageBlob = await imageToBlob(image);
-
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(imageBlob);
-  link.download = `${selectedFlight.value.callsign}_${pageActive.value}.png`;
-  link.click();
-  URL.revokeObjectURL(link.href);
-};
-
-const createZip = async () => {
-  const pagesToInclude = [
-    "newbriefing",
-    "newsteerpoints",
-    "newdatacard",
-    "newcomms",
-  ];
-
-  let images = new Array();
-
-  for (let i = 0; i < pagesToInclude.length; i++) {
-    pageActive.value = pagesToInclude[i];
-    await new Promise((resolve) => setTimeout(() => resolve(true), 100));
-    const dataUrl = await toJpeg(document.getElementsByName("mdcpage")[0], {
-      pixelRatio: 1,
-    });
-    const image = new Image();
-    image.src = dataUrl;
-    images.push(await loadImage(image));
-  }
-  await downloadImagesAsZip(images).then(() => {
-    images = new Array();
-  });
-};
-
-const imageToBlob = async (image: HTMLImageElement): Promise<Blob> => {
-  const canvas = document.createElement("canvas");
-  canvas.width = image.naturalWidth;
-  canvas.height = image.naturalHeight;
-
-  const context = canvas.getContext("2d");
-  if (!context) {
-    throw new Error("Could not create canvas context");
-  }
-
-  context.drawImage(image, 0, 0);
-
-  return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject(new Error("Failed to convert image to blob"));
-      }
-    }, "image/png");
-  });
-};
-
-const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
-  const zip = new JSZip();
-
-  for (let i = 0; i < pageImages.length; i++) {
-    const image = pageImages[i];
-    const imageName = `page_${i + 1}.png`;
-
-    // Ensure the image is converted to a blob before adding it to the zip file
-    const imageBlob = await imageToBlob(image);
-    zip.file(imageName, imageBlob);
-  }
-
-  zip.generateAsync({ type: "blob" }).then((blob) => {
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${selectedFlight.value.callsign}.zip`;
-    link.click();
-
-    // Clean up
-    URL.revokeObjectURL(link.href);
-  });
-};
+const showExport = ref(false);
 </script>
 
 <template>
@@ -319,30 +211,19 @@ const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
       </Dropdown>
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
-      <GeneralSettings v-if="pageActive === 'setting1'" name="mdcpage" />
-      <PackageSettings v-if="pageActive === 'setting2'" name="mdcpage" />
-      <FlightSettings v-if="pageActive === 'setting3'" name="mdcpage" />
-      <WaypointsSettings v-if="pageActive === 'setting4'" name="mdcpage" />
-      <Gameplan v-if="pageActive === 'gameplan'" :pagenr="1" name="mdcpage" />
-      <Newbriefing
-        v-if="pageActive === 'newbriefing'"
-        :pagenr="1"
-        name="mdcpage"
-      />
-      <Newsteerpoints
-        v-if="pageActive === 'newsteerpoints'"
-        :pagenr="2"
-        name="mdcpage"
-      />
-      <Datacard v-if="pageActive === 'datacard'" :pagenr="5" name="mdcpage" />
-      <Newdatacard
-        v-if="pageActive === 'newdatacard'"
-        :pagenr="3"
-        name="mdcpage"
-      />
-      <Newcomms v-if="pageActive === 'newcomms'" :pagenr="4" name="mdcpage" />
-      <examplePage v-if="pageActive === 'example'" />
-      <div class="mcdimages"></div>
+      <EditHistory />
+      <div v-if="showExport">
+        <div
+          id="mdcpages"
+          style="display: flex; position: absolute; top: -2000px"
+        >
+          <Newbriefing :pagenr="1" />
+          <Newdatacard :pagenr="2" />
+          <Newsteerpoints :pagenr="3" />
+          <Newcomms :pagenr="4" />
+        </div>
+      </div>
+      <div name="mdcpage"><RouterView /></div>
     </div>
   </div>
   <input
@@ -353,6 +234,9 @@ const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
     v-on:change="onChangedFile"
     accept=".cf"
   />
+  <div style="text-align: center; position: absolute; bottom: 0">
+    version: {{ version }}
+  </div>
 </template>
 
 <style scoped>

@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
+import packageInfo from "./package.json"; // Import package.json
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -20,5 +21,9 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
+  },
+  define: {
+    __APP_VERSION__: JSON.stringify(packageInfo.version), // Define a global constant
+    __APP_VERSION_DATE__: new Date(),
   },
 });

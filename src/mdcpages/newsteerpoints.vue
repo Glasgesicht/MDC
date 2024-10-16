@@ -97,8 +97,10 @@ const calculateTakeoffTime = (
   takeoffTimeStr: string,
   activityStr: string
 ): string => {
+  if (!activityStr || !activityStr) return "";
   const takeoffTime = takeoffTimeStr.split(":").map(Number);
   const activity = activityStr.split(":").map(Number);
+  if (!takeoffTime || !activity) return "";
 
   const hour = takeoffTime[0] + activity[0];
   const minute = takeoffTime[1] + activity[1];
@@ -129,7 +131,7 @@ const showROE = inject("showROE");
 </script>
 
 <template>
-  <div class="mdcpage bdr">
+  <div class="mdcpage bdr" id="mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>

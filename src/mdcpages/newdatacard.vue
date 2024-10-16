@@ -84,16 +84,10 @@ const AAR = selectedFlight?.value.waypoints
   .map((n) => {
     return { time: n.tot, activity: n.activity };
   });
-
-const agencies = selectedPKG.value.agencies;
-
-const showROE = inject("showROE");
-
-const array_name = [{}];
 </script>
 
 <template>
-  <div class="mdcpage bdr">
+  <div class="bdr mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>

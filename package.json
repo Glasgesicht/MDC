@@ -1,6 +1,6 @@
 {
   "name": "mdc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@vueuse/core": "^11.1.0",
     "base64-js": "^1.5.1",
     "html-to-image": "^1.11.11",
     "jszip": "^3.10.1",
