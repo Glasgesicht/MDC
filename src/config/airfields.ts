@@ -1,3 +1,5 @@
+import type { theatre } from "@/types/theatre";
+
 export const airports: {
   NAME: string;
   ICAO: string;
@@ -10,6 +12,7 @@ export const airports: {
   LEN: string;
   ATIS: comm;
   COURSE: string[];
+  map: theatre;
 }[] = [
   {
     NAME: "RAF AKROTIRI",
@@ -23,6 +26,7 @@ export const airports: {
     ELEV: "72 ft",
     LEN: "9005 ft",
     COURSE: ["283"],
+    map: "Syria",
   },
   {
     NAME: "INCIRLIK AB",
@@ -36,6 +40,7 @@ export const airports: {
     ELEV: "200 ft",
     LEN: "10.000 ft",
     COURSE: ["049", "229"],
+    map: "Syria",
   },
   {
     NAME: "HATAY",
@@ -49,6 +54,7 @@ export const airports: {
     TACAN: "74X",
     TOWER: { vhf: "128.525", uhf: "" },
     COURSE: ["039", "216"],
+    map: "Syria",
   },
   {
     NAME: "BEIRUT",
@@ -62,6 +68,7 @@ export const airports: {
     TACAN: "74X",
     TOWER: { vhf: "118.900", uhf: "" },
     COURSE: ["039", "216"],
+    map: "Syria",
   },
   {
     NAME: "GAZIPASA",
@@ -75,10 +82,11 @@ export const airports: {
     TACAN: "89X",
     TOWER: { vhf: "119.250", uhf: "" },
     COURSE: ["039", "216"],
+    map: "Syria",
   },
 ];
 
-export const airfieldEmpty = {
+export const airfieldEmpty: (typeof airports)[0] = {
   NAME: "",
   ICAO: "",
   ATIS: { uhf: "", vhf: "" },
@@ -90,6 +98,7 @@ export const airfieldEmpty = {
   ILS: [""],
   ELEV: "",
   LEN: "",
+  map: "Syria",
 };
 
 export type Airport = (typeof airports)[0];

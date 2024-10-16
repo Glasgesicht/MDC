@@ -298,18 +298,33 @@ const showROE = inject("showROE");
       </div>
     </div>
     <div class="c36 parent" v-for="index in new Array(3).keys()">
-      <div class="c2 g bdr">{{ selectedPKG.bullseyes[index].wp }}</div>
+      <div class="c2 g bdr">
+        {{
+          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].wp : ""
+        }}
+      </div>
       <div class="c3 g bdr">BULLS</div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedPKG.bullseyes[index].name }}
+        {{
+          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].name : ""
+        }}
       </div>
       <div :class="`c9 hr bdr`">
-        {{ selectedPKG.bullseyes[index].lat }} /
-        {{ selectedPKG.bullseyes[index].long }}
+        {{
+          selectedPKG.bullseyes[index]
+            ? selectedPKG.bullseyes[index].lat + " / "
+            : ""
+        }}
+
+        {{
+          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].long : ""
+        }}
       </div>
       <div class="c3 hg bdr"></div>
       <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedPKG.bullseyes[index].note }}
+        {{
+          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].note : ""
+        }}
       </div>
     </div>
 

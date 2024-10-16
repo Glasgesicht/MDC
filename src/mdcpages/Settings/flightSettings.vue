@@ -38,7 +38,7 @@ const { allFlightsFromPackage, packages, selectedPKG } = storeToRefs(
 );
 const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
 const { updateFligh, updateLadder } = useFlightStore();
-const { file, stateChanged } = storeToRefs(useGlobalStore());
+const { file, stateChanged, theater } = storeToRefs(useGlobalStore());
 
 function callsignChangeEvent(event: any) {
   if (event.value.callsign) {
@@ -583,7 +583,7 @@ const groupedFlights = computed(() =>
       <div class="item5">
         <p>DEPART</p>
         <Dropdown
-          :options="airports"
+          :options="airports.filter((val) => val.map === theater)"
           class="dropdown"
           severity="danger"
           option-label="NAME"
@@ -607,7 +607,7 @@ const groupedFlights = computed(() =>
       <div class="item5">
         <p>ARRIVE</p>
         <Dropdown
-          :options="airports"
+          :options="airports.filter((val) => val.map === theater)"
           severity="danger"
           option-label="NAME"
           v-model="selectedFlight.ARR"
@@ -628,7 +628,7 @@ const groupedFlights = computed(() =>
       <div class="item5">
         <p>ALTERNATE</p>
         <Dropdown
-          :options="airports"
+          :options="airports.filter((val) => val.map === theater)"
           severity="danger"
           option-label="NAME"
           v-model="selectedFlight.ALT"
