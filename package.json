@@ -1,6 +1,6 @@
 {
   "name": "mdc",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "build": "vite build",
     "type-check": "vue-tsc --build --force",
-    "deploy": "gh-pages -d dist"
+    "push": "vite build && npx gh-pages -d dist"
   },
   "dependencies": {
     "@vueuse/core": "^11.1.0",

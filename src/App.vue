@@ -13,10 +13,11 @@ import Newdatacard from "./mdcpages/newdatacard.vue";
 import Newcomms from "./mdcpages/newcomms.vue";
 import Newbriefing from "./mdcpages/newbriefing.vue";
 import type { MenuItem } from "primevue/menuitem";
-import EditHistory from "./components/editHistory.vue";
+import EditHistory from "./components/history/editHistory.vue";
 import router from "./router";
 import { download } from "./utils/download";
 import { RouterView } from "vue-router";
+import { useEditHistory } from "./components/history/editHistory";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
@@ -185,6 +186,7 @@ const items: Ref<MenuItem[]> = computed(() => [
 const version = `${__APP_VERSION__} (${new Date( // @ts-ignore
   __APP_VERSION_DATE__
 ).toLocaleDateString("se-SE")})`;
+const { resetHistory } = useEditHistory();
 
 const showExport = ref(false);
 </script>
@@ -210,6 +212,7 @@ const showExport = ref(false);
         v-model="selectedFlight"
         class="m-5"
         :options="selectedPKG.flights"
+        @change="resetHistory()"
         optionLabel="callsign"
         placeholder="Select A Flight"
         ><template #option="{ option }"
