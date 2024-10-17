@@ -1,4 +1,27 @@
 // this doesn't account of the magnetic whaatever, idk, it's like 6° off in syria
+
+export function generateInlineGrid(x: number, y: number) {
+  return `;grid-column-end: span ${x};
+  grid-row-end: span ${y};
+  display: inline-grid;
+  grid-template-columns: repeat(${x}, 1fr);
+  grid-template-rows: repeat(${y}, 1fr);`;
+}
+
+export function generateInlineGridFixed(
+  col: number,
+  row: number,
+  x: number,
+  y: number
+) {
+  return `
+  ;grid-column: ${col} / span ${x};
+  grid-row: ${row} / span ${y};
+  display: inline-grid;
+  grid-template-columns: repeat(${x}, 1fr);
+  grid-template-rows: repeat(${y}, 1fr);`;
+}
+
 export function calculateHeading(
   lat1: number,
   lon1: number,
@@ -22,7 +45,7 @@ export function calculateHeading(
   let bearing = Math.atan2(y, x);
 
   // Convert the bearing from radians to degrees
-  bearing = toDegrees(bearing);
+  bearing = Math.abs(toDegrees(bearing));
 
   bearing = bearing % 360;
 
@@ -68,7 +91,10 @@ export function getSTN(
 
 export function toLatString(lat: number) {
   if (lat)
-    return `${lat > 0 ? "N" : "S"} ${Math.floor(lat)}°${((lat % 1) * 60)
+    return `${lat > 0 ? "N" : "S"} ${Math.floor(Math.abs(lat))}°${(
+      (Math.abs(lat) % 1) *
+      60
+    )
       .toFixed(3)
       .padStart(6, "0")}’`;
   return "";
@@ -76,10 +102,10 @@ export function toLatString(lat: number) {
 
 export function toLongString(lon: number) {
   if (lon)
-    return `${lon > 0 ? "E" : "W"} ${String(Math.floor(lon)).padStart(
+    return `${lon > 0 ? "E" : "W"} ${String(Math.floor(Math.abs(lon))).padStart(
       3,
       "0"
-    )}°${((lon % 1) * 60).toFixed(3).padStart(6, "0")}’`;
+    )}°${((Math.abs(lon) % 1) * 60).toFixed(3).padStart(6, "0")}’`;
   return "";
 }
 

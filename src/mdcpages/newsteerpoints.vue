@@ -3,7 +3,12 @@ import { inject, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 
-import { calculateHeading, calculateDistance } from "@/utils/utilFunctions";
+import {
+  calculateHeading,
+  calculateDistance,
+  toLatString,
+  toLongString,
+} from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 const { selectedFlight } = storeToRefs(useFlightStore());
@@ -31,32 +36,6 @@ const getBullseyeLocation = (index: number) => {
   );
 
   return bullz?.lat + " " + bullz?.lat;
-};
-
-const toLatString = (lat: number) => {
-  if (lat)
-    return (
-      `${lat > 0 ? "N" : "S"} ${lat.toFixed(0).padStart(2, "0")}°${(
-        (lat % 1) *
-        60
-      )
-        .toFixed(3)
-        .padStart(6, "0")}` + "'"
-    );
-  return "";
-};
-
-const toLongString = (lon: number) => {
-  if (lon)
-    return (
-      `${lon > 0 ? "E" : "W"} ${lon.toFixed(0).padStart(3, "0")}°${(
-        (lon % 1) *
-        60
-      )
-        .toFixed(3)
-        .padStart(6, "0")}` + "'"
-    );
-  return "";
 };
 
 const toLatLongString = (lat: number, long: number) => {
