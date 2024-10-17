@@ -130,7 +130,7 @@ export const download = () => {
 
     for (let i = 0; i < pageImages.length; i++) {
       const image = pageImages[i];
-      const imageName = `page_${i + 1}.png`;
+      const imageName = `P${i + 11}.png`;
 
       // Ensure the image is converted to a blob before adding it to the zip file
       const imageBlob = await imageToBlob(image);
