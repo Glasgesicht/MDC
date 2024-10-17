@@ -11,9 +11,10 @@ Currently planned features include:
 2. Selective export to JPEG/ZIP for single pages, flights and packages. [60%]
 3. Save and Load Presets, independently of CF Files. [Requires Backend work eventually]
 4. Chooseable Airfields with their properties. [Just a matter of adding them]
-5. DTC export [already working for the most part]
+5. DTC export [already working for the most part, Missing some MISC and HARM settings]
 6. import .miz files, as well as DTC json and .cf files [currently only .cf is supported]
-7. Many more features.
+7. QOL features, such as fully working Undo/Redo
+8. Many more features.
 
 ### to get started:
 

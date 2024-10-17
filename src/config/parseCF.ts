@@ -13,7 +13,7 @@ import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
 import { flights } from "./flights";
 import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
-import { useFlightStore } from "@/stores/flightStore";
+import { initState, useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
 import { DateTime } from "luxon";
 import { toRaw } from "vue";
@@ -228,7 +228,6 @@ export function processCF(
   }
 
   function makeFlight(rt: RouteEntity[], packge: PackageEntity): Flight[] {
-    const { selectedFlight } = storeToRefs(useFlightStore());
     if (!rt) return [];
     return rt
       .filter((route) => route.PackageTag[0] === packge.Tag[0])
@@ -239,6 +238,8 @@ export function processCF(
           )
       )
       .map((mCurr, i, pkg): Flight => {
+        if (!mCurr.Waypoints || !mCurr.Waypoints[0])
+          return structuredClone(initState);
         const comm = assignComms(pkg, i);
 
         let startTime = DateTime.fromJSDate(
