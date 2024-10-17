@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- script setup lang="ts">
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";

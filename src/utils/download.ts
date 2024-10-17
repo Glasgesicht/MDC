@@ -48,13 +48,6 @@ export const download = () => {
   const createZip = async () => {
     await new Promise((resolve) => setTimeout(() => resolve(true), 600));
 
-    const pagesToInclude = [
-      "newbriefing",
-      "newsteerpoints",
-      "newdatacard",
-      "newcomms",
-    ];
-
     let images = new Array();
 
     const pagesDiv = document.getElementById("mdcpages");
@@ -62,25 +55,34 @@ export const download = () => {
       console.error("Could not find element 'mdcpages'");
       return;
     }
+    console.log(pagesDiv);
 
-    const childDivs = pagesDiv.getElementsByTagName("div");
+    const childDivs = Array.from(pagesDiv.children)
+      .filter((child) => child.tagName.toLowerCase() === "div")
+      .slice(0, 4);
     if (!childDivs) {
       console.error("Could not find child elements of 'mdcpages'");
       return;
     }
 
-    for (let i = 0; i < pagesToInclude.length; i++) {
+    console.log(childDivs);
+
+    console.log("len:", childDivs.length);
+
+    for (let i = 0; i < childDivs.length; i++) {
       await new Promise((resolve) => setTimeout(() => resolve(true), 100));
       const pageElement = childDivs[i];
       if (!pageElement) {
-        console.error("Could not find element 'mdcpage' at index", i);
+        console.error("Could not find element at index", i);
         continue;
       }
 
       try {
-        const dataUrl = await toJpeg(pageElement, { pixelRatio: 1 });
+        const dataUrl = await toJpeg(pageElement as HTMLElement, {
+          pixelRatio: 1,
+        });
         if (!dataUrl) {
-          console.error("Failed to create dataUrl for page", pagesToInclude[i]);
+          console.error("Failed to create dataUrl for page", i);
           continue;
         }
 
@@ -89,31 +91,24 @@ export const download = () => {
         try {
           images.push(await loadImage(image));
         } catch (error) {
-          console.error(
-            "Failed to load image for page",
-            pagesToInclude[i],
-            error
-          );
+          console.error("Failed to load image for page", i, error);
         }
       } catch (error) {
-        console.error(
-          "Failed to create image for page",
-          pagesToInclude[i],
-          error
-        );
+        console.error("Failed to create image for page", i, error);
       }
     }
 
-    try {
-      await downloadImagesAsZip(images);
-    } catch (error) {
-      console.error("Failed to download images as zip", error);
-    } finally {
-      images = new Array();
-    }
+    await downloadImagesAsZip(images)
+      .catch((error) => {
+        console.error("Failed to download images as zip", error);
+      })
+      .finally(() => {
+        images = new Array();
+      });
   };
 
   const imageToBlob = async (image: HTMLImageElement): Promise<Blob> => {
+    console.log("31234512312");
     const canvas = document.createElement("canvas");
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
@@ -138,6 +133,7 @@ export const download = () => {
 
   const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
     const zip = new JSZip();
+    console.log("pageImages: ", pageImages.length);
 
     for (let i = 0; i < pageImages.length; i++) {
       const image = pageImages[i];
@@ -160,8 +156,6 @@ export const download = () => {
   };
 
   return {
-    downloadImagesAsZip,
-    imageToBlob,
     createZip,
     downloadPageAsImage,
   };

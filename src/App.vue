@@ -96,6 +96,13 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
+        label: "Datacard",
+        disabled: !selectedFlight.value.callsign,
+        command: () => {
+          router.push({ name: "datacard" });
+        },
+      },
+      {
         label: "Steerpoints",
         disabled: !selectedFlight.value.callsign,
         command: () => {
@@ -108,13 +115,7 @@ const items: Ref<MenuItem[]> = computed(() => [
           pageActive.value = "datacard";
         },
       },*/
-      {
-        label: "Datacard",
-        disabled: !selectedFlight.value.callsign,
-        command: () => {
-          router.push({ name: "datacard" });
-        },
-      },
+
       {
         label: "Comms",
         disabled: !selectedFlight.value.callsign,
@@ -142,7 +143,7 @@ const items: Ref<MenuItem[]> = computed(() => [
           if (selectedFlight.value.callsign)
             useDTCexports().loadDTC({
               CMS: false,
-              Datalink: true,
+              Datalink: false,
               HARM: false,
               HTS: false,
               MFD: false,
@@ -238,7 +239,7 @@ const showExport = ref(false);
           <Newcomms :pagenr="4" />
         </div>
       </div>
-      <div name="mdcpage"><RouterView /></div>
+      <div><RouterView /></div>
     </div>
   </div>
   <input

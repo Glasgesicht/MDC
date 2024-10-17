@@ -35,7 +35,7 @@ const showROE = inject("showROE");
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
     <div class="c3 y bdr">PAGE {{ pagenr }}</div>
-    <div class="c33 g bdr">COMMUNICATIONS</div>
+    <div class="c33 g bdr">BRIEFING</div>
     <div class="c6 g bdr">MISSION</div>
     <div class="c6 w bdr">
       {{ selectedFlight.MSNumber }}

@@ -119,7 +119,7 @@ export const useDTCexports = () => {
         .sort((a, b) => a.waypointNr - b.waypointNr)
         .forEach((stp, i) =>
           wpts.Waypoints.push({
-            Elevation: stp.altitude,
+            Elevation: parseInt("" + stp.altitude),
             Latitude: toLatString(stp.latitude),
             Longitude: toLongString(stp.longitude),
             Name: stp.type === "Steerpoint" ? stp.name : stp.type,
@@ -140,8 +140,6 @@ export const useDTCexports = () => {
 
     if (mode === "all" || mode === "dmpi")
       selectedFlight.value.dmpis.forEach((dmpi, i) => {
-        // console.log(toLatString(dmpi.latitude));
-
         wpts.Waypoints.push({
           Elevation: dmpi.altitude,
           Latitude: toLatString(dmpi.latitude),
@@ -149,7 +147,7 @@ export const useDTCexports = () => {
           Name: dmpi.name,
           OffsetAimpoint1: null,
           OffsetAimpoint2: null,
-          Sequence: i + 80, // DMPI start here, this might be different for F-15E, need to investigate
+          Sequence: i + 81,
           Target: false,
           UseOA: false,
           TGTtoPUP: null,

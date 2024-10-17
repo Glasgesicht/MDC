@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import generalSettings from "@/mdcpages/Settings/generalSettings.vue";
-import flightSettings from "@/mdcpages/Settings/flightSettings.vue";
-import packageSettings from "@/mdcpages/Settings/packageSettings.vue";
-import waypointsSettings from "@/mdcpages/Settings/waypoints.vue";
+import generalSettings from "@/settings_pages/generalSettings.vue";
+import flightSettings from "@/settings_pages/flightSettings.vue";
+import packageSettings from "@//settings_pages/packageSettings.vue";
+import waypointsSettings from "@/settings_pages/waypoints.vue";
 
 import newbriefing from "@/mdcpages/newbriefing.vue";
 import newsteerpoints from "@/mdcpages/newsteerpoints.vue";
@@ -44,17 +44,17 @@ const router = createRouter({
       },
     },
     {
-      name: "steerpoints",
-      path: "/steerpoints",
-      component: newsteerpoints,
+      name: "datacard",
+      path: "/datacard",
+      component: newdatacard,
       props: {
         pagenr: 2,
       },
     },
     {
-      name: "datacard",
-      path: "/datacard",
-      component: newdatacard,
+      name: "steerpoints",
+      path: "/steerpoints",
+      component: newsteerpoints,
       props: {
         pagenr: 3,
       },
