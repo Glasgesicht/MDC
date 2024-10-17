@@ -55,7 +55,6 @@ export const download = () => {
       console.error("Could not find element 'mdcpages'");
       return;
     }
-    console.log(pagesDiv);
 
     const childDivs = Array.from(pagesDiv.children)
       .filter((child) => child.tagName.toLowerCase() === "div")
@@ -64,10 +63,6 @@ export const download = () => {
       console.error("Could not find child elements of 'mdcpages'");
       return;
     }
-
-    console.log(childDivs);
-
-    console.log("len:", childDivs.length);
 
     for (let i = 0; i < childDivs.length; i++) {
       await new Promise((resolve) => setTimeout(() => resolve(true), 100));
@@ -108,7 +103,6 @@ export const download = () => {
   };
 
   const imageToBlob = async (image: HTMLImageElement): Promise<Blob> => {
-    console.log("31234512312");
     const canvas = document.createElement("canvas");
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
@@ -133,7 +127,6 @@ export const download = () => {
 
   const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
     const zip = new JSZip();
-    console.log("pageImages: ", pageImages.length);
 
     for (let i = 0; i < pageImages.length; i++) {
       const image = pageImages[i];

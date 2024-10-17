@@ -14,9 +14,6 @@ export const useEditHistory = () => {
     }
   );
 
-  watch(history, () => {
-    console.log(history);
-  });
   const resetHistory = () => {
     setTimeout(() => {
       history.value = [];
