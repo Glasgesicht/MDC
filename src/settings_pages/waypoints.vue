@@ -288,7 +288,7 @@ const incSelected = () => {
 
   selectedSteerpoints.value.sort((a, b) => a.waypointNr - b.waypointNr);
 
-  for (let i = 0; i < selectedSteerpoints.value.length; i++) {
+  for (let i = selectedSteerpoints.value.length - 1; i >= 0; i--) {
     const swapWith = selectedFlight.value.waypoints.findIndex(
       (n) => n.waypointNr === selectedSteerpoints.value[i].waypointNr + 1
     );
