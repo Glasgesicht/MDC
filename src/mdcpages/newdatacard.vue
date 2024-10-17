@@ -87,7 +87,7 @@ const AAR = selectedFlight?.value.waypoints
 </script>
 
 <template>
-  <div class="bdr mdcpage">
+  <div class="bdr mdcpage" name="mdcpage"> 
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>

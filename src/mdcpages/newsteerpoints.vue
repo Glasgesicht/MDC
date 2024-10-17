@@ -131,7 +131,7 @@ const showROE = inject("showROE");
 </script>
 
 <template>
-  <div class="mdcpage bdr" id="mdcpage">
+  <div class="mdcpage bdr" id="mdcpage" name="mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
