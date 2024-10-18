@@ -17,6 +17,38 @@ import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
 import { DateTime } from "luxon";
+import { ref, watch } from "vue";
+import { packages } from "@vueuse/core/metadata.cjs";
+import type { theatre } from "@/types/theatre";
+
+export async function processJSON(payload: File) {
+  const fileContent = ref<string | null>(null);
+
+  watch(fileContent, (newContent) => {
+    if (newContent) {
+      const { packages, theatre, missionStartTime } = JSON.parse(newContent);
+      const packageStore = usePackageStore();
+      packageStore.setPackages(packages);
+      const globalStore = useGlobalStore();
+      globalStore.setTheatre(theatre);
+      globalStore.setMissionStartTime(missionStartTime);
+      globalStore.setFilename(payload.name);
+      globalStore.setFile(true);
+    }
+  });
+
+  if (payload.type === "application/json") {
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      fileContent.value = event.target?.result as string;
+    };
+
+    reader.readAsText(payload);
+  } else {
+    console.error("Please upload a valid JSON file.");
+  }
+}
 
 export async function processCF(
   payload:

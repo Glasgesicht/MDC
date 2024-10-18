@@ -1,5 +1,7 @@
 import router from "@/router";
 import { useFlightStore } from "@/stores/flightStore";
+import { usePackageStore } from "@/stores/packageStore";
+import { useGlobalStore } from "@/stores/theatreStore";
 import { toJpeg } from "html-to-image";
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
@@ -148,8 +150,33 @@ export const download = () => {
     });
   };
 
+  async function toJSON() {
+    const globalStore = useGlobalStore();
+    const { packages } = storeToRefs(usePackageStore());
+
+    const jsonString = JSON.stringify(
+      Object.assign({
+        packages: packages.value,
+        theatre: globalStore.theatre,
+        missionStartTime: globalStore.missionStartTime,
+      }),
+      null,
+      2
+    );
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = globalStore.filename.split(".")[0] + ".json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   return {
     createZip,
     downloadPageAsImage,
+    toJSON,
   };
 };

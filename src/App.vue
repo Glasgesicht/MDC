@@ -5,7 +5,7 @@ import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "./stores/theatreStore";
-import { processCF } from "./config/parseCF";
+import { processCF, processJSON } from "./config/parseFiles";
 import { useDTCexports } from "@/components/DTCExports/dtc";
 import Newsteerpoints from "./mdcpages/newsteerpoints.vue";
 import Newdatacard from "./mdcpages/newdatacard.vue";
@@ -29,10 +29,20 @@ const { file } = storeToRefs(globalStore);
 const filename = ref("Select File");
 
 const onChangedFile = async (payload: any) => {
-  globalStore.setFile(true);
-  processCF(payload.target.files[0]);
   filename.value = payload.target.files[0].name;
-  router.push({ name: "packageSettings" });
+
+  globalStore.setFile(true);
+  switch (filename.value.split(".")[1]) {
+    case "cf":
+      processCF(payload.target.files[0]).then(() => {
+        router.push({ name: "packageSettings" });
+      });
+      break;
+    case "json":
+      processJSON(payload.target.files[0]);
+  }
+
+  globalStore.setFilename(payload.target.files[0].name); //payload.target.files[0].name;
 };
 
 const items: Ref<MenuItem[]> = computed(() => [
@@ -149,7 +159,6 @@ const items: Ref<MenuItem[]> = computed(() => [
           "comms", // TODO, clear this up and use route meta instead
         ].includes(router.currentRoute.value.name as string),
         command: () => {
-          // handle click
           download().downloadPageAsImage();
         },
       },
@@ -157,7 +166,6 @@ const items: Ref<MenuItem[]> = computed(() => [
         label: "Get ZIP",
         disabled: !getFlight.value?.callsign,
         command: () => {
-          // handle click
           showExport.value = true;
           download()
             .createZip()
@@ -170,8 +178,7 @@ const items: Ref<MenuItem[]> = computed(() => [
         label: "Get JSON",
         disabled: !selectedPKG,
         command: () => {
-          // handle click
-          console.log("JSON:", toRaw(packages.value));
+          download().toJSON();
         },
       },
     ],
@@ -220,7 +227,7 @@ const showExport = ref(false);
     id="fileUpload"
     class="file-input"
     v-on:change="onChangedFile"
-    accept=".cf"
+    accept=".cf,.json"
   />
   <div style="text-align: center; position: absolute; bottom: 0">
     version: {{ version }}

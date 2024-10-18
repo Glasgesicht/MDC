@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { processCF } from "@/config/parseCF";
+import { processCF } from "@/config/parseFiles";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { ref } from "vue";
 import { useEditHistory } from "@/components/history/editHistory";
