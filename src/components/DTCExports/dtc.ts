@@ -16,13 +16,13 @@ import type { theatre } from "@/types/theatre";
 import { useGlobalStore } from "@/stores/theatreStore";
 
 export const useDTCexports = () => {
-  const { selectedFlight } = storeToRefs(useFlightStore());
+  const { getFlight } = storeToRefs(useFlightStore());
   const { selectedPKG } = storeToRefs(usePackageStore());
   const { theater } = storeToRefs(useGlobalStore());
 
   /** Util Functions */
   function getType() {
-    switch (selectedFlight.value.aircrafttype) {
+    switch (getFlight.value.aircrafttype) {
       case "F-16CM":
         return "F16C";
       case "F-15E":
@@ -81,14 +81,14 @@ export const useDTCexports = () => {
         SelectedFrequency: null,
         SelectedPreset:
           selectedPKG.value.flights.findIndex(
-            (fl) => fl.callsign === selectedFlight.value.callsign
+            (fl) => fl.callsign === getFlight.value.callsign
           ) + 15,
         EnableGuard: false,
         Mode: 2,
       },
     };
 
-    Radios.Radio1.Presets = selectedFlight.value.comms.radio1
+    Radios.Radio1.Presets = getFlight.value.comms.radio1
       .map((val, i) => {
         return {
           Number: i + 1,
@@ -98,7 +98,7 @@ export const useDTCexports = () => {
       })
       .filter((n) => n.Frequency !== "");
 
-    Radios.Radio2.Presets = selectedFlight.value.comms.radio2
+    Radios.Radio2.Presets = getFlight.value.comms.radio2
       .map((val, i) => {
         return {
           Number: i + 1,
@@ -115,7 +115,7 @@ export const useDTCexports = () => {
     const wpts: Waypoints = { Waypoints: new Array<Waypoint>() }; //Weirdly nested per spec
 
     if (mode === "all" || mode === "waypoints")
-      selectedFlight.value.waypoints
+      getFlight.value.waypoints
         .sort((a, b) => a.waypointNr - b.waypointNr)
         .forEach((stp, i) =>
           wpts.Waypoints.push({
@@ -139,7 +139,7 @@ export const useDTCexports = () => {
         );
 
     if (mode === "all" || mode === "dmpi")
-      selectedFlight.value.dmpis.forEach((dmpi, i) => {
+      getFlight.value.dmpis.forEach((dmpi, i) => {
         wpts.Waypoints.push({
           Elevation: dmpi.altitude,
           Latitude: toLatString(dmpi.latitude),
@@ -192,28 +192,24 @@ export const useDTCexports = () => {
       EnableOwnCallsign: true,
       FlightLead: true,
       Members: [
-        ...selectedFlight.value.units.map((unit) => parseInt(unit.STN)),
-        ...new Array(8 - selectedFlight.value.units.length).fill("0"),
+        ...getFlight.value.units.map((unit) => parseInt(unit.STN)),
+        ...new Array(8 - getFlight.value.units.length).fill("0"),
       ],
       OwnCallsign:
-        selectedFlight.value.callsign.charAt(0) +
-        selectedFlight.value.callsign.charAt(
-          selectedFlight.value.callsign.length - 1
-        ) +
-        selectedFlight.value.callsignNumber +
+        getFlight.value.callsign.charAt(0) +
+        getFlight.value.callsign.charAt(getFlight.value.callsign.length - 1) +
+        getFlight.value.callsignNumber +
         "1",
       OwnshipIndex: 1, // Assumes Flight lead
       TDOAMembers: [
-        ...selectedFlight.value.units.map(() => true),
-        ...new Array<boolean>(8 - selectedFlight.value.units.length).fill(
-          false
-        ),
+        ...getFlight.value.units.map(() => true),
+        ...new Array<boolean>(8 - getFlight.value.units.length).fill(false),
       ],
     } satisfies Datalink;
   };
 
   const getMISC = (): Misc => {
-    return selectedFlight.value.misc;
+    return getFlight.value.misc;
   };
 
   function getDTC(input: {

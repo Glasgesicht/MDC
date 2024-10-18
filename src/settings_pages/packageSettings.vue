@@ -7,12 +7,10 @@
         <!--<select v-model="selectedPKG">
           <option v-for="pkg in packages">{{ pkg.name }}</option>
         </select>-->
-        <Dropdown
-          v-model="selectedPKG"
-          :options="packages"
-          optionLabel="name"
-          placeholder="Select A Package"
-          class=""
+        <SelectFlight
+          v-if="file"
+          showPKGSelection
+          :showFlightSelection="false"
         />
       </div>
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
@@ -22,9 +20,8 @@
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p>RAMROD (selected)</p>
         <Dropdown
-          style="grid-row: 2 / span 1; grid-column: 4 / span 2"
           :options="ramrods"
-          v-model="ramrod"
+          v-model="selectedPKG.ramrod"
           editable
           class=""
         />
@@ -41,7 +38,7 @@
         </p>
 
         <DataTable
-          :value="allFlightsFromPackage"
+          :value="selectedPKG.flights"
           showGridlines
           edit-mode="cell"
           @rowReorder="onRowReorder"
@@ -323,11 +320,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { usePackageStore } from "@/stores/packageStore";
+import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
+import { threats, usePackageStore } from "@/stores/packageStore";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { storeToRefs } from "pinia";
 import { ramrods } from "@/config/ramrod";
 import { computed, ref, type WritableComputedRef } from "vue";
+
+import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
 
 import DataTable from "primevue/datatable";
 import TextArea from "primevue/textarea";
@@ -341,8 +341,7 @@ import { toLatString, toLongString } from "@/utils/utilFunctions";
 
 const { stateChanged } = storeToRefs(useGlobalStore());
 
-const { packages, selectedPKG, allFlightsFromPackage, ramrod, threats } =
-  storeToRefs(usePackageStore());
+const { packages, selectedPKG } = storeToRefs(usePackageStore());
 
 const deleteThreat = (index: number) => {
   threats.value[index] = {
@@ -355,11 +354,11 @@ const deleteThreat = (index: number) => {
 };
 
 const confirmDelete = (index: number) => {
-  allFlightsFromPackage.value.splice(index, 1);
+  selectedPKG.value.flights.splice(index, 1);
 };
 
 const onRowReorder = (event: any) => {
-  allFlightsFromPackage.value = event.value;
+  selectedPKG.value.flights = event.value;
   stateChanged.value = Date.now();
 };
 

@@ -7,17 +7,9 @@ import { usePackageStore } from "../stores/packageStore";
 import { flights } from "../config/flights";
 import { useFlightStore } from "@/stores/flightStore";
 
-const {
-  airThreat,
-  packageTask,
-  pkgnr,
-  situation,
-  surfaceThreat,
-  roe,
-  selectedPKG,
-} = storeToRefs(usePackageStore());
+const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -38,43 +30,43 @@ const showROE = inject("showROE");
     <div class="c33 g bdr">BRIEFING</div>
     <div class="c6 g bdr">MISSION</div>
     <div class="c6 w bdr">
-      {{ selectedFlight.MSNumber }}
+      {{ getFlight.MSNumber }}
     </div>
     <div class="c5 g bdr">CALLSIGN</div>
     <div class="c7 w bdr">
-      {{ selectedFlight.callsign }} {{ selectedFlight.callsignNumber }}
+      {{ getFlight.callsign }} {{ getFlight.callsignNumber }}
     </div>
     <!-- 
-    <select v-model="selectedFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
+    <select v-model="getFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
       <option v-for="flight of flights">{{ flight.callsignRaw }}</option>
     </select>-->
     <div class="c5 g bdr">PACKAGE</div>
     <div class="c7 w bdr">
-      {{ pkgnr }}
+      {{ selectedPKG.name }}
     </div>
     <div class="c6 g bdr">HOMEPLATE</div>
-    <input v-model="selectedFlight.DEP.NAME" class="c6 w tb bdr" />
+    <input v-model="getFlight.DEP.NAME" class="c6 w tb bdr" />
     <div class="c24 r2 squad bdr">RNLAF 313 SQUADRON</div>
     <div class="c6 g bdr">MSN TYPE</div>
-    <input class="c6 w bdr" v-model="selectedFlight.missionType" />
+    <input class="c6 w bdr" v-model="getFlight.missionType" />
 
     <div class="c6 g bdr">PACKAGE TASK</div>
-    <input v-model="packageTask" class="c30 w tb bdr" />
+    <input v-model="selectedPKG.packageTask" class="c30 w tb bdr" />
     <div class="c6 g bdr">FLIGHT TASK</div>
-    <input v-model="selectedFlight.task" class="c30 w tb bdr" />
+    <input v-model="getFlight.task" class="c30 w tb bdr" />
     <div class="c36 g bdr">SITUATION</div>
-    <textarea v-model="situation" class="r9 c36 w tb bdr" />
+    <textarea v-model="selectedPKG.situation" class="r9 c36 w tb bdr" />
 
     <div class="c18 g bdr">SURFACE THREATS</div>
     <div class="c18 g bdr">AIR THREATS</div>
-    <textarea v-model="surfaceThreat" class="r3 c18 w tb bdr" />
-    <textarea v-model="airThreat" class="r3 c18 w tb bdr" />
+    <textarea v-model="selectedPKG.surfaceThreat" class="r3 c18 w tb bdr" />
+    <textarea v-model="selectedPKG.airThreat" class="r3 c18 w tb bdr" />
     <div class="c36 g bdr">GAMEPLAN</div>
 
     <textarea
       type="text"
       :class="`c36 tb ${showROE ? 'r23' : 'r34'} bdr`"
-      v-model="selectedFlight.gameplan"
+      v-model="getFlight.gameplan"
     />
     <div v-if="showROE" class="roehead c36 bdr" style="width: 100%">
       RULES OF ENGAGEMENT
@@ -82,7 +74,7 @@ const showROE = inject("showROE");
     <textarea
       v-if="showROE"
       type="text"
-      v-model="roe"
+      v-model="selectedPKG.roe"
       class="c36 roe textbox non-resizable r6 bdr"
     />
   </div>

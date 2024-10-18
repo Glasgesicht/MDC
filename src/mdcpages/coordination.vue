@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref } from "vue";
-import Textarea from "primevue/inputtext";
-import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
-import Dropdown from "primevue/dropdown";
-
-import { flights } from "../config/flights";
-
-const { pkgnr, situation, roe } = storeToRefs(usePackageStore());
-
 const { pagenr } = defineProps({
   pagenr: {
     required: true,

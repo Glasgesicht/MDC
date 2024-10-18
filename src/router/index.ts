@@ -71,8 +71,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  const { selectedFlight } = storeToRefs(useFlightStore());
-  if (!selectedFlight.value) return false;
+  const { getFlight } = storeToRefs(useFlightStore());
+  if (!getFlight.value) return false;
   return true;
 });
 

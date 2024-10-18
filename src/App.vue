@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
 import Dropdown from "primevue/dropdown";
-import { ref, provide, computed, type Ref, watch } from "vue";
+import { ref, provide, computed, type Ref, watch, toRaw } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -13,17 +13,16 @@ import Newdatacard from "./mdcpages/newdatacard.vue";
 import Newcomms from "./mdcpages/newcomms.vue";
 import Newbriefing from "./mdcpages/newbriefing.vue";
 import type { MenuItem } from "primevue/menuitem";
-import EditHistory from "./components/history/editHistory.vue";
 import router from "./router";
 import { download } from "./utils/download";
 import { RouterView } from "vue-router";
-import { useEditHistory } from "./components/history/editHistory";
+import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
-const { reset: resetPackage } = usePackageStore();
-const { selectedFlight } = storeToRefs(useFlightStore());
-const { reset: resetFlight } = useFlightStore();
+const { $reset: resetPackage } = usePackageStore();
+const { getFlight } = storeToRefs(useFlightStore());
+const { $reset: resetFlight } = useFlightStore();
 
 provide("showROE", showROE);
 
@@ -90,21 +89,21 @@ const items: Ref<MenuItem[]> = computed(() => [
     items: [
       {
         label: "Briefing",
-        disabled: !selectedFlight.value.callsign,
+        disabled: !getFlight?.value?.callsign,
         command: () => {
           router.push({ name: "briefing" });
         },
       },
       {
         label: "Datacard",
-        disabled: !selectedFlight.value.callsign,
+        disabled: !getFlight.value?.callsign,
         command: () => {
           router.push({ name: "datacard" });
         },
       },
       {
         label: "Steerpoints",
-        disabled: !selectedFlight.value.callsign,
+        disabled: !getFlight.value?.callsign,
         command: () => {
           router.push({ name: "steerpoints" });
         },
@@ -118,7 +117,7 @@ const items: Ref<MenuItem[]> = computed(() => [
 
       {
         label: "Comms",
-        disabled: !selectedFlight.value.callsign,
+        disabled: !getFlight.value?.callsign,
         command: () => {
           router.push({ name: "comms" });
         },
@@ -133,14 +132,14 @@ const items: Ref<MenuItem[]> = computed(() => [
   },
   {
     label: "Export",
-    disabled: !selectedFlight.value.callsign,
+    disabled: !getFlight.value?.callsign,
     items: [
       {
         label: "Get DTC",
-        disabled: !selectedFlight.value.callsign,
+        disabled: !getFlight.value?.callsign,
         command: () => {
           // handle click
-          if (selectedFlight.value.callsign)
+          if (getFlight.value?.callsign)
             useDTCexports().loadDTC({
               CMS: false,
               Datalink: false,
@@ -169,7 +168,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       },
       {
         label: "Get .ZIP",
-        disabled: !selectedFlight.value.callsign,
+        disabled: !getFlight.value?.callsign,
         command: () => {
           // handle click
           showExport.value = true;
@@ -180,6 +179,14 @@ const items: Ref<MenuItem[]> = computed(() => [
             });
         },
       },
+      {
+        label: "Get .JSON",
+        disabled: !selectedPKG,
+        command: () => {
+          // handle click
+          console.log("JSON:", toRaw(selectedPKG.value));
+        },
+      },
     ],
   },
 ]);
@@ -187,7 +194,6 @@ const items: Ref<MenuItem[]> = computed(() => [
 const version = `${__APP_VERSION__} (${new Date( // @ts-ignore
   __APP_VERSION_DATE__
 ).toLocaleDateString("se-SE")})`;
-const { resetHistory } = useEditHistory();
 
 const showExport = ref(false);
 </script>
@@ -200,34 +206,10 @@ const showExport = ref(false);
       <Menu :model="items" style="border: none; background-color: #f4f4f4" />
 
       <hr style="width: 100%" v-if="file" />
-      <Dropdown
-        v-if="file"
-        v-model="selectedPKG"
-        :options="packages"
-        class="m-5"
-        optionLabel="name"
-        placeholder="Select A Package"
-      />
-      <Dropdown
-        v-if="file"
-        v-model="selectedFlight"
-        class="m-5"
-        :options="selectedPKG.flights"
-        @change="resetHistory()"
-        optionLabel="callsign"
-        placeholder="Select A Flight"
-        ><template #option="{ option }"
-          >{{ option.callsign }} {{ option.callsignNumber }}</template
-        ><template #value="{ value }"
-          >{{ value.callsign }}
-          {{
-            value.callsignNumber > 0 ? value.callsignNumber : `Select Flight`
-          }}</template
-        >
-      </Dropdown>
+
+      <SelectFlight v-if="file" showFlightSelection showPKGSelection />
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
-      <EditHistory />
       <div v-if="showExport">
         <div
           id="mdcpages"

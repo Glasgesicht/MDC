@@ -7,6 +7,8 @@ import { storeToRefs } from "pinia";
 import { computed, ref, watch, type Ref } from "vue";
 import { useGlobalStore } from "@/stores/theatreStore";
 
+import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
+
 import DataTable from "primevue/datatable";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
@@ -33,21 +35,22 @@ import type { WritableComputedRef } from "vue";
  */
 const enableBullz = ref(true);
 
-const { allFlightsFromPackage, packages, selectedPKG } = storeToRefs(
-  usePackageStore()
-);
-const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
-const { updateFligh, updateLadder } = useFlightStore();
+const packageStore = usePackageStore();
+const { packages, selectedPKG } = storeToRefs(packageStore);
+const useDefaults = ref(true);
+
+const flightStore = useFlightStore();
+const { getFlight } = storeToRefs(flightStore);
 const { file, stateChanged, theater } = storeToRefs(useGlobalStore());
 
 function callsignChangeEvent(event: any) {
   if (event.value.callsign) {
-    selectedFlight.value.callsign = event.value.callsign;
-    selectedFlight.value.callsignNumber = event.value.callsignNumber;
-    selectedFlight.value.aircrafttype = event.value.type;
+    getFlight.value.callsign = event.value.callsign;
+    getFlight.value.callsignNumber = event.value.callsignNumber;
+    getFlight.value.aircrafttype = event.value.type;
   }
-  updateFligh();
-  updateLadder();
+  // updateFligh();
+  packageStore.updateLadder();
 }
 
 const tanker: WritableComputedRef<
@@ -66,8 +69,8 @@ const tanker: WritableComputedRef<
   get() {
     return selectedPKG.value.agencies.find(
       (n) =>
-        selectedFlight.value.comms.radio1[12].freq === n.freq ||
-        selectedFlight.value.comms.radio2[12].freq === n.freq
+        getFlight.value.comms.radio1[12].freq === n.freq ||
+        getFlight.value.comms.radio2[12].freq === n.freq
     );
   },
 
@@ -75,7 +78,7 @@ const tanker: WritableComputedRef<
     if (!value) return;
     const assignTo = parseFloat(value.freq) > 200 ? "radio1" : "radio2";
 
-    selectedFlight.value.comms[assignTo][12] = {
+    getFlight.value.comms[assignTo][12] = {
       description: value.name + " / " + value.tacan,
       freq: value.freq,
       name:
@@ -95,36 +98,36 @@ const tanker: WritableComputedRef<
 
 watch(stateChanged, () => {
   {
-    updateLadder();
+    packageStore.updateLadder();
   }
 });
 
 function tacaninput() {
   if (!useDefaults.value) return;
 
-  const match = selectedFlight.value.units[0].tacan.match(/(\d{1,2})([YX])/);
+  const match = getFlight.value.units[0].tacan.match(/(\d{1,2})([YX])/);
   if (match && match[2]) {
-    if (selectedFlight.value.units[1])
-      selectedFlight.value.units[1].tacan =
+    if (getFlight.value.units[1])
+      getFlight.value.units[1].tacan =
         ((parseInt(match[1]) + 63) % 126) + match[2];
-    if (selectedFlight.value.units[2])
-      selectedFlight.value.units[2].tacan =
+    if (getFlight.value.units[2])
+      getFlight.value.units[2].tacan =
         ((parseInt(match[1]) + 63) % 126) + "" + (match[2] === "Y" ? "X" : "Y");
-    if (selectedFlight.value.units[3])
-      selectedFlight.value.units[3].tacan =
+    if (getFlight.value.units[3])
+      getFlight.value.units[3].tacan =
         parseInt(match[1]) + "" + (match[2] === "Y" ? "X" : "Y");
   }
 }
 
 function clearComms(index: number, radio: "pri" | "sec") {
   if (radio === "pri")
-    selectedFlight.value.comms.radio1[index] = {
+    getFlight.value.comms.radio1[index] = {
       description: "",
       freq: "",
       name: "",
     };
   else {
-    selectedFlight.value.comms.radio2[index] = {
+    getFlight.value.comms.radio2[index] = {
       description: "",
       freq: "",
       name: "",
@@ -134,15 +137,15 @@ function clearComms(index: number, radio: "pri" | "sec") {
 
 const selectedFreqs = computed(() => {
   return {
-    checkVHF: selectedFlight.value.comms.radio2[4],
-    checkUHF: selectedFlight.value.comms.radio1[4],
-    tactVHF: selectedFlight.value.comms.radio2[5],
-    tactUHF: selectedFlight.value.comms.radio1[5],
+    checkVHF: getFlight.value.comms.radio2[4],
+    checkUHF: getFlight.value.comms.radio1[4],
+    tactVHF: getFlight.value.comms.radio2[5],
+    tactUHF: getFlight.value.comms.radio1[5],
   };
 });
 
 function FlightMemberUpdate() {
-  selectedFlight.value.units.forEach((unit) => {
+  getFlight.value.units.forEach((unit) => {
     if (!unit.callsign) return;
     if (unit.callsign.length < 3) return;
     const args = rnlaf313members.find((n) =>
@@ -158,7 +161,7 @@ function FlightMemberUpdate() {
 const isCustomCalsign = ref(false);
 
 const addFlightMemeber = () => {
-  selectedFlight.value.units.push({
+  getFlight.value.units.push({
     tailNr: undefined,
     callsign: "",
     search: "",
@@ -166,18 +169,18 @@ const addFlightMemeber = () => {
     m2: "",
     tacan: "",
     STN: getSTN(
-      selectedFlight.value.aircrafttype,
-      selectedFlight.value.callsign,
-      selectedFlight.value.callsignNumber,
-      selectedFlight.value.units.length
+      getFlight.value.aircrafttype,
+      getFlight.value.callsign,
+      getFlight.value.callsignNumber,
+      getFlight.value.units.length
     ),
     L16: (() => {
-      const callsign = selectedFlight.value.callsign;
+      const callsign = getFlight.value.callsign;
       return (
         callsign.charAt(0) +
         callsign.charAt(callsign.length - 1) +
-        selectedFlight.value.callsignNumber +
-        (selectedFlight.value.units.length + 1)
+        getFlight.value.callsignNumber +
+        (getFlight.value.units.length + 1)
       );
     })(),
   }); // adds TACAN
@@ -185,9 +188,9 @@ const addFlightMemeber = () => {
 };
 
 function deleteMember(i: number) {
-  selectedFlight.value.units.splice(i, 1);
+  getFlight.value.units.splice(i, 1);
 
-  selectedFlight.value.units.map((n, i) => {
+  getFlight.value.units.map((n, i) => {
     (n.callsign = n.callsign),
       (n.tailNr = n.tailNr),
       (n.STN = n.STN.substring(0, n.STN.length - 1) + (i + 1));
@@ -201,10 +204,10 @@ function deleteAirport(type: "DEP" | "ARR" | "ALT") {
 }
 
 function assignAirport(type: "DEP" | "ARR" | "ALT", ap: (typeof airports)[0]) {
-  selectedFlight.value[type] = ap;
+  getFlight.value[type] = ap;
 
   const offset = type === "DEP" ? 1 : type === "ARR" ? 6 : 9;
-  const comms = selectedFlight.value.comms;
+  const comms = getFlight.value.comms;
   if (type === "DEP") {
     comms.radio1[0] = {
       freq: ap.ATIS.uhf,
@@ -293,29 +296,19 @@ const groupedFlights = computed(() =>
 <template>
   <div class="parent" style="max-width: 2000px">
     <div class="">
-      <p class="" v-if="file && selectedFlight.isActive">
-        Select Flight To Edit
-      </p>
+      <p class="" v-if="file && getFlight.isActive">Select Flight To Edit</p>
       <p class="" v-else>Please select a flight first</p>
-      <Dropdown
-        v-model="selectedFlight"
-        :options="allFlightsFromPackage"
-        optionLabel="callsign"
-        style="width: 253px"
-        placeholder="Select A Flight"
-        ><template #option="{ option }"
-          >{{ option.callsign }} {{ option.callsignNumber }}</template
-        ><template #value="{ value }">{{
-          value.callsign ||
-          "Select A Flight" + " " + (value.callsignNumber || " ")
-        }}</template>
-      </Dropdown>
+      <SelectFlight
+        v-if="file"
+        showFlightSelection
+        :show-p-k-g-selection="false"
+      />
     </div>
-    <div class="" v-if="file && selectedFlight.isActive">
+    <div class="" v-if="file && getFlight.isActive">
       <p class="">Assign new Callsign</p>
       <Dropdown
         placeholder="select new callsign"
-        v-if="!isCustomCalsign && selectedFlight.isActive"
+        v-if="!isCustomCalsign && getFlight.isActive"
         filter
         :options="groupedFlights"
         optionLabel="callsign"
@@ -330,29 +323,29 @@ const groupedFlights = computed(() =>
         </template>
       </Dropdown>
       <div
-        v-if="isCustomCalsign && selectedFlight"
+        v-if="isCustomCalsign && getFlight"
         class="parent"
         style="max-width: 250px"
       >
-        <Input v-model="selectedFlight.callsign" @blur="updateFligh" />
+        <Input v-model="getFlight.callsign" @blur="flightStore.updateFligh()" />
         <InputNumber
           :min="1"
           :max="9"
-          v-model="selectedFlight.callsignNumber"
+          v-model="getFlight.callsignNumber"
           class="fixW"
           style="max-width: 75px; margin-left: 5px"
-          @blur="updateFligh"
+          @blur="useFlightStore().updateFligh()"
         />
       </div>
     </div>
     <div
       style="text-align: left; margin-top: 14px; width: 200px"
       class="parent"
-      v-if="file && selectedFlight.isActive"
+      v-if="file && getFlight.isActive"
     >
       <div class="">
         <Checkbox
-          v-if="selectedFlight"
+          v-if="getFlight"
           label="Add custom Callsign"
           id="customCheckbox"
           v-model="isCustomCalsign"
@@ -374,12 +367,12 @@ const groupedFlights = computed(() =>
     </div>
   </div>
 
-  <TabView v-if="file && selectedFlight.isActive" style="margin-top: 10px">
+  <TabView v-if="file && getFlight.isActive" style="margin-top: 10px">
     <TabPanel header="Common Settings">
       <div class="">
         <p>Member in selected Flight</p>
         <DataTable
-          :value="selectedFlight.units"
+          :value="getFlight.units"
           showGridlines
           edit-mode="cell"
           style="width: 800px"
@@ -401,7 +394,7 @@ const groupedFlights = computed(() =>
                 @change="FlightMemberUpdate"
                 class="redefSize"
                 :options="_313ref"
-                v-model="selectedFlight.units[index].callsign"
+                v-model="getFlight.units[index].callsign"
                 autofocus
               />
             </template>
@@ -415,7 +408,7 @@ const groupedFlights = computed(() =>
               {{ data[field] }}
             </template>
             <template #editor="{ index }">
-              <Input v-model="selectedFlight.units[index].search" />
+              <Input v-model="getFlight.units[index].search" />
             </template>
           </Column>
 
@@ -427,7 +420,7 @@ const groupedFlights = computed(() =>
               <InputMask
                 mask="9?99999"
                 :autoClear="false"
-                v-model="selectedFlight.units[index].STN"
+                v-model="getFlight.units[index].STN"
               />
             </template>
           </Column>
@@ -441,7 +434,7 @@ const groupedFlights = computed(() =>
               {{ data[field] }}
             </template>
             <template #editor="{ index }">
-              <Input v-model="selectedFlight.units[index].tailNr" />
+              <Input v-model="getFlight.units[index].tailNr" />
             </template>
           </Column>
           <Column
@@ -460,7 +453,7 @@ const groupedFlights = computed(() =>
               <InputMask
                 :disabled="index > 0 && useDefaults"
                 :mask="useDefaults ? '9?*a' : '99?*a'"
-                v-model="selectedFlight.units[index].tacan"
+                v-model="getFlight.units[index].tacan"
                 @complete="tacaninput"
               />
             </template>
@@ -476,10 +469,7 @@ const groupedFlights = computed(() =>
               {{ data[field] }}
             </template>
             <template #editor="{ index }">
-              <InputMask
-                mask="9999"
-                v-model="selectedFlight.units[index].laser"
-              />
+              <InputMask mask="9999" v-model="getFlight.units[index].laser" />
             </template>
           </Column>
 
@@ -487,7 +477,7 @@ const groupedFlights = computed(() =>
             <template #header><i icon="pi pi-trash" /> ></template>
             <template #body="{ index }"
               ><Button
-                :disabled="selectedFlight.units.length < 2"
+                :disabled="getFlight.units.length < 2"
                 @click="deleteMember(index)"
                 severity="danger"
                 outlined
@@ -497,7 +487,7 @@ const groupedFlights = computed(() =>
 
           <template #footer
             ><Button
-              v-if="selectedFlight.units[0] && selectedFlight.units.length < 4"
+              v-if="getFlight.units[0] && getFlight.units.length < 4"
               label="Add member to flight"
               @click="addFlightMemeber"
           /></template>
@@ -506,7 +496,7 @@ const groupedFlights = computed(() =>
     <TabPanel header="Gameplan">
       <TextArea
         style="min-width: 600px; min-height: 200px; resize: none"
-        v-model="selectedFlight.gameplan"
+        v-model="getFlight.gameplan"
         :draggable="false"
         rows="3"
         class=""
@@ -523,13 +513,13 @@ const groupedFlights = computed(() =>
         <Dropdown
           :options="selectedPKG.bullseyes"
           option-value="wp"
-          v-model:model-value="selectedFlight.misc.BullseyeWP"
+          v-model:model-value="getFlight.misc.BullseyeWP"
         >
           <template #value
-            >{{ selectedFlight.misc.BullseyeWP }}:
+            >{{ getFlight.misc.BullseyeWP }}:
             {{
               selectedPKG.bullseyes.find(
-                (n) => n.wp === selectedFlight.misc.BullseyeWP
+                (n) => n.wp === getFlight.misc.BullseyeWP
               )?.name
             }}</template
           ><template #option="{ option }"
@@ -573,7 +563,7 @@ const groupedFlights = computed(() =>
     </TabPanel>
     <TabPanel header="HARM/HTS"> Work in Progress</TabPanel>
   </TabView>
-  <div class="parent" v-if="file && selectedFlight.isActive">
+  <div class="parent" v-if="file && getFlight.isActive">
     <!--<div class="item">
         <p>COMMS ASSIGNMENT</p>
 
@@ -587,7 +577,7 @@ const groupedFlights = computed(() =>
           class="dropdown"
           severity="danger"
           option-label="NAME"
-          v-model="selectedFlight.DEP"
+          v-model="getFlight.DEP"
           @change="
             (e:any) => {
               assignAirport('DEP', e.value);
@@ -597,7 +587,7 @@ const groupedFlights = computed(() =>
         />
         <Button
           style="grid-row: 15"
-          v-if="selectedFlight.DEP.ICAO"
+          v-if="getFlight.DEP.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('DEP')"
           text
@@ -610,7 +600,7 @@ const groupedFlights = computed(() =>
           :options="airports.filter((val) => val.map === theater)"
           severity="danger"
           option-label="NAME"
-          v-model="selectedFlight.ARR"
+          v-model="getFlight.ARR"
           @change="
             (e:any) => {
               assignAirport('ARR', e.value);
@@ -619,7 +609,7 @@ const groupedFlights = computed(() =>
           placeholder="select"
         />
         <Button
-          v-if="selectedFlight.ARR.ICAO"
+          v-if="getFlight.ARR.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('ARR')"
           text
@@ -631,7 +621,7 @@ const groupedFlights = computed(() =>
           :options="airports.filter((val) => val.map === theater)"
           severity="danger"
           option-label="NAME"
-          v-model="selectedFlight.ALT"
+          v-model="getFlight.ALT"
           @change="
             (e:any) => {
               assignAirport('ALT', e.value);
@@ -640,7 +630,7 @@ const groupedFlights = computed(() =>
           placeholder="select"
         />
         <Button
-          v-if="selectedFlight.ALT.ICAO"
+          v-if="getFlight.ALT.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('ALT')"
           text
@@ -656,7 +646,7 @@ const groupedFlights = computed(() =>
             :model-value="selectedFreqs.checkUHF"
             @change="
               (e:any) => {
-                selectedFlight.comms.radio1[4] = {
+                getFlight.comms.radio1[4] = {
                   description: e.value.description,
                   freq: e.value.freq,
                   name: e.value.name,
@@ -667,7 +657,7 @@ const groupedFlights = computed(() =>
             placeholder="select"
           />
           <Button
-            v-if="selectedFlight.comms.radio1[4].freq"
+            v-if="getFlight.comms.radio1[4].freq"
             icon="pi pi-times-circle"
             @click="clearComms(4, 'pri')"
             text
@@ -682,7 +672,7 @@ const groupedFlights = computed(() =>
             option-label="description"
             @change="
               (e:any) => {
-                selectedFlight.comms.radio2[4] = {
+                getFlight.comms.radio2[4] = {
                   description: e.value.description,
                   freq: e.value.freq,
                   name: e.value.name,
@@ -693,7 +683,7 @@ const groupedFlights = computed(() =>
             placeholder="select"
           />
           <Button
-            v-if="selectedFlight.comms.radio2[4].freq"
+            v-if="getFlight.comms.radio2[4].freq"
             icon="pi pi-times-circle"
             @click="clearComms(4, 'sec')"
             text
@@ -710,7 +700,7 @@ const groupedFlights = computed(() =>
             option-label="description"
             @change="
               (e:any) => {
-                selectedFlight.comms.radio1[5] = {
+                getFlight.comms.radio1[5] = {
                   description: e.value.description,
                   freq: e.value.freq,
                   name: e.value.name,
@@ -721,7 +711,7 @@ const groupedFlights = computed(() =>
             placeholder="select"
           />
           <Button
-            v-if="selectedFlight.comms.radio1[5].freq"
+            v-if="getFlight.comms.radio1[5].freq"
             icon="pi pi-times-circle"
             @click="clearComms(5, 'pri')"
             text
@@ -736,7 +726,7 @@ const groupedFlights = computed(() =>
             option-label="description"
             @change="
               (e:any) => {
-                selectedFlight.comms.radio2[5] = {
+                getFlight.comms.radio2[5] = {
                   description: e.value.description,
                   freq: e.value.freq,
                   name: e.value.name,
@@ -747,7 +737,7 @@ const groupedFlights = computed(() =>
             placeholder="select"
           />
           <Button
-            v-if="selectedFlight.comms.radio2[5].freq"
+            v-if="getFlight.comms.radio2[5].freq"
             icon="pi pi-times-circle"
             @click="clearComms(5, 'sec')"
             text
@@ -800,7 +790,7 @@ const groupedFlights = computed(() =>
         <DataTable
           showGridlines
           edit-mode="cell"
-          :value="selectedFlight.comms.radio1"
+          :value="getFlight.comms.radio1"
           style="width: 450px"
         >
           <Column
@@ -818,9 +808,7 @@ const groupedFlights = computed(() =>
           >
             <template #body="{ data, index }"> {{ data?.freq }}</template>
             <template #editor="{ data, index }">
-              <Input
-                class="fixW"
-                v-model="selectedFlight.comms.radio1[index].freq"
+              <Input class="fixW" v-model="getFlight.comms.radio1[index].freq"
             /></template>
           </Column>
           <Column
@@ -830,7 +818,7 @@ const groupedFlights = computed(() =>
           >
             <template #body="{ data }"> {{ data?.name }}</template>
             <template #editor="{ data, index }">
-              <Input v-model="selectedFlight.comms.radio1[index].name"
+              <Input v-model="getFlight.comms.radio1[index].name"
             /></template>
           </Column>
 
@@ -843,7 +831,7 @@ const groupedFlights = computed(() =>
             <template #editor="{ data, index }">
               <InputNumber
                 class="fixW"
-                v-model="selectedFlight.comms.radio1[index].number"
+                v-model="getFlight.comms.radio1[index].number"
               />
             </template>
           </Column>
@@ -856,7 +844,7 @@ const groupedFlights = computed(() =>
             <template #editor="{ data, index }">
               <Input
                 class="fixW"
-                v-model="selectedFlight.comms.radio1[index].description"
+                v-model="getFlight.comms.radio1[index].description"
             /></template>
           </Column>
           <Column style="padding: 2px 5px 2px 5px; width: 20px">
@@ -874,8 +862,8 @@ const groupedFlights = computed(() =>
           class="item"
           label="update Ladder"
           @click="
-            updateLadder();
-            updateFligh();
+            packageStore.updateLadder();
+            flightStore.updateFligh();
           "
         />
       </div>
@@ -886,7 +874,7 @@ const groupedFlights = computed(() =>
           showGridlines
           style="width: 450px"
           edit-mode="cell"
-          :value="selectedFlight.comms.radio2"
+          :value="getFlight.comms.radio2"
         >
           <Column header="#" style="padding: 2px 5px 2px 5px">
             <template #body="{ index }"> {{ index + 1 }}</template>
@@ -894,17 +882,13 @@ const groupedFlights = computed(() =>
           <Column header="Freq" field="freq" style="padding: 2px 5px 2px 5px">
             <template #body="{ data }"> {{ data?.freq }}</template>
             <template #editor="{ data, index }">
-              <Input
-                class="fixW"
-                v-model="selectedFlight.comms.radio2[index].freq"
+              <Input class="fixW" v-model="getFlight.comms.radio2[index].freq"
             /></template>
           </Column>
           <Column header="Name" field="name" style="padding: 2px 5px 2px 5px">
             <template #body="{ data }"> {{ data?.name }}</template>
             <template #editor="{ data, index }">
-              <Input
-                class="fixW"
-                v-model="selectedFlight.comms.radio2[index].name"
+              <Input class="fixW" v-model="getFlight.comms.radio2[index].name"
             /></template>
           </Column>
           <Column header="n°" field="number" style="padding: 2px 5px 2px 5px">
@@ -912,7 +896,7 @@ const groupedFlights = computed(() =>
             <template #editor="{ data, index }">
               <InputNumber
                 class="fixW"
-                v-model="selectedFlight.comms.radio2[index].number"
+                v-model="getFlight.comms.radio2[index].number"
               />
             </template>
           </Column>
@@ -925,7 +909,7 @@ const groupedFlights = computed(() =>
             <template #editor="{ data, index }">
               <Input
                 class="fixW"
-                v-model="selectedFlight.comms.radio2[index].description"
+                v-model="getFlight.comms.radio2[index].description"
             /></template>
           </Column>
           <Column style="padding: 2px 5px 2px 5px; width: 20px">

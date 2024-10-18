@@ -18,7 +18,7 @@ const {
   selectedPKG,
 } = storeToRefs(usePackageStore());
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -36,14 +36,14 @@ const showROE = inject("showROE");
     <div class="border header">BRIEFING CARD</div>
     <div class="border mcd-s-6 mcd-wog">MISSION</div>
     <div class="border mcd-s-6 mcd-bow">
-      {{ selectedFlight.MSNumber }}
+      {{ getFlight.MSNumber }}
     </div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
     <div class="border mcd-s-5 mcd-bow">
-      {{ selectedFlight.callsign }} {{ selectedFlight.callsignNumber }}
+      {{ getFlight.callsign }} {{ getFlight.callsignNumber }}
     </div>
     <!-- 
-    <select v-model="selectedFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
+    <select v-model="getFlight.callsign" class="mcd-s-5 mcd-bow dropdown">
       <option v-for="flight of flights">{{ flight.callsignRaw }}</option>
     </select>--
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
@@ -52,20 +52,20 @@ const showROE = inject("showROE");
     </div>
     <div class="border mcd-s-6 mcd-wog">HOMEPLATE</div>
     <Input
-      v-model="selectedFlight.DEP.NAME"
+      v-model="getFlight.DEP.NAME"
       class="border mcd-s-6 mcd-bog textbox"
     />
     <div class="border mcd-rnlaf313">RNLAF 313 SQUADRON</div>
     <div class="border mcd-s-6 mcd-wog">MSN TYPE</div>
     <Input
       class="border mcd-s-6 mcd-bow textbox"
-      v-model="selectedFlight.missionType"
+      v-model="getFlight.missionType"
     />
 
     <div class="border mcd-s-6 mcd-wog">PACKAGE TASK</div>
     <Input v-model="packageTask" class="border mcd-s-26 mcd-bog textbox" />
     <div class="border mcd-s-6 mcd-wog">FLIGHT TASK</div>
-    <Input v-model="selectedFlight.task" class="border mcd-s-26 mcd-bow" />
+    <Input v-model="getFlight.task" class="border mcd-s-26 mcd-bow" />
     <div class="border mcd-s-col mcd-wog">SITUATION</div>
     <textarea
       v-model="situation"
@@ -83,7 +83,7 @@ const showROE = inject("showROE");
     <textarea
       type="text"
       :class="`mcd-s-col  textbox ${showROE ? 'mcd-row-10' : 'mcd-row-16'}`"
-      v-model="selectedFlight.gameplan"
+      v-model="getFlight.gameplan"
     />
     <div v-if="showROE" class="border roehead mcd-s-col" style="width: 100%">
       RULES OF ENGAGEMENT

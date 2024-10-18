@@ -6,7 +6,7 @@ import { storeToRefs } from "pinia";
 import { ref } from "vue";
 
 export const download = () => {
-  const { selectedFlight } = storeToRefs(useFlightStore());
+  const { getFlight } = storeToRefs(useFlightStore());
 
   // Helper function to ensure the image has loaded before proceeding
   const loadImage = (image: HTMLImageElement): Promise<HTMLImageElement> => {
@@ -35,7 +35,7 @@ export const download = () => {
 
       const link = document.createElement("a");
       link.href = URL.createObjectURL(imageBlob);
-      link.download = `${selectedFlight.value.callsign}_${
+      link.download = `${getFlight.value.callsign}_${
         router.currentRoute.value.name as string
       }.png`;
       link.click();
@@ -140,7 +140,7 @@ export const download = () => {
     zip.generateAsync({ type: "blob" }).then((blob) => {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `${selectedFlight.value.callsign}.zip`;
+      link.download = `${getFlight.value.callsign}.zip`;
       link.click();
 
       // Clean up

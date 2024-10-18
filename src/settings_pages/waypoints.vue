@@ -1,5 +1,5 @@
 <template>
-  <div style="display: block" class="parent" v-if="selectedFlight.callsign">
+  <div style="display: block" class="parent" v-if="getFlight.callsign">
     <h3>Waypoints</h3>
     <DataTable
       showGridlines
@@ -9,7 +9,7 @@
       sort-field="waypointNr"
       :sortOrder="1"
       v-model:selection="selectedSteerpoints"
-      :value="selectedFlight.waypoints"
+      :value="getFlight.waypoints"
       class="item"
       style="
         max-width: 2050px;
@@ -22,17 +22,17 @@
       <Column field="waypointNr" header="WPN NR" style="width: 100px">
         <template #editor="{ index }">
           <InputNumber
-            v-model:model-value="selectedFlight.waypoints[index].waypointNr"
+            v-model:model-value="getFlight.waypoints[index].waypointNr"
           ></InputNumber>
         </template>
       </Column>
       <Column field="name" header="Name"
         ><template #editor="{ index }">
-          <Input v-model="selectedFlight.waypoints[index].name" /></template
+          <Input v-model="getFlight.waypoints[index].name" /></template
       ></Column>
       <Column field="type" header="Type">
         <template #editor="{ index }">
-          <Input v-model="selectedFlight.waypoints[index].type"
+          <Input v-model="getFlight.waypoints[index].type"
         /></template>
       </Column>
       <Column field="activity" header="Activity"></Column>
@@ -55,7 +55,7 @@
         >
         <template #editor="{ index }">
           <InputNumber
-            v-model:model-value="selectedFlight.waypoints[index].altitude"
+            v-model:model-value="getFlight.waypoints[index].altitude"
           ></InputNumber>
         </template>
       </Column>
@@ -94,7 +94,7 @@
         <Button label="unhide selected" @click="unhideSelected()" class="item"
       /></template>
     </DataTable>
-    <div class="content parent" v-if="selectedFlight.callsign">
+    <div class="content parent" v-if="getFlight.callsign">
       <div class="content">
         <h3 style="padding-bottom: 11px; min-width: 400px">
           Designated Impact Points (DMPIs)
@@ -102,20 +102,20 @@
         <DataTable
           showGridlines
           edit-mode="cell"
-          :value="selectedFlight.dmpis"
+          :value="getFlight.dmpis"
           style="min-width: 1200px"
         >
           <Column header="WPN NR" style="width: 100px"
-            ><template #body="{ index }">{{ index + 80 }}</template></Column
+            ><template #body="{ index }">{{ index + 81 }}</template></Column
           >
           <Column field="type" header="Type">
             <template #editor="{ index }"
-              ><input v-model="selectedFlight.dmpis[index].type"
+              ><input v-model="getFlight.dmpis[index].type"
             /></template>
           </Column>
           <Column field="name" header="Name">
             <template #editor="{ index }"
-              ><input v-model="selectedFlight.dmpis[index].name"
+              ><input v-model="getFlight.dmpis[index].name"
             /></template>
           </Column>
           <Column field="altitude" header="Altitude">
@@ -135,7 +135,7 @@
           </Column>
           <Column field="note" header="Note"
             ><template #editor="{ index }"
-              ><input v-model="selectedFlight.dmpis[index].note" /></template
+              ><input v-model="getFlight.dmpis[index].note" /></template
           ></Column>
           <template #footer>
             <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
@@ -174,7 +174,7 @@ import InputNumber from "primevue/inputnumber";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
 import { usePackageStore } from "@/stores/packageStore";
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 const { allFlightsFromPackage, selectedPKG } = storeToRefs(usePackageStore());
 const showDia = ref(false);
 
@@ -203,11 +203,11 @@ const incSelected = () => {
   selectedSteerpoints.value.sort((a, b) => a.waypointNr - b.waypointNr);
 
   for (let i = selectedSteerpoints.value.length - 1; i >= 0; i--) {
-    const swapWith = selectedFlight.value.waypoints.findIndex(
+    const swapWith = getFlight.value.waypoints.findIndex(
       (n) => n.waypointNr === selectedSteerpoints.value[i].waypointNr + 1
     );
     if (swapWith !== -1) {
-      selectedFlight.value.waypoints[swapWith].waypointNr -= 1;
+      getFlight.value.waypoints[swapWith].waypointNr -= 1;
     }
 
     selectedSteerpoints.value[i].waypointNr += 1;
@@ -222,11 +222,10 @@ const decrSelected = () => {
   for (let i = selectedSteerpoints.value.length - 1; i >= 0; i--) {
     if (selectedSteerpoints.value[i].waypointNr < 2) return;
 
-    const swapWith = selectedFlight.value.waypoints.findIndex(
+    const swapWith = getFlight.value.waypoints.findIndex(
       (n) => n.waypointNr === selectedSteerpoints.value[i].waypointNr - 1
     );
-    if (swapWith !== -1)
-      selectedFlight.value.waypoints[swapWith].waypointNr += 1;
+    if (swapWith !== -1) getFlight.value.waypoints[swapWith].waypointNr += 1;
     selectedSteerpoints.value[i].waypointNr -= 1;
   }
 };
@@ -246,9 +245,9 @@ const unhideSelected = () => {
 function toDMPI(i: number) {
   selectedSteerpoints.value = new Array();
 
-  const tdmpi = selectedFlight.value.waypoints.splice(i, 1);
+  const tdmpi = getFlight.value.waypoints.splice(i, 1);
 
-  selectedFlight.value.dmpis.push({
+  getFlight.value.dmpis.push({
     altitude: tdmpi[0].altitude,
     latitude: tdmpi[0].latitude,
     longitude: tdmpi[0].longitude,
@@ -259,7 +258,7 @@ function toDMPI(i: number) {
 }
 
 function deleteWaypoint(i: number) {
-  selectedFlight.value.waypoints.splice(i, 1);
+  getFlight.value.waypoints.splice(i, 1);
 }
 </script>
 

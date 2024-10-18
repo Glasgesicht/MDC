@@ -17,11 +17,11 @@ import type { bullseyes } from "@/config/bullseye";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const getUnit = computed(() => (i: number) => {
-  // console.log(selectedFlight.value.units[i]);
-  return selectedFlight.value.units[i] ?? null;
+  // console.log(getFlight.value.units[i]);
+  return getFlight.value.units[i] ?? null;
 });
 
 const { pagenr } = defineProps({
@@ -65,30 +65,30 @@ const showROE = inject("showROE");
     <div class="c36 parent" v-for="index in new Array(20).keys()">
       <div class="c2 g bdr">{{ index + 1 }}</div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedFlight.comms.radio1[index]?.freq }}
+        {{ getFlight.comms.radio1[index]?.freq }}
       </div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedFlight.comms.radio1[index]?.name }}
-        {{ selectedFlight.comms.radio1[index]?.number || "" }}
+        {{ getFlight.comms.radio1[index]?.name }}
+        {{ getFlight.comms.radio1[index]?.number || "" }}
       </div>
       <div :class="`c1 hr bdr`"></div>
       <div :class="`c1 hr bdr`"></div>
       <div :class="`c6 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedFlight.comms.radio1[index]?.description }}
+        {{ getFlight.comms.radio1[index]?.description }}
       </div>
 
       <div class="c2 g bdr">{{ index + 1 }}</div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedFlight.comms.radio2[index]?.freq }}
+        {{ getFlight.comms.radio2[index]?.freq }}
       </div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedFlight.comms.radio2[index]?.name }}
-        {{ selectedFlight.comms.radio2[index]?.number || "" }}
+        {{ getFlight.comms.radio2[index]?.name }}
+        {{ getFlight.comms.radio2[index]?.number || "" }}
       </div>
       <div :class="`c1 hr bdr`"></div>
       <div :class="`c1 hr bdr`"></div>
       <div :class="`c6 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedFlight.comms.radio2[index]?.description }}
+        {{ getFlight.comms.radio2[index]?.description }}
       </div>
     </div>
 

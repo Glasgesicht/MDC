@@ -8,12 +8,13 @@ import type {
   RouteEntity,
   WaypointEntity,
 } from "@/types/mdcDataTypes";
+import { initFlight } from "@/types/mdcDataTypes";
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
 import { flights } from "./flights";
 import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
-import { initState, useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
 import { DateTime } from "luxon";
 import { toRaw } from "vue";
@@ -73,7 +74,6 @@ export function processCF(
   }
 
   function parseCfXML(input: string) {
-    const { selectedFlight } = storeToRefs(useFlightStore());
     const { packages } = storeToRefs(usePackageStore());
     const { theater, missionStartTime } = storeToRefs(useGlobalStore());
     const parser = new xml2js.Parser({
@@ -182,8 +182,8 @@ export function processCF(
           []
         );
 
-        usePackageStore().reset();
-        useFlightStore().reset();
+        usePackageStore().$reset();
+        useFlightStore().$reset();
         packages.value = _packages;
         //console.log(toRaw(agencies.value));
         // console.log(_packages);
@@ -254,7 +254,7 @@ export function processCF(
       )
       .map((mCurr, i, pkg): Flight => {
         if (!mCurr.Waypoints || !mCurr.Waypoints[0])
-          return structuredClone(initState);
+          return structuredClone(initFlight);
         const comm = assignComms(pkg, i);
 
         let startTime = DateTime.fromJSDate(

@@ -2,246 +2,79 @@ import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
 import { computed, ref, toRaw, watch, type Ref } from "vue";
 import { F15Flights, F16Flights, flights } from "@/config/flights";
-import type { FlightMember } from "@/types/mdcDataTypes";
+import type { Flight, FlightMember } from "@/types/mdcDataTypes";
 import { getSTN } from "@/utils/utilFunctions";
 import type { Misc } from "@/types/dtcTypes";
 
-export const initState = {
-  aircrafttype: "",
-  callsign: "",
-  callsignNumber: NaN,
-  isActive: false,
-  taxi: "",
-  takeoff: "",
-  flightTask: "",
-  fence_in: 0,
-  fence_out: 0,
-  comms: {
-    // This is awfully F-16 specific, but we can just overwrite this, might adjust the type though
-    radio1: new Array<{
-      freq: string;
-      name: string;
-      number?: number;
-      description: string;
-    }>(20),
-    // Also, those values are not computed, because we need to be able to freely set them if needed
-    radio2: new Array<{
-      freq: string;
-      name: string;
-      number?: number;
-      description: string;
-    }>(20),
-  },
-  // This is for the individual flights, making is easier to shift flights around witout complicated logic, although this maybe cases some redundancies.
-  // Might refactor later
-  mycomm: {
-    pri: <
-      {
-        freq: string;
-        name: string;
-        number?: number;
-        description: string;
-      }
-    >{
-      freq: "",
-      name: "",
-      number: NaN,
-      description: "",
+export const useFlightStore = defineStore("flightSore", {
+  state: () => ({ selectedFlightId: 0 }),
+  actions: {
+    setFlightId(id: number) {
+      this.selectedFlightId = id;
     },
-    sec: <
-      {
-        freq: string;
-        name: string;
-        number?: number;
-        description: string;
-      }
-    >{
-      freq: "",
-      name: "",
-      number: NaN,
-      description: "",
+    updateFligh() {
+      const callsign = this.getFlight.callsign;
+
+      this.getFlight.units.forEach((_n, i) => {
+        this.getFlight.units[i].STN = getSTN(
+          this.getFlight.aircrafttype,
+          this.getFlight.callsign,
+          this.getFlight.callsignNumber % 8,
+          i
+        );
+
+        this.getFlight.units[i].L16 =
+          callsign.charAt(0) +
+          callsign.charAt(callsign.length - 1) +
+          this.getFlight.callsignNumber +
+          (Number(i) + 1);
+      });
+
+      const newComms = flights.find((n) => n.callsign === callsign);
+
+      this.getFlight.mycomm = {
+        pri: {
+          description: newComms?.callsign + " " + newComms?.number || "",
+          freq: newComms?.pri.freq || "",
+          name: newComms?.pri.name || "",
+          number: parseInt(newComms?.pri.number || ""),
+        },
+        sec: {
+          description: newComms?.callsign || "",
+          freq: newComms?.sec.freq || "",
+          name: newComms?.sec.name || "",
+          number: parseInt(newComms?.sec.number || ""),
+        },
+      };
     },
   },
-  gameplan: "",
-  MSNumber: "",
-  missionType: "",
-  tacan: "",
-  task: "",
-  units: new Array<FlightMember>(),
-  waypoints: new Array<{
-    activity: string;
-    airspeed_calibrated: number;
-    airspeed_total: number;
-    altitude: number;
-    groundspeed: number;
-    latitude: number;
-    longitude: number;
-    mach: number;
-    name: string;
-    tot: string;
-    type: string;
-    waypointNr: number;
-    hideOnMDC: boolean;
-  }>(),
-  dmpis: new Array<{
-    note: string;
-    altitude: number;
-    latitude: number;
-    longitude: number;
-    name: string;
-    type: string;
-  }>(20),
-
-  DEP: {
-    NAME: "",
-    ICAO: "",
-    ATIS: { uhf: "", vhf: "" },
-    APPR: { uhf: "", vhf: "" },
-    TOWER: { uhf: "", vhf: "" },
-    GROUND: { uhf: "", vhf: "" },
-    TACAN: "",
-    COURSE: [""],
-    ILS: [""],
-    ELEV: "",
-    LEN: "",
-  },
-  ARR: {
-    NAME: "",
-    ICAO: "",
-    ATIS: { uhf: "", vhf: "" },
-    APPR: { uhf: "", vhf: "" },
-    TOWER: { uhf: "", vhf: "" },
-    GROUND: { uhf: "", vhf: "" },
-    TACAN: "",
-    COURSE: [""],
-    ILS: [""],
-    ELEV: "",
-    LEN: "",
-  },
-  ALT: {
-    NAME: "",
-    ICAO: "",
-    ATIS: { uhf: "", vhf: "" },
-    APPR: { uhf: "", vhf: "" },
-    TOWER: { uhf: "", vhf: "" },
-    GROUND: { uhf: "", vhf: "" },
-    TACAN: "",
-    COURSE: [""],
-    ILS: [""],
-    ELEV: "",
-    LEN: "",
-  },
-  misc: {
-    Bingo: 2400,
-    BingoToBeUpdated: false,
-    BullseyeToBeUpdated: true,
-    BullseyeWP: 97,
-    CARAALOW: 700,
-    CARAALOWToBeUpdated: true,
-    ILSCourse: 0,
-    ILSFrequency: 0,
-    ILSToBeUpdated: false,
-    LaserSettingsToBeUpdated: false,
-    LaserStartTime: 0,
-    LSTCode: 0,
-    MSLFloor: 0,
-    MSLFloorToBeUpdated: false,
-    TACANBand: 0,
-    TACANChannel: 0,
-    TACANToBeUpdated: false,
-    TGPCode: 1688,
-  } satisfies Misc,
-};
-
-export const useFlightStore = defineStore("flight", () => {
-  const selectedFlight: Ref<typeof initState> = ref(structuredClone(initState));
-
-  function reset() {
-    selectedFlight.value = structuredClone(initState);
-  }
-
-  const useDefaults = ref(true);
-
-  // Here goes all the data that only belongs to the currently selected flight
-  const flightTask = computed({
-    get() {
-      return selectedFlight.value.flightTask;
+  getters: {
+    getFlight: (state) => {
+      const { selectedPKG } = storeToRefs(usePackageStore());
+      return selectedPKG.value?.flights[state.selectedFlightId];
     },
-    set(value: string) {
-      selectedFlight.value.flightTask = value;
-    },
-  });
-
-  const updateFligh = () => {
-    const callsign = selectedFlight.value.callsign;
-
-    selectedFlight.value.units.forEach((_n, i) => {
-      selectedFlight.value.units[i].STN = getSTN(
-        selectedFlight.value.aircrafttype,
-        selectedFlight.value.callsign,
-        selectedFlight.value.callsignNumber % 8,
-        i
-      );
-
-      selectedFlight.value.units[i].L16 =
-        callsign.charAt(0) +
-        callsign.charAt(callsign.length - 1) +
-        selectedFlight.value.callsignNumber +
-        (Number(i) + 1);
-    });
-
-    const newComms = flights.find((n) => n.callsign === callsign);
-
-    selectedFlight.value.mycomm = {
-      pri: {
-        description: newComms?.callsign + " " + newComms?.number || "",
-        freq: newComms?.pri.freq || "",
-        name: newComms?.pri.name || "",
-        number: parseInt(newComms?.pri.number || ""),
-      },
-      sec: {
-        description: newComms?.callsign || "",
-        freq: newComms?.sec.freq || "",
-        name: newComms?.sec.name || "",
-        number: parseInt(newComms?.sec.number || ""),
-      },
-    };
-  };
-
-  function updateLadder() {
-    const { selectedPKG, allFlightsFromPackage } = storeToRefs(
-      usePackageStore()
-    );
-
-    allFlightsFromPackage.value.forEach((flight) => {
-      for (let i = 14; i < 14 + allFlightsFromPackage.value.length; i++) {
-        //update Radios
-        if (selectedPKG.value.flights[i - 14]?.mycomm.pri.freq)
-          //only if they've values assigned
-          flight.comms.radio1[i] = selectedPKG.value.flights[i - 14].mycomm.pri;
-        if (selectedPKG.value.flights[i - 14].mycomm.sec.freq)
-          flight.comms.radio2[i] = selectedPKG.value.flights[i - 14].mycomm.sec;
-      }
-    });
-  }
-
-  const setNewCallsign = (opts: {
-    aircrafttype: string;
-    callsign: string;
-    callsignNumber: number;
-  }) => {
-    selectedFlight.value.aircrafttype = opts.aircrafttype;
-    selectedFlight.value.callsign = opts.callsign;
-    selectedFlight.value.callsignNumber = opts.callsignNumber;
-  };
-
-  return {
-    selectedFlight,
-    flightTask,
-    setNewCallsign,
-    updateFligh,
-    reset,
-    useDefaults,
-    updateLadder,
-  };
+  },
 });
+
+/*
+      setFlightId(){
+        this.getFlight++
+      }
+    },
+    setNewCallsign(opts: {
+      aircrafttype: string;
+      callsign: string;
+      callsignNumber: number;
+    }) {
+      this.aircrafttype = opts.aircrafttype;
+      this.callsign = opts.callsign;
+      this.callsignNumber = opts.callsignNumber;
+    },
+    /** TODO: Gehört in den PackageStore 
+  },
+  getters: {
+    getFlight: (state) => state,
+    flightTask: (state) => state.flightTask,
+  },
+});
+*/

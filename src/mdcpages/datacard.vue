@@ -1,26 +1,18 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref, computed } from "vue";
-import Textarea from "primevue/inputtext";
+import { computed } from "vue";
+
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
-import Dropdown from "primevue/dropdown";
 
-import { flights } from "../config/flights";
-import {
-  calculateHeading,
-  calculateDistance,
-  toLatString,
-  toLongString,
-} from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const getUnit = computed(() => (i: number) => {
-  // console.log(selectedFlight.value.units[i]);
-  return selectedFlight.value.units[i] ?? null;
+  // console.log(getFlight.value.units[i]);
+  return getFlight.value.units[i] ?? null;
 });
 
 // const pagenr = 1; // TODO: Compute based on selected pages for export
@@ -94,11 +86,11 @@ const airspaceCoordination = "Fly around and shoot stuff!";
 
     <div class="border mcd-s-3 mcd-wog">MSN</div>
     <div class="border mcd-s-4 mcd-bow">
-      {{ selectedFlight?.MSNumber }}
+      {{ getFlight?.MSNumber }}
     </div>
     <div class="border mcd-s-5 mcd-wog">CALLSIGN</div>
     <div class="border mcd-s-6 mcd-bow">
-      {{ selectedFlight?.callsign }} {{ selectedFlight?.callsignNumber }}
+      {{ getFlight?.callsign }} {{ getFlight?.callsignNumber }}
     </div>
     <div class="border mcd-s-5 mcd-wog">PACKAGE</div>
     <div class="border mcd-s-9 mcd-bow">{{ selectedPKG?.name }}</div>

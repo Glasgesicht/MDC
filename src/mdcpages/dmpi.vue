@@ -16,7 +16,7 @@ import { useFlightStore } from "@/stores/flightStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const { pagenr } = defineProps({
   pagenr: {

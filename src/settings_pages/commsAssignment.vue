@@ -11,16 +11,16 @@
       <Dropdown
         :options="freqNames"
         :disabled="useDefaults"
-        v-model="selectedFlight.mycomm.pri.name"
+        v-model="getFlight.mycomm.pri.name"
         placeholder="none"
       />
       <Dropdown
         :disabled="useDefaults"
         :options="numbers"
-        v-model="selectedFlight.mycomm.pri.number"
+        v-model="getFlight.mycomm.pri.number"
       />
       <Inputmask
-        v-model="selectedFlight.mycomm.pri.freq"
+        v-model="getFlight.mycomm.pri.freq"
         locale="en-US"
         :min-fraction-digits="2"
         :max="399.99"
@@ -29,16 +29,16 @@
       SECONDARY
       <Dropdown
         :options="freqNames"
-        v-model="selectedFlight.mycomm.sec.name"
+        v-model="getFlight.mycomm.sec.name"
         placeholder="none"
         :disabled="useDefaults"
       />
       <Dropdown
         :disabled="useDefaults"
         :options="numbers"
-        v-model="selectedFlight.mycomm.sec.number"
+        v-model="getFlight.mycomm.sec.number"
       />
-      <InputMask v-model="selectedFlight.mycomm.sec.freq" mask="9?99.999" />
+      <InputMask v-model="getFlight.mycomm.sec.freq" mask="9?99.999" />
     </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { freqNames } from "@/config/frequencies";
 
-const { selectedFlight, useDefaults } = storeToRefs(useFlightStore());
+const { getFlight, useDefaults } = storeToRefs(useFlightStore());
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 

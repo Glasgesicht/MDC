@@ -1,4 +1,6 @@
 import { useFlightStore } from "@/stores/flightStore";
+import { storeToRefs } from "pinia";
+import type { Misc } from "./dtcTypes";
 
 export type FlightMember = {
   callsign: string;
@@ -41,9 +43,140 @@ export type Waypoint = {
   type: string;
 };
 
-const flight = useFlightStore().selectedFlight;
+export const initFlight = {
+  aircrafttype: "",
+  callsign: "",
+  callsignNumber: NaN,
+  isActive: false,
+  taxi: "",
+  takeoff: "",
+  flightTask: "",
+  fence_in: 0,
+  fence_out: 0,
+  comms: {
+    // This is awfully F-16 specific, but we can just overwrite this, might adjust the type though
+    radio1: new Array<{
+      freq: string;
+      name: string;
+      number?: number;
+      description: string;
+    }>(20),
+    // Also, those values are not computed, because we need to be able to freely set them if needed
+    radio2: new Array<{
+      freq: string;
+      name: string;
+      number?: number;
+      description: string;
+    }>(20),
+  },
+  // This is for the individual flights, making is easier to shift flights around witout complicated logic, although this maybe cases some redundancies.
+  // Might refactor later
+  mycomm: {
+    pri: {
+      freq: "",
+      name: "",
+      number: NaN,
+      description: "",
+    },
+    sec: {
+      freq: "",
+      name: "",
+      number: NaN,
+      description: "",
+    },
+  },
+  gameplan: "",
+  MSNumber: "",
+  missionType: "",
+  tacan: "",
+  task: "",
+  units: new Array<FlightMember>(),
+  waypoints: new Array<{
+    activity: string;
+    airspeed_calibrated: number;
+    airspeed_total: number;
+    altitude: number;
+    groundspeed: number;
+    latitude: number;
+    longitude: number;
+    mach: number;
+    name: string;
+    tot: string;
+    type: string;
+    waypointNr: number;
+    hideOnMDC: boolean;
+  }>(),
+  dmpis: new Array<{
+    note: string;
+    altitude: number;
+    latitude: number;
+    longitude: number;
+    name: string;
+    type: string;
+  }>(20),
 
-export type Flight = typeof flight;
+  DEP: {
+    NAME: "",
+    ICAO: "",
+    ATIS: { uhf: "", vhf: "" },
+    APPR: { uhf: "", vhf: "" },
+    TOWER: { uhf: "", vhf: "" },
+    GROUND: { uhf: "", vhf: "" },
+    TACAN: "",
+    COURSE: [""],
+    ILS: [""],
+    ELEV: "",
+    LEN: "",
+  },
+  ARR: {
+    NAME: "",
+    ICAO: "",
+    ATIS: { uhf: "", vhf: "" },
+    APPR: { uhf: "", vhf: "" },
+    TOWER: { uhf: "", vhf: "" },
+    GROUND: { uhf: "", vhf: "" },
+    TACAN: "",
+    COURSE: [""],
+    ILS: [""],
+    ELEV: "",
+    LEN: "",
+  },
+  ALT: {
+    NAME: "",
+    ICAO: "",
+    ATIS: { uhf: "", vhf: "" },
+    APPR: { uhf: "", vhf: "" },
+    TOWER: { uhf: "", vhf: "" },
+    GROUND: { uhf: "", vhf: "" },
+    TACAN: "",
+    COURSE: [""],
+    ILS: [""],
+    ELEV: "",
+    LEN: "",
+  },
+  misc: {
+    Bingo: 2400,
+    BingoToBeUpdated: false,
+    BullseyeToBeUpdated: true,
+    BullseyeWP: 97,
+    CARAALOW: 700,
+    CARAALOWToBeUpdated: true,
+    ILSCourse: 0,
+    ILSFrequency: 0,
+    ILSToBeUpdated: false,
+    LaserSettingsToBeUpdated: false,
+    LaserStartTime: 0,
+    LSTCode: 0,
+    MSLFloor: 0,
+    MSLFloorToBeUpdated: false,
+    TACANBand: 0,
+    TACANChannel: 0,
+    TACANToBeUpdated: false,
+    TGPCode: 1688,
+  } satisfies Misc,
+};
+
+export type Flight = typeof initFlight;
 
 export type Package = {
   /** Name of Package */

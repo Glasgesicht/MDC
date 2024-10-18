@@ -1,29 +1,27 @@
-import { useRefHistory } from "@vueuse/core";
+import { useManualRefHistory, useRefHistory } from "@vueuse/core";
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
-import { watch } from "vue";
+import { ref, watch } from "vue";
 
 export const useEditHistory = () => {
-  const { packages } = storeToRefs(usePackageStore());
-  const { selectedFlight } = storeToRefs(useFlightStore());
-  const { history, undo, redo, canRedo, canUndo } = useRefHistory(
-    selectedFlight,
-    {
-      deep: true,
-    }
-  );
+  const { selectedPKG } = storeToRefs(usePackageStore());
+  const { getFlight } = storeToRefs(useFlightStore());
+  const { history, undo, redo, canRedo, canUndo, reset, commit, clear } =
+    useRefHistory(getFlight, { deep: true });
 
-  const resetHistory = () => {
+  function clearHistroy() {
     setTimeout(() => {
-      history.value = [];
+      clear();
+      reset();
     }, 100);
-  };
+  }
+
   return {
     history,
     undo,
     redo,
-    resetHistory,
+    clearHistroy,
     canRedo,
     canUndo,
   };

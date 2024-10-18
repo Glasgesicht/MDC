@@ -9,7 +9,7 @@ import { airports } from "@/config/airfields";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const getAirport = (sel: string) => {
   if (typeof sel == "string")
@@ -71,75 +71,75 @@ const hhmmss = (time: string) => {
     <div class="border mcd-s-2 mcd-row-1 mcd-wog">DEP</div>
 
     <div class="border mcd-s-8 mcd-row-1 mcd-bow">
-      {{ selectedFlight.DEP.NAME }}
+      {{ getFlight.DEP.NAME }}
     </div>
 
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.DEP.NAME).TACAN }}
+      {{ getAirport(getFlight.DEP.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ selectedFlight.DEP.APPR }}
+      {{ getFlight.DEP.APPR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.DEP.NAME).LEN }}
+      {{ getAirport(getFlight.DEP.NAME).LEN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.DEP.NAME).ELEV }}
+      {{ getAirport(getFlight.DEP.NAME).ELEV }}
     </div>
     <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.DEP.NAME).HDG }}
+      {{ getAirport(getFlight.DEP.NAME).HDG }}
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.DEP.NAME).ILS }}
+      {{ getAirport(getFlight.DEP.NAME).ILS }}
     </div>
 
     <div class="border mcd-s-2 mcd-row-1 mcd-wog">ARR</div>
     <div class="border mcd-s-8 mcd-row-1 mcd-bow">
-      {{ selectedFlight.ARR.NAME }}
+      {{ getFlight.ARR.NAME }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ARR.NAME).TACAN }}
+      {{ getAirport(getFlight.ARR.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ selectedFlight.ARR.APPR }}
+      {{ getFlight.ARR.APPR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ARR.NAME).LEN }}
+      {{ getAirport(getFlight.ARR.NAME).LEN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ARR.NAME).ELEV }}
+      {{ getAirport(getFlight.ARR.NAME).ELEV }}
     </div>
     <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ARR.NAME).HDG }}
+      {{ getAirport(getFlight.ARR.NAME).HDG }}
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ARR.NAME).ILS }}
+      {{ getAirport(getFlight.ARR.NAME).ILS }}
     </div>
 
     <div class="border mcd-s-2 mcd-row-1 mcd-wog">ALT</div>
     <div class="border mcd-s-8 mcd-row-1 mcd-bow">
-      {{ selectedFlight.ALT.NAME }}
+      {{ getFlight.ALT.NAME }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ALT.NAME).TACAN }}
+      {{ getAirport(getFlight.ALT.NAME).TACAN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ selectedFlight.ALT.APPR }}
+      {{ getFlight.ALT.APPR }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ALT.NAME).LEN }}
+      {{ getAirport(getFlight.ALT.NAME).LEN }}
     </div>
     <div class="border mcd-s-3 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ALT.NAME).ELEV }}
+      {{ getAirport(getFlight.ALT.NAME).ELEV }}
     </div>
     <!--<div class="border  mcd-s-4 mcd-row-1 mcd-bow">{{ 111 }}</div>
     <div class="border mcd-s-4 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ALT.NAME).HDG }}
+      {{ getAirport(getFlight.ALT.NAME).HDG }}
     </div>
     <div class="border mcd-s-5 mcd-row-1 mcd-bow">
-      {{ getAirport(selectedFlight.ALT.NAME).ILS }}
+      {{ getAirport(getFlight.ALT.NAME).ILS }}
     </div>
     <!--
     <div class="border  mcd-s-3 mcd-row-1 mcd-wog">ARR</div>
@@ -180,61 +180,61 @@ const hhmmss = (time: string) => {
       </div>
       <div :class="`border  mcd-s-5 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : selectedFlight?.waypoints[index]?.type === "Steerpoint"
-            ? selectedFlight?.waypoints[index]?.name
-            : selectedFlight?.waypoints[index]?.type
+            : getFlight?.waypoints[index]?.type === "Steerpoint"
+            ? getFlight?.waypoints[index]?.name
+            : getFlight?.waypoints[index]?.type
         }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : hhmmss(selectedFlight?.waypoints[index]?.tot)
+            : hhmmss(getFlight?.waypoints[index]?.tot)
         }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : selectedFlight?.waypoints[index + 1]?.longitude
+            : getFlight?.waypoints[index + 1]?.longitude
             ? calculateHeading(
-                selectedFlight?.waypoints[index]?.latitude,
-                selectedFlight?.waypoints[index]?.longitude,
-                selectedFlight?.waypoints[index + 1]?.latitude,
-                selectedFlight?.waypoints[index + 1]?.longitude
+                getFlight?.waypoints[index]?.latitude,
+                getFlight?.waypoints[index]?.longitude,
+                getFlight?.waypoints[index + 1]?.latitude,
+                getFlight?.waypoints[index + 1]?.longitude
               )
             : ""
         }}
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : selectedFlight?.waypoints[index + 1]?.longitude
+            : getFlight?.waypoints[index + 1]?.longitude
             ? calculateDistance(
-                selectedFlight?.waypoints[index]?.latitude,
-                selectedFlight?.waypoints[index]?.longitude,
-                selectedFlight?.waypoints[index + 1]?.latitude,
-                selectedFlight?.waypoints[index + 1]?.longitude
+                getFlight?.waypoints[index]?.latitude,
+                getFlight?.waypoints[index]?.longitude,
+                getFlight?.waypoints[index + 1]?.latitude,
+                getFlight?.waypoints[index + 1]?.longitude
               ) + "nm"
             : ""
         }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : selectedFlight?.waypoints[index]?.mach?.toFixed(2)
+            : getFlight?.waypoints[index]?.mach?.toFixed(2)
         }}
       </div>
       <div :class="`border  mcd-s-3 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : selectedFlight?.waypoints[index]?.altitude
-            ? selectedFlight?.waypoints[index]?.altitude + "ft"
+            : getFlight?.waypoints[index]?.altitude
+            ? getFlight?.waypoints[index]?.altitude + "ft"
             : ""
         }}
       </div>
@@ -243,9 +243,9 @@ const hhmmss = (time: string) => {
       </div>
       <div :class="`border  mcd-s-4 ${index % 2 ? 'mcd-bog' : 'mcd-bow'}`">
         {{
-          selectedFlight?.waypoints[index]?.hideOnMDC
+          getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : selectedFlight?.waypoints[index]?.activity
+            : getFlight?.waypoints[index]?.activity
         }}
       </div>
     </div>

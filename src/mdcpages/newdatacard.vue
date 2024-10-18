@@ -2,7 +2,7 @@
 import { inject, onMounted, onUnmounted, ref, computed } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { threats, usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 import Input from "primevue/inputtext";
 
@@ -21,15 +21,15 @@ import {
 import { useFlightStore } from "@/stores/flightStore";
 import { threatRanges } from "@/config/threatRanges";
 
-const { selectedPKG, threats } = storeToRefs(usePackageStore());
+const { selectedPKG } = storeToRefs(usePackageStore());
 
 const threatsVisible = threats.value.filter((n) => n.display);
 
-const { selectedFlight } = storeToRefs(useFlightStore());
+const { getFlight } = storeToRefs(useFlightStore());
 
 const getUnit = computed(() => (i: number) => {
-  // console.log(selectedFlight.value.units[i]);
-  return selectedFlight.value.units[i] ?? null;
+  // console.log(getFlight.value.units[i]);
+  return getFlight.value.units[i] ?? null;
 });
 
 const { pagenr } = defineProps({
@@ -75,16 +75,16 @@ const takeoffTime = (tot: string, activity: string) => {
 
 //const actions = [{}];
 
-const actions = selectedFlight?.value.waypoints.reduce((coll, curr, i) => {
+const actions = getFlight?.value.waypoints.reduce((coll, curr, i) => {
   if (curr.type != "Steerpoint")
     coll.push({
-      sp: i,
+      sp: i + 1,
       action: curr.type,
     });
   return coll;
 }, new Array<{ sp: number; action: string }>());
 
-const AAR = selectedFlight?.value.waypoints
+const AAR = getFlight?.value.waypoints
   .filter((n) => n.type === "AAR")
   .map((n) => {
     return { time: n.tot, activity: n.activity };
@@ -100,10 +100,10 @@ const AAR = selectedFlight?.value.waypoints
     <div class="c33 g bdr">MISSION DATA</div>
 
     <div class="c3 g bdr">MSN</div>
-    <div class="c4 w bdr">{{ selectedFlight?.MSNumber }}</div>
+    <div class="c4 w bdr">{{ getFlight?.MSNumber }}</div>
     <div class="c3 g bdr">C/S</div>
     <div class="c4 w bdr">
-      {{ selectedFlight?.callsign }} {{ selectedFlight?.callsignNumber }}
+      {{ getFlight?.callsign }} {{ getFlight?.callsignNumber }}
     </div>
     <div class="c3 g bdr">PKG</div>
     <div class="c4 w bdr">{{ selectedPKG?.name }}</div>
@@ -136,7 +136,7 @@ const AAR = selectedFlight?.value.waypoints
         {{ getUnit(index)?.STN }}
       </div>
       <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
-        {{ selectedPKG?.flights.indexOf(selectedFlight) + 5 }}{{ index + 1 }}
+        {{ selectedPKG?.flights.indexOf(getFlight) + 5 }}{{ index + 1 }}
       </div>
       <div :class="`c2 hr bdr`">
         {{ getUnit(index)?.tacan }}
@@ -153,11 +153,11 @@ const AAR = selectedFlight?.value.waypoints
     </div>
 
     <div class="c3 g bdr">DEP</div>
-    <div class="c6 w bdr">{{ selectedFlight?.DEP.NAME }}</div>
+    <div class="c6 w bdr">{{ getFlight?.DEP.NAME }}</div>
     <div class="c3 g bdr">ARR</div>
-    <div class="c6 w bdr">{{ selectedFlight?.ARR.NAME }}</div>
+    <div class="c6 w bdr">{{ getFlight?.ARR.NAME }}</div>
     <div class="c3 g bdr">ALT</div>
-    <div class="c6 w bdr">{{ selectedFlight?.ALT.NAME }}</div>
+    <div class="c6 w bdr">{{ getFlight?.ALT.NAME }}</div>
     <div class="c3 g bdr">DIV</div>
     <input class="c6 tb w bdr" />
 
@@ -168,9 +168,9 @@ const AAR = selectedFlight?.value.waypoints
     <div class="c3 g bdr">CX IN</div>
     <input class="c3 tb w bdr" />
     <div class="c3 g bdr">TAXI</div>
-    <input class="c3 tb w bdr" v-model="selectedFlight.taxi" />
+    <input class="c3 tb w bdr" v-model="getFlight.taxi" />
     <div class="c3 g bdr">T/O</div>
-    <input class="c3 w bdr" v-model="selectedFlight.takeoff" />
+    <input class="c3 w bdr" v-model="getFlight.takeoff" />
     <div class="c3 g bdr">LAND</div>
     <input class="c3 tb w bdr" />
 
@@ -199,7 +199,7 @@ const AAR = selectedFlight?.value.waypoints
     <div class="c3 g bdr">HOT</div>
 
     <div class="c4 w bdr">
-      {{ selectedFlight.comms.radio1[12]?.description }}
+      {{ getFlight.comms.radio1[12]?.description }}
     </div>
     <div class="c3 w bdr"></div>
     <div class="c2 w bdr"></div>
@@ -311,8 +311,8 @@ const AAR = selectedFlight?.value.waypoints
       <div class="c3 hr bdr">
         {{
           selectedPKG?.flights[index]?.aircrafttype === "F-16CM"
-            ? selectedFlight.comms.radio2[index + 14]?.freq
-            : selectedFlight.comms.radio1[index + 14]?.freq
+            ? getFlight.comms.radio2[index + 14]?.freq
+            : getFlight.comms.radio1[index + 14]?.freq
         }}
       </div>
       <input class="c3 tb hr bdr" />
@@ -361,16 +361,16 @@ const AAR = selectedFlight?.value.waypoints
       </div>
       <div :class="`c5 w ${index < 2 ? 'w' : 'hr'} bdr`">
         {{
-          index < 2 && selectedFlight.comms.radio1[index + 4] !== undefined
-            ? selectedFlight.comms.radio1[index + 4]?.name +
+          index < 2 && getFlight.comms.radio1[index + 4] !== undefined
+            ? getFlight.comms.radio1[index + 4]?.name +
               " " +
-              selectedFlight.comms.radio1[index + 4]?.number
+              getFlight.comms.radio1[index + 4]?.number
             : ""
         }}
       </div>
       <div :class="`c3 g`">{{ "2" + index }}</div>
       <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr`">
-        {{ index < 2 ? selectedFlight.comms.radio1[index + 4]?.freq : "" }}
+        {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }}
       </div>
       <input :class="`c3 hr bdr`" />
     </div>
