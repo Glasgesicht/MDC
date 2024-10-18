@@ -1,9 +1,13 @@
-// this doesn't account of the magnetic whaatever, idk, it's like 6° off in syria
-
+/**
+ * Generates a CSS string for a grid item with the specified number of columns and rows
+ * @param x The number of columns the grid item spans
+ * @param y The number of rows the grid item spans
+ * @returns The CSS string as an inline style
+ */
 export function generateInlineGrid(x: number, y: number) {
   return `;grid-column-end: span ${x};
   grid-row-end: span ${y};
-  display: inline-grid;
+  display: grid;
   grid-template-columns: repeat(${x}, 1fr);
   grid-template-rows: repeat(${y}, 1fr);`;
 }
@@ -26,7 +30,7 @@ export function generateInlineGridFixed(
   return `
   ;grid-column: ${col} / span ${x};
   grid-row: ${row} / span ${y};
-  display: inline-grid;
+  display: grid;
   grid-template-columns: repeat(${x}, 1fr);
   grid-template-rows: repeat(${y}, 1fr);`;
 }
