@@ -261,6 +261,65 @@
         </DataTable>
       </div>
     </div>
+    <div>
+      <h3 style="line-height: 90%">
+        Bullseye locations<br /><a
+          style="
+            font-weight: 400;
+            font-style: italic;
+            font-size: 13px;
+            margin-top: 0px;
+          "
+          >(These are package-wide but can be overwritten in the flight's
+          settings)</a
+        >
+      </h3>
+
+      <DataTable
+        :value="bullseyes"
+        edit-mode="cell"
+        show-gridlines
+        style="max-width: 1000px; min-width: 800px"
+      >
+        <Column header="Select" style="width: 3rem">
+          <template #body="{ data }">
+            <Checkbox
+              binary
+              :trueValue="data.wp"
+              v-model="selectedBullseye"
+              :value="selectedBullseye || 0"
+              :falseValue="null"
+            />
+          </template>
+        </Column>
+        <Column header="STP #" style="width: 5rem" field="wp"></Column>
+        <Column header="Name" field="name"></Column>
+        <Column header="Latitude" field="lat"></Column>
+        <Column header="Longitde" field="long"></Column>
+        <Column header="Note" field="note">
+          <template #editor="{ index }">
+            <Input v-model:model-value="bullseyes[index].note" /> </template
+        ></Column>
+        <Column>
+          <template #body="{ index }"
+            ><Button
+              @click="deleteBullseye(index)"
+              severity="danger"
+              outlined
+              icon="pi pi-trash"
+          /></template>
+        </Column>
+        <template #footer>
+          <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
+          <SteerpointsToDTC
+            class="item"
+            mode="waypoints"
+            label="waypoints to DTC"
+          />
+          <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" />
+        </template>
+      </DataTable>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -268,7 +327,7 @@ import { usePackageStore } from "@/stores/packageStore";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { storeToRefs } from "pinia";
 import { ramrods } from "@/config/ramrod";
-import { ref } from "vue";
+import { computed, ref, type WritableComputedRef } from "vue";
 
 import DataTable from "primevue/datatable";
 import TextArea from "primevue/textarea";
@@ -281,7 +340,6 @@ import Checkbox from "primevue/checkbox";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 
 const { stateChanged } = storeToRefs(useGlobalStore());
-const editingRows = ref([]);
 
 const { packages, selectedPKG, allFlightsFromPackage, ramrod, threats } =
   storeToRefs(usePackageStore());
@@ -305,18 +363,34 @@ const onRowReorder = (event: any) => {
   stateChanged.value = Date.now();
 };
 
-const onRowEditSave = (event: any) => {
-  let { newData, index } = event;
-
-  threats.value[index] = newData;
-};
-
 const onCellEditComplete = (event: any) => {
   let { data, newValue, field } = event;
   data[field] = newValue;
 };
 
 const { file } = storeToRefs(useGlobalStore());
+
+const bullseyes = computed(() => {
+  return selectedPKG.value.bullseyes;
+});
+
+const selectedBullseye: WritableComputedRef<number | null> = computed({
+  get(): number | null {
+    if (!selectedPKG.value) return null;
+    return selectedPKG.value.flights[0].misc.BullseyeWP;
+  },
+
+  set(v: number | null) {
+    if (!v) return;
+    if (selectedPKG.value.flights[0].misc.BullseyeWP)
+      selectedPKG.value.flights[0].misc.BullseyeWP = v;
+    selectedPKG.value.flights.forEach((n) => (n.misc.BullseyeWP = v));
+  },
+});
+
+const deleteBullseye = (index: number) => {
+  selectedPKG.value.bullseyes.splice(index, 1);
+};
 </script>
 <style scoped>
 td > .p-button {

@@ -148,70 +148,6 @@
           </template>
         </DataTable>
       </div>
-      <div>
-        <h3 style="line-height: 90%">
-          Bullseye locations<br /><a
-            style="
-              font-weight: 400;
-              font-style: italic;
-              font-size: 13px;
-              margin-top: 0px;
-            "
-            >(These are package-wide but can be overwritten in the flight's
-            settings)</a
-          >
-        </h3>
-
-        <DataTable
-          :value="bullseyes"
-          edit-mode="cell"
-          show-gridlines
-          style="max-width: 1000px; min-width: 800px"
-        >
-          <Column header="Select" style="width: 3rem">
-            <template #body="{ data }">
-              <Checkbox
-                binary
-                :trueValue="data.wp"
-                v-model="selectedBullseye"
-                :value="selectedBullseye || 0"
-                :falseValue="null"
-              />
-            </template>
-          </Column>
-          <Column header="STP #" style="width: 5rem" field="wp"></Column>
-          <Column header="Name" field="name"></Column>
-          <Column header="Latitude" field="lat"></Column>
-          <Column header="Longitde" field="long"></Column>
-          <Column header="Note" field="note">
-            <template #editor="{ index }">
-              <Input v-model:model-value="bullseyes[index].note" /> </template
-          ></Column>
-          <Column>
-            <template #body="{ index }"
-              ><Button
-                @click="deleteBullseye(index)"
-                severity="danger"
-                outlined
-                icon="pi pi-trash"
-            /></template>
-          </Column>
-          <template #footer>
-            <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
-            <SteerpointsToDTC
-              class="item"
-              mode="waypoints"
-              label="waypoints to DTC"
-            />
-            <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" />
-            <Button
-              class="item"
-              label="Copy DMPI to other flights"
-              @click="showDia = !showDia"
-            />
-          </template>
-        </DataTable>
-      </div>
     </div>
 
     <Dialog v-model:visible="showDia">
@@ -255,28 +191,6 @@ const decrSelected = () => selectedSteerpoints.value.sort((a, b) => b.waypointNr
 
 const sortSelected = () =>
   selectedSteerpoints.value.sort((a, b) => b.waypointNr - a.waypointNr);
-
-const bullseyes = computed(() => {
-  return selectedPKG.value.bullseyes;
-});
-
-const selectedBullseye: WritableComputedRef<number | null> = computed({
-  get(): number | null {
-    if (!selectedFlight.value) return null;
-    return selectedFlight.value.misc.BullseyeWP;
-  },
-
-  set(v: number | null) {
-    if (!v) return;
-    if (selectedFlight.value.misc.BullseyeWP)
-      selectedFlight.value.misc.BullseyeWP = v;
-    selectedPKG.value.flights.forEach((n) => (n.misc.BullseyeWP = v));
-  },
-});
-
-const deleteBullseye = (index: number) => {
-  selectedPKG.value.bullseyes.splice(index, 1);
-};
 
 const incSelected = () => {
   if (
