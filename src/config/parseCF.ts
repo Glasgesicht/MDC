@@ -296,7 +296,7 @@ export function processCF(
             Bingo: 2400,
             BingoToBeUpdated: false,
             BullseyeToBeUpdated: true,
-            BullseyeWP: 25,
+            BullseyeWP: 97,
             CARAALOW: 700,
             CARAALOWToBeUpdated: true,
             ILSCourse: 0,
