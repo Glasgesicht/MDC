@@ -49,7 +49,7 @@ function callsignChangeEvent(event: any) {
     getFlight.value.callsignNumber = event.value.callsignNumber;
     getFlight.value.aircrafttype = event.value.type;
   }
-  // updateFligh();
+  flightStore.updateFligh();
   packageStore.updateLadder();
 }
 
