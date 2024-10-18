@@ -124,7 +124,7 @@ export function processCF(
               selectedBullseye: 0,
               bullseyes: [
                 {
-                  wp: 25,
+                  wp: 97,
                   note: "",
                   name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
                   lat:
@@ -136,17 +136,32 @@ export function processCF(
                       parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? "0")
                     ) ?? "",
                 },
-                ...bullseyes[theater.value].map((val, i) => {
-                  const lat = val.location.substring(0, 12);
-                  const lon = val.location.substring(16, 30);
-                  return {
-                    wp: i + 97,
-                    name: val.name,
-                    lat: lat,
-                    long: lon,
-                    note: val.note,
-                  };
-                }),
+                {
+                  wp: 98,
+                  note: "",
+                  name: res.Mission.RedBullseye[0]?.Name[0] ?? "",
+                  lat:
+                    toLatString(
+                      parseFloat(res.Mission.RedBullseye[0]?.Lat[0] ?? "0")
+                    ) ?? "",
+                  long:
+                    toLongString(
+                      parseFloat(res.Mission.RedBullseye[0]?.Lon[0] ?? "0")
+                    ) ?? "",
+                },
+                {
+                  wp: 99,
+                  note: "",
+                  name: res.Mission.NeutralBullseye[0]?.Name[0] ?? "",
+                  lat:
+                    toLatString(
+                      parseFloat(res.Mission.NeutralBullseye[0]?.Lat[0] ?? "0")
+                    ) ?? "",
+                  long:
+                    toLongString(
+                      parseFloat(res.Mission.NeutralBullseye[0]?.Lon[0] ?? "0")
+                    ) ?? "",
+                },
               ],
               packageTask: "",
               roe: "Don't Shoot Friendlies",
