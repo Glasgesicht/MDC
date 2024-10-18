@@ -61,7 +61,9 @@ const selectedFlight = computed({
   set(value) {
     flightStore.setFlightId(
       selectedPKG.value.flights.findIndex(
-        (flight) => flight.callsign === value.callsign
+        (flight) =>
+          flight.callsign === value.callsign &&
+          flight.callsignNumber === value.callsignNumber
       )
     );
   },

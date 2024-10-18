@@ -31,13 +31,15 @@ import { storeToRefs } from "pinia";
 import { processCF } from "@/config/parseCF";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { ref } from "vue";
+import { useEditHistory } from "@/components/history/editHistory";
 
-const { file } = storeToRefs(useGlobalStore());
+const globalStore = useGlobalStore();
+const { file } = storeToRefs(globalStore);
 
 const filename = ref("no file selected");
 
 const onChangedFile = async (payload: any) => {
-  file.value = true;
+  globalStore.setFile(true);
   processCF(payload.target.files[0]);
   filename.value = payload.target.files[0].name;
 };

@@ -21,5 +21,24 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import { useEditHistory } from "./editHistory";
+import { onBeforeUnmount, onMounted } from "vue";
+import { before } from "lodash";
 const { undo, redo, canRedo, canUndo } = useEditHistory();
+
+onMounted(() => {
+  window.addEventListener("keydown", handleKeydown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleKeydown);
+});
+
+function handleKeydown(e: KeyboardEvent) {
+  if (e.ctrlKey && e.key === "y") {
+    redo();
+  }
+  if (e.ctrlKey && e.key === "z") {
+    undo();
+  }
+}
 </script>

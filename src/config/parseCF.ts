@@ -17,29 +17,19 @@ import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { airports } from "./airfields";
 import { DateTime } from "luxon";
-import { toRaw } from "vue";
-import type { theatre } from "@/types/theatre";
-import { bullseyes } from "./bullseye";
-import { get } from "lodash";
 
-export function processCF(
+export async function processCF(
   payload:
     | string
     | number[]
     | Uint8Array
     | ArrayBuffer
     | Blob
-    | NodeJS.ReadableStream
     | Promise<
-        | string
-        | number[]
-        | Uint8Array
-        | ArrayBuffer
-        | Blob
-        | NodeJS.ReadableStream
+        string | number[] | Uint8Array | ArrayBuffer | Blob
       > /* cf file is a zip */
 ) {
-  readCF(payload).then((res) => parseCfXML(res));
+  return readCF(payload).then((res) => parseCfXML(res));
 
   async function readCF(
     payload:
@@ -48,15 +38,7 @@ export function processCF(
       | Uint8Array
       | ArrayBuffer
       | Blob
-      | NodeJS.ReadableStream
-      | Promise<
-          | string
-          | number[]
-          | Uint8Array
-          | ArrayBuffer
-          | Blob
-          | NodeJS.ReadableStream
-        >
+      | Promise<string | number[] | Uint8Array | ArrayBuffer | Blob>
   ) {
     const zip = new JSZip();
     try {
@@ -74,8 +56,9 @@ export function processCF(
   }
 
   function parseCfXML(input: string) {
-    const { packages } = storeToRefs(usePackageStore());
-    const { theater, missionStartTime } = storeToRefs(useGlobalStore());
+    const packageStore = usePackageStore();
+    const { packages } = storeToRefs(packageStore);
+    const globalStore = useGlobalStore();
     const parser = new xml2js.Parser({
       explicitArray: true,
       ignoreAttrs: true,
@@ -84,25 +67,26 @@ export function processCF(
     parser
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
-        missionStartTime.value = parseInt(
-          res.Mission.Environment[0].Starttime[0]
+        globalStore.setMissionStartTime(
+          parseInt(res.Mission.Environment[0].Starttime[0])
         );
-        console.dir(res); // Data as Object
-        theater.value = (() => {
-          if (res.Mission.Theater[0].toLowerCase().includes("caucasus"))
+        globalStore.setTheatre(
+          (() => {
+            if (res.Mission.Theater[0].toLowerCase().includes("caucasus"))
+              return "Caucasus";
+            if (res.Mission.Theater[0].toLowerCase().includes("syria"))
+              return "Syria";
+            if (res.Mission.Theater[0].toLowerCase().includes("kola"))
+              return "Kola";
+            if (res.Mission.Theater[0].toLowerCase().includes("nevada"))
+              return "Nevada";
+            if (res.Mission.Theater[0].toLowerCase().includes("sinai"))
+              return "Sinai";
+            if (res.Mission.Theater[0].toLowerCase().includes("gulf"))
+              return "PG";
             return "Caucasus";
-          if (res.Mission.Theater[0].toLowerCase().includes("syria"))
-            return "Syria";
-          if (res.Mission.Theater[0].toLowerCase().includes("kola"))
-            return "Kola";
-          if (res.Mission.Theater[0].toLowerCase().includes("nevada"))
-            return "Nevada";
-          if (res.Mission.Theater[0].toLowerCase().includes("sinai"))
-            return "Sinai";
-          if (res.Mission.Theater[0].toLowerCase().includes("gulf"))
-            return "PG";
-          return "Caucasus";
-        })();
+          })()
+        );
 
         const _packages: Package[] = res.Mission.Package?.reduce(
           (coll: Package[], curr: PackageEntity) => {
@@ -184,7 +168,7 @@ export function processCF(
 
         usePackageStore().$reset();
         useFlightStore().$reset();
-        packages.value = _packages;
+        packageStore.setPackages(_packages);
         //console.log(toRaw(agencies.value));
         // console.log(_packages);
       })

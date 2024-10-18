@@ -51,7 +51,8 @@ import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { freqNames } from "@/config/frequencies";
 
-const { getFlight, useDefaults } = storeToRefs(useFlightStore());
+const useDefaults = ref(true);
+const { getFlight } = storeToRefs(useFlightStore());
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 

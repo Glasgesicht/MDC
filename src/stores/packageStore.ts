@@ -9,6 +9,7 @@ import { useFlightStore } from "./flightStore";
 import { threatRanges } from "@/config/threatRanges";
 import type { bullseyes } from "@/config/bullseye";
 import { set } from "lodash";
+import { useEditHistory } from "@/components/history/editHistory";
 
 export const initState = {
   airThreat: "",
@@ -42,6 +43,9 @@ export const usePackageStore = defineStore("package", {
     selectedPKG: (state) => state.packages[state.selectedPKGID],
   },
   actions: {
+    setSelectedPKG(pkg: Package) {
+      this.packages[this.selectedPKGID] = pkg;
+    },
     setSelectedPKGID(id: number) {
       this.selectedPKGID = id;
     },
@@ -60,6 +64,9 @@ export const usePackageStore = defineStore("package", {
               this.packages[this.selectedPKGID].flights[i - 14].mycomm.sec;
         }
       });
+    },
+    setPackages(packages: Package[]) {
+      this.$state.packages = packages;
     },
   },
 });

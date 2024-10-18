@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
-import Dropdown from "primevue/dropdown";
-import { ref, provide, computed, type Ref, watch, toRaw } from "vue";
+import { ref, provide, computed, type Ref, toRaw, onMounted } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -17,21 +16,20 @@ import router from "./router";
 import { download } from "./utils/download";
 import { RouterView } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
+import editHistory from "./components/history/editHistory.vue";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
-const { $reset: resetPackage } = usePackageStore();
 const { getFlight } = storeToRefs(useFlightStore());
-const { $reset: resetFlight } = useFlightStore();
-
 provide("showROE", showROE);
 
-const { file } = storeToRefs(useGlobalStore());
+const globalStore = useGlobalStore();
+const { file } = storeToRefs(globalStore);
 
 const filename = ref("Select File");
 
 const onChangedFile = async (payload: any) => {
-  file.value = true;
+  globalStore.setFile(true);
   processCF(payload.target.files[0]);
   filename.value = payload.target.files[0].name;
   router.push({ name: "packageSettings" });
@@ -48,17 +46,6 @@ const items: Ref<MenuItem[]> = computed(() => [
 
         command: () => {
           document.getElementById("fileUpload")?.click();
-        },
-      },
-      {
-        icon: "pi pi-times",
-        label: "Reset App",
-        visible: file.value,
-
-        command: () => {
-          file.value = false;
-          resetFlight();
-          resetPackage();
         },
       },
       {
@@ -167,7 +154,7 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
-        label: "Get .ZIP",
+        label: "Get ZIP",
         disabled: !getFlight.value?.callsign,
         command: () => {
           // handle click
@@ -180,11 +167,11 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
-        label: "Get .JSON",
+        label: "Get JSON",
         disabled: !selectedPKG,
         command: () => {
           // handle click
-          console.log("JSON:", toRaw(selectedPKG.value));
+          console.log("JSON:", toRaw(packages.value));
         },
       },
     ],
@@ -222,6 +209,9 @@ const showExport = ref(false);
         </div>
       </div>
       <div><RouterView /></div>
+      <div style="position: fixed; top: 0px; right: 0px">
+        <editHistory />
+      </div>
     </div>
   </div>
   <input

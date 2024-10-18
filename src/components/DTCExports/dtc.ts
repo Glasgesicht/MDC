@@ -18,7 +18,7 @@ import { useGlobalStore } from "@/stores/theatreStore";
 export const useDTCexports = () => {
   const { getFlight } = storeToRefs(useFlightStore());
   const { selectedPKG } = storeToRefs(usePackageStore());
-  const { theater } = storeToRefs(useGlobalStore());
+  const { theatre } = storeToRefs(useGlobalStore());
 
   /** Util Functions */
   function getType() {
@@ -81,7 +81,9 @@ export const useDTCexports = () => {
         SelectedFrequency: null,
         SelectedPreset:
           selectedPKG.value.flights.findIndex(
-            (fl) => fl.callsign === getFlight.value.callsign
+            (fl) =>
+              fl.callsign === getFlight.value.callsign &&
+              fl.callsignNumber === getFlight.value.callsignNumber
           ) + 15,
         EnableGuard: false,
         Mode: 2,

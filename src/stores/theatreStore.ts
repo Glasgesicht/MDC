@@ -1,14 +1,38 @@
 import type { theatre } from "@/types/theatre";
+import { file } from "jszip";
 import { defineStore } from "pinia";
 import { ref, type Ref } from "vue";
 
-export const useGlobalStore = defineStore("global", () => {
-  // this is used to show that a file has been laoded for the UI
-  const file = ref(false);
-  // globally define used theatre, to filter out dropdowns etc
-  const theater: Ref<theatre> = ref("Caucasus");
-  // I used this to arbitrarily force reloads using watch functions. Technicially should be here
-  const stateChanged = ref(0);
-  const missionStartTime = ref(0);
-  return { file, stateChanged, theater, missionStartTime };
+export const useGlobalStore = defineStore("global", {
+  state: (): {
+    file: boolean;
+    theatre: theatre;
+    missionStartTime: number;
+    stateChanged: number;
+  } => ({
+    file: false,
+    theatre: "Caucasus",
+    missionStartTime: 0,
+    stateChanged: 0,
+  }),
+  actions: {
+    setFile(file: boolean) {
+      this.$state.file = file;
+    },
+    setTheatre(theatre: theatre) {
+      this.$state.theatre = theatre;
+    },
+    setMissionStartTime(missionStartTime: number) {
+      this.$state.missionStartTime = missionStartTime;
+    },
+    setStateChanged() {
+      this.$state.stateChanged = Date.now();
+    },
+  },
+  getters: {
+    getFile: (state) => state.file,
+    getStateChanged: (state) => state.stateChanged,
+    getTheatre: (state) => state.theatre,
+    getMissionStartTime: (state) => state.missionStartTime,
+  },
 });

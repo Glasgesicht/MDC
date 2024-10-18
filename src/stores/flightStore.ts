@@ -1,17 +1,21 @@
 import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "../stores/packageStore";
-import { computed, ref, toRaw, watch, type Ref } from "vue";
-import { F15Flights, F16Flights, flights } from "@/config/flights";
-import type { Flight, FlightMember } from "@/types/mdcDataTypes";
+import { flights } from "@/config/flights";
 import { getSTN } from "@/utils/utilFunctions";
-import type { Misc } from "@/types/dtcTypes";
 
 export const useFlightStore = defineStore("flightSore", {
   state: () => ({ selectedFlightId: 0 }),
+  getters: {
+    getFlight: (state) => {
+      const { selectedPKG } = storeToRefs(usePackageStore());
+      return selectedPKG.value?.flights[state.selectedFlightId];
+    },
+  },
   actions: {
     setFlightId(id: number) {
       this.selectedFlightId = id;
     },
+
     updateFligh() {
       const callsign = this.getFlight.callsign;
 
@@ -48,33 +52,4 @@ export const useFlightStore = defineStore("flightSore", {
       };
     },
   },
-  getters: {
-    getFlight: (state) => {
-      const { selectedPKG } = storeToRefs(usePackageStore());
-      return selectedPKG.value?.flights[state.selectedFlightId];
-    },
-  },
 });
-
-/*
-      setFlightId(){
-        this.getFlight++
-      }
-    },
-    setNewCallsign(opts: {
-      aircrafttype: string;
-      callsign: string;
-      callsignNumber: number;
-    }) {
-      this.aircrafttype = opts.aircrafttype;
-      this.callsign = opts.callsign;
-      this.callsignNumber = opts.callsignNumber;
-    },
-    /** TODO: Gehört in den PackageStore 
-  },
-  getters: {
-    getFlight: (state) => state,
-    flightTask: (state) => state.flightTask,
-  },
-});
-*/
