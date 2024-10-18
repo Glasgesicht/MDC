@@ -8,6 +8,15 @@ export function generateInlineGrid(x: number, y: number) {
   grid-template-rows: repeat(${y}, 1fr);`;
 }
 
+/**
+ * Generates a CSS string for a grid item with a fixed position and size
+ * @param col The starting column of the grid item
+ * @param row The starting row of the grid item
+ * @param x The number of columns the grid item spans
+ * @param y The number of rows the grid item spans
+ * @returns The CSS string as an inline style
+ */
+
 export function generateInlineGridFixed(
   col: number,
   row: number,
@@ -22,6 +31,14 @@ export function generateInlineGridFixed(
   grid-template-rows: repeat(${y}, 1fr);`;
 }
 
+/**
+ * Calculates the initial bearing (direction) from a starting point to a destination point
+ * @param lat1 The latitude of the starting point in degrees
+ * @param lon1 The longitude of the starting point in degrees
+ * @param lat2 The latitude of the destination point in degrees
+ * @param lon2 The longitude of the destination point in degrees
+ * @returns The initial bearing in degrees, rounded to the nearest whole number
+ */
 export function calculateHeading(
   lat1: number,
   lon1: number,
@@ -63,6 +80,16 @@ const callsigns313 = [
   "DEMON",
 ];
 
+/**
+ * Generates a 4-digit identifier for a flight, based on the aircraft type,
+ * callsign, and sequence number.
+ *
+ * @param {string} type - The type of aircraft (e.g. "F-15C", "F-16CM", etc.)
+ * @param {string} callsign - The callsign of the flight (e.g. "APEX", "CANINE", etc.)
+ * @param {number|string} no - The sequence number of the flight (0-7)
+ * @param {number|string} i - The index of the flight in the package (0-7)
+ * @returns {string} A 4-digit identifier for the flight
+ */
 export function getSTN(
   type: string,
   callsign: string,
@@ -89,6 +116,11 @@ export function getSTN(
   );
 }
 
+/**
+ * Converts a latitude in decimal degrees to a string in the format "N/S [degrees]°[minutes]'"
+ * @param {number} lat - The latitude in decimal degrees
+ * @returns {string} A string representation of the latitude, or an empty string if the input is invalid
+ */
 export function toLatString(lat: number) {
   if (lat)
     return `${lat > 0 ? "N" : "S"} ${Math.floor(Math.abs(lat))}°${(
@@ -100,6 +132,12 @@ export function toLatString(lat: number) {
   return "";
 }
 
+/**
+ * Converts a longitude in decimal degrees to a string in the format "E/W [degrees]°[minutes]'"
+ * @param {number} lon - The longitude in decimal degrees
+ * @returns {string} A string representation of the longitude, or an empty string if the input is invalid
+ */
+
 export function toLongString(lon: number) {
   if (lon)
     return `${lon > 0 ? "E" : "W"} ${String(Math.floor(Math.abs(lon))).padStart(
@@ -109,6 +147,14 @@ export function toLongString(lon: number) {
   return "";
 }
 
+/**
+ * Calculates the distance between two points on the surface of the Earth, given in decimal degrees.
+ * @param {number} lat1 - The latitude of the first point in decimal degrees
+ * @param {number} lon1 - The longitude of the first point in decimal degrees
+ * @param {number} lat2 - The latitude of the second point in decimal degrees
+ * @param {number} lon2 - The longitude of the second point in decimal degrees
+ * @returns {number} The distance between the two points in nautical miles, rounded to one decimal place.
+ */
 export function calculateDistance(
   lat1: number,
   lon1: number,
