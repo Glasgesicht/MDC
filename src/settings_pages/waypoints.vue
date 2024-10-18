@@ -175,7 +175,7 @@ import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
 import { usePackageStore } from "@/stores/packageStore";
 const { getFlight } = storeToRefs(useFlightStore());
-const { allFlightsFromPackage, selectedPKG } = storeToRefs(usePackageStore());
+const { selectedPKG } = storeToRefs(usePackageStore());
 const showDia = ref(false);
 
 const selectedSteerpoints = ref(new Array());
