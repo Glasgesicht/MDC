@@ -6,6 +6,11 @@ import { usePackageStore } from "../stores/packageStore";
 import Dropdown from "primevue/dropdown";
 import Input from "primevue/inputtext";
 
+import {
+  generateInlineGrid,
+  generateInlineGridFixed,
+} from "@/utils/utilFunctions";
+
 import { flights } from "../config/flights";
 import {
   calculateHeading,
@@ -87,7 +92,7 @@ const AAR = selectedFlight?.value.waypoints
 </script>
 
 <template>
-  <div class="bdr mdcpage" name="mdcpage"> 
+  <div class="bdr mdcpage" name="mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
@@ -136,8 +141,12 @@ const AAR = selectedFlight?.value.waypoints
       <div :class="`c2 hr bdr`">
         {{ getUnit(index)?.tacan }}
       </div>
-      <Input class="c3 tb hr bdr" />
-      <input class="c3 tb hr bdr" />
+      <div :class="`c3 hr bdr`">
+        {{ getUnit(index)?.laser }}
+      </div>
+      <div :class="`c3 hr bdr`">
+        {{ getUnit(index)?.search }}
+      </div>
       <input class="c3 tb hr bdr" />
       <input class="c3 tb hr bdr" />
       <input class="c4 tb hr bdr" />
@@ -168,26 +177,18 @@ const AAR = selectedFlight?.value.waypoints
     <div class="c36 r9 w bdr"></div>
 
     <div class="c29 r7 w bdr"></div>
-    <div class="c2 g bdr">SP</div>
-    <div class="c5 g bdr">ACTION</div>
 
-    <div class="c2 w bdr">{{ actions.at(1)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(1)?.action }}</div>
-
-    <div class="c2 w bdr">{{ actions.at(2)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(2)?.action }}</div>
-
-    <div class="c2 w bdr">{{ actions.at(3)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(3)?.action }}</div>
-
-    <div class="c2 w bdr">{{ actions.at(4)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(4)?.action }}</div>
-
-    <div class="c2 w bdr">{{ actions.at(5)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(5)?.action }}</div>
-
-    <div class="c2 w bdr">{{ actions.at(6)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(6)?.action }}</div>
+    <div :style="generateInlineGridFixed(30, 20, 7, 10)">
+      <div class="c2 g bdr">SP</div>
+      <div class="c5 g bdr">ACTION</div>
+      <div
+        :style="generateInlineGrid(7, 1)"
+        v-for="index in new Array(9).keys()"
+      >
+        <div class="c2 w bdr">{{ actions.at(index)?.sp }}</div>
+        <div class="c5 w bdr">{{ actions.at(index)?.action }}</div>
+      </div>
+    </div>
 
     <div class="c4 g bdr">AAR C/S</div>
     <div class="c3 g bdr">ALT</div>
@@ -196,8 +197,6 @@ const AAR = selectedFlight?.value.waypoints
     <div class="c7 g bdr">TIME</div>
     <div class="c7 g bdr">POSITION</div>
     <div class="c3 g bdr">HOT</div>
-    <div class="c2 w bdr">{{ actions.at(7)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(7)?.action }}</div>
 
     <div class="c4 w bdr">
       {{ selectedFlight.comms.radio1[12]?.description }}
@@ -219,8 +218,6 @@ const AAR = selectedFlight?.value.waypoints
     </div>
     <div class="c7 w bdr"></div>
     <div class="c3 w bdr"></div>
-    <div class="c2 w bdr">{{ actions.at(8)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(8)?.action }}</div>
 
     <div class="c4 w bdr"></div>
     <div class="c3 w bdr"></div>
@@ -240,8 +237,6 @@ const AAR = selectedFlight?.value.waypoints
     </div>
     <div class="c7 w bdr"></div>
     <div class="c3 w bdr"></div>
-    <div class="c2 w bdr">{{ actions.at(9)?.sp }}</div>
-    <div class="c5 w bdr">{{ actions.at(9)?.action }}</div>
 
     <div class="c6 g bdr">CODEWORD</div>
     <div class="c12 g bdr">MEANING</div>
