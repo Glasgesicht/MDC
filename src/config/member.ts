@@ -1,71 +1,94 @@
 export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
   [
+    // TODO: To make this list easier to maintain for myself, sort this by tailnumber numerically
+
     {
       callsign: "Redacted",
       tailnr: "882",
     },
-    {
+    /*{
       callsign: "Deadpool",
       tailnr: "883",
-    },
+    },*/
     {
       callsign: "Clutch",
       tailnr: "884",
-    },
-    {
-      callsign: "Blaine",
-      tailnr: "4043",
-    },
-    {
-      callsign: "Prophet",
-      tailnr: "4040",
-    },
-    {
-      callsign: "Tommy",
-      tailnr: "891",
-    },
-    {
-      callsign: "Cutstalk",
-      tailnr: "893",
-    },
-    {
-      callsign: "Espere",
-      tailnr: "4042",
     },
     {
       callsign: "Brook",
       tailnr: "896",
     },
     {
-      callsign: "Skysheykh",
-      tailnr: "4041",
+      callsign: "Wicked",
+      tailnr: "898",
     },
+    /*{
+      callsign: "Tommy",
+      tailnr: "891",
+    },*/
+    /*{
+      callsign: "Cutstalk",
+      tailnr: "893",
+    },*/
     {
       callsign: "Rotti",
       tailnr: "781",
-    },
-    {
-      callsign: "Python",
-      tailnr: "4044",
-    },
-    {
-      callsign: "Duka",
-      tailnr: "4045",
     },
     {
       callsign: "Knappy",
       tailnr: "786",
     },
     {
-      callsign: "Wicked",
-      tailnr: "898",
+      callsign: "Nimrod",
+      tailnr: "782",
     },
     {
-      callsign: "Chiron",
-      tailnr: "4046",
+      callsign: "Eviscerator",
+      tailnr: "789",
     },
+    {
+      callsign: "Prophet",
+      tailnr: "4040",
+    },
+    {
+      callsign: "SkySHEYKH",
+      tailnr: "4041",
+    },
+    {
+      callsign: "Espere",
+      tailnr: "4042",
+    },
+    {
+      callsign: "Blaine",
+      tailnr: "4043",
+    },
+    {
+      callsign: "Python",
+      tailnr: "4044",
+    },
+
     {
       callsign: "Hamyak",
       tailnr: "4047",
+    },
+    {
+      callsign: "Duka",
+      tailnr: "4048",
+    },
+    {
+      callsign: "Chiron",
+      tailnr: "4049",
+    },
+    {
+      callsign: "Azaleh",
+      tailnr: "4050",
+    },
+    {
+      callsign: "Hajime",
+      tailnr: "4051",
+    },
+    {
+      callsign: "Panda",
+      tailnr: "4052",
     },
   ];
