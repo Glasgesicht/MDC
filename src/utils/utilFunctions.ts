@@ -201,7 +201,7 @@ function toDegrees(radians: number) {
  * @param {string} latString - The latitude string to convert
  * @returns {number | null} The latitude in decimal degrees, or null if the input is invalid
  */
-export function fromLatString(latString: string): number | null {
+export function fromLatString(latString: string): number {
   const regex = /^([NS])\s(\d{2,3})°(\d{2}(?:\.\d{3})?)’$/;
   const match = latString.match(regex);
 
@@ -220,8 +220,7 @@ export function fromLatString(latString: string): number | null {
 
     return decimalDegrees;
   }
-
-  return null; // Return null if the input string doesn't match the expected format
+  throw new Error("Invalid latitude string");
 }
 
 /**
@@ -229,7 +228,7 @@ export function fromLatString(latString: string): number | null {
  * @param {string} lonString - The longitude string to convert
  * @returns {number | null} The longitude in decimal degrees, or null if the input is invalid
  */
-export function fromLongString(lonString: string): number | null {
+export function fromLongString(lonString: string): number {
   const regex = /^([EW])\s(\d{3})°(\d{2}(?:\.\d{3})?)’$/;
   const match = lonString.match(regex);
 
@@ -249,7 +248,7 @@ export function fromLongString(lonString: string): number | null {
     return decimalDegrees;
   }
 
-  return null; // Return null if the input string doesn't match the expected format
+  throw new Error("Invalid longitude string");
 }
 
 /**
@@ -262,9 +261,26 @@ export function fromLongString(lonString: string): number | null {
  * @param {number} lon2 - The longitude of the second point in decimal degrees
  * @returns {string} A string in the format "bearing / range"
  */
-export function getBR(lat1: number, lon1: number, lat2: number, lon2: number) {
-  return `
+export function getBR(
+  lat1: number | string,
+  lon1: number | string,
+  lat2: number | string,
+  lon2: number | string
+): string {
+  try {
+    [lat1, lat2] = [lat1, lat2].map((x) =>
+      typeof x === "string" ? fromLatString(x) : x
+    );
+    [lon1, lon2] = [lon1, lon2].map((x) =>
+      typeof x === "string" ? fromLongString(x) : x
+    );
+
+    return `
   ${calculateHeading(lat1, lon1, lat2, lon2)} / ${
-    calculateDistance(lat1, lon1, lat2, lon2).split(".")[0]
-  }`;
+      calculateDistance(lat1, lon1, lat2, lon2).split(".")[0]
+    }`;
+  } catch (error) {
+    console.error(error);
+    return "";
+  }
 }
