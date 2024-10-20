@@ -73,17 +73,6 @@ export function calculateHeading(
   return Math.round(bearing);
 }
 
-const callsigns313 = [
-  "APEX",
-  "CANINE",
-  "CLAW",
-  "PLASMA",
-  "JACKAL",
-  "TIGER",
-  "BEAST",
-  "DEMON",
-];
-
 /**
  * Generates a 4-digit identifier for a flight, based on the aircraft type,
  * callsign, and sequence number.
@@ -119,6 +108,16 @@ export function getSTN(
     (Number(i) + 1)
   );
 }
+const callsigns313 = [
+  "APEX",
+  "CANINE",
+  "CLAW",
+  "PLASMA",
+  "JACKAL",
+  "TIGER",
+  "BEAST",
+  "DEMON",
+];
 
 /**
  * Converts a latitude in decimal degrees to a string in the format "N/S [degrees]°[minutes]'"
