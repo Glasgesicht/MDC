@@ -1,28 +1,10 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref, computed } from "vue";
-import Textarea from "primevue/inputtext";
+import { inject } from "vue";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "@/stores/packageStore";
-import Dropdown from "primevue/dropdown";
 
-import { flights } from "../config/flights";
-import {
-  calculateHeading,
-  calculateDistance,
-  toLatString,
-  toLongString,
-} from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
-import type { bullseyes } from "@/config/bullseye";
-
-const { selectedPKG } = storeToRefs(usePackageStore());
 
 const { getFlight } = storeToRefs(useFlightStore());
-
-const getUnit = computed(() => (i: number) => {
-  // console.log(getFlight.value.units[i]);
-  return getFlight.value.units[i] ?? null;
-});
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -30,14 +12,6 @@ const { pagenr } = defineProps({
     type: Number,
   },
 });
-
-const hhmmss = (time: string) => {
-  if (!time) return "";
-  const date = new Date(time);
-  return `${date.toLocaleTimeString()}`;
-};
-
-const showROE = inject("showROE");
 </script>
 
 <template>

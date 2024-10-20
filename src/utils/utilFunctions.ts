@@ -36,44 +36,6 @@ export function generateInlineGridFixed(
 }
 
 /**
- * Calculates the initial bearing (direction) from a starting point to a destination point
- * @param lat1 The latitude of the starting point in degrees
- * @param lon1 The longitude of the starting point in degrees
- * @param lat2 The latitude of the destination point in degrees
- * @param lon2 The longitude of the destination point in degrees
- * @returns The initial bearing in degrees, rounded to the nearest whole number
- */
-export function calculateHeading(
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-) {
-  // Convert latitude and longitude from degrees to radians
-  lat1 = toRadians(lat1);
-  lon1 = toRadians(lon1);
-  lat2 = toRadians(lat2);
-  lon2 = toRadians(lon2);
-
-  // Calculate the difference in longitudes
-  const dLon = lon2 - lon1;
-
-  // Calculate the bearing using the arctan2 function
-  const y = Math.sin(dLon) * Math.cos(lat2);
-  const x =
-    Math.cos(lat1) * Math.sin(lat2) -
-    Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-  let bearing = Math.atan2(y, x);
-
-  // Convert the bearing from radians to degrees
-  bearing = Math.abs(toDegrees(bearing));
-
-  bearing = bearing % 360;
-
-  return Math.round(bearing);
-}
-
-/**
  * Generates a 4-digit identifier for a flight, based on the aircraft type,
  * callsign, and sequence number.
  *
@@ -120,9 +82,49 @@ const callsigns313 = [
 ];
 
 /**
+ * Calculates the initial bearing (direction) from a starting point to a destination point
+ * @param lat1 The latitude of the starting point in degrees
+ * @param lon1 The longitude of the starting point in degrees
+ * @param lat2 The latitude of the destination point in degrees
+ * @param lon2 The longitude of the destination point in degrees
+ * @returns The initial bearing in degrees, rounded to the nearest whole number
+ * @deprecated use class coordinate instead
+ */
+export function calculateHeading(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
+  // Convert latitude and longitude from degrees to radians
+  lat1 = toRadians(lat1);
+  lon1 = toRadians(lon1);
+  lat2 = toRadians(lat2);
+  lon2 = toRadians(lon2);
+
+  // Calculate the difference in longitudes
+  const dLon = lon2 - lon1;
+
+  // Calculate the bearing using the arctan2 function
+  const y = Math.sin(dLon) * Math.cos(lat2);
+  const x =
+    Math.cos(lat1) * Math.sin(lat2) -
+    Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+  let bearing = Math.atan2(y, x);
+
+  // Convert the bearing from radians to degrees
+  bearing = Math.abs(toDegrees(bearing));
+
+  bearing = bearing % 360;
+
+  return Math.round(bearing);
+}
+
+/**
  * Converts a latitude in decimal degrees to a string in the format "N/S [degrees]°[minutes]'"
  * @param {number} lat - The latitude in decimal degrees
  * @returns {string} A string representation of the latitude, or an empty string if the input is invalid
+ * @deprecated use class coordinate instead
  */
 export function toLatString(lat: number) {
   if (lat)
@@ -139,6 +141,7 @@ export function toLatString(lat: number) {
  * Converts a longitude in decimal degrees to a string in the format "E/W [degrees]°[minutes]'"
  * @param {number} lon - The longitude in decimal degrees
  * @returns {string} A string representation of the longitude, or an empty string if the input is invalid
+ * @deprecated use class coordinate instead
  */
 
 export function toLongString(lon: number) {
@@ -157,6 +160,7 @@ export function toLongString(lon: number) {
  * @param {number} lat2 - The latitude of the second point in decimal degrees
  * @param {number} lon2 - The longitude of the second point in decimal degrees
  * @returns {number} The distance between the two points in nautical miles, rounded to one decimal place.
+ * @deprecated use class coordinate instead
  */
 export function calculateDistance(
   lat1: number,
@@ -200,6 +204,7 @@ function toDegrees(radians: number) {
  * Converts a latitude string in the format "N/S [degrees]°[minutes]'" to decimal degrees
  * @param {string} latString - The latitude string to convert
  * @returns {number | null} The latitude in decimal degrees, or null if the input is invalid
+ * @deprecated use class coordinate instead
  */
 export function fromLatString(latString: string): number {
   const regex = /^([NS])\s(\d{2,3})°(\d{2}(?:\.\d{3})?)’$/;
@@ -227,6 +232,7 @@ export function fromLatString(latString: string): number {
  * Converts a longitude string in the format "E/W [degrees]°[minutes]'" to decimal degrees
  * @param {string} lonString - The longitude string to convert
  * @returns {number | null} The longitude in decimal degrees, or null if the input is invalid
+ * @deprecated use class coordinate instead
  */
 export function fromLongString(lonString: string): number {
   const regex = /^([EW])\s(\d{3})°(\d{2}(?:\.\d{3})?)’$/;
@@ -259,6 +265,7 @@ export function fromLongString(lonString: string): number {
  * @param {number} lon1 - The longitude of the first point in decimal degrees
  * @param {number} lat2 - The latitude of the second point in decimal degrees
  * @param {number} lon2 - The longitude of the second point in decimal degrees
+ * @deprecated use class coordinate instead
  * @returns {string} A string in the format "bearing / range"
  */
 export function getBR(

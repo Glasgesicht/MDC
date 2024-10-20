@@ -17,6 +17,7 @@ import { download } from "./utils/download";
 import { RouterView } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
 import editHistory from "./components/history/editHistory.vue";
+import { Coordinate } from "./controller/coordinates";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
@@ -27,7 +28,6 @@ const globalStore = useGlobalStore();
 const { file } = storeToRefs(globalStore);
 
 const filename = ref("Select File");
-
 const onChangedFile = async (payload: any) => {
   filename.value = payload.target.files[0].name;
 

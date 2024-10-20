@@ -13,7 +13,6 @@ import {
   fromLongString,
 } from "@/utils/utilFunctions";
 
-import { flights } from "../config/flights";
 import {
   calculateHeading,
   calculateDistance,
@@ -22,6 +21,7 @@ import {
 } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import { threatRanges } from "@/config/threatRanges";
+import { useGlobalStore } from "@/stores/theatreStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
@@ -98,21 +98,7 @@ const AAR = getFlight?.value.waypoints
 </script>
 
 <template>
-  {{ selectedPKG.bullseyes[selectedPKG.selectedBullseye].lat }} <br />
-  {{ selectedPKG.bullseyes[selectedPKG.selectedBullseye].long }}
-  <br />
-  {{ tankers[0].lat }} <br />
-  {{ tankers[0].lon }} <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
+  {{ useGlobalStore().missionStartTime }}
   <div class="bdr mdcpage" name="mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
