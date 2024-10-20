@@ -275,7 +275,7 @@ export async function processCF(
 
         let startTime = DateTime.fromJSDate(
           new Date(mCurr.Waypoints[0].Waypoint[0].TOT[0])
-        ).minus({ hours: 3 }); // TODO: HARDCODED SYRIA/ PG UTC TIME OFFSET
+        );
         const taxiReg = mCurr.Waypoints[0].Waypoint[0].Activity[0].match(
           /(\d{1,2}):(\d{1,2}):(\d{2})/
         );
