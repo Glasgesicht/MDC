@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { usePackageStore } from "@/stores/packageStore";
 import { flights } from "@/config/flights";
 import { getSTN } from "@/utils/utilFunctions";
 

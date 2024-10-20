@@ -1,7 +1,7 @@
 <!--
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { usePackageStore } from "@/stores/packageStore";
 
 import { calculateHeading, calculateDistance } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";

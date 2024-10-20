@@ -2,13 +2,15 @@
 import { inject, onMounted, onUnmounted, ref, computed } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { threats, usePackageStore } from "../stores/packageStore";
+import { threats, usePackageStore } from "@/stores/packageStore";
 import Dropdown from "primevue/dropdown";
 import Input from "primevue/inputtext";
 
 import {
   generateInlineGrid,
   generateInlineGridFixed,
+  fromLatString,
+  fromLongString,
 } from "@/utils/utilFunctions";
 
 import { flights } from "../config/flights";
@@ -38,6 +40,10 @@ const { pagenr } = defineProps({
     type: Number,
   },
 });
+
+const tankers = selectedPKG.value.agencies.filter(
+  (n) => n.type === "KC-135" && n.active
+);
 
 const hhmmss = (time: string) => {
   if (!time) return "";
@@ -92,6 +98,21 @@ const AAR = getFlight?.value.waypoints
 </script>
 
 <template>
+  {{ selectedPKG.bullseyes[selectedPKG.selectedBullseye].lat }} <br />
+  {{ selectedPKG.bullseyes[selectedPKG.selectedBullseye].long }}
+  <br />
+  {{ tankers[0].lat }} <br />
+  {{ tankers[0].lon }} <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
+  <br />
   <div class="bdr mdcpage" name="mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
@@ -190,54 +211,81 @@ const AAR = getFlight?.value.waypoints
       </div>
     </div>
 
-    <div class="c4 g bdr">AAR C/S</div>
-    <div class="c3 g bdr">ALT</div>
-    <div class="c2 g bdr">A/A</div>
-    <div class="c3 g bdr">GIVE</div>
-    <div class="c7 g bdr">TIME</div>
-    <div class="c7 g bdr">POSITION</div>
-    <div class="c3 g bdr">HOT</div>
+    <div :style="generateInlineGridFixed(1, 27, 30, 3)">
+      <div class="c4 g bdr">AAR C/S</div>
+      <div class="c3 g bdr">ALT</div>
+      <div class="c2 g bdr">A/A</div>
+      <div class="c3 g bdr">GIVE</div>
+      <div class="c7 g bdr">TIME</div>
+      <div class="c7 g bdr">POSITION</div>
+      <div class="c3 g bdr">HOT</div>
+      <div
+        :style="generateInlineGrid(30, 1)"
+        v-for="index in new Array(2).keys()"
+      >
+        <div class="c4 w bdr">
+          {{ tankers.at(index) ? tankers[index].name : "" }}
+        </div>
+        <div class="c3 w bdr">
+          {{
+            tankers.at(index) ? "FL" + parseInt(tankers[index].alt) / 100 : ""
+          }}
+        </div>
+        <div class="c2 w bdr"></div>
+        <div class="c3 w bdr"></div>
+        <div class="c7 w bdr">
+          {{
+            AAR.at(1)?.time
+              ? hhmmss(AAR.at(1)?.time ?? "") +
+                "-" +
+                takeoffTime(
+                  hhmmss(AAR.at(1)?.time ?? ""),
+                  AAR.at(1)?.activity ?? ""
+                )
+              : ""
+          }}
+        </div>
+        <div class="c7 w bdr">
+          {{
+            tankers.at(index)
+              ? selectedPKG?.bullseyes.find(
+                  (x) => x.wp == getFlight.misc.BullseyeWP
+                )?.name
+              : ""
+          }}
+          {{
+            tankers.at(index)
+              ? calculateHeading(
+                  fromLatString(
+                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].lat
+                  )!,
+                  fromLongString(
+                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].long
+                  )!,
+                  parseFloat(tankers[index].lat),
+                  parseFloat(tankers[index].lon)
+                ) + " -"
+              : ""
+          }}
 
-    <div class="c4 w bdr">
-      {{ getFlight.comms.radio1[12]?.description }}
+          {{
+            tankers.at(index)
+              ? calculateDistance(
+                  fromLatString(
+                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].lat
+                  )!,
+                  fromLongString(
+                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].long
+                  )!,
+                  parseFloat(tankers[index].lat),
+                  parseFloat(tankers[index].lon)
+                ).split(".")[0]
+              : ""
+          }}
+        </div>
+        <div class="c3 w bdr"></div>
+      </div>
     </div>
-    <div class="c3 w bdr"></div>
-    <div class="c2 w bdr"></div>
-    <div class="c3 w bdr"></div>
-    <div class="c7 w bdr">
-      {{
-        AAR.at(1)?.time
-          ? hhmmss(AAR.at(1)?.time ?? "") +
-            "-" +
-            takeoffTime(
-              hhmmss(AAR.at(1)?.time ?? ""),
-              AAR.at(1)?.activity ?? ""
-            )
-          : ""
-      }}
-    </div>
-    <div class="c7 w bdr"></div>
-    <div class="c3 w bdr"></div>
-
-    <div class="c4 w bdr"></div>
-    <div class="c3 w bdr"></div>
-    <div class="c2 w bdr"></div>
-    <div class="c3 w bdr"></div>
-    <div class="c7 w bdr">
-      {{
-        AAR.at(2)?.time
-          ? hhmmss(AAR.at(2)?.time ?? "") +
-            "-" +
-            takeoffTime(
-              hhmmss(AAR.at(2)?.time ?? ""),
-              AAR.at(2)?.activity ?? ""
-            )
-          : ""
-      }}
-    </div>
-    <div class="c7 w bdr"></div>
-    <div class="c3 w bdr"></div>
-
     <div class="c6 g bdr">CODEWORD</div>
     <div class="c12 g bdr">MEANING</div>
     <div class="c8 g bdr">CLASS</div>

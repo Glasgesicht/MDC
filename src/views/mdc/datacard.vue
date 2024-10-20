@@ -2,7 +2,7 @@
 import { computed } from "vue";
 
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { usePackageStore } from "@/stores/packageStore";
 
 import { useFlightStore } from "@/stores/flightStore";
 

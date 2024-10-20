@@ -2,7 +2,7 @@
 import { inject } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { usePackageStore } from "@/stores/packageStore";
 
 import { flights } from "../config/flights";
 import { useFlightStore } from "@/stores/flightStore";

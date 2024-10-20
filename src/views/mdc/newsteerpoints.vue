@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, computed } from "vue";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { usePackageStore } from "@/stores/packageStore";
 
 import {
   calculateHeading,

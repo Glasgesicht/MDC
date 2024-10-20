@@ -2,7 +2,7 @@
 import { inject, onMounted, onUnmounted, ref, computed } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "../stores/packageStore";
+import { usePackageStore } from "@/stores/packageStore";
 import Dropdown from "primevue/dropdown";
 
 import { flights } from "../config/flights";

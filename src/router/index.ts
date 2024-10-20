@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import generalSettings from "@/settings_pages/generalSettings.vue";
-import flightSettings from "@/settings_pages/flightSettings.vue";
-import packageSettings from "@//settings_pages/packageSettings.vue";
-import waypointsSettings from "@/settings_pages/waypoints.vue";
+import generalSettings from "@/views/settings/generalSettings.vue";
+import flightSettings from "@/views/settings//flightSettings.vue";
+import packageSettings from "@/views/settings/packageSettings.vue";
+import waypointsSettings from "@/views/settings/waypoints.vue";
 
-import newbriefing from "@/mdcpages/newbriefing.vue";
-import newsteerpoints from "@/mdcpages/newsteerpoints.vue";
-import newdatacard from "@/mdcpages/newdatacard.vue";
-import newcomms from "@/mdcpages/newcomms.vue";
+import newbriefing from "@/views/mdc/newbriefing.vue";
+import newsteerpoints from "@/views/mdc/newsteerpoints.vue";
+import newdatacard from "@/views/mdc/newdatacard.vue";
+import newcomms from "@/views/mdc/newcomms.vue";
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
 
