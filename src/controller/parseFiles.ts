@@ -45,7 +45,15 @@ export async function processJSON(payload: File) {
 
   watch(fileContent, (newContent) => {
     if (newContent) {
-      const { packages, theatre, missionStartTime } = JSON.parse(newContent);
+      const { packages, theatre, missionStartTime, version } =
+        JSON.parse(newContent);
+
+      // @ts-ignore
+      if (version !== __APP_VERSION__) {
+        console.error(
+          `File version ${version} is an older version and might be incompatible `
+        );
+      }
       const packageStore = usePackageStore();
       deserializeCoordinates(packages);
       packageStore.setPackages(packages);

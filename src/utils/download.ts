@@ -5,7 +5,6 @@ import { useGlobalStore } from "@/stores/theatreStore";
 import { toJpeg } from "html-to-image";
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 
 export const download = () => {
   const { getFlight } = storeToRefs(useFlightStore());
@@ -158,7 +157,8 @@ export const download = () => {
       Object.assign({
         packages: packages.value,
         theatre: globalStore.theatre,
-        missionStartTime: globalStore.missionStartTime,
+        missionStartTime: globalStore.missionStartTime, //@ts-ignore
+        version: __APP_VERSION__,
       }),
       null,
       2
