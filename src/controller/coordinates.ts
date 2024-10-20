@@ -1,22 +1,30 @@
 export class Coordinate {
-  private lat: number;
-  private lon: number;
-  private elevation = 0;
+  lat = 0;
+  lon = 0;
+  elevation = 0;
+
+  toJSON() {
+    return {
+      lat: this.lat,
+      lon: this.lon,
+      elevation: this.elevation,
+    };
+  }
 
   /**
    * Creates a new coordinate object from either a string (DD°MM.MMM) format or a number (DD.DDDDDD format)
-   * @param {number|string} glat latitude in degrees, or a string in DDMM.MM or DDD.DDDDD format
-   * @param {number|string} glon longitude in degrees, or a string in DDMM.MM or DDD.DDDDD format
-   * @param {number} [gelev=0] elevation above sea level in meters
+   * @param {number|string} lat latitude in degrees, or a string in DDMM.MM or DDD.DDDDD format
+   * @param {number|string} lon longitude in degrees, or a string in DDMM.MM or DDD.DDDDD format
+   * @param {number} [elevation=0] elevation above sea level in meters
    */
   constructor(
-    public glat: number | string, // Not too familiar with JS classes due to my Java background....
-    public glon: number | string, // Why do I have to name those differently? Seems unneccessary?!
-    gelev: number = 0
+    lat: number | string, // Not too familiar with JS classes due to my Java background....
+    lon: number | string, // Why do I have to name those differently? Seems unneccessary?!
+    elevation: number = 0
   ) {
-    this.lat = typeof glat === "string" ? this.fromLatString(glat) : glat;
-    this.lon = typeof glon === "string" ? this.fromLongString(glon) : glon;
-    this.elevation = gelev;
+    this.lat = typeof lat === "string" ? this.fromLatString(lat) : lat;
+    this.lon = typeof lon === "string" ? this.fromLongString(lon) : lon;
+    this.elevation = elevation;
   }
 
   /*
@@ -228,6 +236,10 @@ export class Coordinate {
     return (radians * 180) / Math.PI;
   }
 
+  /**
+   * Converts the coordinate to Universal Transverse Mercator (UTM) coordinates
+   * @returns {{ zone: number; easting: number; northing: number; letter: string }} Object containing the UTM zone, easting, northing, and letter
+   */
   toUTM(): { zone: number; easting: number; northing: number; letter: string } {
     const a = 6378137.0; // WGS84 major axis
     const f = 1 / 298.257223563; // WGS84 flattening
@@ -311,6 +323,8 @@ export class Coordinate {
     const e100k = Math.floor(easting / 100000);
     const n100k = Math.floor(northing / 100000) % 20;
 
+    // This honetly is the result of some trial and error, because I couldn't figure out why this didn't work until it did,
+    // my test cases (testing against another conversion service indicate this works though)
     const e100kLetter = Coordinate.e100kLetters[(setNumber - 1) % 3].charAt(
       e100k - 1
     );

@@ -22,6 +22,7 @@ import {
 import { useFlightStore } from "@/stores/flightStore";
 import { threatRanges } from "@/config/threatRanges";
 import { useGlobalStore } from "@/stores/theatreStore";
+import type { Coordinate } from "@/controller/coordinates";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
@@ -214,7 +215,9 @@ const AAR = getFlight?.value.waypoints
         </div>
         <div class="c3 w bdr">
           {{
-            tankers.at(index) ? "FL" + parseInt(tankers[index].alt) / 100 : ""
+            tankers.at(index)
+              ? "FL" + (tankers[index].location.getElevation() / 100).toFixed(0)
+              : ""
           }}
         </div>
         <div class="c2 w bdr"></div>
@@ -241,31 +244,20 @@ const AAR = getFlight?.value.waypoints
           }}
           {{
             tankers.at(index)
-              ? calculateHeading(
-                  fromLatString(
-                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].lat
-                  )!,
-                  fromLongString(
-                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].long
-                  )!,
-                  parseFloat(tankers[index].lat),
-                  parseFloat(tankers[index].lon)
-                ) + " -"
+              ? tankers
+                  .at(index)
+                  ?.location.calculateDistance(
+                    selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
+                      .location as Coordinate
+                  )
               : ""
           }}
 
           {{
             tankers.at(index)
-              ? calculateDistance(
-                  fromLatString(
-                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].lat
-                  )!,
-                  fromLongString(
-                    selectedPKG.bullseyes[selectedPKG.selectedBullseye].long
-                  )!,
-                  parseFloat(tankers[index].lat),
-                  parseFloat(tankers[index].lon)
-                ).split(".")[0]
+              ? selectedPKG.bullseyes[
+                  getFlight.misc.BullseyeWP
+                ].location.headingTo(tankers.at(index)!.location as Coordinate)
               : ""
           }}
         </div>

@@ -5,7 +5,7 @@ import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "./stores/theatreStore";
-import { processCF, processJSON } from "./config/parseFiles";
+import { processCF, processJSON } from "./controller/parseFiles";
 import { useDTCexports } from "@/components/DTCExports/dtc";
 import Newsteerpoints from "./views/mdc/newsteerpoints.vue";
 import Newdatacard from "./views/mdc/newdatacard.vue";

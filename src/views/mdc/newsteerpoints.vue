@@ -35,7 +35,7 @@ const getBullseyeLocation = (index: number) => {
     Number(selectedPKG.value.selectedBullseye)
   );
 
-  return bullz?.lat + " " + bullz?.lat;
+  return bullz?.location.lat + " " + bullz?.location.lon;
 };
 
 const toLatLongString = (lat: number, long: number) => {
@@ -54,10 +54,10 @@ const calculateMinimumFuel = (steerpoint: number): string => {
   if (landingIndex !== -1) {
     for (let i = steerpoint; i < landingIndex; i++) {
       const distance = calculateDistance(
-        getFlight.value.waypoints[i - 1]?.latitude,
-        getFlight.value.waypoints[i - 1]?.longitude,
-        getFlight.value.waypoints[i]?.latitude,
-        getFlight.value.waypoints[i]?.longitude
+        getFlight.value.waypoints[i - 1]?.location.lat,
+        getFlight.value.waypoints[i - 1]?.location.lon,
+        getFlight.value.waypoints[i]?.location.lat,
+        getFlight.value.waypoints[i]?.location.lon
       );
       routeFuel += fuelRange * parseFloat(distance);
       if (i !== 1) {
@@ -154,23 +154,23 @@ const showROE = inject("showROE");
         {{
           getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.longitude &&
-              getFlight?.waypoints[index - 1]?.longitude
+            : getFlight?.waypoints[index]?.location.lat &&
+              getFlight?.waypoints[index - 1]?.location.lon
             ? calculateHeading(
-                getFlight?.waypoints[index - 1]?.latitude,
-                getFlight?.waypoints[index - 1]?.longitude,
-                getFlight?.waypoints[index]?.latitude,
-                getFlight?.waypoints[index]?.longitude
+                getFlight?.waypoints[index - 1]?.location.lat,
+                getFlight?.waypoints[index - 1]?.location.lon,
+                getFlight?.waypoints[index]?.location.lat,
+                getFlight?.waypoints[index]?.location.lon
               )
                 .toFixed(0)
                 .padStart(3, "0") +
               "°M / " +
               parseInt(
                 calculateDistance(
-                  getFlight?.waypoints[index - 1]?.latitude,
-                  getFlight?.waypoints[index - 1]?.longitude,
-                  getFlight?.waypoints[index]?.latitude,
-                  getFlight?.waypoints[index]?.longitude
+                  getFlight?.waypoints[index - 1]?.location.lat,
+                  getFlight?.waypoints[index - 1]?.location.lon,
+                  getFlight?.waypoints[index]?.location.lat,
+                  getFlight?.waypoints[index]?.location.lon
                 )
               ) +
               "nm"
@@ -194,9 +194,10 @@ const showROE = inject("showROE");
         {{
           getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.altitude
-            ? getFlight?.waypoints[index]?.altitude?.toLocaleString("en-EN") +
-              " ft"
+            : getFlight?.waypoints[index]?.location.elevation
+            ? getFlight?.waypoints[index]?.location.elevation?.toLocaleString(
+                "en-EN"
+              ) + " ft"
             : ""
         }}
       </div>
@@ -213,10 +214,10 @@ const showROE = inject("showROE");
         {{
           getFlight?.waypoints[index]?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.latitude !== undefined
-            ? toLatString(getFlight?.waypoints[index]?.latitude) +
+            : getFlight?.waypoints[index]?.location.lat !== undefined
+            ? toLatString(getFlight?.waypoints[index]?.location.lat) +
               " // " +
-              toLongString(getFlight?.waypoints[index]?.longitude)
+              toLongString(getFlight?.waypoints[index]?.location.lon)
             : ""
         }}
       </div>
@@ -260,8 +261,8 @@ const showROE = inject("showROE");
         {{
           index + 81 < 97
             ? toLatLongString(
-                getFlight.dmpis[index]?.latitude,
-                getFlight.dmpis[index]?.longitude
+                getFlight.dmpis[index]?.location.lat,
+                getFlight.dmpis[index]?.location.lon
               )
             : getBullseyeLocation(index - 16)
         }}
@@ -269,7 +270,7 @@ const showROE = inject("showROE");
       <div
         :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'} bdr`"
       >
-        {{ index + 81 < 97 ? getFlight.dmpis[index]?.altitude : "" }}
+        {{ index + 81 < 97 ? getFlight.dmpis[index]?.location.elevation : "" }}
       </div>
       <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr`">
         {{ getFlight.dmpis[index]?.note }}
@@ -290,12 +291,14 @@ const showROE = inject("showROE");
       <div :class="`c9 hr bdr`">
         {{
           selectedPKG.bullseyes[index]
-            ? selectedPKG.bullseyes[index].lat + " / "
+            ? selectedPKG.bullseyes[index].location.toLatString() + " / "
             : ""
         }}
 
         {{
-          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].long : ""
+          selectedPKG.bullseyes[index]
+            ? selectedPKG.bullseyes[index].location.toLongString()
+            : ""
         }}
       </div>
       <div class="c3 hg bdr"></div>

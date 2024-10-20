@@ -10,17 +10,36 @@ import type {
 } from "@/types/mdcDataTypes";
 import { initFlight } from "@/types/mdcDataTypes";
 import JSZip from "jszip";
-import { storeToRefs } from "pinia";
 import xml2js from "xml2js";
-import { flights } from "./flights";
-import { getSTN, toLatString, toLongString } from "@/utils/utilFunctions";
+import { flights } from "../config/flights";
+import { getSTN } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
-import { airports } from "./airfields";
+import { airports } from "../config/airfields";
 import { DateTime } from "luxon";
 import { ref, watch } from "vue";
-import { packages } from "@vueuse/core/metadata.cjs";
-import type { theatre } from "@/types/theatre";
+import { Coordinate } from "./coordinates";
 
+function deserializeCoordinates(handover: { [x: string]: any }) {
+  if (typeof handover !== "object" || !handover) return;
+  const keys = Object.keys(handover);
+  //console.log(keys);
+  keys.forEach((key) => {
+    if (key === "location") {
+      // per convention, a location should always be of Type Coordinate
+      handover[key] = new Coordinate(
+        handover[key].lat,
+        handover[key].lon,
+        handover[key].elevation || 0
+      );
+    } else deserializeCoordinates(handover[key]);
+  });
+  return;
+}
+
+/**
+ * Reads a JSON file and parses it into the internal state of the application.
+ * @param {File} payload
+ */
 export async function processJSON(payload: File) {
   const fileContent = ref<string | null>(null);
 
@@ -28,7 +47,9 @@ export async function processJSON(payload: File) {
     if (newContent) {
       const { packages, theatre, missionStartTime } = JSON.parse(newContent);
       const packageStore = usePackageStore();
+      deserializeCoordinates(packages);
       packageStore.setPackages(packages);
+
       const globalStore = useGlobalStore();
       globalStore.setTheatre(theatre);
       globalStore.setMissionStartTime(missionStartTime);
@@ -50,6 +71,11 @@ export async function processJSON(payload: File) {
   }
 }
 
+/**
+ * Reads a DCS CF file and parses it into the internal state of the application.
+ * @param {string|number[]|Uint8Array|ArrayBuffer|Blob} payload CF file contents
+ * @returns {Promise<void>} Resolves when data has been parsed and set in the application
+ */
 export async function processCF(
   payload:
     | string
@@ -60,7 +86,7 @@ export async function processCF(
     | Promise<
         string | number[] | Uint8Array | ArrayBuffer | Blob
       > /* cf file is a zip */
-) {
+): Promise<void> {
   return readCF(payload).then((res) => parseCfXML(res));
 
   async function readCF(
@@ -89,7 +115,6 @@ export async function processCF(
 
   function parseCfXML(input: string) {
     const packageStore = usePackageStore();
-    const { packages } = storeToRefs(packageStore);
     const globalStore = useGlobalStore();
     const parser = new xml2js.Parser({
       explicitArray: true,
@@ -143,40 +168,28 @@ export async function processCF(
                   wp: 97,
                   note: "",
                   name: res.Mission.BlueBullseye[0]?.Name[0] ?? "",
-                  lat:
-                    toLatString(
-                      parseFloat(res.Mission.BlueBullseye[0]?.Lat[0] ?? "0")
-                    ) ?? "",
-                  long:
-                    toLongString(
-                      parseFloat(res.Mission.BlueBullseye[0]?.Lon[0] ?? "0")
-                    ) ?? "",
+                  location: new Coordinate(
+                    parseFloat(res.Mission.BlueBullseye[0]?.Lat[0]) ?? 0,
+                    parseFloat(res.Mission.BlueBullseye[0]?.Lon[0]) ?? 0
+                  ),
                 },
                 {
                   wp: 98,
                   note: "",
                   name: res.Mission.RedBullseye[0]?.Name[0] ?? "",
-                  lat:
-                    toLatString(
-                      parseFloat(res.Mission.RedBullseye[0]?.Lat[0] ?? "0")
-                    ) ?? "",
-                  long:
-                    toLongString(
-                      parseFloat(res.Mission.RedBullseye[0]?.Lon[0] ?? "0")
-                    ) ?? "",
+                  location: new Coordinate(
+                    parseFloat(res.Mission.RedBullseye[0]?.Lat[0]),
+                    parseFloat(res.Mission.RedBullseye[0]?.Lon[0])
+                  ),
                 },
                 {
                   wp: 99,
                   note: "",
                   name: res.Mission.NeutralBullseye[0]?.Name[0] ?? "",
-                  lat:
-                    toLatString(
-                      parseFloat(res.Mission.NeutralBullseye[0]?.Lat[0] ?? "0")
-                    ) ?? "",
-                  long:
-                    toLongString(
-                      parseFloat(res.Mission.NeutralBullseye[0]?.Lon[0] ?? "0")
-                    ) ?? "",
+                  location: new Coordinate(
+                    parseFloat(res.Mission.NeutralBullseye[0]?.Lat[0]),
+                    parseFloat(res.Mission.NeutralBullseye[0]?.Lon[0])
+                  ),
                 },
               ],
               packageTask: "",
@@ -243,15 +256,27 @@ export async function processCF(
             type: agency.Aircraft[0].Type[0],
             activity: agency.Waypoints[0].Waypoint[0].Activity[0],
             tacan: agency.Waypoints[0].Waypoint[0].AATCN[0],
-            lat: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
-              agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
-            ].Lat[0],
-            lon: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
-              agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
-            ].Lon[0],
-            alt: agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
-              agency.Waypoints[agency.Waypoints.length - 1].Waypoint.length - 1
-            ].Altitude[0],
+            location: new Coordinate(
+              parseFloat(
+                agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+                  agency.Waypoints[agency.Waypoints.length - 1].Waypoint
+                    .length - 1
+                ].Lat[0]
+              ),
+              parseFloat(
+                agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+                  agency.Waypoints[agency.Waypoints.length - 1].Waypoint
+                    .length - 1
+                ].Lon[0]
+              ),
+              parseFloat(
+                agency.Waypoints[agency.Waypoints.length - 1].Waypoint[
+                  agency.Waypoints[agency.Waypoints.length - 1].Waypoint
+                    .length - 1
+                ].Altitude[0]
+              )
+            ),
+
             active: false,
           };
         }); // parse them into an array to be selectable from
@@ -628,10 +653,13 @@ export async function processCF(
       activity: wp.Activity[0],
       airspeed_calibrated: parseFloat(wp.KCAS[0]),
       airspeed_total: parseFloat(wp.KTAS[0]),
-      altitude: parseInt(wp.Altitude[0]),
       groundspeed: parseFloat(wp.GS[0]),
-      latitude: parseFloat(wp.Lat[0]),
-      longitude: parseFloat(wp.Lon[0]),
+      location: new Coordinate(
+        parseFloat(wp.Lat[0]),
+        parseFloat(wp.Lon[0]),
+        parseInt(wp.Altitude[0])
+      ),
+
       mach: parseFloat(wp.Mach[0]),
       name: wp.Name[0],
       tot: wp.TOT[0],

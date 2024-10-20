@@ -1,6 +1,7 @@
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
 import type { Misc } from "./dtcTypes";
+import type { Coordinate } from "@/controller/coordinates";
 
 export type FlightMember = {
   callsign: string;
@@ -29,11 +30,7 @@ export type Waypoint = {
   mach: number;
 
   /** Latitude */
-  latitude: number;
-  /**Longitude */
-  longitude: number;
-  /** altitude*/
-  altitude: number;
+  location: Coordinate;
 
   /**Name of Waypoing, EG Incirlik AB */
   name: string;
@@ -95,10 +92,8 @@ export const initFlight = {
     activity: string;
     airspeed_calibrated: number;
     airspeed_total: number;
-    altitude: number;
     groundspeed: number;
-    latitude: number;
-    longitude: number;
+    location: Coordinate;
     mach: number;
     name: string;
     tot: string;
@@ -108,9 +103,7 @@ export const initFlight = {
   }>(),
   dmpis: new Array<{
     note: string;
-    altitude: number;
-    latitude: number;
-    longitude: number;
+    location: Coordinate;
     name: string;
     type: string;
   }>(20),
@@ -184,8 +177,7 @@ export type Package = {
   bullseyes: {
     wp: number;
     name: string;
-    lat: string; // Make them String to have them editable, convert to String on Import.
-    long: string;
+    location: Coordinate;
     note: string;
   }[];
   selectedBullseye: number;
@@ -214,9 +206,7 @@ export type Package = {
     type: string;
     activity: string;
     tacan: string;
-    lat: string;
-    lon: string;
-    alt: string;
+    location: Coordinate;
     active: boolean;
   }>;
 };

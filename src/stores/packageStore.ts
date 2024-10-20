@@ -1,15 +1,7 @@
-import { ref, computed, type WritableComputedRef, type Ref, watch } from "vue";
-import {
-  defineStore,
-  storeToRefs,
-  type SubscriptionCallbackMutation,
-} from "pinia";
-import type { Flight, Package } from "@/types/mdcDataTypes";
-import { useFlightStore } from "./flightStore";
+import { ref } from "vue";
+import { defineStore } from "pinia";
+import type { Package } from "@/types/mdcDataTypes";
 import { threatRanges } from "@/config/threatRanges";
-import type { bullseyes } from "@/config/bullseye";
-import { set } from "lodash";
-import { useEditHistory } from "@/components/history/editHistory";
 
 export const initState = {
   airThreat: "",
@@ -50,7 +42,7 @@ export const usePackageStore = defineStore("package", {
       this.selectedPKGID = id;
     },
     updateLadder() {
-      this.packages[this.selectedPKGID].flights.forEach((flight: Flight) => {
+      this.packages[this.selectedPKGID].flights.forEach((flight) => {
         for (let i = 14; i < 14 + this.packages.length; i++) {
           //update Radios
           if (

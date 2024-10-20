@@ -26,8 +26,8 @@
           ></InputNumber>
         </template>
       </Column>
-      <Column field="name" header="Name"
-        ><template #editor="{ index }">
+      <Column field="name" header="Name">
+        <template #editor="{ index }">
           <Input v-model="getFlight.waypoints[index].name" /></template
       ></Column>
       <Column field="type" header="Type">
@@ -51,11 +51,11 @@
       </Column>
       <Column field="altitude" header="Altitude">
         <template #body="{ data }"
-          >{{ Number(data.altitude).toFixed(0) }} ft</template
+          >{{ data.location.getElevation() }} ft</template
         >
         <template #editor="{ index }">
           <InputNumber
-            v-model:model-value="getFlight.waypoints[index].altitude"
+            v-model:model-value="getFlight.waypoints[index].location.elevation"
           ></InputNumber>
         </template>
       </Column>
@@ -120,17 +120,17 @@
           </Column>
           <Column field="altitude" header="Altitude">
             <template #body="{ data }"
-              >{{ Number(data.altitude).toFixed(0) }} ft</template
+              >{{ data.location.getElevation() }} ft</template
             >
           </Column>
           <Column field="latitude" header="Latitude">
             <template #body="{ data }">{{
-              toLatString(data.latitude)
+              data.location.toLatString()
             }}</template>
           </Column>
           <Column field="longitude" header="Longitude">
             <template #body="{ data }">{{
-              toLongString(data.longitude)
+              data.location.toLongString()
             }}</template>
           </Column>
           <Column field="note" header="Note"
@@ -174,6 +174,7 @@ import InputNumber from "primevue/inputnumber";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
 import { usePackageStore } from "@/stores/packageStore";
+import { Coordinate } from "@/controller/coordinates";
 const { getFlight } = storeToRefs(useFlightStore());
 const { selectedPKG } = storeToRefs(usePackageStore());
 const showDia = ref(false);
@@ -248,9 +249,7 @@ function toDMPI(i: number) {
   const tdmpi = getFlight.value.waypoints.splice(i, 1);
 
   getFlight.value.dmpis.push({
-    altitude: tdmpi[0].altitude,
-    latitude: tdmpi[0].latitude,
-    longitude: tdmpi[0].longitude,
+    location: tdmpi[0].location,
     name: tdmpi[0].name,
     note: tdmpi[0].activity,
     type: tdmpi[0].type,
