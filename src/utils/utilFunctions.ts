@@ -196,3 +196,76 @@ function toRadians(degrees: number) {
 function toDegrees(radians: number) {
   return (radians * 180) / Math.PI;
 }
+
+/**
+ * Converts a latitude string in the format "N/S [degrees]°[minutes]'" to decimal degrees
+ * @param {string} latString - The latitude string to convert
+ * @returns {number | null} The latitude in decimal degrees, or null if the input is invalid
+ */
+export function fromLatString(latString: string): number | null {
+  const regex = /^([NS])\s(\d{2,3})°(\d{2}(?:\.\d{3})?)’$/;
+  const match = latString.match(regex);
+
+  if (match) {
+    const hemisphere = match[1];
+    const degrees = parseInt(match[2], 10);
+    const minutes = parseFloat(match[3]);
+
+    // Convert degrees and minutes to decimal degrees
+    let decimalDegrees = degrees + minutes / 60;
+
+    // If the hemisphere is 'S', make the latitude negative
+    if (hemisphere === "S") {
+      decimalDegrees = -decimalDegrees;
+    }
+
+    return decimalDegrees;
+  }
+
+  return null; // Return null if the input string doesn't match the expected format
+}
+
+/**
+ * Converts a longitude string in the format "E/W [degrees]°[minutes]'" to decimal degrees
+ * @param {string} lonString - The longitude string to convert
+ * @returns {number | null} The longitude in decimal degrees, or null if the input is invalid
+ */
+export function fromLongString(lonString: string): number | null {
+  const regex = /^([EW])\s(\d{3})°(\d{2}(?:\.\d{3})?)’$/;
+  const match = lonString.match(regex);
+
+  if (match) {
+    const hemisphere = match[1];
+    const degrees = parseInt(match[2], 10);
+    const minutes = parseFloat(match[3]);
+
+    // Convert degrees and minutes to decimal degrees
+    let decimalDegrees = degrees + minutes / 60;
+
+    // If the hemisphere is 'W', make the longitude negative
+    if (hemisphere === "W") {
+      decimalDegrees = -decimalDegrees;
+    }
+
+    return decimalDegrees;
+  }
+
+  return null; // Return null if the input string doesn't match the expected format
+}
+
+/**
+ * Returns a string representing the bearing and range from (lat1,lon1) to (lat2,lon2)
+ * in the format "bearing / range", where bearing is an integer in degrees and range
+ * is an integer in nautical miles.
+ * @param {number} lat1 - The latitude of the first point in decimal degrees
+ * @param {number} lon1 - The longitude of the first point in decimal degrees
+ * @param {number} lat2 - The latitude of the second point in decimal degrees
+ * @param {number} lon2 - The longitude of the second point in decimal degrees
+ * @returns {string} A string in the format "bearing / range"
+ */
+export function getBR(lat1: number, lon1: number, lat2: number, lon2: number) {
+  return `
+  ${calculateHeading(lat1, lon1, lat2, lon2)} / ${
+    calculateDistance(lat1, lon1, lat2, lon2).split(".")[0]
+  }`;
+}
