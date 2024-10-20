@@ -188,7 +188,7 @@ export type Package = {
     long: string;
     note: string;
   }[];
-  selectedBullseye: Number;
+  selectedBullseye: number;
   /** Flights in Package */
   flights: Flight[];
 
@@ -208,7 +208,17 @@ export type Package = {
     authority: string;
     action: string;
   }>;
-  agencies: Array<any>;
+  agencies: Array<{
+    name: string;
+    freq: string;
+    type: string;
+    activity: string;
+    tacan: string;
+    lat: string;
+    lon: string;
+    alt: string;
+    active: boolean;
+  }>;
 };
 
 //** Combat Flite Export Types */
