@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!--script setup lang="ts">
 import { inject, onMounted, onUnmounted, ref } from "vue";
 import Textarea from "primevue/inputtext";
 import { storeToRefs } from "pinia";

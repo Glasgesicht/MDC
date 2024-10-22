@@ -42,8 +42,9 @@ export const usePackageStore = defineStore("package", {
       this.selectedPKGID = id;
     },
     updateLadder() {
+      console.log(this.packages);
       this.packages[this.selectedPKGID].flights.forEach((flight) => {
-        for (let i = 14; i < 14 + this.packages.length; i++) {
+        for (let i = 14; i < 14 + this.selectedPKG.flights.length; i++) {
           //update Radios
           if (
             this.packages[this.selectedPKGID].flights[i - 14]?.mycomm.pri.freq

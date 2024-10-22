@@ -167,10 +167,7 @@
         <!--Column header="activity" field="activity" />-->
         <Column header="TACAN" field="tacan" />
         <Column header="Location"
-          ><template #body="{ data }"
-            >{{ toLatString(data.lat) }} /
-            {{ toLongString(data.lon) }}</template
-          ></Column
+          ><template #body="{ data }">{{ data.location }}</template></Column
         >
       </DataTable>
     </div>

@@ -29,6 +29,7 @@ import toDTC from "@/components/DTCExports/commsToDTC.vue";
 import { commTables, tacticalFreqs } from "@/config/frequencies";
 import { airports, airfieldEmpty } from "@/config/airfields";
 import type { WritableComputedRef } from "vue";
+import type { Coordinate } from "@/controller/coordinates";
 
 /**
  * Misc
@@ -55,6 +56,7 @@ function callsignChangeEvent(event: any) {
   packageStore.updateLadder();
 }
 
+// @ts-ignore
 const tanker: WritableComputedRef<
   | {
       name: string;
@@ -62,9 +64,7 @@ const tanker: WritableComputedRef<
       type: string;
       activity: string;
       tacan: string;
-      lat: string;
-      lon: string;
-      alt: string;
+      location: Coordinate;
     }
   | undefined
 > = computed({
@@ -775,14 +775,26 @@ const groupedFlights = computed(() =>
       </div>
       <div class="parent freq">
         <div class="item5 comm-box">
-          <Button style="width: 175px" label="Copy to other Flights" />
+          <Button
+            style="width: 175px"
+            label="Copy to other Flights"
+            v-if="false"
+          />
         </div>
         <div class="item5">
-          <Button style="width: 175px" label="Copy to all Flights" />
+          <Button
+            style="width: 175px"
+            label="Copy to all Flights"
+            v-if="false"
+          />
         </div>
       </div>
       <div class="item5">
-        <Button style="width: 175px" label="Copy to other Flights" />
+        <Button
+          style="width: 175px"
+          label="Copy to other Flights"
+          v-if="false"
+        />
       </div>
     </div>
 

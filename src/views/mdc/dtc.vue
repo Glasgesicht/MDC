@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import Button from "primevue/button";
 import TextArea from "primevue/textarea";
-import { decompressString } from "../utils/dtc";
+import { decompressString } from "@/utils/dtc";
 
 import { ref, watch } from "vue";
 

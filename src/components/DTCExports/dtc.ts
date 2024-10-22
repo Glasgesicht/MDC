@@ -121,9 +121,9 @@ export const useDTCexports = () => {
         .sort((a, b) => a.waypointNr - b.waypointNr)
         .forEach((stp, i) =>
           wpts.Waypoints.push({
-            Elevation: parseInt("" + stp.altitude),
-            Latitude: toLatString(stp.latitude),
-            Longitude: toLongString(stp.longitude),
+            Elevation: parseInt("" + stp.location.elevation),
+            Latitude: stp.location.toLatString(),
+            Longitude: stp.location.toLongString(),
             Name: stp.type === "Steerpoint" ? stp.name : stp.type,
             OffsetAimpoint1: null,
             OffsetAimpoint2: null,
@@ -143,9 +143,9 @@ export const useDTCexports = () => {
     if (mode === "all" || mode === "dmpi")
       getFlight.value.dmpis.forEach((dmpi, i) => {
         wpts.Waypoints.push({
-          Elevation: dmpi.altitude,
-          Latitude: toLatString(dmpi.latitude),
-          Longitude: toLongString(dmpi.longitude),
+          Elevation: dmpi.location.elevation,
+          Latitude: dmpi.location.toLatString(),
+          Longitude: dmpi.location.toLongString(),
           Name: dmpi.name,
           OffsetAimpoint1: null,
           OffsetAimpoint2: null,
@@ -166,8 +166,8 @@ export const useDTCexports = () => {
       selectedPKG.value.bullseyes.forEach((bullzeye) => {
         wpts.Waypoints.push({
           Elevation: 0,
-          Latitude: bullzeye.lat,
-          Longitude: bullzeye.long,
+          Latitude: bullzeye.location.toLatString(),
+          Longitude: bullzeye.location.toLongString(),
           Name: bullzeye.name,
           OffsetAimpoint1: null,
           OffsetAimpoint2: null,
