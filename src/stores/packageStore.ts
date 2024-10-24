@@ -41,23 +41,6 @@ export const usePackageStore = defineStore("package", {
     setSelectedPKGID(id: number) {
       this.selectedPKGID = id;
     },
-    updateLadder() {
-      console.log(this.packages);
-      this.packages[this.selectedPKGID].flights.forEach((flight) => {
-        for (let i = 14; i < 14 + this.selectedPKG.flights.length; i++) {
-          //update Radios
-          if (
-            this.packages[this.selectedPKGID].flights[i - 14]?.mycomm.pri.freq
-          )
-            //only if they've values assigned
-            flight.comms.radio1[i] =
-              this.packages[this.selectedPKGID].flights[i - 14].mycomm.pri;
-          if (this.packages[this.selectedPKGID].flights[i - 14].mycomm.sec.freq)
-            flight.comms.radio2[i] =
-              this.packages[this.selectedPKGID].flights[i - 14].mycomm.sec;
-        }
-      });
-    },
     setPackages(packages: Package[]) {
       this.$state.packages = packages;
     },

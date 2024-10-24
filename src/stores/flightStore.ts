@@ -34,22 +34,28 @@ export const useFlightStore = defineStore("flightSore", {
           (Number(i) + 1);
       });
 
-      const newComms = flights.find((n) => n.callsign === callsign);
+      // updates ladder for all flights 
+      usePackageStore().selectedPKG.flights.forEach((flight, i, all) => {
+        const newComms = flights.find((n) => n.callsign === flight.callsign);
 
-      this.getFlight.mycomm = {
-        pri: {
-          description: newComms?.callsign + " " + newComms?.number || "",
-          freq: newComms?.pri.freq || "",
-          name: newComms?.pri.name || "",
-          number: parseInt(newComms?.pri.number || ""),
-        },
-        sec: {
-          description: newComms?.callsign || "",
-          freq: newComms?.sec.freq || "",
-          name: newComms?.sec.name || "",
-          number: parseInt(newComms?.sec.number || ""),
-        },
-      };
-    },
-  },
+        if (newComms) {
+          all.forEach((curr, n) => {
+            curr.comms.radio1[i + 14] = {
+              description: newComms?.callsign + " " + newComms?.number || "",
+              freq: newComms?.pri.freq || "",
+              name: newComms?.pri.name || "",
+              number: parseInt(newComms?.pri.number || ""),
+            }
+
+            curr.comms.radio2[i + 14] = {
+              description: newComms?.callsign || "",
+              freq: newComms?.sec.freq || "",
+              name: newComms?.sec.name || "",
+              number: parseInt(newComms?.sec.number || ""),
+            }
+          })
+        }
+      })
+    }
+  }
 });

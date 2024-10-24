@@ -66,22 +66,6 @@ export const initFlight = {
       description: string;
     }>(20),
   },
-  // This is for the individual flights, making is easier to shift flights around witout complicated logic, although this maybe cases some redundancies.
-  // Might refactor later
-  mycomm: {
-    pri: {
-      freq: "",
-      name: "",
-      number: NaN,
-      description: "",
-    },
-    sec: {
-      freq: "",
-      name: "",
-      number: NaN,
-      description: "",
-    },
-  },
   gameplan: "",
   MSNumber: "",
   missionType: "",
@@ -240,7 +224,7 @@ export interface Mission {
   BlueBullseye: BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
   RedBullseye: BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
   NeutralBullseye:
-    | BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
+  | BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
 }
 export interface BlueBriefingPicsEntity {
   BlueBriefingPicture: string[];

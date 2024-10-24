@@ -92,8 +92,8 @@ export async function processCF(
     | ArrayBuffer
     | Blob
     | Promise<
-        string | number[] | Uint8Array | ArrayBuffer | Blob
-      > /* cf file is a zip */
+      string | number[] | Uint8Array | ArrayBuffer | Blob
+    > /* cf file is a zip */
 ): Promise<void> {
   return readCF(payload).then((res) => parseCfXML(res));
 
@@ -370,20 +370,6 @@ export async function processCF(
           comms: comm,
           waypoints: getWaypoints(mCurr.Waypoints[0].Waypoint),
           dmpis: new Array(),
-          mycomm: {
-            pri: {
-              description: comm.radio1[i + 14]?.description ?? "",
-              freq: comm.radio1[i + 14]?.freq ?? "",
-              name: comm.radio1[i + 14]?.name ?? "",
-              number: comm.radio1[i + 14]?.number ?? NaN,
-            },
-            sec: {
-              description: comm.radio2[i + 14]?.description ?? "",
-              freq: comm.radio2[i + 14]?.freq ?? "",
-              name: comm.radio2[i + 14]?.name ?? "",
-              number: comm.radio2[i + 14]?.number ?? NaN,
-            },
-          },
         };
       });
   }
