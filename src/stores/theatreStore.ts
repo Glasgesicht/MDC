@@ -10,12 +10,20 @@ export const useGlobalStore = defineStore("global", {
     theatre: theatre;
     missionStartTime: number;
     stateChanged: number;
+    callsigns: Array<any>;
+    agencies: Array<any>; //TODO: Move agencies here
+    poe: Array<any>
+    airports: Array<any> // TODO: Move them here
   } => ({
     file: false,
     theatre: "Caucasus",
     missionStartTime: 0,
     stateChanged: 0,
     filename: "Select File",
+    callsigns: new Array(),
+    agencies: new Array(),
+    poe: new Array(), // TODO: Points of interests
+    airports: new Array()
   }),
   actions: {
     setFile(file: boolean) {
