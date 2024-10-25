@@ -139,13 +139,13 @@ const items: Ref<MenuItem[]> = computed(() => [
           if (getFlight.value?.callsign)
             useDTCexports().loadDTC({
               CMS: false,
-              Datalink: false,
+              Datalink: true,
               HARM: false,
               HTS: false,
               MFD: false,
-              Misc: false,
+              Misc: true,
               Radios: true,
-              Upload: false,
+              Upload: true,
               Waypoints: "all",
             });
         },
@@ -205,30 +205,23 @@ const showExport = ref(false);
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
       <div v-if="showExport">
-        <div
-          id="mdcpages"
-          style="display: flex; position: absolute; top: -2000px"
-        >
+        <div id="mdcpages" style="display: flex; position: absolute; top: -2000px">
           <Newbriefing :pagenr="1" />
           <Newdatacard :pagenr="2" />
           <Newsteerpoints :pagenr="3" />
           <Newcomms :pagenr="4" />
         </div>
       </div>
-      <div><RouterView /></div>
+      <div>
+        <RouterView />
+      </div>
       <div style="position: fixed; top: 0px; right: 0px">
         <editHistory />
       </div>
     </div>
   </div>
-  <input
-    style="display: none"
-    type="file"
-    id="fileUpload"
-    class="file-input"
-    v-on:change="onChangedFile"
-    accept=".cf,.json"
-  />
+  <input style="display: none" type="file" id="fileUpload" class="file-input" v-on:change="onChangedFile"
+    accept=".cf,.json" />
   <div style="text-align: center; position: absolute; bottom: 0">
     version: {{ version }}
   </div>
