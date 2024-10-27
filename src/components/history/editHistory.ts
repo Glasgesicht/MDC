@@ -13,7 +13,7 @@ export const useEditHistory = () => {
 
   // I shouldn've lest the stores at setup style to not have to do this...
   const writeablePackages = computed({
-    get: () => packageStore.selectedPKG,
+    get: () => packageStore.selectedPKG ?? {},
     set: (val) => {
       try {
         if (
@@ -27,7 +27,7 @@ export const useEditHistory = () => {
         )
           packageStore.setSelectedPKG(val as Package);
       } catch (e) {
-        //nothing
+        return {};
       }
     },
   });
@@ -35,18 +35,10 @@ export const useEditHistory = () => {
   const { history, undo, redo, canRedo, canUndo, reset, commit, clear } =
     useRefHistory(writeablePackages, { deep: true });
 
-  function clearHistroy() {
-    setTimeout(() => {
-      clear();
-      reset();
-    }, 100);
-  }
-
   return {
     history,
     undo,
     redo,
-    clearHistroy,
     canRedo,
     canUndo,
   };

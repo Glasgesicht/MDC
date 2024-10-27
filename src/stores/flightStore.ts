@@ -2,13 +2,14 @@ import { defineStore, storeToRefs } from "pinia";
 import { usePackageStore } from "@/stores/packageStore";
 import { flights } from "@/config/flights";
 import { getSTN } from "@/utils/utilFunctions";
+import { initFlight } from "@/types/mdcDataTypes";
 
 export const useFlightStore = defineStore("flightSore", {
   state: () => ({ selectedFlightId: 0 }),
   getters: {
     getFlight: (state) => {
       const { selectedPKG } = storeToRefs(usePackageStore());
-      return selectedPKG.value.flights[state.selectedFlightId];
+      return selectedPKG.value?.flights[state.selectedFlightId];
     },
   },
   actions: {
