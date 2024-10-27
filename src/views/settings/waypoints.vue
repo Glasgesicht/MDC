@@ -249,7 +249,7 @@ function toDMPI(i: number) {
   const tdmpi = getFlight.value.waypoints.splice(i, 1);
 
   getFlight.value.dmpis.push({
-    location: tdmpi[0].location,
+    location: tdmpi[0].location as Coordinate,
     name: tdmpi[0].name,
     note: tdmpi[0].activity,
     type: tdmpi[0].type,

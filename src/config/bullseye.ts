@@ -3,8 +3,10 @@
  * It'd be preferred, if the right BULLSEYE is selected via Combat Flite to guarantee that it's accurate
  *  */
 
+/**
+ * @deprecated : Not used but inferred from Threatre
+ * */
 import type { theatre } from "@/types/theatre";
-
 export const bullseyes: {
   [K in theatre]: { name: string; location: string; note: string }[];
 } = {

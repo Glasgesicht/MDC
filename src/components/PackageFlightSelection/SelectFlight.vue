@@ -42,7 +42,8 @@ const { packages, selectedPKG } = storeToRefs(packageStore);
 
 const selectedPackage = computed({
   get(): Package {
-    return selectedPKG.value;
+    // No clue why this would error
+    return selectedPKG.value as Package;
   },
   set(value: Package) {
     packageStore.setSelectedPKGID(
@@ -56,9 +57,10 @@ const { getFlight } = storeToRefs(flightStore);
 
 const selectedFlight = computed({
   get(): Flight {
-    return getFlight.value;
+    return getFlight.value as Flight;
   },
-  set(value) {
+
+  set(value: Flight) {
     flightStore.setFlightId(
       selectedPKG.value.flights.findIndex(
         (flight) =>

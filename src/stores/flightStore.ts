@@ -8,7 +8,7 @@ export const useFlightStore = defineStore("flightSore", {
   getters: {
     getFlight: (state) => {
       const { selectedPKG } = storeToRefs(usePackageStore());
-      return selectedPKG.value?.flights[state.selectedFlightId];
+      return selectedPKG.value.flights[state.selectedFlightId];
     },
   },
   actions: {
@@ -34,7 +34,7 @@ export const useFlightStore = defineStore("flightSore", {
           (Number(i) + 1);
       });
 
-      // updates ladder for all flights 
+      // updates ladder for all flights
       usePackageStore().selectedPKG.flights.forEach((flight, i, all) => {
         const newComms = flights.find((n) => n.callsign === flight.callsign);
 
@@ -45,17 +45,17 @@ export const useFlightStore = defineStore("flightSore", {
               freq: newComms?.pri.freq || "",
               name: newComms?.pri.name || "",
               number: parseInt(newComms?.pri.number || ""),
-            }
+            };
 
             curr.comms.radio2[i + 14] = {
               description: newComms?.callsign || "",
               freq: newComms?.sec.freq || "",
               name: newComms?.sec.name || "",
               number: parseInt(newComms?.sec.number || ""),
-            }
-          })
+            };
+          });
         }
-      })
-    }
-  }
+      });
+    },
+  },
 });

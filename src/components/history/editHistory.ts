@@ -4,6 +4,7 @@ import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { computed, ref, watch } from "vue";
 import { set } from "lodash";
+import type { Package } from "@/types/mdcDataTypes";
 
 export const useEditHistory = () => {
   const packageStore = usePackageStore();
@@ -12,7 +13,7 @@ export const useEditHistory = () => {
 
   // I shouldn've lest the stores at setup style to not have to do this...
   const writeablePackages = computed({
-    get: () => packageStore.selectedPKG ?? {},
+    get: () => packageStore.selectedPKG,
     set: (val) => {
       try {
         if (
@@ -24,7 +25,7 @@ export const useEditHistory = () => {
               val.flights[0].callsignNumber === e.callsignNumber
           )
         )
-          packageStore.setSelectedPKG(val);
+          packageStore.setSelectedPKG(val as Package);
       } catch (e) {
         //nothing
       }

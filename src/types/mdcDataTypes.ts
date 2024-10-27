@@ -38,6 +38,8 @@ export type Waypoint = {
   tot: string;
   /**Type of Waypoint, eg Landing */
   type: string;
+
+  hideOnMDC: boolean;
 };
 
 export const initFlight = {
@@ -72,19 +74,7 @@ export const initFlight = {
   tacan: "",
   task: "",
   units: new Array<FlightMember>(),
-  waypoints: new Array<{
-    activity: string;
-    airspeed_calibrated: number;
-    airspeed_total: number;
-    groundspeed: number;
-    location: Coordinate;
-    mach: number;
-    name: string;
-    tot: string;
-    type: string;
-    waypointNr: number;
-    hideOnMDC: boolean;
-  }>(),
+  waypoints: new Array<Waypoint>(),
   dmpis: new Array<{
     note: string;
     location: Coordinate;
@@ -224,7 +214,7 @@ export interface Mission {
   BlueBullseye: BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
   RedBullseye: BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
   NeutralBullseye:
-  | BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
+    | BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
 }
 export interface BlueBriefingPicsEntity {
   BlueBriefingPicture: string[];
