@@ -5,6 +5,7 @@ import { usePackageStore } from "@/stores/packageStore";
 import { computed, ref, watch } from "vue";
 import { set } from "lodash";
 import type { Package } from "@/types/mdcDataTypes";
+import { deserialize } from "@/controller/parseFiles";
 
 export const useEditHistory = () => {
   const packageStore = usePackageStore();
@@ -33,7 +34,11 @@ export const useEditHistory = () => {
   });
 
   const { history, undo, redo, canRedo, canUndo, reset, commit, clear } =
-    useRefHistory(writeablePackages, { deep: true });
+    useRefHistory(writeablePackages, {
+      deep: true,
+      dump: JSON.stringify,
+      parse: deserialize,
+    });
 
   return {
     history,

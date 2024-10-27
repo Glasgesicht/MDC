@@ -19,8 +19,13 @@ import { DateTime } from "luxon";
 import { ref, watch } from "vue";
 import { Coordinate } from "./coordinates";
 
+export function deserialize(value: any) {
+  const handovers = JSON.parse(value);
+  return deserializeCoordinates(handovers);
+}
+
 function deserializeCoordinates(handover: { [x: string]: any }) {
-  if (typeof handover !== "object" || !handover) return;
+  if (typeof handover !== "object" || !handover) return handover;
   const keys = Object.keys(handover);
   //console.log(keys);
   keys.forEach((key) => {
@@ -33,7 +38,7 @@ function deserializeCoordinates(handover: { [x: string]: any }) {
       );
     } else deserializeCoordinates(handover[key]);
   });
-  return;
+  return handover;
 }
 
 /**
