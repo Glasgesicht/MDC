@@ -179,7 +179,7 @@ export async function processCF(
                   location: new Coordinate(
                     parseFloat(res.Mission.BlueBullseye[0]?.Lat[0]) ?? 0,
                     parseFloat(res.Mission.BlueBullseye[0]?.Lon[0]) ?? 0
-                  ) as Coordinate,
+                  ),
                 },
                 {
                   wp: 98,
@@ -188,7 +188,7 @@ export async function processCF(
                   location: new Coordinate(
                     parseFloat(res.Mission.RedBullseye[0]?.Lat[0]),
                     parseFloat(res.Mission.RedBullseye[0]?.Lon[0])
-                  ) as Coordinate,
+                  ),
                 },
                 {
                   wp: 99,
@@ -197,7 +197,7 @@ export async function processCF(
                   location: new Coordinate(
                     parseFloat(res.Mission.NeutralBullseye[0]?.Lat[0]),
                     parseFloat(res.Mission.NeutralBullseye[0]?.Lon[0])
-                  ) as Coordinate,
+                  ),
                 },
               ],
               packageTask: "",
@@ -283,7 +283,7 @@ export async function processCF(
                     .length - 1
                 ].Altitude[0]
               )
-            ) as Coordinate,
+            ),
 
             active: false,
           };
@@ -652,7 +652,7 @@ export async function processCF(
         parseFloat(wp.Lat[0]),
         parseFloat(wp.Lon[0]),
         parseInt(wp.Altitude[0])
-      ) as Coordinate,
+      ),
 
       mach: parseFloat(wp.Mach[0]),
       name: wp.Name[0],

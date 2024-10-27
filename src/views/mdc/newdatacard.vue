@@ -243,13 +243,13 @@ const AAR = getFlight?.value.waypoints
               : ""
           }}
           {{
-            tankers.at(index)
-              ? tankers
-                  .at(index)
-                  ?.location.calculateDistance(
-                    selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
-                      .location as Coordinate
-                  )
+            tankers.at(index) &&
+            selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
+              ? selectedPKG.bullseyes[
+                  getFlight.misc.BullseyeWP
+                ].location.calculateDistance(
+                  tankers.at(index)!.location as Coordinate
+                )
               : ""
           }}
 
