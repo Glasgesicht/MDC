@@ -119,6 +119,12 @@ const items: Ref<MenuItem[]> = computed(() => [
           router.push({ name: "comms" });
         },
       },
+      {
+        label: "Comms Matrix",
+        command: () => {
+          router.push({ name: "commsMatrix" });
+        },
+      },
       /*{
         label: "example Page",
         command: () => {

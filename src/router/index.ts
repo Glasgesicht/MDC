@@ -9,8 +9,11 @@ import newbriefing from "@/views/mdc/newbriefing.vue";
 import newsteerpoints from "@/views/mdc/newsteerpoints.vue";
 import newdatacard from "@/views/mdc/newdatacard.vue";
 import newcomms from "@/views/mdc/newcomms.vue";
+import Commsmatrix from "@/views/mdc/commsmatrix.vue";
+
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,6 +68,14 @@ const router = createRouter({
       component: newcomms,
       props: {
         pagenr: 4,
+      },
+    },
+    {
+      name: "commsMatrix",
+      path: "/commsMatrix",
+      component: Commsmatrix,
+      props: {
+        pagenr: 5,
       },
     },
   ],

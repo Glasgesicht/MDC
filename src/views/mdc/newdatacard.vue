@@ -1,27 +1,14 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref, computed } from "vue";
-import Textarea from "primevue/inputtext";
+import { computed } from "vue";
+
 import { storeToRefs } from "pinia";
 import { threats, usePackageStore } from "@/stores/packageStore";
-import Dropdown from "primevue/dropdown";
-import Input from "primevue/inputtext";
 
 import {
   generateInlineGrid,
   generateInlineGridFixed,
-  fromLatString,
-  fromLongString,
-} from "@/utils/utilFunctions";
-
-import {
-  calculateHeading,
-  calculateDistance,
-  toLatString,
-  toLongString,
 } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
-import { threatRanges } from "@/config/threatRanges";
-import { useGlobalStore } from "@/stores/theatreStore";
 import type { Coordinate } from "@/controller/coordinates";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -99,7 +86,6 @@ const AAR = getFlight?.value.waypoints
 </script>
 
 <template>
-  {{ useGlobalStore().missionStartTime }}
   <div class="bdr mdcpage" name="mdcpage">
     <div class="c36 r bdr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
@@ -189,10 +175,7 @@ const AAR = getFlight?.value.waypoints
     <div :style="generateInlineGridFixed(30, 20, 7, 10)">
       <div class="c2 g bdr">SP</div>
       <div class="c5 g bdr">ACTION</div>
-      <div
-        :style="generateInlineGrid(7, 1)"
-        v-for="index in new Array(9).keys()"
-      >
+      <div :style="generateInlineGrid(7, 1)" v-for="index in new Array(9).keys()">
         <div class="c2 w bdr">{{ actions.at(index)?.sp }}</div>
         <div class="c5 w bdr">{{ actions.at(index)?.action }}</div>
       </div>
@@ -206,10 +189,7 @@ const AAR = getFlight?.value.waypoints
       <div class="c7 g bdr">TIME</div>
       <div class="c7 g bdr">POSITION</div>
       <div class="c3 g bdr">HOT</div>
-      <div
-        :style="generateInlineGrid(30, 1)"
-        v-for="index in new Array(2).keys()"
-      >
+      <div :style="generateInlineGrid(30, 1)" v-for="index in new Array(2).keys()">
         <div class="c4 w bdr">
           {{ tankers.at(index) ? tankers[index].name : "" }}
         </div>
@@ -226,11 +206,11 @@ const AAR = getFlight?.value.waypoints
           {{
             AAR.at(1)?.time
               ? hhmmss(AAR.at(1)?.time ?? "") +
-                "-" +
-                takeoffTime(
-                  hhmmss(AAR.at(1)?.time ?? ""),
-                  AAR.at(1)?.activity ?? ""
-                )
+              "-" +
+              takeoffTime(
+                hhmmss(AAR.at(1)?.time ?? ""),
+                AAR.at(1)?.activity ?? ""
+              )
               : ""
           }}
         </div>
@@ -238,17 +218,17 @@ const AAR = getFlight?.value.waypoints
           {{
             tankers.at(index)
               ? selectedPKG?.bullseyes.find(
-                  (x) => x.wp == getFlight.misc.BullseyeWP
-                )?.name
+                (x) => x.wp == getFlight.misc.BullseyeWP
+              )?.name
               : ""
           }}
           {{
-            tankers.at(index) &&
-            selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
-              ? selectedPKG.bullseyes[
-                  getFlight.misc.BullseyeWP
-                ].location.calculateDistance(
-                  tankers.at(index)!.location as Coordinate
+            tankers.at(index)
+              ? tankers
+                .at(index)
+                ?.location.calculateDistance(
+                  selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
+                    .location as Coordinate
                 )
               : ""
           }}
@@ -256,8 +236,8 @@ const AAR = getFlight?.value.waypoints
           {{
             tankers.at(index)
               ? selectedPKG.bullseyes[
-                  getFlight.misc.BullseyeWP
-                ].location.headingTo(tankers.at(index)!.location as Coordinate)
+                getFlight.misc.BullseyeWP
+              ].location.headingTo(tankers.at(index)!.location as Coordinate)
               : ""
           }}
         </div>
@@ -387,26 +367,21 @@ const AAR = getFlight?.value.waypoints
       </div>
       <div :class="`c5 w ${index < 2 ? 'w' : 'hr'} bdr`">
         {{
-          index < 2 && getFlight.comms.radio1[index + 4] !== undefined
-            ? getFlight.comms.radio1[index + 4]?.name +
-              " " +
-              getFlight.comms.radio1[index + 4]?.number
-            : ""
-        }}
+          index < 2 && getFlight.comms.radio1[index + 4] !== undefined ? getFlight.comms.radio1[index + 4]?.name + " " +
+            getFlight.comms.radio1[index + 4]?.number : "" }} </div>
+          <div :class="`c3 g`">{{ "2" + index }}</div>
+          <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr`">
+            {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }} </div>
+              <input :class="`c3 hr bdr`" />
+          </div>
+          <div class="c36 r bdr">
+            RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+          </div>
       </div>
-      <div :class="`c3 g`">{{ "2" + index }}</div>
-      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr`">
-        {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }}
-      </div>
-      <input :class="`c3 hr bdr`" />
-    </div>
-    <div class="c36 r bdr">
-      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
-    </div>
-  </div>
 </template>
 <style scoped>
 @import "@/assets/newstyle.css";
+
 .parent {
   display: inline-grid;
   grid-template-columns: repeat(36, 1fr);
@@ -414,6 +389,7 @@ const AAR = getFlight?.value.waypoints
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .bingo {
   display: inline-grid;
   grid-template-columns: repeat(20, 1fr);
@@ -421,6 +397,7 @@ const AAR = getFlight?.value.waypoints
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .shuffle {
   display: inline-grid;
   grid-template-columns: repeat(16, 1fr);
@@ -428,6 +405,7 @@ const AAR = getFlight?.value.waypoints
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .font500 {
   font-weight: 500;
 }

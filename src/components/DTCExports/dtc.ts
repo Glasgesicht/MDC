@@ -1,7 +1,6 @@
 import { compressString } from "@/utils/dtc";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
-import { toLatString, toLongString } from "@/utils/utilFunctions";
 import { storeToRefs } from "pinia";
 import type {
   DTC,
@@ -268,7 +267,6 @@ export const useDTCexports = () => {
     Upload: boolean;
     Waypoints: "all" | "dmpi" | "waypoints" | false;
   }) {
-    console.log(getDTC(input));
     toClipboard(makeDTC(getDTC(input)));
   }
 
