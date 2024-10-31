@@ -1,11 +1,11 @@
 export const rnlaf313members: readonly { callsign: string; tailnr: string }[] =
   [
-    // TODO: To make this list easier to maintain for myself, sort this by tailnumber numerically
+    // TODO: Make configurable
 
-    {
+    /*{
       callsign: "Redacted",
       tailnr: "882",
-    },
+    },*/
     /*{
       callsign: "Deadpool",
       tailnr: "883",

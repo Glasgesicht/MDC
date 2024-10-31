@@ -3,12 +3,13 @@ import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
 import type {
-  DTC,
+  DTCF16,
   Datalink,
   Waypoint,
   Radios,
   Waypoints,
   Misc,
+  DTCF15E,
 } from "../../types/dtcTypes";
 import { bullseyes } from "@/config/bullseye";
 import type { theatre } from "@/types/theatre";
@@ -23,7 +24,7 @@ export const useDTCexports = () => {
   function getType() {
     switch (getFlight.value.aircrafttype) {
       case "F-16CM":
-        return "F16C";
+        return "F-16C";
       case "F-15E":
         return "F15E";
       case "F/A-18C":
@@ -51,7 +52,7 @@ export const useDTCexports = () => {
     return a;
   }
 
-  function makeDTC(flight: DTC) {
+  function makeDTC(flight: DTCF16 | DTCF15E) {
     return compressString(flight);
   }
 
@@ -63,20 +64,14 @@ export const useDTCexports = () => {
   function getComms() {
     const Radios: Radios = {
       Radio1: {
-        Presets: [
-          { Number: 2, Name: "test2", Frequency: "322.00" },
-          { Number: 1, Name: "test1", Frequency: "300.00" },
-        ],
+        Presets: [],
         SelectedFrequency: null,
         SelectedPreset: null,
         EnableGuard: true,
         Mode: 0,
       },
       Radio2: {
-        Presets: [
-          { Number: 1, Name: "test3", Frequency: "124.00" },
-          { Number: 2, Name: "test3", Frequency: "125.00" },
-        ],
+        Presets: [],
         SelectedFrequency: null,
         SelectedPreset:
           selectedPKG.value.flights.findIndex(
@@ -224,36 +219,83 @@ export const useDTCexports = () => {
     Upload: boolean;
     Waypoints: "all" | "dmpi" | "waypoints" | false;
   }) {
-    const flight: DTC = newBasicFlight();
-    if (input.Waypoints) flight.Waypoints = getWaypoints(input.Waypoints);
-    if (input.Radios) flight.Radios = getComms();
-    if (input.Datalink) flight.Datalink = getDataLink();
-    if (input.Misc) flight.Misc = getMISC();
-    flight.Upload = {
-      CMS: false,
-      Datalink: input.Datalink,
-      Radios: input.Radios,
-      Waypoints: !!input.Waypoints,
-      HARMHTS: false,
-      MFDs: false,
-      Misc: input.Misc,
-    };
+    // console.log(getFlight.value.aircrafttype);
+    switch (getFlight.value.aircrafttype) {
+      case "F-15E":
+        return f15();
+      case "F-16C":
+        return f16();
+    }
+    return f16();
+    function f16() {
+      const flight: DTCF16 = newBasicF16Flight();
+      if (input.Waypoints) flight.Waypoints = getWaypoints(input.Waypoints);
+      if (input.Radios) flight.Radios = getComms();
+      if (input.Datalink) flight.Datalink = getDataLink();
+      if (input.Misc) flight.Misc = getMISC();
+      flight.Upload = {
+        CMS: false,
+        Datalink: input.Datalink,
+        Radios: input.Radios,
+        Waypoints: !!input.Waypoints,
+        HARMHTS: false,
+        MFDs: false,
+        Misc: input.Misc,
+      };
 
-    // console.log("exporting:", JSON.stringify(flight));
-    return flight;
+      // console.log("exporting:", JSON.stringify(flight));
+      return flight;
+    }
+
+    function f15() {
+      const flight: DTCF15E = newBasicF15EFlight();
+      if (input.Waypoints) flight.RouteA = getWaypoints(input.Waypoints);
+      if (input.Radios) flight.Radios = getComms();
+      //if (input.Datalink) flight.Datalink = getDataLink();
+      if (input.Misc) flight.Misc = getMISC();
+      flight.Upload = {
+        // CMS: false,
+        // Datalink: input.Datalink,
+        Radios: input.Radios,
+        RouteA: !!input.Waypoints,
+        // HARMHTS: false,
+        //    MFDs: false,
+        Misc: input.Misc,
+        Displays: false,
+        RouteB: false,
+        SmartWeapons: false,
+        RouteC: false,
+        DisplayUploadMode: 1,
+      };
+
+      // console.log("exporting:", JSON.stringify(flight));
+      return flight;
+    }
   }
 
   /** export Functions */
   function loadSTPS(mode: "all" | "dmpi" | "waypoints") {
-    const flight: DTC = newBasicFlight();
+    const flight: DTCF16 = newBasicF16Flight();
     flight.Waypoints = getWaypoints(mode);
     toClipboard(makeDTC(flight));
   }
 
   function loadComms() {
-    const flight: DTC = newBasicFlight();
-    flight.Radios = getComms();
-    toClipboard(makeDTC(flight));
+    let flight: DTCF16 | DTCF15E;
+    switch (getFlight.value.aircrafttype) {
+      case "F-16CM":
+        flight = newBasicF16Flight();
+        flight.Radios = getComms();
+        toClipboard(makeDTC(flight));
+        break;
+      case "F-15E":
+        flight = newBasicF15EFlight();
+        flight.Radios = getComms();
+        toClipboard(makeDTC(flight));
+      case "F/A-18C":
+        // Not Implemented
+        break;
+    }
   }
 
   function loadDTC(input: {
@@ -267,13 +309,14 @@ export const useDTCexports = () => {
     Upload: boolean;
     Waypoints: "all" | "dmpi" | "waypoints" | false;
   }) {
+    console.log(getDTC(input));
     toClipboard(makeDTC(getDTC(input)));
   }
 
   /** Creates Empty DTC template */
-  function newBasicFlight() {
+  function newBasicF16Flight() {
     return {
-      Aircraft: getType()!,
+      Aircraft: "F16C",
       CMS: null,
       Datalink: null,
       HARM: null,
@@ -284,7 +327,24 @@ export const useDTCexports = () => {
       Upload: null,
       Version: 2,
       Waypoints: null,
-    } as DTC;
+      WaypointsCapture: null,
+    } satisfies DTCF16;
+  }
+
+  function newBasicF15EFlight() {
+    return {
+      Aircraft: "F15E",
+      Misc: null,
+      Radios: null,
+      Upload: null,
+      Version: 2,
+      RouteA: null,
+      RouteB: null,
+      RouteC: null,
+      WaypointsCapture: null,
+      Displays: null,
+      SmartWeapons: null,
+    } satisfies DTCF15E;
   }
 
   return {

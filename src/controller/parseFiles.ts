@@ -239,7 +239,7 @@ export async function processCF(
         return "AH-64D";
       case "F-16C_50":
         return "F-16CM";
-      case "F-15ESE":
+      case "F-15SE":
         return "F-15E";
       case "FA-18C_hornet":
         return "F/A-18C";

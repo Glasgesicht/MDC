@@ -1,10 +1,10 @@
-export interface DTC {
+export interface DTCF16 {
   // This is very F-16 specific as of now, need to refine this a lot.
-  Aircraft: "F16C" | "F15E" | "FA18C";
+  Aircraft: "F16C";
   Upload: Upload | null;
   WaypointsCapture: WaypointsCapture | null;
   Waypoints: Waypoints | null;
-  CMS: Cms | null;
+  CMS: CMS | null;
   Radios: Radios | null;
   MFD: Mfd | null;
   HARM: Harm | null;
@@ -78,7 +78,7 @@ export interface TgttoPup {
   Elevation: number;
 }
 
-export interface Cms {
+export interface CMS {
   Programs: Program[];
   ChaffBingo: number;
   FlareBingo: number;
@@ -211,4 +211,49 @@ export interface Misc {
   ILSFrequency: number;
   ILSCourse: number;
   ILSToBeUpdated: boolean;
+}
+
+export interface DTCF15E {
+  Aircraft: "F15E";
+  Upload?: UploadF15E | null;
+  WaypointsCapture?: any;
+  RouteA?: Route | null;
+  RouteB?: Route | null;
+  RouteC?: Route | null;
+  Radios?: Radios | null;
+  Displays?: any | null;
+  SmartWeapons?: any | null;
+  Misc?: Misc15E | null;
+  Version: 2;
+}
+
+export interface UploadF15E {
+  DisplayUploadMode: number;
+  RouteA: boolean;
+  RouteB: boolean;
+  RouteC: boolean;
+  Radios: boolean;
+  Displays: boolean;
+  SmartWeapons: boolean;
+  Misc: boolean;
+}
+
+export interface Route {
+  Waypoints: any[];
+}
+
+export interface MiscF15E {
+  Bingo: number;
+  BingoToBeUpdated: boolean;
+  BullseyeToBeUpdated: boolean;
+  BullseyeCoord: any;
+  CARAALOW: number;
+  CARAALOWToBeUpdated: boolean;
+  TACANChannel: number;
+  TACANBand: number;
+  TACANToBeUpdated: boolean;
+  ILSFrequency: number;
+  ILSToBeUpdated: boolean;
+  LaserSettingsToBeUpdated: boolean;
+  TGPCode: number;
 }

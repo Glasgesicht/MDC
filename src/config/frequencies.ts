@@ -552,6 +552,8 @@ makefreq({
   number: 3,
 });
 
+// Those should only be available from Syria
+// TODO: Make this a configurable component and make them per theatre
 makefreq({
   description: "TEL AVIV CENTER",
   freq: "118.400",

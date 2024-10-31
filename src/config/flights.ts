@@ -3,7 +3,7 @@ import { type freqNames, commTables } from "./frequencies";
 const createFlight = (
   callsign: string,
   number: number,
-  type: "F-16CM" | "F-15" | "F/A-18" | "AH-64D" | "OH-58D" | "F-4E",
+  type: "F-16CM" | "F-15E" | "F/A-18" | "AH-64D" | "OH-58D" | "F-4E",
   pri: { name: freqNames; number: number } | string,
   sec?: { name: freqNames; number: number } | string,
   ter?: { name: freqNames; number: number } | string, // TODO: Implement after someone explains me where these show up and what these are // Espere
@@ -18,26 +18,28 @@ const createFlight = (
       freq: `${
         // TODO: replace 0 with selected table when selection becomes an option
         typeof pri === "string" ? pri : commTables[0][pri.name][pri.number - 1]
-        }`,
+      }`,
       number: typeof pri === "string" ? "" : pri.number + "",
     },
     sec: sec
       ? {
-        name: `${typeof sec === "string" ? "" : sec.name}`,
-        freq: `${typeof sec === "string"
-            ? sec
-            : commTables[0][sec.name][sec.number - 1]
+          name: `${typeof sec === "string" ? "" : sec.name}`,
+          freq: `${
+            typeof sec === "string"
+              ? sec
+              : commTables[0][sec.name][sec.number - 1]
           }`,
-        number: typeof sec === "string" ? "" : sec.number + "",
-      }
+          number: typeof sec === "string" ? "" : sec.number + "",
+        }
       : {
-        name: "",
-        freq: "",
-        number: "",
-      },
+          name: "",
+          freq: "",
+          number: "",
+        },
   };
 };
-
+// Macro to create Flights selectable via "Pick Callsign".
+// TODO: Make component to add and remove flights an persist them via DB
 export const flights = [
   // RNLAF 313 SQN
   createFlight(
@@ -160,56 +162,56 @@ export const flights = [
   createFlight(
     "PANTHER",
     1,
-    "F-15",
+    "F-15E",
     { name: "GOLD", number: 7 },
     { name: "SILVER", number: 8 }
   ),
   createFlight(
     "FLEX",
     2,
-    "F-15",
+    "F-15E",
     { name: "ORANGE", number: 4 },
     { name: "AQUA", number: 5 }
   ),
   createFlight(
     "HAMMER",
     3,
-    "F-15",
+    "F-15E",
     { name: "AQUA", number: 6 },
     { name: "CRIMSON", number: 6 }
   ),
   createFlight(
     "JUNGLE",
     4,
-    "F-15",
+    "F-15E",
     { name: "BLUE", number: 6 },
     { name: "SAPPHIRE", number: 9 }
   ),
   createFlight(
     "BUCK",
     5,
-    "F-15",
+    "F-15E",
     { name: "IVORY", number: 8 },
     { name: "COBALT", number: 4 }
   ),
   createFlight(
     "SLAYER",
     6,
-    "F-15",
+    "F-15E",
     { name: "GREEN", number: 5 },
     { name: "PURPLE", number: 2 }
   ),
   createFlight(
     "WARMAN",
     7,
-    "F-15",
+    "F-15E",
     { name: "AMBER", number: 7 },
     { name: "TEAL", number: 5 }
   ),
   createFlight(
     "DUDE",
     8,
-    "F-15",
+    "F-15E",
     { name: "GARNET", number: 2 },
     { name: "YELLOW", number: 7 }
   ),
@@ -260,7 +262,7 @@ export const flights = [
     "",
     { name: "COBALT", number: 3 },
     { name: "BRONZE", number: 3 },
-    { name: "RUBY", number: 8 },
+    { name: "RUBY", number: 8 }
   ),
   createFlight(
     "PALEHORSE",
@@ -280,5 +282,5 @@ export const flights = [
 export type flightType = (typeof flights)[0];
 
 export const F16Flights = flights.filter((flight) => flight.type === "F-16CM");
-export const F15Flights = flights.filter((flight) => flight.type === "F-15");
+export const F15Flights = flights.filter((flight) => flight.type === "F-15E");
 export const F18Flights = flights.filter((flight) => flight.type === "F/A-18");

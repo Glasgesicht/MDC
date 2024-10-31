@@ -44,7 +44,22 @@ const showROE = inject("showROE");
     </div>
     <div class="c6 g bdr">HOMEPLATE</div>
     <input v-model="getFlight.DEP.NAME" class="c6 w tb bdr" />
-    <div class="c24 r2 squad bdr">RNLAF 313 SQUADRON</div>
+    <div
+      class="c24 r2 squad bdr"
+      style="
+        color: #c1d7ff;
+        font-size: 33px;
+        font-family: Copperplate Gothic Light;
+        font-style: normal;
+        background-image: url('/MDC/src/assets/logo_16aew.png');
+        background-position: left;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+      "
+    >
+      16th Air Expeditionary Wing
+    </div>
     <div class="c6 g bdr">MSN TYPE</div>
     <input class="c6 w bdr" v-model="getFlight.missionType" />
 

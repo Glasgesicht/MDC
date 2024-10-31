@@ -41,19 +41,20 @@ export const useFlightStore = defineStore("flightSore", {
 
         if (newComms) {
           all.forEach((curr, n) => {
-            curr.comms.radio1[i + 14] = {
-              description: newComms?.callsign + " " + newComms?.number || "",
-              freq: newComms?.pri.freq || "",
-              name: newComms?.pri.name || "",
-              number: parseInt(newComms?.pri.number || ""),
-            };
-
-            curr.comms.radio2[i + 14] = {
-              description: newComms?.callsign || "",
-              freq: newComms?.sec.freq || "",
-              name: newComms?.sec.name || "",
-              number: parseInt(newComms?.sec.number || ""),
-            };
+            if (curr.comms.radio1.length >= i + 14)
+              curr.comms.radio1[i + 14] = {
+                description: newComms?.callsign + " " + newComms?.number || "",
+                freq: newComms?.pri.freq || "",
+                name: newComms?.pri.name || "",
+                number: parseInt(newComms?.pri.number || ""),
+              };
+            if (curr.comms.radio2.length >= i + 14)
+              curr.comms.radio2[i + 14] = {
+                description: newComms?.callsign || "",
+                freq: newComms?.sec.freq || "",
+                name: newComms?.sec.name || "",
+                number: parseInt(newComms?.sec.number || ""),
+              };
           });
         }
       });
