@@ -324,7 +324,7 @@ export async function processCF(
         const takeoff = `${startTime.hour
           .toString()
           .padStart(2, "0")}:${startTime.minute.toString().padStart(2, "0")}Z`;
-        startTime = startTime.minus({ minute: 6 });
+        startTime = startTime.minus({ minute: 8 });
         const taxi = `${startTime.hour
           .toString()
           .padStart(2, "0")}:${startTime.minute.toString().padStart(2, "0")}Z`;
