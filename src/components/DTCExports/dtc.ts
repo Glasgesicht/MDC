@@ -309,7 +309,7 @@ export const useDTCexports = () => {
     Upload: boolean;
     Waypoints: "all" | "dmpi" | "waypoints" | false;
   }) {
-    console.log(getDTC(input));
+    // console.log(getDTC(input));
     toClipboard(makeDTC(getDTC(input)));
   }
 
