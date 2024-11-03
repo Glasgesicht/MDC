@@ -239,7 +239,7 @@ export async function processCF(
         return "AH-64D";
       case "F-16C_50":
         return "F-16CM";
-      case "F-15SE":
+      case "F-15ESE":
         return "F-15E";
       case "FA-18C_hornet":
         return "F/A-18C";
@@ -602,6 +602,7 @@ export async function processCF(
       name: "",
     };
     pkg.forEach((flight, i) => {
+      if (i > 5) return;
       const t = flights.find(
         (f) => f.callsign === flight.CallsignNameCustom[0]
       );

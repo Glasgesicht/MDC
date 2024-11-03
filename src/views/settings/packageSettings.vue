@@ -69,23 +69,24 @@
           </Column>
           <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
             <template #body="{ index }">
-              {{ selectedPKG.flights[index].comms.radio1[index + 14].name }}
+              {{ selectedPKG.flights[index]?.comms.radio1[index + 14]?.name }}
               {{
-                selectedPKG.flights[index].comms.radio1[index + 14].number || ""
+                selectedPKG.flights[index]?.comms.radio1[index + 14]?.number ||
+                ""
               }}
               <br />{{
-                selectedPKG.flights[index].comms.radio1[index + 14].freq
+                selectedPKG.flights[index]?.comms.radio1[index + 14]?.freq
               }}
             </template>
           </Column>
           <Column headerStyle="width: 8rem" header="SEC" field="comms.radio2">
             <template #body="{ index }">
-              {{ selectedPKG.flights[index].comms.radio2[index + 14]?.name }}
+              {{ selectedPKG.flights[index]?.comms.radio2[index + 14]?.name }}
               {{
-                selectedPKG.flights[index].comms.radio2[index + 14]?.number ||
+                selectedPKG.flights[index]?.comms.radio2[index + 14]?.number ||
                 ""
               }}<br />{{
-                selectedPKG.flights[index].comms.radio2[index + 14]?.freq
+                selectedPKG.flights[index]?.comms.radio2[index + 14]?.freq
               }}</template
             >
           </Column>
