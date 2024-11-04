@@ -87,274 +87,280 @@ const AAR = getFlight?.value.waypoints
 
 <template>
   <div class="bdr mdcpage" name="mdcpage">
-    <div class="c36 r bdr">
+    <div class="c36 r bdr ctr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
     </div>
-    <div class="c3 y bdr">PAGE {{ pagenr }}</div>
-    <div class="c33 g bdr">MISSION DATA</div>
+    <div class="c3 y bdr ctr">PAGE {{ pagenr }}</div>
+    <div class="c33 g bdr ctr">MISSION DATA</div>
 
-    <div class="c3 g bdr">MSN</div>
-    <div class="c4 w bdr">{{ getFlight?.MSNumber }}</div>
-    <div class="c3 g bdr">C/S</div>
-    <div class="c4 w bdr">
+    <div class="c3 g bdr ctr">MSN</div>
+    <div class="c4 w bdr ctr">{{ getFlight?.MSNumber }}</div>
+    <div class="c3 g bdr ctr">C/S</div>
+    <div class="c4 w bdr ctr">
       {{ getFlight?.callsign }} {{ getFlight?.callsignNumber }}
     </div>
-    <div class="c3 g bdr">PKG</div>
-    <div class="c4 w bdr">{{ selectedPKG?.name }}</div>
-    <div class="c15 g bdr"></div>
+    <div class="c3 g bdr ctr">PKG</div>
+    <div class="c4 w bdr ctr">{{ selectedPKG?.name }}</div>
+    <div class="c15 g bdr ctr"></div>
 
-    <div class="c2 g bdr">#</div>
-    <div class="c2 g bdr">A/C</div>
-    <div class="c7 g bdr">PILOT</div>
-    <div class="c3 g bdr">STN</div>
-    <div class="c2 g bdr">M3</div>
-    <div class="c2 g bdr">IDM</div>
-    <div class="c2 g bdr">A/A</div>
-    <div class="c3 g bdr">LASER</div>
-    <div class="c3 g bdr">SRCH</div>
-    <div class="c3 g bdr">CAP</div>
-    <div class="c3 g bdr">BLOCK</div>
-    <div class="c4 g bdr">SANC</div>
+    <div class="c2 g bdr ctr">#</div>
+    <div class="c2 g bdr ctr">A/C</div>
+    <div class="c7 g bdr ctr">PILOT</div>
+    <div class="c3 g bdr ctr">STN</div>
+    <div class="c2 g bdr ctr">M3</div>
+    <div class="c2 g bdr ctr">IDM</div>
+    <div class="c2 g bdr ctr">A/A</div>
+    <div class="c3 g bdr ctr">LASER</div>
+    <div class="c3 g bdr ctr">SRCH</div>
+    <div class="c3 g bdr ctr">CAP</div>
+    <div class="c3 g bdr ctr">BLOCK</div>
+    <div class="c4 g bdr ctr">SANC</div>
     <div class="c36 parent" v-for="index in new Array(4).keys()">
-      <div class="c2 g bdr">{{ index + 1 }}</div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div class="c2 g bdr ctr">{{ index + 1 }}</div>
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ getUnit(index)?.tailNr }}
       </div>
-      <div :class="`c7 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c7 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ getUnit(index)?.callsign }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ getUnit(index)?.STN.padStart(5, "0") }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ getUnit(index)?.STN }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG?.flights.indexOf(getFlight) + 5 }}{{ index + 1 }}
       </div>
-      <div :class="`c2 hr bdr`">
+      <div :class="`c2 hr bdr ctr`">
         {{ getUnit(index)?.tacan }}
       </div>
-      <div :class="`c3 hr bdr`">
+      <div :class="`c3 hr bdr ctr`">
         {{ getUnit(index)?.laser }}
       </div>
-      <div :class="`c3 hr bdr`">
+      <div :class="`c3 hr bdr ctr`">
         {{ getUnit(index)?.search }}
       </div>
-      <input class="c3 tb hr bdr" />
-      <input class="c3 tb hr bdr" />
-      <input class="c4 tb hr bdr" />
+      <input class="c3 tb hr bdr ctr" />
+      <input class="c3 tb hr bdr ctr" />
+      <input class="c4 tb hr bdr ctr" />
     </div>
 
-    <div class="c3 g bdr">DEP</div>
-    <div class="c6 w bdr">{{ getFlight?.DEP.NAME }}</div>
-    <div class="c3 g bdr">ARR</div>
-    <div class="c6 w bdr">{{ getFlight?.ARR.NAME }}</div>
-    <div class="c3 g bdr">ALT</div>
-    <div class="c6 w bdr">{{ getFlight?.ALT.NAME }}</div>
-    <div class="c3 g bdr">DIV</div>
-    <input class="c6 tb w bdr" />
+    <div class="c3 g bdr ctr">DEP</div>
+    <div class="c6 w bdr ctr">{{ getFlight?.DEP.NAME }}</div>
+    <div class="c3 g bdr ctr">ARR</div>
+    <div class="c6 w bdr ctr">{{ getFlight?.ARR.NAME }}</div>
+    <div class="c3 g bdr ctr">ALT</div>
+    <div class="c6 w bdr ctr">{{ getFlight?.ALT.NAME }}</div>
+    <div class="c3 g bdr ctr">DIV</div>
+    <input class="c6 tb w bdr ctr" />
 
-    <div class="c3 g bdr">STEP</div>
-    <input class="c3 tb w bdr" />
-    <div class="c3 g bdr">START</div>
-    <input class="c3 tb w bdr" />
-    <div class="c3 g bdr">CX IN</div>
-    <input class="c3 tb w bdr" />
-    <div class="c3 g bdr">TAXI</div>
-    <input class="c3 tb w bdr" v-model="getFlight.taxi" />
-    <div class="c3 g bdr">T/O</div>
-    <input class="c3 w bdr" v-model="getFlight.takeoff" />
-    <div class="c3 g bdr">LAND</div>
-    <input class="c3 tb w bdr" />
+    <div class="c3 g bdr ctr">STEP</div>
+    <input class="c3 tb w bdr ctr" />
+    <div class="c3 g bdr ctr">START</div>
+    <input class="c3 tb w bdr ctr" />
+    <div class="c3 g bdr ctr">CX IN</div>
+    <input class="c3 tb w bdr ctr" />
+    <div class="c3 g bdr ctr">TAXI</div>
+    <input class="c3 tb w bdr ctr" v-model="getFlight.taxi" />
+    <div class="c3 g bdr ctr">T/O</div>
+    <input class="c3 w bdr ctr" v-model="getFlight.takeoff" />
+    <div class="c3 g bdr ctr">LAND</div>
+    <input class="c3 tb w bdr ctr" />
 
-    <div class="c36 r9 w bdr"></div>
+    <div class="c36 r9 w bdr ctr"></div>
 
-    <div class="c29 r7 w bdr"></div>
+    <div class="c29 r7 w bdr ctr"></div>
 
     <div :style="generateInlineGridFixed(30, 20, 7, 10)">
-      <div class="c2 g bdr">SP</div>
-      <div class="c5 g bdr">ACTION</div>
-      <div :style="generateInlineGrid(7, 1)" v-for="index in new Array(9).keys()">
-        <div class="c2 w bdr">{{ actions.at(index)?.sp }}</div>
-        <div class="c5 w bdr">{{ actions.at(index)?.action }}</div>
+      <div class="c2 g bdr ctr">SP</div>
+      <div class="c5 g bdr ctr">ACTION</div>
+      <div
+        :style="generateInlineGrid(7, 1)"
+        v-for="index in new Array(9).keys()"
+      >
+        <div class="c2 w bdr ctr">{{ actions.at(index)?.sp }}</div>
+        <div class="c5 w bdr ctr">{{ actions.at(index)?.action }}</div>
       </div>
     </div>
 
     <div :style="generateInlineGridFixed(1, 27, 30, 3)">
-      <div class="c4 g bdr">AAR C/S</div>
-      <div class="c3 g bdr">ALT</div>
-      <div class="c2 g bdr">A/A</div>
-      <div class="c3 g bdr">GIVE</div>
-      <div class="c7 g bdr">TIME</div>
-      <div class="c7 g bdr">POSITION</div>
-      <div class="c3 g bdr">HOT</div>
-      <div :style="generateInlineGrid(30, 1)" v-for="index in new Array(2).keys()">
-        <div class="c4 w bdr">
+      <div class="c4 g bdr ctr">AAR C/S</div>
+      <div class="c3 g bdr ctr">ALT</div>
+      <div class="c2 g bdr ctr">A/A</div>
+      <div class="c3 g bdr ctr">GIVE</div>
+      <div class="c7 g bdr ctr">TIME</div>
+      <div class="c7 g bdr ctr">POSITION</div>
+      <div class="c3 g bdr ctr">HOT</div>
+      <div
+        :style="generateInlineGrid(30, 1)"
+        v-for="index in new Array(2).keys()"
+      >
+        <div class="c4 w bdr ctr">
           {{ tankers.at(index) ? tankers[index].name : "" }}
         </div>
-        <div class="c3 w bdr">
+        <div class="c3 w bdr ctr">
           {{
             tankers.at(index)
               ? "FL" + (tankers[index].location.getElevation() / 100).toFixed(0)
               : ""
           }}
         </div>
-        <div class="c2 w bdr"></div>
-        <div class="c3 w bdr"></div>
-        <div class="c7 w bdr">
+        <div class="c2 w bdr ctr"></div>
+        <div class="c3 w bdr ctr"></div>
+        <div class="c7 w bdr ctr">
           {{
             AAR.at(1)?.time
               ? hhmmss(AAR.at(1)?.time ?? "") +
-              "-" +
-              takeoffTime(
-                hhmmss(AAR.at(1)?.time ?? ""),
-                AAR.at(1)?.activity ?? ""
-              )
+                "-" +
+                takeoffTime(
+                  hhmmss(AAR.at(1)?.time ?? ""),
+                  AAR.at(1)?.activity ?? ""
+                )
               : ""
           }}
         </div>
-        <div class="c7 w bdr">
+        <div class="c7 w bdr ctr">
           {{
             tankers.at(index)
               ? selectedPKG?.bullseyes.find(
-                (x) => x.wp == getFlight.misc.BullseyeWP
-              )?.name
+                  (x) => x.wp == getFlight.misc.BullseyeWP
+                )?.name
               : ""
           }}
           {{
             tankers.at(index)
               ? tankers
-                .at(index)
-                ?.location.calculateDistance(
-                  selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
-                    .location as Coordinate
-                )
+                  .at(index)
+                  ?.location.calculateDistance(
+                    selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
+                      .location as Coordinate
+                  )
               : ""
           }}
 
           {{
             tankers.at(index)
               ? selectedPKG.bullseyes[
-                getFlight.misc.BullseyeWP
-              ].location.headingTo(tankers.at(index)!.location as Coordinate)
+                  getFlight.misc.BullseyeWP
+                ].location.headingTo(tankers.at(index)!.location as Coordinate)
               : ""
           }}
         </div>
-        <div class="c3 w bdr"></div>
+        <div class="c3 w bdr ctr"></div>
       </div>
     </div>
-    <div class="c6 g bdr">CODEWORD</div>
-    <div class="c12 g bdr">MEANING</div>
-    <div class="c8 g bdr">CLASS</div>
-    <div class="c2 g bdr">MTR</div>
-    <div class="c2 g bdr">FR</div>
-    <div class="c2 g bdr">DOR</div>
-    <div class="c2 g bdr">DR</div>
-    <div class="c2 g bdr">MAR</div>
+    <div class="c6 g bdr ctr">CODEWORD</div>
+    <div class="c12 g bdr ctr">MEANING</div>
+    <div class="c8 g bdr ctr">CLASS</div>
+    <div class="c2 g bdr ctr">MTR</div>
+    <div class="c2 g bdr ctr">FR</div>
+    <div class="c2 g bdr ctr">DOR</div>
+    <div class="c2 g bdr ctr">DR</div>
+    <div class="c2 g bdr ctr">MAR</div>
 
     <div class="c36 parent" v-for="index in new Array(8).keys()">
-      <div :class="`c6 tb ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c6 tb ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.codewords[index]?.name }}
       </div>
-      <div :class="`c12 tb ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c12 tb ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.codewords[index]?.action }}
       </div>
-      <div class="c8 hr bdr">
+      <div class="c8 hr bdr ctr">
         {{ threatsVisible[index]?.class }}
       </div>
-      <input class="c2 tb hr bdr" />
-      <input class="c2 tb hr bdr" />
-      <div class="c2 hr bdr">
+      <input class="c2 tb hr bdr ctr" />
+      <input class="c2 tb hr bdr ctr" />
+      <div class="c2 hr bdr ctr">
         {{ threatsVisible[index]?.dor?.toFixed(1) }}
       </div>
-      <div class="c2 hr bdr">
+      <div class="c2 hr bdr ctr">
         {{ threatsVisible[index]?.dr?.toFixed(1) }}
       </div>
-      <div class="c2 hr bdr">
+      <div class="c2 hr bdr ctr">
         {{ threatsVisible[index]?.mar?.toFixed(1) }}
       </div>
     </div>
 
-    <div class="c5 g bdr">C/S</div>
-    <div class="c3 g bdr">TASK</div>
-    <div class="c1 g bdr">#</div>
-    <div class="c3 g bdr">TYPE</div>
-    <div class="c3 g bdr">WPN</div>
-    <div class="c3 g bdr">STN</div>
-    <div class="c2 g bdr">M1</div>
-    <div class="c3 g bdr">CAP</div>
-    <div class="c3 g bdr">PRI</div>
-    <div class="c3 g bdr">SANC</div>
-    <div class="c3 g bdr">M3</div>
-    <div class="c2 g bdr">IDM</div>
-    <div class="c2 g bdr">FC</div>
+    <div class="c5 g bdr ctr">C/S</div>
+    <div class="c3 g bdr ctr">TASK</div>
+    <div class="c1 g bdr ctr">#</div>
+    <div class="c3 g bdr ctr">TYPE</div>
+    <div class="c3 g bdr ctr">WPN</div>
+    <div class="c3 g bdr ctr">STN</div>
+    <div class="c2 g bdr ctr">M1</div>
+    <div class="c3 g bdr ctr">CAP</div>
+    <div class="c3 g bdr ctr">PRI</div>
+    <div class="c3 g bdr ctr">SANC</div>
+    <div class="c3 g bdr ctr">M3</div>
+    <div class="c2 g bdr ctr">IDM</div>
+    <div class="c2 g bdr ctr">FC</div>
 
     <div class="c36 parent" v-for="index in new Array(5).keys()">
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.flights[index]?.callsign }}
         {{ selectedPKG.flights[index]?.callsignNumber }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.flights[index]?.missionType }}
       </div>
-      <div :class="`c1 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c1 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.flights[index]?.units.length }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.flights[index]?.aircrafttype }}
       </div>
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`"></div>
-      <div :class="`c3 hr bdr`">
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr ctr`"></div>
+      <div :class="`c3 hr bdr ctr`">
         {{
           selectedPKG.flights[index]?.units[0].STN.padStart(5, "0")
             .substring(0, 4)
             .concat("X")
         }}
       </div>
-      <input class="c2 tb hr bdr" />
-      <input class="c3 tb hr bdr" />
-      <div class="c3 hr bdr">
+      <input class="c2 tb hr bdr ctr" />
+      <input class="c3 tb hr bdr ctr" />
+      <div class="c3 hr bdr ctr">
         {{
           selectedPKG?.flights[index]?.aircrafttype === "F-16CM"
             ? getFlight.comms.radio2[index + 14]?.freq
             : getFlight.comms.radio1[index + 14]?.freq
         }}
       </div>
-      <input class="c3 tb hr bdr" />
-      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <input class="c3 tb hr bdr ctr" />
+      <div :class="`c3 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{
           selectedPKG.flights[index]?.units[0].STN.padStart(5, "0")
             .substring(1, 4)
             .concat("X")
         }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{
           selectedPKG.flights[index]?.aircrafttype === "F-16CM"
             ? index + 5 + "0"
             : ""
         }}
       </div>
-      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr`">001</div>
+      <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr ctr`">001</div>
     </div>
 
-    <div class="c3 g bdr">JKR</div>
-    <div class="c3 g bdr">FUEL</div>
-    <div class="c3 g bdr">WPN</div>
-    <div class="c11 g bdr">ACTION</div>
-    <div class="c7 g bdr">TAKE IF SHUFFLE</div>
-    <div class="c3 g bdr">PRE</div>
-    <div class="c3 g bdr">FRQ</div>
-    <div class="c3 g bdr">CMRK</div>
+    <div class="c3 g bdr ctr">JKR</div>
+    <div class="c3 g bdr ctr">FUEL</div>
+    <div class="c3 g bdr ctr">WPN</div>
+    <div class="c11 g bdr ctr">ACTION</div>
+    <div class="c7 g bdr ctr">TAKE IF SHUFFLE</div>
+    <div class="c3 g bdr ctr">PRE</div>
+    <div class="c3 g bdr ctr">FRQ</div>
+    <div class="c3 g bdr ctr">CMRK</div>
     <div class="c36 parent" v-for="index in new Array(4).keys()">
-      <div class="c3 g bdr">
+      <div class="c3 g bdr ctr">
         {{ (index + 1) % 4 ? "J" + (index + 1) : "BGO" }}
       </div>
-      <input :class="`c3 tb ${(index + 1) % 4 ? 'hr' : 'hg'} bdr`" />
-      <input :class="`c3 tb ${index % 2 ? 'hg' : 'w'} bdr`" />
-      <input :class="`c11 tb ${index % 2 ? 'hg' : 'w'} bdr`" />
-      <div class="c2 g bdr">
+      <input :class="`c3 tb ${(index + 1) % 4 ? 'hr' : 'hg'} bdr ctr`" />
+      <input :class="`c3 tb ${index % 2 ? 'hg' : 'w'} bdr ctr`" />
+      <input :class="`c11 tb ${index % 2 ? 'hg' : 'w'} bdr ctr`" />
+      <div class="c2 g bdr ctr">
         {{
           (index + 1) % 4
             ? (index + 1) % 3
@@ -365,19 +371,25 @@ const AAR = getFlight?.value.waypoints
             : "TER"
         }}
       </div>
-      <div :class="`c5 w ${index < 2 ? 'w' : 'hr'} bdr`">
+      <div :class="`c5 w ${index < 2 ? 'w' : 'hr'} bdr ctr`">
         {{
-          index < 2 && getFlight.comms.radio1[index + 4] !== undefined ? getFlight.comms.radio1[index + 4]?.name + " " +
-            getFlight.comms.radio1[index + 4]?.number : "" }} </div>
-          <div :class="`c3 g`">{{ "2" + index }}</div>
-          <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr`">
-            {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }} </div>
-              <input :class="`c3 hr bdr`" />
-          </div>
-          <div class="c36 r bdr">
-            RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
-          </div>
+          index < 2 && getFlight.comms.radio1[index + 4] !== undefined
+            ? getFlight.comms.radio1[index + 4]?.name +
+              " " +
+              getFlight.comms.radio1[index + 4]?.number
+            : ""
+        }}
       </div>
+      <div :class="`c3 g`">{{ "2" + index }}</div>
+      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr ctr`">
+        {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }}
+      </div>
+      <input :class="`c3 hr bdr ctr`" />
+    </div>
+    <div class="c36 r bdr ctr">
+      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+    </div>
+  </div>
 </template>
 <style scoped>
 @import "@/assets/newstyle.css";
