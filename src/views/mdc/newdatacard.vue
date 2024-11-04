@@ -17,6 +17,13 @@ const threatsVisible = threats.value.filter((n) => n.display);
 
 const { getFlight } = storeToRefs(useFlightStore());
 
+const landingTime = computed(() => {
+  const date = getFlight?.value.waypoints.find((n) =>
+    n.type.toLowerCase().includes("land")
+  )?.tot;
+  if (date) return new Date(date).toTimeString();
+});
+
 const getUnit = computed(() => (i: number) => {
   // console.log(getFlight.value.units[i]);
   return getFlight.value.units[i] ?? null;
@@ -166,7 +173,14 @@ const AAR = getFlight?.value.waypoints
     <div class="c3 g bdr ctr">T/O</div>
     <input class="c3 w bdr ctr" v-model="getFlight.takeoff" />
     <div class="c3 g bdr ctr">LAND</div>
-    <input class="c3 tb w bdr ctr" />
+    <div class="c3 tb w bdr ctr">
+      {{
+        landingTime
+          ?.match(/.*?(\d{2}:\d{2})/)
+          ?.at(1)
+          ?.padStart(5, "0") + "Z"
+      }}
+    </div>
 
     <div class="c36 r9 w bdr ctr"></div>
 
@@ -200,7 +214,7 @@ const AAR = getFlight?.value.waypoints
               : ""
           }}
         </div>
-        <div class="c2 w bdr ctr"></div>
+        <div class="c2 w bdr ctr">{{ tankers.at(index)?.tacan }}</div>
         <div class="c3 w bdr ctr"></div>
         <div class="c7 w bdr ctr">
           {{
