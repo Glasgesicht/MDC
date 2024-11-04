@@ -52,7 +52,7 @@ export const useFlightStore = defineStore("flightSore", {
               curr.comms.radio2[i + 14] = {
                 description: newComms?.callsign || "",
                 freq: newComms?.sec.freq || "",
-                name: newComms?.sec.name || "",
+                name: newComms?.sec.name || "" + newComms?.number || "",
                 number: parseInt(newComms?.sec.number || ""),
               };
           });
