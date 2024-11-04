@@ -210,6 +210,9 @@ select {
 .c36 {
   grid-column: span 36;
 }
+.c40 {
+  grid-column: span 40;
+}
 .r1 {
   grid-row: span 1;
 }
@@ -290,6 +293,12 @@ select {
 }
 .r36 {
   grid-row: span 36;
+}
+.r47 {
+  grid-row: span 47;
+}
+.r48 {
+  grid-row: span 48;
 }
 
 .ccw {
