@@ -81,8 +81,8 @@ const airspaceCoordination = "Fly around and shoot stuff!";
 
 <template>
   <div class="mcdpage">
-    <div class="border pagenr">PAGE {{ pagenr }}</div>
-    <div class="border header">DATACARD</div>
+    <div class="border pagenr ctr">PAGE {{ pagenr }}</div>
+    <div class="border header ctr">DATACARD</div>
 
     <div class="border mcd-s-3 mcd-wog">MSN</div>
     <div class="border mcd-s-4 mcd-bow">

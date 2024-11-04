@@ -61,8 +61,10 @@ select {
   box-sizing: border-box;
 }
 
-.mdcpage::after {
-  height: 100%;
+.child {
+  display: inline-grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
 }
 
 .noborder {
@@ -73,18 +75,7 @@ select {
   border: 1px solid black;
 }
 
-.textbox {
-  min-width: 0;
-  min-height: 0;
-
-  word-wrap: break-word;
-  max-width: 100%;
-  white-space: pre-line;
-  resize: none;
-  padding: 0;
-  margin: 0;
-}
-
+.textbox,
 .tb {
   min-width: 0;
   min-height: 0;
