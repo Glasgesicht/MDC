@@ -115,7 +115,7 @@ const AAR = getFlight?.value.waypoints
     <div class="c3 g bdr ctr">CAP</div>
     <div class="c3 g bdr ctr">BLOCK</div>
     <div class="c4 g bdr ctr">SANC</div>
-    <div class="c36 parent" v-for="index in new Array(4).keys()">
+    <div class="c36 child" v-for="index in new Array(4).keys()">
       <div class="c2 g bdr ctr">{{ index + 1 }}</div>
       <div :class="`c2 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ getUnit(index)?.tailNr }}
@@ -175,16 +175,13 @@ const AAR = getFlight?.value.waypoints
     <div :style="generateInlineGridFixed(30, 20, 7, 10)">
       <div class="c2 g bdr ctr">SP</div>
       <div class="c5 g bdr ctr">ACTION</div>
-      <div
-        :style="generateInlineGrid(7, 1)"
-        v-for="index in new Array(9).keys()"
-      >
+      <div class="child" v-for="index in new Array(9).keys()">
         <div class="c2 w bdr ctr">{{ actions.at(index)?.sp }}</div>
         <div class="c5 w bdr ctr">{{ actions.at(index)?.action }}</div>
       </div>
     </div>
 
-    <div :style="generateInlineGridFixed(1, 27, 30, 3)">
+    <div class="child">
       <div class="c4 g bdr ctr">AAR C/S</div>
       <div class="c3 g bdr ctr">ALT</div>
       <div class="c2 g bdr ctr">A/A</div>
@@ -192,10 +189,7 @@ const AAR = getFlight?.value.waypoints
       <div class="c7 g bdr ctr">TIME</div>
       <div class="c7 g bdr ctr">POSITION</div>
       <div class="c3 g bdr ctr">HOT</div>
-      <div
-        :style="generateInlineGrid(30, 1)"
-        v-for="index in new Array(2).keys()"
-      >
+      <div class="child" v-for="index in new Array(2).keys()">
         <div class="c4 w bdr ctr">
           {{ tankers.at(index) ? tankers[index].name : "" }}
         </div>
@@ -259,7 +253,7 @@ const AAR = getFlight?.value.waypoints
     <div class="c2 g bdr ctr">DR</div>
     <div class="c2 g bdr ctr">MAR</div>
 
-    <div class="c36 parent" v-for="index in new Array(8).keys()">
+    <div class="c36 child" v-for="index in new Array(8).keys()">
       <div :class="`c6 tb ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.codewords[index]?.name }}
       </div>
@@ -296,7 +290,7 @@ const AAR = getFlight?.value.waypoints
     <div class="c2 g bdr ctr">IDM</div>
     <div class="c2 g bdr ctr">FC</div>
 
-    <div class="c36 parent" v-for="index in new Array(5).keys()">
+    <div class="c36 child" v-for="index in new Array(5).keys()">
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
         {{ selectedPKG.flights[index]?.callsign }}
         {{ selectedPKG.flights[index]?.callsignNumber }}
@@ -353,7 +347,7 @@ const AAR = getFlight?.value.waypoints
     <div class="c3 g bdr ctr">PRE</div>
     <div class="c3 g bdr ctr">FRQ</div>
     <div class="c3 g bdr ctr">CMRK</div>
-    <div class="c36 parent" v-for="index in new Array(4).keys()">
+    <div class="c36 child" v-for="index in new Array(4).keys()">
       <div class="c3 g bdr ctr">
         {{ (index + 1) % 4 ? "J" + (index + 1) : "BGO" }}
       </div>
@@ -393,30 +387,6 @@ const AAR = getFlight?.value.waypoints
 </template>
 <style scoped>
 @import "@/assets/newstyle.css";
-
-.parent {
-  display: inline-grid;
-  grid-template-columns: repeat(36, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
-.bingo {
-  display: inline-grid;
-  grid-template-columns: repeat(20, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
-
-.shuffle {
-  display: inline-grid;
-  grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-}
 
 .font500 {
   font-weight: 500;
