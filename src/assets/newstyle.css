@@ -64,15 +64,6 @@ select {
   border: 1px solid black;
 }
 
-.mdcpage * {
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 .textbox {
   min-width: 0;
   min-height: 0;
