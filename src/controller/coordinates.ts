@@ -66,9 +66,11 @@ export class Coordinate {
       case "DD":
         return `${this.lon > 0 ? "E" : "W"} ${Math.abs(this.lon).toFixed(5)}’`;
       case "DMM":
-        return `${this.lon > 0 ? "E" : "W"} ${String(Math.floor(
-          Math.abs(this.lon)
-        )).padStart(3, "0")}°${((Math.abs(this.lon) % 1) * 60).toFixed(3).padStart(6, "0")}’`;
+        return `${this.lon > 0 ? "E" : "W"} ${String(
+          Math.floor(Math.abs(this.lon))
+        ).padStart(3, "0")}°${((Math.abs(this.lon) % 1) * 60)
+          .toFixed(3)
+          .padStart(6, "0")}’`;
       case "DMS":
         return `${this.lon > 0 ? "E" : "W"} ${String(
           Math.floor(Math.abs(this.lon))
@@ -119,15 +121,15 @@ export class Coordinate {
    */
   calculateDistance(target: Coordinate) {
     // Haversine formula
-    const dLat = this.degToRad(target.getLat()) - this.degToRad(this.lat);
-    const dLon = this.degToRad(target.getLon()) - this.degToRad(this.lon);
+    const dLat = Coordinate.toRad(target.getLat()) - Coordinate.toRad(this.lat);
+    const dLon = Coordinate.toRad(target.getLon()) - Coordinate.toRad(this.lon);
 
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(this.lat) *
-      Math.cos(target.getLat()) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+        Math.cos(target.getLat()) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
@@ -140,9 +142,34 @@ export class Coordinate {
     return distanceNM.toFixed(1);
   }
 
-  headingTo(target: Coordinate) { }
+  //headingTo() { }
 
-  calculateTimeTo(target: Coordinate, speed: number) { }
+  headingTo(target: Coordinate) {
+    // Convert latitude and longitude from degrees to radians
+    const lat1 = Coordinate.toRad(this.lat); //toRadians(lat1);
+    const lon1 = Coordinate.toRad(this.lon);
+    const lat2 = Coordinate.toRad(target.lat);
+    const lon2 = Coordinate.toRad(target.lon);
+
+    // Calculate the difference in longitudes
+    const dLon = lon2 - lon1;
+
+    // Calculate the bearing using the arctan2 function
+    const y = Math.sin(dLon) * Math.cos(lat2);
+    const x =
+      Math.cos(lat1) * Math.sin(lat2) -
+      Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+    let bearing = Math.atan2(y, x);
+
+    // Convert the bearing from radians to degrees
+    bearing = Math.abs(Coordinate.toDegrees(bearing));
+
+    bearing = bearing % 360;
+
+    return Math.round(bearing);
+  }
+
+  calculateTimeTo(target: Coordinate, speed: number) {}
 
   /**
    * Converts a latitude string in the format "N/S [degrees]°[minutes]'" to decimal degrees
@@ -223,7 +250,7 @@ export class Coordinate {
    * @param {number} deg - The angle in degrees to be converted
    * @returns {number} The angle in radians
    */
-  degToRad(deg: number): number {
+  static toRad(deg: number): number {
     return deg * (Math.PI / 180);
   }
 
@@ -247,10 +274,10 @@ export class Coordinate {
     const e = Math.sqrt(f * (2 - f)); // eccentricity
 
     const zone = this.getUTMZone();
-    const λ0 = this.degToRad((zone - 1) * 6 - 180 + 3); // central meridian
+    const λ0 = Coordinate.toRad((zone - 1) * 6 - 180 + 3); // central meridian
 
-    const φ = this.degToRad(this.lat);
-    const λ = this.degToRad(this.lon);
+    const φ = Coordinate.toRad(this.lat);
+    const λ = Coordinate.toRad(this.lon);
 
     const N = a / Math.sqrt(1 - Math.pow(e * Math.sin(φ), 2)); // radius of curvature
     const T = Math.pow(Math.tan(φ), 2); // square of tangent
@@ -267,31 +294,31 @@ export class Coordinate {
         ((3 * e * e) / 8 +
           (3 * Math.pow(e, 4)) / 32 +
           (45 * Math.pow(e, 6)) / 1024) *
-        Math.sin(2 * φ) +
+          Math.sin(2 * φ) +
         ((15 * Math.pow(e, 4)) / 256 + (45 * Math.pow(e, 6)) / 1024) *
-        Math.sin(4 * φ) -
+          Math.sin(4 * φ) -
         ((35 * Math.pow(e, 6)) / 3072) * Math.sin(6 * φ));
 
     const easting =
       k0 *
-      N *
-      (A +
-        ((1 - T + C) * Math.pow(A, 3)) / 6 +
-        ((5 - 18 * T + T * T + 72 * C - 58 * Math.pow(e, 2)) *
-          Math.pow(A, 5)) /
-        120) +
+        N *
+        (A +
+          ((1 - T + C) * Math.pow(A, 3)) / 6 +
+          ((5 - 18 * T + T * T + 72 * C - 58 * Math.pow(e, 2)) *
+            Math.pow(A, 5)) /
+            120) +
       500000;
 
     let northing =
       k0 *
       (M +
         N *
-        Math.tan(φ) *
-        ((A * A) / 2 +
-          ((5 - T + 9 * C + 4 * C * C) * Math.pow(A, 4)) / 24 +
-          ((61 - 58 * T + T * T + 600 * C - 330 * Math.pow(e, 2)) *
-            Math.pow(A, 6)) /
-          720));
+          Math.tan(φ) *
+          ((A * A) / 2 +
+            ((5 - T + 9 * C + 4 * C * C) * Math.pow(A, 4)) / 24 +
+            ((61 - 58 * T + T * T + 600 * C - 330 * Math.pow(e, 2)) *
+              Math.pow(A, 6)) /
+              720));
 
     if (this.lat < 0) {
       northing += 10000000; // Add false northing for southern hemisphere

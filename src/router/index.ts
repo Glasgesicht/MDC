@@ -14,9 +14,9 @@ import Commsmatrix from "@/views/mdc/commsmatrix.vue";
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+
   routes: [
     {
       name: "generalSettings",
@@ -45,6 +45,9 @@ const router = createRouter({
       props: {
         pagenr: 1,
       },
+      meta: {
+        canExport: true,
+      },
     },
     {
       name: "datacard",
@@ -52,6 +55,9 @@ const router = createRouter({
       component: newdatacard,
       props: {
         pagenr: 2,
+      },
+      meta: {
+        canExport: true,
       },
     },
     {
@@ -61,6 +67,9 @@ const router = createRouter({
       props: {
         pagenr: 3,
       },
+      meta: {
+        canExport: true,
+      },
     },
     {
       name: "comms",
@@ -69,6 +78,9 @@ const router = createRouter({
       props: {
         pagenr: 4,
       },
+      meta: {
+        canExport: true,
+      },
     },
     {
       name: "commsMatrix",
@@ -76,6 +88,9 @@ const router = createRouter({
       component: Commsmatrix,
       props: {
         pagenr: 5,
+      },
+      meta: {
+        canExport: true,
       },
     },
   ],

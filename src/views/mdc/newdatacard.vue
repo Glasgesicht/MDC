@@ -224,20 +224,21 @@ const AAR = getFlight?.value.waypoints
           }}
           {{
             tankers.at(index)
-              ? tankers
-                  .at(index)
+              ? selectedPKG.bullseyes
+                  .find((n) => n.wp == getFlight.misc.BullseyeWP)
                   ?.location.calculateDistance(
-                    selectedPKG.bullseyes[getFlight.misc.BullseyeWP]
-                      .location as Coordinate
+                    tankers.at(index)!.location as Coordinate
                   )
+                  .split(".")[0] + " / "
               : ""
           }}
-
           {{
             tankers.at(index)
-              ? selectedPKG.bullseyes[
-                  getFlight.misc.BullseyeWP
-                ].location.headingTo(tankers.at(index)!.location as Coordinate)
+              ? selectedPKG.bullseyes
+                  .find((n) => n.wp == getFlight.misc.BullseyeWP)
+                  ?.location.headingTo(
+                    tankers.at(index)!.location as Coordinate
+                  ) + "nm"
               : ""
           }}
         </div>
