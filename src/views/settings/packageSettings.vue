@@ -289,9 +289,20 @@
           </template>
         </Column>
         <Column header="STP #" style="width: 5rem" field="wp"></Column>
-        <Column header="Name" field="name"></Column>
-        <Column header="Latitude" field="lat"></Column>
-        <Column header="Longitde" field="long"></Column>
+        <Column header="Name" field="name">
+          <template #editor="{ index }"
+            ><Input v-model="bullseyes[index].name" /></template
+        ></Column>
+        <Column header="Latitude" field="lat">
+          <template #body="{ data }">{{
+            data.location.toLatString()
+          }}</template></Column
+        >
+        <Column header="Longitde" field="long">
+          <template #body="{ data }">{{
+            data.location.toLongString()
+          }}</template></Column
+        >
         <Column header="Note" field="note">
           <template #editor="{ index }">
             <Input v-model:model-value="bullseyes[index].note" />
