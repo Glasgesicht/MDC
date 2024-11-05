@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inject, computed } from "vue";
+import { inject, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { usePackageStore } from "@/stores/packageStore";
 
@@ -10,6 +10,7 @@ import {
   toLongString,
 } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
+import { get } from "lodash";
 
 const { getFlight } = storeToRefs(useFlightStore());
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -18,6 +19,14 @@ const { pagenr } = defineProps({
     required: true,
     type: Number,
   },
+});
+
+const waypointsArray = computed(() => {
+  return new Array(26)
+    .fill("")
+    .map((_n, i) =>
+      getFlight.value.waypoints.find((n) => n.waypointNr == i + 1)
+    );
 });
 
 const hhmmss = (time: string) => {
@@ -131,46 +140,46 @@ const showROE = inject("showROE");
       <div class="c2 g bdr ctr">{{ index + 1 }}</div>
       <div :class="`c5 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.type === "Steerpoint"
-            ? getFlight?.waypoints[index]?.name
-            : getFlight?.waypoints[index]?.type
+            : waypointsArray.at(index)?.type === "Steerpoint"
+            ? waypointsArray.at(index)?.name
+            : waypointsArray.at(index)?.type
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          !waypointsArray.at(index) || waypointsArray.at(index)?.hideOnMDC
             ? ""
             : index === 0
             ? calculateTakeoffTime(
-                hhmmss(getFlight?.waypoints[index]?.tot),
-                getFlight?.waypoints[index]?.activity
+                hhmmss(waypointsArray.at(index)!.tot),
+                waypointsArray.at(index)!.activity
               )
-            : hhmmss(getFlight?.waypoints[index]?.tot)
+            : hhmmss(waypointsArray.at(index)!.tot)
         }}
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.location.lat &&
-              getFlight?.waypoints[index - 1]?.location.lon
+            : waypointsArray.at(index)?.location.lat &&
+              waypointsArray.at(index - 1)?.location.lon
             ? calculateHeading(
-                getFlight?.waypoints[index - 1]?.location.lat,
-                getFlight?.waypoints[index - 1]?.location.lon,
-                getFlight?.waypoints[index]?.location.lat,
-                getFlight?.waypoints[index]?.location.lon
+                waypointsArray.at(index - 1)!.location.lat,
+                waypointsArray.at(index - 1)!.location.lon,
+                waypointsArray.at(index)!.location.lat,
+                waypointsArray.at(index)!.location.lon
               )
                 .toFixed(0)
                 .padStart(3, "0") +
               "°M / " +
               parseInt(
                 calculateDistance(
-                  getFlight?.waypoints[index - 1]?.location.lat,
-                  getFlight?.waypoints[index - 1]?.location.lon,
-                  getFlight?.waypoints[index]?.location.lat,
-                  getFlight?.waypoints[index]?.location.lon
+                  waypointsArray.at(index - 1)!.location.lat,
+                  waypointsArray.at(index - 1)!.location.lon,
+                  waypointsArray.at(index)!.location.lat,
+                  waypointsArray.at(index)!.location.lon
                 )
               ) +
               "nm"
@@ -179,55 +188,55 @@ const showROE = inject("showROE");
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
             : index !== 0
-            ? getFlight?.waypoints[index]?.groundspeed !== undefined
-              ? getFlight?.waypoints[index]?.groundspeed?.toFixed(0) +
+            ? waypointsArray.at(index)?.groundspeed !== undefined
+              ? waypointsArray.at(index)?.groundspeed?.toFixed(0) +
                 " / " +
-                getFlight?.waypoints[index]?.mach?.toFixed(2).replace("0.", ".")
+                waypointsArray.at(index)?.mach?.toFixed(2).replace("0.", ".")
               : ""
             : ""
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.location.elevation
-            ? getFlight?.waypoints[index]?.location.elevation?.toLocaleString(
-                "en-EN"
-              ) + " ft"
+            : waypointsArray.at(index)?.location.elevation
+            ? waypointsArray
+                .at(index)
+                ?.location.elevation?.toLocaleString("en-EN") + " ft"
             : ""
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]
+            : waypointsArray.at(index)
             ? parseInt(calculateMinimumFuel(index + 1)).toLocaleString("en-EN")
             : ""
         }}
       </div>
       <div :class="`c9 hr  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.location.lat !== undefined
-            ? toLatString(getFlight?.waypoints[index]?.location.lat) +
+            : waypointsArray.at(index)?.location.lat !== undefined
+            ? toLatString(waypointsArray.at(index)!.location.lat) +
               " // " +
-              toLongString(getFlight?.waypoints[index]?.location.lon)
+              toLongString(waypointsArray.at(index)!.location.lon)
             : ""
         }}
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
         {{
-          getFlight?.waypoints[index]?.hideOnMDC
+          waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : getFlight?.waypoints[index]?.activity !== "00:00:00"
+            : waypointsArray.at(index)?.activity !== "00:00:00"
             ? index !== 0
-              ? getFlight?.waypoints[index]?.activity
+              ? waypointsArray.at(index)?.activity
               : ""
             : ""
         }}
