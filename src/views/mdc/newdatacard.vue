@@ -79,7 +79,7 @@ const takeoffTime = (tot: string, activity: string) => {
 const actions = getFlight?.value.waypoints.reduce((coll, curr, i) => {
   if (curr.type != "Steerpoint")
     coll.push({
-      sp: i + 1,
+      sp: curr.waypointNr,
       action: curr.type,
     });
   return coll;
