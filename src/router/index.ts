@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createMemoryHistory } from "vue-router";
 
 import generalSettings from "@/views/settings/generalSettings.vue";
 import flightSettings from "@/views/settings//flightSettings.vue";
@@ -15,7 +15,7 @@ import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createMemoryHistory(),
 
   routes: [
     {
