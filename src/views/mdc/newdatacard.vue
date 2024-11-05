@@ -218,12 +218,12 @@ const AAR = getFlight?.value.waypoints
         <div class="c3 w bdr ctr"></div>
         <div class="c7 w bdr ctr">
           {{
-            AAR.at(1)?.time
-              ? hhmmss(AAR.at(1)?.time ?? "") +
+            AAR.at(index)?.time
+              ? hhmmss(AAR.at(index)?.time ?? "") +
                 "-" +
                 takeoffTime(
-                  hhmmss(AAR.at(1)?.time ?? ""),
-                  AAR.at(1)?.activity ?? ""
+                  hhmmss(AAR.at(index)?.time ?? ""),
+                  AAR.at(index)?.activity ?? ""
                 )
               : ""
           }}
