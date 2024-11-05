@@ -22,21 +22,33 @@ const router = createRouter({
       name: "generalSettings",
       path: "/generalSettings",
       component: generalSettings,
+      meta: {
+        canExport: false,
+      },
     },
     {
       name: "packageSettings",
       path: "/packageSettings",
       component: packageSettings,
+      meta: {
+        canExport: false,
+      },
     },
     {
       name: "flightSettings",
       path: "/flightSettings",
       component: flightSettings,
+      meta: {
+        canExport: false,
+      },
     },
     {
       name: "waypointsSettings",
       path: "/waypointsSettings",
       component: waypointsSettings,
+      meta: {
+        canExport: false,
+      },
     },
     {
       name: "briefing",

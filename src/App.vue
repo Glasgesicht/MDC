@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
-import { ref, provide, computed, type Ref, toRaw, onMounted } from "vue";
+import { ref, provide, computed, type Ref, toRaw, onMounted, watch } from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -14,7 +14,7 @@ import Newbriefing from "./views/mdc/newbriefing.vue";
 import type { MenuItem } from "primevue/menuitem";
 import router from "./router";
 import { download } from "./utils/download";
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
 import editHistory from "./components/history/editHistory.vue";
 import { Coordinate } from "./controller/coordinates";
@@ -23,6 +23,9 @@ const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
 const { getFlight } = storeToRefs(useFlightStore());
 provide("showROE", showROE);
+
+const route = useRoute();
+const meta = computed(() => route.meta);
 
 const globalStore = useGlobalStore();
 const { file } = storeToRefs(globalStore);
@@ -158,12 +161,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       },
       {
         label: "Get PNG",
-        disabled: ![
-          "briefing",
-          "steerpoints",
-          "datacard",
-          "comms", // TODO, clear this up and use route meta instead
-        ].includes(router.currentRoute.value.name as string),
+        disabled: !meta.value.canExport,
         command: () => {
           download().downloadPageAsImage();
         },
