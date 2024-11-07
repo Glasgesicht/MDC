@@ -223,7 +223,7 @@ export interface DTCF15E {
   Radios?: Radios | null;
   Displays?: any | null;
   SmartWeapons?: any | null;
-  Misc?: Misc15E | null;
+  Misc?: MiscF15E | null;
   Version: 2;
 }
 
@@ -243,17 +243,17 @@ export interface Route {
 }
 
 export interface MiscF15E {
-  Bingo: number;
-  BingoToBeUpdated: boolean;
-  BullseyeToBeUpdated: boolean;
-  BullseyeCoord: any;
-  CARAALOW: number;
-  CARAALOWToBeUpdated: boolean;
-  TACANChannel: number;
-  TACANBand: number;
-  TACANToBeUpdated: boolean;
-  ILSFrequency: number;
-  ILSToBeUpdated: boolean;
-  LaserSettingsToBeUpdated: boolean;
-  TGPCode: number;
+  Bingo?: number | null;
+  BingoToBeUpdated?: boolean | null;
+  BullseyeToBeUpdated?: boolean | null;
+  BullseyeCoord?: string | null;
+  CARAALOW?: number | null;
+  CARAALOWToBeUpdated?: boolean | null;
+  TACANChannel?: number | null;
+  TACANBand?: number | null;
+  TACANToBeUpdated?: boolean | null;
+  ILSFrequency?: number | null;
+  ILSToBeUpdated?: boolean | null;
+  LaserSettingsToBeUpdated?: boolean | null;
+  TGPCode?: number | null;
 }

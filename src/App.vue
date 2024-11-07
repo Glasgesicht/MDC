@@ -152,7 +152,7 @@ const items: Ref<MenuItem[]> = computed(() => [
               HARM: false,
               HTS: false,
               MFD: false,
-              Misc: false,
+              Misc: true,
               Radios: true,
               Upload: true,
               Waypoints: "all",

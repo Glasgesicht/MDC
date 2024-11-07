@@ -10,10 +10,12 @@ import type {
   Waypoints,
   Misc,
   DTCF15E,
+  MiscF15E,
 } from "../../types/dtcTypes";
 import { bullseyes } from "@/config/bullseye";
 import type { theatre } from "@/types/theatre";
 import { useGlobalStore } from "@/stores/theatreStore";
+import { get } from "lodash";
 
 export const useDTCexports = () => {
   const { getFlight } = storeToRefs(useFlightStore());
@@ -208,6 +210,15 @@ export const useDTCexports = () => {
     return getFlight.value.misc;
   };
 
+  const getMISCF15E = (): MiscF15E => {
+    return {
+      BullseyeCoord: selectedPKG.value.bullseyes
+        .find((w) => w.wp === getFlight.value.misc.BullseyeWP)
+        ?.location.toString(),
+      BullseyeToBeUpdated: true,
+    };
+  };
+
   function getDTC(input: {
     CMS: boolean;
     Datalink: boolean;
@@ -252,7 +263,7 @@ export const useDTCexports = () => {
       if (input.Waypoints) flight.RouteA = getWaypoints(input.Waypoints);
       if (input.Radios) flight.Radios = getComms();
       //if (input.Datalink) flight.Datalink = getDataLink();
-      if (input.Misc) flight.Misc = getMISC();
+      if (input.Misc) flight.Misc = getMISCF15E();
       flight.Upload = {
         // CMS: false,
         // Datalink: input.Datalink,
