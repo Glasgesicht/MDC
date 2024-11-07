@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { commTables } from "@/config/frequencies";
+
+const { pagenr } = defineProps({
+  pagenr: {
+    required: true,
+    type: Number,
+  },
+});
 </script>
 
 <template>
   <div class="bdr mdcpage" name="mdcpage">
     <div class="c36 r bdr ctr">NATO SECRET - SHRED AFTER USE</div>
-    <a class="c36 bdr ctr"
+    <div class="c3 y bdr ctr">PAGE {{ pagenr }}</div>
+    <a class="c33 g bdr ctr"
       >CJTF-13 Frequency Matrix issue 1 - {{ new Date().toDateString() }}</a
     >
     <div class="inner-grid c36 r47">
@@ -33,6 +41,9 @@ import { commTables } from "@/config/frequencies";
           {{ item }}
         </div>
       </div>
+      <div v-for="i in new Array(10).keys()" class="c4 ctr bdr row-header">
+        {{ i || "" }}
+      </div>
     </div>
 
     <div class="c36 r bdr ctr">NATO SECRET - SHRED AFTER USE</div>
@@ -45,7 +56,6 @@ import { commTables } from "@/config/frequencies";
 .inner-grid {
   display: inline-grid;
   grid-template-columns: repeat(40, 1fr);
-  grid-template-rows: repeat(36, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }

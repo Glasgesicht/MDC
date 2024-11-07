@@ -106,9 +106,9 @@ export class Coordinate {
 
     const headingTo = bullseye.location.headingTo(this);
 
-    return `${
-      bullseye.name
-    } ${headingTo} /  ${bullseye.location.calculateDistance(this)}`;
+    return `${bullseye.name} ${headingTo} /  ${bullseye.location
+      .calculateDistance(this)
+      .toFixed(0)}`;
   }
 
   // not sure this is needed, just have them read only

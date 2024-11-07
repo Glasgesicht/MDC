@@ -294,6 +294,20 @@ select {
 .r36 {
   grid-row: span 36;
 }
+.r43 {
+  grid-row: span 43;
+}
+.r44 {
+  grid-row: span 44;
+}
+.r45 {
+  grid-row: span 45;
+}
+
+.r46 {
+  grid-row: span 46;
+}
+
 .r47 {
   grid-row: span 47;
 }
