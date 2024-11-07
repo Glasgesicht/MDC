@@ -178,6 +178,18 @@
           ><template #body="{ data }">{{ data.location }}</template></Column
         >
       </DataTable>
+      <div>
+        <Button
+          label="All"
+          @click="selectedPKG.agencies.every((a) => (a.active = true))"
+          style="margin: 4px"
+        />
+        <Button
+          label="None"
+          @click="selectedPKG.agencies.forEach((a) => (a.active = false))"
+          style="margin: 4px"
+        />
+      </div>
     </div>
     <div v-if="selectedPKG.name" class="box">
       <p>Threat Classes</p>
