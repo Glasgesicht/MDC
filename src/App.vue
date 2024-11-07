@@ -61,6 +61,13 @@ const items: Ref<MenuItem[]> = computed(() => [
           document.getElementById("fileUpload")?.click();
         },
       },
+      /*{ // low priority
+        label: "Manage Packages",
+        icon: "pi pi-users",
+        command: () => {
+          router.push({ name: "oraganizePackages" });
+        },
+      },*/
       {
         label: "Package Settings",
         icon: "pi pi-users",
@@ -71,6 +78,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       {
         label: "Flight Settings",
         icon: "pi pi-user-edit",
+        disabled: !selectedPKG.value,
         command: () => {
           router.push({ name: "flightSettings" });
         },
@@ -78,6 +86,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       {
         label: "Steerpoints",
         icon: "pi pi-user-edit",
+        disabled: !getFlight.value?.callsign,
         command: () => {
           router.push({ name: "waypointsSettings" });
         },
@@ -180,7 +189,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       },
       {
         label: "Get JSON",
-        disabled: !selectedPKG,
+        disabled: !selectedPKG.value,
         command: () => {
           download().toJSON();
         },

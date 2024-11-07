@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Agencies from "./child components/agencies.vue";
 import { inject } from "vue";
 import { storeToRefs } from "pinia";
 
@@ -65,6 +66,7 @@ const { pagenr } = defineProps({
         {{ getFlight.comms.radio2[index]?.description }}
       </div>
     </div>
+    <Agencies />
 
     <div class="c36 r bdr ctr">
       RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
