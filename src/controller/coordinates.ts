@@ -1,3 +1,8 @@
+import { useFlightStore } from "@/stores/flightStore";
+import { usePackageStore } from "@/stores/packageStore";
+import { get } from "lodash";
+import { storeToRefs } from "pinia";
+
 export class Coordinate {
   lat = 0;
   lon = 0;
@@ -88,6 +93,24 @@ export class Coordinate {
     return this.toLatString() + " " + this.toLongString();
   }
 
+  /**
+   * TO BRA
+   */
+  public toBRA(): string {
+    const { selectedPKG } = storeToRefs(usePackageStore());
+    const { getFlight } = storeToRefs(useFlightStore());
+    const bullseye = selectedPKG.value.bullseyes.find(
+      (x) => x.wp == getFlight.value.misc.BullseyeWP
+    );
+    if (!bullseye?.location) return "";
+
+    const headingTo = bullseye.location.headingTo(this);
+
+    return `${bullseye.name} ${headingTo} /  ${bullseye.location
+      .calculateDistance(this)
+      .toFixed(0)}`;
+  }
+
   // not sure this is needed, just have them read only
   // setLat(lat: number | string) {}
   // setLon(lon: number | string) {}
@@ -107,10 +130,19 @@ export class Coordinate {
   }
 
   /**
-   * @returns {number} The elevation above sea level in feet
+   * @returns {number|string} The elevation above sea level in feet
    */
-  getElevation(): number {
-    return this.elevation;
+  getElevation(mode: "FL"): string;
+  getElevation(mode: "ft" | "m"): number;
+  getElevation(mode: "ft" | "m" | "FL" = "ft"): number | string {
+    switch (mode) {
+      case "ft":
+        return this.elevation;
+      case "m": // convert ft to m
+        return this.elevation * 0.3048;
+      case "FL": // convert ft to FL
+        return "FL " + (this.elevation / 100).toFixed(0);
+    }
   }
 
   /**
@@ -139,7 +171,7 @@ export class Coordinate {
     // Round the distance to a reasonable number of decimal places
     distanceNM = Math.round(distanceNM * 10) / 10;
 
-    return distanceNM.toFixed(1);
+    return distanceNM;
   }
 
   //headingTo() { }
@@ -169,6 +201,9 @@ export class Coordinate {
     return Math.round(bearing);
   }
 
+  /**
+   * TODO: implement
+   */
   calculateTimeTo(target: Coordinate, speed: number) {}
 
   /**
