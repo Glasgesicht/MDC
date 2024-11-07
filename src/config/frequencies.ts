@@ -426,6 +426,31 @@ export const freqNames = [
   "YELLOW",
 ];
 
+export function fromFreqency(freq?: string | number) {
+  if (!freq) return ["", ""];
+
+  // normalize input data
+  if (typeof freq === "number") {
+    freq = freq.toString();
+  }
+  // convert 2 decimal frequencies into 3 decimal frequencies
+  if (freq.split(".")[0].length === 2) {
+    if (["2", "7"].includes(freq.split(".")[0][1])) {
+      freq = freq + "5";
+    } else {
+      freq = freq + "0";
+    }
+  }
+
+  // find frequency in table
+  for (const [key, values] of Object.entries(commTables[0])) {
+    if (values.includes(freq)) {
+      return [key, values.indexOf(freq) + 1];
+    }
+  }
+  return ["", ""];
+}
+
 interface WithPreset {
   name: freqNames;
   number: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
