@@ -106,9 +106,9 @@ export class Coordinate {
 
     const headingTo = bullseye.location.headingTo(this);
 
-    return `${bullseye.name} ${headingTo} /  ${bullseye.location
-      .calculateDistance(this)
-      .toFixed(0)}`;
+    return `${
+      bullseye.name
+    } ${headingTo} /  ${bullseye.location.calculateDistance(this)}`;
   }
 
   // not sure this is needed, just have them read only
@@ -151,27 +151,31 @@ export class Coordinate {
    *
    * @returns A string representing the distance between the two points in nautical miles, rounded to one decimal place.
    */
-  calculateDistance(target: Coordinate) {
+  calculateDistance(target: Coordinate): number {
+    // Convert latitudes and longitudes to radians
+    const lat1 = Coordinate.toRad(this.lat);
+    const lon1 = Coordinate.toRad(this.lon);
+    const lat2 = Coordinate.toRad(target.lat);
+    const lon2 = Coordinate.toRad(target.lon);
+
     // Haversine formula
-    const dLat = Coordinate.toRad(target.getLat()) - Coordinate.toRad(this.lat);
-    const dLon = Coordinate.toRad(target.getLon()) - Coordinate.toRad(this.lon);
+    const dLat = lat2 - lat1;
+    const dLon = lon2 - lon1;
 
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.lat) *
-        Math.cos(target.getLat()) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    // Earth's radius in nautical miles is approximately 3440.065
-    let distanceNM = 3440.065 * c;
+    // Earth's radius in nautical miles
+    const earthRadiusNM = 3440.065;
+    let distanceNM = earthRadiusNM * c;
 
     // Round the distance to a reasonable number of decimal places
     distanceNM = Math.round(distanceNM * 10) / 10;
 
-    return distanceNM;
+    return isNaN(distanceNM) ? 0 : distanceNM; // Return 0 if the result is NaN
   }
 
   //headingTo() { }
