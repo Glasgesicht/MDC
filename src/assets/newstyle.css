@@ -308,10 +308,7 @@ select {
 .cw {
   writing-mode: tb-rl;
 }
-.w {
-  color: black;
-  background-color: var(--white);
-}
+.w,
 .hg {
   color: black;
   background-color: var(--white);

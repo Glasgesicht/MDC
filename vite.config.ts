@@ -2,6 +2,9 @@ import { fileURLToPath, URL } from "node:url";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import packageInfo from "./package.json"; // Import package.json
 
+import Components from "unplugin-vue-components/vite";
+import { PrimeVueResolver } from "@primevue/auto-import-resolver";
+
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -10,6 +13,9 @@ export default defineConfig({
   base: "/MDC/",
   plugins: [
     vue(),
+    Components({
+      resolvers: [PrimeVueResolver()],
+    }),
     nodePolyfills({
       include: ["buffer"],
     }),
