@@ -7,7 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    Button: typeof import('primevue/button')['default']
     CommsToDTC: typeof import('./src/components/DTCExports/commsToDTC.vue')['default']
     EditHistory: typeof import('./src/components/history/editHistory.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
