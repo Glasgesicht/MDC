@@ -160,12 +160,6 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from "primevue/datatable";
-import Button from "primevue/button";
-import Column from "primevue/column";
-import Input from "primevue/inputtext";
-import Checkbox from "primevue/checkbox";
-
 import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";

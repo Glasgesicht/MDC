@@ -7,12 +7,22 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Button: typeof import('primevue/button')['default']
+    Checkbox: typeof import('primevue/checkbox')['default']
+    Column: typeof import('primevue/column')['default']
     CommsToDTC: typeof import('./src/components/DTCExports/commsToDTC.vue')['default']
+    DataTable: typeof import('primevue/datatable')['default']
+    Dropdown: typeof import('primevue/dropdown')['default']
     EditHistory: typeof import('./src/components/history/editHistory.vue')['default']
+    InputMask: typeof import('primevue/inputmask')['default']
+    InputNumber: typeof import('primevue/inputnumber')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectFlight: typeof import('./src/components/PackageFlightSelection/SelectFlight.vue')['default']
     SteerpointsToDTC: typeof import('./src/components/DTCExports/steerpointsToDTC.vue')['default']
+    TabPanel: typeof import('primevue/tabpanel')['default']
+    TabView: typeof import('primevue/tabview')['default']
+    TextArea: typeof import('primevue/textarea')['default']
     ZDiagram: typeof import('./src/components/z-diagram/z-diagram.vue')['default']
   }
 }

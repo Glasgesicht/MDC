@@ -352,14 +352,6 @@ import { computed, ref, type WritableComputedRef } from "vue";
 
 import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
 
-import DataTable from "primevue/datatable";
-import TextArea from "primevue/textarea";
-import Dropdown from "primevue/dropdown";
-import Button from "primevue/button";
-import Input from "primevue/inputtext";
-import Column from "primevue/column";
-import Checkbox from "primevue/checkbox";
-
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 

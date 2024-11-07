@@ -8,20 +8,6 @@ import { computed, ref, watch, type Ref } from "vue";
 import { useGlobalStore } from "@/stores/theatreStore";
 
 import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
-
-import DataTable from "primevue/datatable";
-import Dropdown from "primevue/dropdown";
-import Button from "primevue/button";
-import Checkbox from "primevue/checkbox";
-import Column from "primevue/column";
-import Input from "primevue/inputtext";
-import InputNumber from "primevue/inputnumber";
-import InputMask from "primevue/inputmask";
-import TextArea from "primevue/textarea";
-
-import TabView from "primevue/tabview";
-import TabPanel from "primevue/tabpanel";
-
 import { getSTN } from "@/utils/utilFunctions";
 
 import toDTC from "@/components/DTCExports/commsToDTC.vue";

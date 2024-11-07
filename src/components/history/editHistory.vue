@@ -19,7 +19,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import Button from "primevue/button";
 import { useEditHistory } from "./editHistory";
 import { onBeforeUnmount, onMounted } from "vue";
 import { before } from "lodash";
