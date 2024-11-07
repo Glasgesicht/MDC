@@ -209,9 +209,7 @@ const AAR = getFlight?.value.waypoints
         </div>
         <div class="c3 w bdr ctr">
           {{
-            tankers.at(index)
-              ? "FL" + (tankers[index].location.getElevation() / 100).toFixed(0)
-              : ""
+            tankers.at(index) ? tankers[index].location.getElevation("FL") : ""
           }}
         </div>
         <div class="c2 w bdr ctr">{{ tankers.at(index)?.tacan }}</div>
@@ -243,7 +241,7 @@ const AAR = getFlight?.value.waypoints
                   ?.location.calculateDistance(
                     tankers.at(index)!.location as Coordinate
                   )
-                  .split(".")[0] + " / "
+                  .toFixed(0) + " / "
               : ""
           }}
           {{
