@@ -290,7 +290,7 @@ export async function processCF(
               )
             ),
 
-            active: false,
+            active: true,
           };
         }); // parse them into an array to be selectable from
     return [];
