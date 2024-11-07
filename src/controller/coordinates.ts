@@ -152,17 +152,15 @@ export class Coordinate {
    * @returns A string representing the distance between the two points in nautical miles, rounded to one decimal place.
    */
   calculateDistance(target: Coordinate) {
+    const phi1 = Coordinate.toRad(this.lat);
+    const phi2 = Coordinate.toRad(target.lat);
+    const deltaPhi = Coordinate.toRad(target.lat - this.lat);
+    const deltaLambda = Coordinate.toRad(target.lon - this.lon);
+
     // Haversine formula
-    const dLat = Coordinate.toRad(target.getLat()) - Coordinate.toRad(this.lat);
-    const dLon = Coordinate.toRad(target.getLon()) - Coordinate.toRad(this.lon);
-
     const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.lat) *
-        Math.cos(target.getLat()) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-
+      Math.sin(deltaPhi / 2) ** 2 +
+      Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     // Earth's radius in nautical miles is approximately 3440.065
