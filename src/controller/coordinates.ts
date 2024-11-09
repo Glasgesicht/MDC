@@ -1,6 +1,5 @@
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
-import { get } from "lodash";
 import { storeToRefs } from "pinia";
 
 export class Coordinate {

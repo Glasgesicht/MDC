@@ -3,7 +3,6 @@ import { storeToRefs } from "pinia";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { computed, ref, watch } from "vue";
-import { set } from "lodash";
 import type { Package } from "@/types/mdcDataTypes";
 import { deserialize } from "@/controller/parseFiles";
 

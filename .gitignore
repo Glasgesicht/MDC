@@ -32,3 +32,4 @@ coverage
 #pages not shared yet
 /src/mdcpages/not shared
 components.d.ts
+src/views/mdc/popupCalc.vue

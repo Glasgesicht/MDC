@@ -15,7 +15,6 @@ import type {
 import { bullseyes } from "@/config/bullseye";
 import type { theatre } from "@/types/theatre";
 import { useGlobalStore } from "@/stores/theatreStore";
-import { get } from "lodash";
 
 export const useDTCexports = () => {
   const { getFlight } = storeToRefs(useFlightStore());
@@ -120,7 +119,7 @@ export const useDTCexports = () => {
             Elevation: parseInt("" + stp.location.elevation),
             Latitude: stp.location.toLatString(),
             Longitude: stp.location.toLongString(),
-            Name: stp.type === "Steerpoint" ? stp.name : stp.type,
+            Name: stp.type === "STP" ? stp.name : stp.type,
             OffsetAimpoint1: null,
             OffsetAimpoint2: null,
             Sequence: stp.waypointNr,

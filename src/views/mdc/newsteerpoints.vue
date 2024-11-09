@@ -10,7 +10,6 @@ import {
   toLongString,
 } from "@/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
-import { get } from "lodash";
 
 const { getFlight } = storeToRefs(useFlightStore());
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -142,7 +141,7 @@ const showROE = inject("showROE");
         {{
           waypointsArray.at(index)?.hideOnMDC
             ? ""
-            : waypointsArray.at(index)?.type === "Steerpoint"
+            : waypointsArray.at(index)?.type === "STP"
             ? waypointsArray.at(index)?.name
             : waypointsArray.at(index)?.type
         }}

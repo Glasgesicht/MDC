@@ -10,6 +10,7 @@ import newsteerpoints from "@/views/mdc/newsteerpoints.vue";
 import newdatacard from "@/views/mdc/newdatacard.vue";
 import newcomms from "@/views/mdc/newcomms.vue";
 import Commsmatrix from "@/views/mdc/commsmatrix.vue";
+import Flightmap from "@/views/mdc/map.vue";
 
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -95,16 +96,36 @@ const router = createRouter({
       },
     },
     {
-      name: "commsMatrix",
-      path: "/commsMatrix",
-      component: Commsmatrix,
+      name: "flightmap",
+      path: "/flightmap",
+      component: Flightmap,
       props: {
         pagenr: 5,
       },
       meta: {
         canExport: true,
-      },
+      }, // popupCalc.vue
     },
+    {
+      name: "commsMatrix",
+      path: "/commsMatrix",
+      component: Commsmatrix,
+      props: {
+        pagenr: 6,
+      },
+      meta: {
+        canExport: true,
+      }, // popupCalc.vue
+    },
+
+    /* {
+      name: "popupCalc",
+      path: "/popupCalc",
+      component: popupCalc,
+      meta: {
+        canExport: false,
+      }, // popupCalc.vue
+    },*/
   ],
 });
 

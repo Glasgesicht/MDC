@@ -21,7 +21,6 @@
 <script setup lang="ts">
 import { useEditHistory } from "./editHistory";
 import { onBeforeUnmount, onMounted } from "vue";
-import { before } from "lodash";
 const { undo, redo, canRedo, canUndo } = useEditHistory();
 
 onMounted(() => {

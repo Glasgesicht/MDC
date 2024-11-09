@@ -8,7 +8,7 @@ import type {
   RouteEntity,
   WaypointEntity,
 } from "@/types/mdcDataTypes";
-import { initFlight } from "@/types/mdcDataTypes";
+import { initFlight } from "@/types/mdcDataTypes"; // @ts-ignore
 import JSZip from "jszip";
 import xml2js from "xml2js";
 import { flights } from "../config/flights";
@@ -116,6 +116,7 @@ export async function processCF(
       const zipData = await zip.loadAsync(payload);
       for await (const [relativePath, file] of Object.entries(zipData.files)) {
         if (relativePath === "mission.xml") {
+          //@ts-ignore
           return await file.async("text");
         }
       }
@@ -663,7 +664,7 @@ export async function processCF(
       mach: parseFloat(wp.Mach[0]),
       name: wp.Name[0],
       tot: wp.TOT[0],
-      type: wp.Type[0],
+      type: wp.Type[0] === "Steerpoint" ? "STP" : wp.Type[0],
       waypointNr: i + 1,
       hideOnMDC: false,
     }));
