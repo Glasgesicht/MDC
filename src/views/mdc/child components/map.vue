@@ -1,15 +1,18 @@
 <template>
   <div style="height: 100%; width: 100%">
     <l-map
-      ref="map"
-      v-model:zoom="zoom"
+      ref="mapRef"
       :center="centerPos"
+      :zoom="zoomLvl"
+      
       :use-global-leaflet="false"
       style="height: 100%; width: 100%"
       :options="{
         zoomControl: false,
         attributionControl: false,
+        
       }"
+
     >
       <l-tile-layer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
@@ -18,7 +21,7 @@
       ></l-tile-layer>
 
       <l-tile-layer
-        url="https://api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=e547009dfa08d8afd0834433030405c0"
+        :url="`https://api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=${apiKey}`"
         layer-type="overlay"
         name="OpenFlightMaps"
       ></l-tile-layer>
@@ -49,20 +52,21 @@
 
 <script setup lang="ts">
 import { useFlightStore } from "@/stores/flightStore";
-import { LMap, LTileLayer, LPolyline, LMarker } from "@vue-leaflet/vue-leaflet";
-import L, { Icon, type IconOptions, type LatLngExpression, type LatLngTuple, type PointExpression, type PointTuple } from "leaflet";
+import { LMap, LTileLayer, LPolyline, LMarker, Utilities,  } from "@vue-leaflet/vue-leaflet";
+import L, { Icon, latLngBounds, type IconOptions, type LatLngExpression, type LatLngTuple, type PointExpression, type PointTuple, Map, LatLngBounds, Bounds } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { storeToRefs } from "pinia";
-import { computed, ref, watch, type Ref } from "vue";
+import { computed, onMounted, ref, watch, type Ref,toRaw } from "vue";
 
-// Map zoom level
-const zoom = computed(()=> 20/Math.abs(minMaxLatLon.value[0][1] - minMaxLatLon.value[0][0]) );
 
 const { getFlight } = storeToRefs(useFlightStore());
 
+const  apiKey = computed(()=>import.meta.env.VITE_APP_MAP_API_KEY)
+
+
 const minMaxLatLon = computed(() =>
   getFlight.value?.waypoints 
-    .reduce(
+    .reduce<[[number,number],[number,number]]>(
       ([[minLat, maxLat],[minLon, maxLon], ], curr, i) => {
         if (i == 0)
           return [
@@ -88,18 +92,51 @@ const minMaxLatLon = computed(() =>
     )
 );
 
-console.log(minMaxLatLon.value)
+
+const leafletBounds = computed(()=>new L.LatLngBounds(
+      [minMaxLatLon.value[0][0], minMaxLatLon.value[1][0]], // [minLat, minLon]
+      [minMaxLatLon.value[0][1], minMaxLatLon.value[1][1]]  // [maxLat, maxLon]
+    ))
+
+    console.log(leafletBounds.value)
+//@ts-ignore
+const zoomLvl = computed(() => (calculateBoundsZoom(leafletBounds.value)))
+// Map zoom level
+// const zoomLevel = computed(()=>map.value.getBoundsZoom(leafletBounds.value))
+
+
+//1199.63/956.2
+function calculateBoundsZoom(bounds:typeof leafletBounds.value, containerWidth=1200, containerHeight=950) {
+  // Calculate the latitude/longitude bounds width and height
+  const boundsWidth = bounds.getEast() - bounds.getWest();
+  const boundsHeight = bounds.getNorth() - bounds.getSouth();
+
+  // Get the current map's maximum zoom level (this should be based on your map configuration)
+  const maxZoom = 18; // Replace with your actual max zoom if different
+
+  // Calculate the aspect ratios for both bounds and container
+  const boundsAspectRatio = boundsWidth / boundsHeight;
+  const containerAspectRatio = containerWidth / containerHeight;
+
+  // Calculate the zoom factor based on the width and height
+  let zoomLevel;
+
+  if (boundsAspectRatio > containerAspectRatio) {
+    zoomLevel = Math.log(containerWidth / boundsWidth) / Math.LN2;
+  } else {
+    zoomLevel = Math.log(containerHeight / boundsHeight) / Math.LN2;
+  }
+
+  // Limit the zoom level to max zoom levels
+  zoomLevel = Math.min(maxZoom, zoomLevel);
+
+
+  return Math.floor(zoomLevel);
+}
+
 const centerPos = computed(() => 
   minMaxLatLon.value.map((n) => (n[0] + n[1]) / 2) as PointTuple
 )
-
-
-
-const routeCoordinates = getFlight.value?.waypoints
-  .filter((n) => n.hideOnMDC === false)
-  .map((n) => {
-    return [n.location.lat, n.location.lon];
-  }) as LatLngExpression[];
 
 const steerpointPolyArray = computed(() => {
   return new Array(26)
