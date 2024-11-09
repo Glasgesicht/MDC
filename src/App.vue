@@ -7,17 +7,18 @@ import { storeToRefs } from "pinia";
 import { useGlobalStore } from "./stores/theatreStore";
 import { processCF, processJSON } from "./controller/parseFiles";
 import { useDTCexports } from "@/components/DTCExports/dtc";
+
 import Newsteerpoints from "./views/mdc/newsteerpoints.vue";
 import Newdatacard from "./views/mdc/newdatacard.vue";
 import Newcomms from "./views/mdc/newcomms.vue";
 import Newbriefing from "./views/mdc/newbriefing.vue";
+
 import type { MenuItem } from "primevue/menuitem";
 import router from "./router";
 import { download } from "./utils/download";
 import { RouterView, useRoute } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
 import editHistory from "./components/history/editHistory.vue";
-import { Coordinate } from "./controller/coordinates";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
@@ -132,17 +133,19 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
+        label: "Flight Map",
+        disabled: !getFlight.value?.callsign,
+        command: () => {
+          router.push({ name: "flightmap" });
+        },
+      },
+      {
         label: "Comms Matrix",
+        disabled: !getFlight.value?.callsign,
         command: () => {
           router.push({ name: "commsMatrix" });
         },
       },
-      /*{
-        label: "example Page",
-        command: () => {
-          pageActive.value = "example";
-        },
-      },*/
     ],
   },
   {
@@ -192,6 +195,17 @@ const items: Ref<MenuItem[]> = computed(() => [
         disabled: !selectedPKG.value,
         command: () => {
           download().toJSON();
+        },
+      },
+    ],
+  },
+  {
+    label: "Other Pages",
+    items: [
+      {
+        label: "Popup Calculator",
+        command: () => {
+          router.push({ name: "popupCalc" });
         },
       },
     ],
