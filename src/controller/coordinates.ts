@@ -140,7 +140,7 @@ export class Coordinate {
       case "m": // convert ft to m
         return this.elevation * 0.3048;
       case "FL": // convert ft to FL
-        return "FL " + (this.elevation / 100).toFixed(0);
+        return "FL" + (this.elevation / 100).toFixed(0);
     }
   }
 
