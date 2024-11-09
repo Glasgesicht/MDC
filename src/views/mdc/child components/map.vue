@@ -98,14 +98,8 @@ const leafletBounds = computed(()=>new L.LatLngBounds(
       [minMaxLatLon.value[0][1], minMaxLatLon.value[1][1]]  // [maxLat, maxLon]
     ))
 
-    console.log(leafletBounds.value)
-//@ts-ignore
 const zoomLvl = computed(() => (calculateBoundsZoom(leafletBounds.value)))
-// Map zoom level
-// const zoomLevel = computed(()=>map.value.getBoundsZoom(leafletBounds.value))
 
-
-//1199.63/956.2
 function calculateBoundsZoom(bounds:typeof leafletBounds.value, containerWidth=1200, containerHeight=950) {
   // Calculate the latitude/longitude bounds width and height
   const boundsWidth = bounds.getEast() - bounds.getWest();
