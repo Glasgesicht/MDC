@@ -14,3 +14,7 @@
   background-repeat: no-repeat;
   background-position: left top;
 }
+
+html {
+  font-size: 14px;
+}
