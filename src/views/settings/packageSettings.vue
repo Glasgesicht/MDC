@@ -15,7 +15,7 @@
       </div>
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p class="">Package Name</p>
-        <Input style="height: 31px" v-model="selectedPKG.name"></Input>
+        <Input style="height: 28px" v-model="selectedPKG.name"></Input>
       </div>
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p>RAMROD (selected)</p>
@@ -23,7 +23,7 @@
           :options="ramrods"
           v-model="selectedPKG.ramrod"
           editable
-          class=""
+          class="m-5"
         />
       </div>
     </div>
@@ -101,6 +101,15 @@
                 icon="pi pi-trash"
                 severity="danger"
                 @click="confirmDelete(index)"
+                outlined
+            /></template>
+          </Column>
+          <Column headerStyle="width: 4.3rem">
+            <template #body="{ index }"
+              ><Button
+                icon="pi pi-copy"
+                severity=""
+                @click="copyFlight(index)"
                 outlined
             /></template>
           </Column>
@@ -348,7 +357,7 @@ import { threats, usePackageStore } from "@/stores/packageStore";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { storeToRefs } from "pinia";
 import { ramrods } from "@/config/ramrod";
-import { computed, ref, type WritableComputedRef } from "vue";
+import { computed, ref, toRaw, type WritableComputedRef } from "vue";
 
 import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
 
@@ -376,6 +385,14 @@ const confirmDelete = (index: number) => {
     f.comms.radio1.splice(14 + index, 1);
     f.comms.radio2.splice(14 + index, 1);
   });
+};
+
+const copyFlight = (index: number) => {
+  selectedPKG.value.flights.push(
+    structuredClone(toRaw(selectedPKG.value.flights[index]))
+  );
+  selectedPKG.value.flights[selectedPKG.value.flights.length - 1].callsign =
+    "Copy of " + selectedPKG.value.flights[index].callsign;
 };
 
 const onRowReorder = (event: any) => {
