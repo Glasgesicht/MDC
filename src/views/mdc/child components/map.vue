@@ -4,15 +4,18 @@
       ref="mapRef"
       :center="centerPos"
       :zoom="zoomLvl"
-      
       :use-global-leaflet="false"
       style="height: 100%; width: 100%"
       :options="{
         zoomControl: false,
         attributionControl: false,
-        
+        zoomSnap: 0.1,
       }"
-
+      @update:bounds="
+        () => {
+          if (mapRef) mapRef.mapObject.panTo(centerPos);
+        }
+      "
     >
       <l-tile-layer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
@@ -39,68 +42,88 @@
         color="black"
         :weight="2"
       ></l-polyline>
-      
-     
-      <l-marker v-for="wp of getFlight.waypoints.filter((n) => !n.hideOnMDC)"
+
+      <l-marker
+        v-for="wp of getFlight.waypoints.filter((n) => !n.hideOnMDC)"
         :lat-lng="[wp.location.lat, wp.location.lon]"
-        :icon="createCustomIcon(`${wp.name}`,'right')"
+        :icon="createCustomIcon(`${wp.name}`, 'right')"
       ></l-marker>
-      
     </l-map>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useFlightStore } from "@/stores/flightStore";
-import { LMap, LTileLayer, LPolyline, LMarker, Utilities,  } from "@vue-leaflet/vue-leaflet";
-import L, { Icon, latLngBounds, type IconOptions, type LatLngExpression, type LatLngTuple, type PointExpression, type PointTuple, Map, LatLngBounds, Bounds } from "leaflet";
+import {
+  LMap,
+  LTileLayer,
+  LPolyline,
+  LMarker,
+  Utilities,
+} from "@vue-leaflet/vue-leaflet";
+import L, {
+  Icon,
+  latLngBounds,
+  type IconOptions,
+  type LatLngExpression,
+  type LatLngTuple,
+  type PointExpression,
+  type PointTuple,
+  Map,
+  LatLngBounds,
+  Bounds,
+} from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { storeToRefs } from "pinia";
-import { computed, onMounted, ref, watch, type Ref,toRaw } from "vue";
-
+import { computed, onMounted, ref, watch, type Ref, toRaw } from "vue";
 
 const { getFlight } = storeToRefs(useFlightStore());
 
-const  apiKey = computed(()=>import.meta.env.VITE_APP_MAP_API_KEY)
-
+const apiKey = computed(() => import.meta.env.VITE_APP_MAP_API_KEY);
+const mapRef: Ref<any> = ref(null);
 
 const minMaxLatLon = computed(() =>
-  getFlight.value?.waypoints 
-    .reduce<[[number,number],[number,number]]>(
-      ([[minLat, maxLat],[minLon, maxLon], ], curr, i) => {
-        if (i == 0)
-          return [
-            [curr.location.lat, curr.location.lat],
-            [curr.location.lon, curr.location.lon],
-          ];
-
+  getFlight.value.waypoints.reduce<[[number, number], [number, number]]>(
+    ([[minLat, maxLat], [minLon, maxLon]], curr, i) => {
+      if (i == 0)
         return [
-          [
-            Math.min(minLat, curr.location.lat),
-            Math.max(maxLat, curr.location.lat),
-          ],
-          [
-            Math.min(minLon, curr.location.lon),
-            Math.max(maxLon, curr.location.lon),
-          ],
+          [curr.location.lat, curr.location.lat],
+          [curr.location.lon, curr.location.lon],
         ];
-      },
-      [
-        [0, 0],
-        [0, 0],
-      ]
+
+      return [
+        [
+          Math.min(minLat, curr.location.lat),
+          Math.max(maxLat, curr.location.lat),
+        ],
+        [
+          Math.min(minLon, curr.location.lon),
+          Math.max(maxLon, curr.location.lon),
+        ],
+      ];
+    },
+    [
+      [0, 0],
+      [0, 0],
+    ]
+  )
+);
+
+const leafletBounds = computed(
+  () =>
+    new L.LatLngBounds(
+      [minMaxLatLon.value[0][0], minMaxLatLon.value[1][0]], // [minLat, minLon]
+      [minMaxLatLon.value[0][1], minMaxLatLon.value[1][1]] // [maxLat, maxLon]
     )
 );
 
+const zoomLvl = computed(() => calculateBoundsZoom(leafletBounds.value));
 
-const leafletBounds = computed(()=>new L.LatLngBounds(
-      [minMaxLatLon.value[0][0], minMaxLatLon.value[1][0]], // [minLat, minLon]
-      [minMaxLatLon.value[0][1], minMaxLatLon.value[1][1]]  // [maxLat, maxLon]
-    ))
-
-const zoomLvl = computed(() => (calculateBoundsZoom(leafletBounds.value)))
-
-function calculateBoundsZoom(bounds:typeof leafletBounds.value, containerWidth=1200, containerHeight=950) {
+function calculateBoundsZoom(
+  bounds: typeof leafletBounds.value,
+  containerWidth = 1200,
+  containerHeight = 950
+) {
   // Calculate the latitude/longitude bounds width and height
   const boundsWidth = bounds.getEast() - bounds.getWest();
   const boundsHeight = bounds.getNorth() - bounds.getSouth();
@@ -124,13 +147,12 @@ function calculateBoundsZoom(bounds:typeof leafletBounds.value, containerWidth=1
   // Limit the zoom level to max zoom levels
   zoomLevel = Math.min(maxZoom, zoomLevel);
 
-
-  return Math.floor(zoomLevel);
+  return Math.floor(zoomLevel * 10) / 10;
 }
 
-const centerPos = computed(() => 
-  minMaxLatLon.value.map((n) => (n[0] + n[1]) / 2) as PointTuple
-)
+const centerPos = computed(
+  () => minMaxLatLon.value.map((n) => (n[0] + n[1]) / 2) as PointTuple
+);
 
 const steerpointPolyArray = computed(() => {
   return new Array(26)
@@ -149,7 +171,10 @@ const steerpointPolyArray = computed(() => {
     .filter((n) => n.length > 1) as LatLngExpression[];
 });
 
-function createCustomIcon(label: string, position: "top"|"left"|"right"|"bottom")  {
+function createCustomIcon(
+  label: string,
+  position: "top" | "left" | "right" | "bottom"
+) {
   // Style configurations based on the label position
   const positionStyles = {
     top: `
@@ -181,9 +206,9 @@ function createCustomIcon(label: string, position: "top"|"left"|"right"|"bottom"
   const iconHtml = `
     <div style="position: relative; display: flex; align-items: center; justify-content: center;">
       <div style="
-        width: 18px; 
-        height: 18px; 
-        border: 2px solid black; 
+        width: 18px;
+        height: 18px;
+        border: 2px solid black;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -191,17 +216,17 @@ function createCustomIcon(label: string, position: "top"|"left"|"right"|"bottom"
         ">
         <!-- Small Dot in the Center -->
         <div style="
-          width: 4px; 
-          height: 4px; 
-          background-color: black; 
+          width: 4px;
+          height: 4px;
+          background-color: black;
           border-radius: 50%;
         "></div>
       </div>
       <!-- Label with position offset -->
       <span style="
         position: absolute;
-        color: red; 
-        font-size: 14px; 
+        color: red;
+        font-size: 14px;
         font-weight: 600;
         white-space: nowrap;
         ${labelPositionStyle}
@@ -215,17 +240,17 @@ function createCustomIcon(label: string, position: "top"|"left"|"right"|"bottom"
     html: iconHtml,
     iconSize: [20, 20], // Adjust as needed
     iconAnchor: [10, 10], // Center the icon
-  })as Icon;
-} 
+  }) as Icon;
+}
 
-const navAreas = computed(() =>
-  getFlight.value?.waypoints
-    .filter((n) => n.hideOnMDC === true)
-    .map((n) => {
-      return [n.location.lat, n.location.lon];
-    }) as LatLngExpression[]
+const navAreas = computed(
+  () =>
+    getFlight.value?.waypoints
+      .filter((n) => n.hideOnMDC === true)
+      .map((n) => {
+        return [n.location.lat, n.location.lon];
+      }) as LatLngExpression[]
 );
-
 </script>
 
 <style scoped>
