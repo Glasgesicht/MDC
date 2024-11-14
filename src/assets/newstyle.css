@@ -314,6 +314,9 @@ select {
 .r48 {
   grid-row: span 48;
 }
+.r49 {
+  grid-row: span 49;
+}
 
 .ccw {
   writing-mode: tb-rl;

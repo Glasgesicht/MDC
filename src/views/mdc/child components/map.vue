@@ -5,17 +5,11 @@
       :center="centerPos"
       :zoom="zoomLvl"
       :use-global-leaflet="false"
-      style="height: 100%; width: 100%"
       :options="{
         zoomControl: false,
         attributionControl: false,
-        zoomSnap: 0.1,
+        zoomSnap: 0.25,
       }"
-      @update:bounds="
-        () => {
-          if (mapRef) mapRef.mapObject.panTo(centerPos);
-        }
-      "
     >
       <l-tile-layer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
@@ -46,7 +40,18 @@
       <l-marker
         v-for="wp of getFlight.waypoints.filter((n) => !n.hideOnMDC)"
         :lat-lng="[wp.location.lat, wp.location.lon]"
+        :draggable="props.allowDraggable"
         :icon="createCustomIcon(`${wp.name}`, 'right')"
+        @dragend="
+          (e) => {
+            const ws = getFlight.waypoints.find(
+              (n) => n.waypointNr == wp.waypointNr
+            );
+
+            ws!.location.lat = e.target.getLatLng().lat;
+            ws!.location.lon = e.target.getLatLng().lng;
+          }
+        "
       ></l-marker>
     </l-map>
   </div>
@@ -54,30 +59,27 @@
 
 <script setup lang="ts">
 import { useFlightStore } from "@/stores/flightStore";
-import {
-  LMap,
-  LTileLayer,
-  LPolyline,
-  LMarker,
-  Utilities,
-} from "@vue-leaflet/vue-leaflet";
-import L, {
-  Icon,
-  latLngBounds,
-  type IconOptions,
-  type LatLngExpression,
-  type LatLngTuple,
-  type PointExpression,
-  type PointTuple,
-  Map,
-  LatLngBounds,
-  Bounds,
-} from "leaflet";
+import { LMap, LTileLayer, LPolyline, LMarker } from "@vue-leaflet/vue-leaflet";
+import L, { Icon, type LatLngExpression, type PointTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { storeToRefs } from "pinia";
-import { computed, onMounted, ref, watch, type Ref, toRaw } from "vue";
+import { computed, onMounted, ref, watch, type Ref, toRaw, inject } from "vue";
 
 const { getFlight } = storeToRefs(useFlightStore());
+
+const props = defineProps({
+  allowDraggable: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+onMounted(() => {
+  mapDimensions.value = {
+    height: mapRef.value.$el.clientHeight,
+    width: mapRef.value.$el.clientWidth,
+  };
+});
 
 const apiKey = computed(() => import.meta.env.VITE_APP_MAP_API_KEY);
 const mapRef: Ref<any> = ref(null);
@@ -121,8 +123,8 @@ const zoomLvl = computed(() => calculateBoundsZoom(leafletBounds.value));
 
 function calculateBoundsZoom(
   bounds: typeof leafletBounds.value,
-  containerWidth = 1200,
-  containerHeight = 950
+  containerWidth = mapDimensions.value.width,
+  containerHeight = mapDimensions.value.height
 ) {
   // Calculate the latitude/longitude bounds width and height
   const boundsWidth = bounds.getEast() - bounds.getWest();
@@ -147,7 +149,7 @@ function calculateBoundsZoom(
   // Limit the zoom level to max zoom levels
   zoomLevel = Math.min(maxZoom, zoomLevel);
 
-  return Math.floor(zoomLevel * 10) / 10;
+  return Math.floor(zoomLevel * 4) / 4;
 }
 
 const centerPos = computed(
@@ -242,6 +244,7 @@ function createCustomIcon(
     iconAnchor: [10, 10], // Center the icon
   }) as Icon;
 }
+const mapDimensions = ref({ height: 1250, width: 750 });
 
 const navAreas = computed(
   () =>

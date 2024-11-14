@@ -1,20 +1,20 @@
 <template>
   <div class="bdr mdcpage" name="mdcpage">
-    <div class="c36 r bdr ctr">NATO SECRET - SHRED AFTER USE</div>
     <div class="c3 y bdr ctr">PAGE {{ pagenr }}</div>
     <a class="c33 g bdr ctr"
-      >CJTF-13 Frequency Matrix issue 1 - {{ new Date().toDateString() }}</a
-    >
-    <div class="inner-grid c36 r47 bdr ctr">
+      >Flight Route - {{ selectedPKG.name }} - MSN {{ getFlight.MSNumber }}
+    </a>
+    <div class="inner-grid c36 r49 bdr ctr">
       <Maps />
     </div>
-
-    <div class="c36 r bdr ctr">NATO SECRET - SHRED AFTER USE</div>
   </div>
 </template>
 <script setup lang="ts">
 //@ts-ignore
+import { useFlightStore } from "@/stores/flightStore";
 import Maps from "./child components/map.vue";
+import { storeToRefs } from "pinia";
+import { usePackageStore } from "@/stores/packageStore";
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -22,6 +22,8 @@ const { pagenr } = defineProps({
     type: Number,
   },
 });
+const { selectedPKG } = storeToRefs(usePackageStore());
+const { getFlight } = storeToRefs(useFlightStore());
 </script>
 
 <style lang="css" scoped>

@@ -1,99 +1,114 @@
 <template>
   <div style="display: block" class="parent" v-if="getFlight.callsign">
-    <h3>Waypoints</h3>
-    <DataTable
-      showGridlines
-      edit-mode="cell"
-      selectionMode="multiple"
-      :metaKeySelection="true"
-      sort-field="waypointNr"
-      :sortOrder="1"
-      v-model:selection="selectedSteerpoints"
-      :value="getFlight.waypoints"
-      class="item"
-      style="
-        max-width: 2050px;
-        grid-row: 28;
-        align-content: left;
-        margin-left: 0;
-        text-align: left;
-      "
-    >
-      <Column field="waypointNr" header="WPN NR" style="width: 100px">
-        <template #editor="{ index }">
-          <InputNumber
-            v-model:model-value="getFlight.waypoints[index].waypointNr"
-          ></InputNumber>
-        </template>
-      </Column>
-      <Column field="name" header="Name">
-        <template #editor="{ index }">
-          <Input v-model="getFlight.waypoints[index].name" /></template
-      ></Column>
-      <Column field="type" header="Type">
-        <template #editor="{ index }">
-          <Input v-model="getFlight.waypoints[index].type"
-        /></template>
-      </Column>
-      <Column field="activity" header="Activity"></Column>
-      <Column field="tot" header="Time on Target"
-        ><template #body="{ data }">{{
-          new Date(data.tot).toLocaleTimeString("de-DE")
-        }}</template></Column
-      >
-      <Column field="mach" header="Mach">
-        <template #body="{ data }">{{ Number(data.mach).toFixed(2) }}</template>
-      </Column>
-      <Column field="groundspeed" header="Groundspeed">
-        <template #body="{ data }"
-          >{{ Number(data.groundspeed).toFixed(0) }} kts</template
+    <div>
+      <Map width="500px" height="500px" />
+      <div>
+        <h3>Waypoints</h3>
+        <DataTable
+          showGridlines
+          edit-mode="cell"
+          selectionMode="multiple"
+          :metaKeySelection="true"
+          sort-field="waypointNr"
+          :sortOrder="1"
+          v-model:selection="selectedSteerpoints"
+          :value="getFlight.waypoints"
+          class="item"
+          style="
+            max-width: 2050px;
+            grid-row: 28;
+            align-content: left;
+            margin-left: 0;
+            text-align: left;
+          "
         >
-      </Column>
-      <Column field="altitude" header="Altitude">
-        <template #body="{ data }"
-          >{{ data.location.getElevation() }} ft</template
-        >
-        <template #editor="{ index }">
-          <InputNumber
-            v-model:model-value="getFlight.waypoints[index].location.elevation"
-          ></InputNumber>
-        </template>
-      </Column>
-      <Column header="Hide" field="hideOnMDC" style="width: 40px">
-        <template #body="{ data }">
-          <Checkbox binary v-model="data.hideOnMDC"></Checkbox>
-        </template>
-      </Column>
-      <Column header="DMPI" style="width: 40px">
-        <template #body="{ index }"
-          ><Button @click="toDMPI(index)" outlined icon="pi pi-download"
-        /></template>
-      </Column>
+          <Column field="waypointNr" header="WPN NR" style="width: 100px">
+            <template #editor="{ index }">
+              <InputNumber
+                v-model:model-value="getFlight.waypoints[index].waypointNr"
+              ></InputNumber>
+            </template>
+          </Column>
+          <Column field="name" header="Name">
+            <template #editor="{ index }">
+              <Input v-model="getFlight.waypoints[index].name" /></template
+          ></Column>
+          <Column field="type" header="Type">
+            <template #editor="{ index }">
+              <Input v-model="getFlight.waypoints[index].type"
+            /></template>
+          </Column>
+          <Column field="activity" header="Activity"></Column>
+          <Column field="tot" header="Time on Target"
+            ><template #body="{ data }">{{
+              new Date(data.tot).toLocaleTimeString("de-DE")
+            }}</template></Column
+          >
+          <Column field="mach" header="Mach">
+            <template #body="{ data }">{{
+              Number(data.mach).toFixed(2)
+            }}</template>
+          </Column>
+          <Column field="groundspeed" header="Groundspeed">
+            <template #body="{ data }"
+              >{{ Number(data.groundspeed).toFixed(0) }} kts</template
+            >
+          </Column>
+          <Column field="altitude" header="Altitude">
+            <template #body="{ data }"
+              >{{ data.location.getElevation() }} ft</template
+            >
+            <template #editor="{ index }">
+              <InputNumber
+                v-model:model-value="
+                  getFlight.waypoints[index].location.elevation
+                "
+              ></InputNumber>
+            </template>
+          </Column>
+          <Column header="Hide" field="hideOnMDC" style="width: 40px">
+            <template #body="{ data }">
+              <Checkbox binary v-model="data.hideOnMDC"></Checkbox>
+            </template>
+          </Column>
+          <Column header="DMPI" style="width: 40px">
+            <template #body="{ index }"
+              ><Button @click="toDMPI(index)" outlined icon="pi pi-download"
+            /></template>
+          </Column>
 
-      <Column style="width: 40px">
-        <template #body="{ index }"
-          ><Button
-            @click="deleteWaypoint(index)"
-            severity="danger"
-            outlined
-            icon="pi pi-trash"
-        /></template>
-      </Column>
-      <template #footer>
-        <Button
-          label="decrement"
-          icon="pi pi-angle-up"
-          @click="decrSelected()"
-          class="item" />
-        <Button
-          label="increment"
-          icon="pi pi-chevron-down"
-          @click="incSelected()"
-          class="item" />
-        <Button label="hide selected" @click="hideSelected()" class="item" />
-        <Button label="unhide selected" @click="unhideSelected()" class="item"
-      /></template>
-    </DataTable>
+          <Column style="width: 40px">
+            <template #body="{ index }"
+              ><Button
+                @click="deleteWaypoint(index)"
+                severity="danger"
+                outlined
+                icon="pi pi-trash"
+            /></template>
+          </Column>
+          <template #footer>
+            <Button
+              label="decrement"
+              icon="pi pi-angle-up"
+              @click="decrSelected()"
+              class="item" />
+            <Button
+              label="increment"
+              icon="pi pi-chevron-down"
+              @click="incSelected()"
+              class="item" />
+            <Button
+              label="hide selected"
+              @click="hideSelected()"
+              class="item" />
+            <Button
+              label="unhide selected"
+              @click="unhideSelected()"
+              class="item"
+          /></template>
+        </DataTable>
+      </div>
+    </div>
     <div class="content parent" v-if="getFlight.callsign">
       <div class="content">
         <h3 style="padding-bottom: 11px; min-width: 400px">
@@ -169,6 +184,7 @@ import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
 import { usePackageStore } from "@/stores/packageStore";
 import { Coordinate } from "@/controller/coordinates";
+import Map from "../mdc/child components/map.vue";
 const { getFlight } = storeToRefs(useFlightStore());
 const { selectedPKG } = storeToRefs(usePackageStore());
 const showDia = ref(false);
