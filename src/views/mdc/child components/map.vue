@@ -8,7 +8,7 @@
       :options="{
         zoomControl: false,
         attributionControl: false,
-        zoomSnap: 0.25,
+        zoomSnap: 0.1,
       }"
     >
       <l-tile-layer
@@ -149,7 +149,7 @@ function calculateBoundsZoom(
   // Limit the zoom level to max zoom levels
   zoomLevel = Math.min(maxZoom, zoomLevel);
 
-  return Math.floor(zoomLevel * 4) / 4;
+  return Math.floor(zoomLevel * 10) / 10;
 }
 
 const centerPos = computed(
