@@ -5,6 +5,7 @@
     class="m-5"
     optionLabel="name"
     placeholder="Select A Package"
+    @change="flightStore.selectedFlightId = 0"
   />
   <Dropdown
     v-model="selectedFlight"
