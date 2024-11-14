@@ -31,11 +31,11 @@
           </Column>
           <Column field="name" header="Name">
             <template #editor="{ index }">
-              <Input v-model="getFlight.waypoints[index].name" /></template
+              <InputText v-model="getFlight.waypoints[index].name" /></template
           ></Column>
           <Column field="type" header="Type">
             <template #editor="{ index }">
-              <Input v-model="getFlight.waypoints[index].type"
+              <InputText v-model="getFlight.waypoints[index].type"
             /></template>
           </Column>
           <Column field="activity" header="Activity"></Column>

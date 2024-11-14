@@ -16,6 +16,7 @@ declare module 'vue' {
     EditHistory: typeof import('./src/components/history/editHistory.vue')['default']
     InputMask: typeof import('primevue/inputmask')['default']
     InputNumber: typeof import('primevue/inputnumber')['default']
+    InputText: typeof import('primevue/inputtext')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SelectFlight: typeof import('./src/components/PackageFlightSelection/SelectFlight.vue')['default']

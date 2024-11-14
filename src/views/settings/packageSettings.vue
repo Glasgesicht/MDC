@@ -15,7 +15,7 @@
       </div>
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p class="">Package Name</p>
-        <Input style="height: 28px" v-model="selectedPKG.name"></Input>
+        <InputText style="height: 28px" v-model="selectedPKG.name"></InputText>
       </div>
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p>RAMROD (selected)</p>
@@ -64,7 +64,7 @@
           </Column>
           <Column headerStyle="width: 6rem" header="Type" field="aircrafttype">
             <template #editor="{ index }">
-              <Input v-model="selectedPKG.flights[index].aircrafttype"
+              <InputText v-model="selectedPKG.flights[index].aircrafttype"
             /></template>
           </Column>
           <Column headerStyle="width: 8rem" header="PRI" field="comms.radio1">
@@ -215,22 +215,22 @@
         <Column field="class" header="Class" style="width: 45%"
           ><template #body="{ data }">{{ data.class }}</template>
           <template #editor="{ data, field }">
-            <Input v-model="data[field]" fluid />
+            <InputText v-model="data[field]" fluid />
           </template>
         </Column>
         <Column field="dor" header="DOR" style="width: 15%">
           <template #editor="{ data, field }">
-            <Input v-model="data[field]" style="max-width: 50px" fluid />
+            <InputText v-model="data[field]" style="max-width: 50px" fluid />
           </template>
         </Column>
         <Column field="dr" header="DR" style="width: 15%">
           <template #editor="{ data, field }">
-            <Input v-model="data[field]" style="max-width: 50px" fluid />
+            <InputText v-model="data[field]" style="max-width: 50px" fluid />
           </template>
         </Column>
         <Column field="mar" header="MAR" style="width: 15%">
           <template #editor="{ data, field }">
-            <Input v-model="data[field]" fluid style="max-width: 50px" />
+            <InputText v-model="data[field]" fluid style="max-width: 50px" />
           </template>
         </Column>
         <Column>
@@ -257,23 +257,23 @@
           <Column header="Name" field="name" style="width: 25%"
             ><template #body="{ data }">{{ data.name }}</template>
             <template #editor="{ data, field }"
-              ><Input v-model="data[field]"
+              ><InputText v-model="data[field]"
             /></template>
           </Column>
           <!--<Column header="Criteria" field="criteria" style="width: 25%"
           ><template #body="{ data }">{{ data.criteria }}</template
           ><template #editor="{ data, field }"
-            ><Input v-model="data[field]" /></template
+            ><InputText v-model="data[field]" /></template
         ></Column>-->
           <!--<Column header="Authority" field="authority" style="width: 25%"
           ><template #body="{ data }">{{ data.authority }}</template
           ><template #editor="{ data, field }"
-            ><Input v-model="data[field]" /></template
+            ><InputText v-model="data[field]" /></template
         ></Column>-->
           <Column header="Action" field="action" style="width: 25%"
             ><template #body="{ data }">{{ data.action }}</template
             ><template #editor="{ data, field }"
-              ><Input v-model="data[field]" /></template
+              ><InputText v-model="data[field]" /></template
           ></Column>
         </DataTable>
       </div>
@@ -312,7 +312,7 @@
         <Column header="STP #" style="width: 5rem" field="wp"></Column>
         <Column header="Name" field="name">
           <template #editor="{ index }"
-            ><Input v-model="bullseyes[index].name" /></template
+            ><InputText v-model="bullseyes[index].name" /></template
         ></Column>
         <Column header="Latitude" field="lat">
           <template #body="{ data }">{{
@@ -326,7 +326,7 @@
         >
         <Column header="Note" field="note">
           <template #editor="{ index }">
-            <Input v-model:model-value="bullseyes[index].note" />
+            <InputText v-model:model-value="bullseyes[index].note" />
           </template>
         </Column>
         <Column>

@@ -307,7 +307,10 @@ const groupedFlights = computed(() =>
         class="parent"
         style="max-width: 250px"
       >
-        <Input v-model="getFlight.callsign" @blur="flightStore.updateFligh()" />
+        <InputText
+          v-model="getFlight.callsign"
+          @blur="flightStore.updateFligh()"
+        />
         <InputNumber
           :min="1"
           :max="9"
@@ -388,7 +391,7 @@ const groupedFlights = computed(() =>
               {{ data[field] }}
             </template>
             <template #editor="{ index }">
-              <Input v-model="getFlight.units[index].search" />
+              <InputText v-model="getFlight.units[index].search" />
             </template>
           </Column>
 
@@ -414,7 +417,7 @@ const groupedFlights = computed(() =>
               {{ data[field] }}
             </template>
             <template #editor="{ index }">
-              <Input v-model="getFlight.units[index].tailNr" />
+              <InputText v-model="getFlight.units[index].tailNr" />
             </template>
           </Column>
           <Column
@@ -801,7 +804,9 @@ const groupedFlights = computed(() =>
           >
             <template #body="{ data, index }"> {{ data?.freq }}</template>
             <template #editor="{ data, index }">
-              <Input class="fixW" v-model="getFlight.comms.radio1[index].freq"
+              <InputText
+                class="fixW"
+                v-model="getFlight.comms.radio1[index].freq"
             /></template>
           </Column>
           <Column
@@ -811,7 +816,7 @@ const groupedFlights = computed(() =>
           >
             <template #body="{ data }"> {{ data?.name }}</template>
             <template #editor="{ data, index }">
-              <Input v-model="getFlight.comms.radio1[index].name"
+              <InputText v-model="getFlight.comms.radio1[index].name"
             /></template>
           </Column>
 
@@ -835,7 +840,7 @@ const groupedFlights = computed(() =>
           >
             <template #body="{ data }"> {{ data?.description }}</template>
             <template #editor="{ data, index }">
-              <Input
+              <InputText
                 class="fixW"
                 v-model="getFlight.comms.radio1[index].description"
             /></template>
@@ -867,13 +872,17 @@ const groupedFlights = computed(() =>
           <Column header="Freq" field="freq" style="padding: 2px 5px 2px 5px">
             <template #body="{ data }"> {{ data?.freq }}</template>
             <template #editor="{ data, index }">
-              <Input class="fixW" v-model="getFlight.comms.radio2[index].freq"
+              <InputText
+                class="fixW"
+                v-model="getFlight.comms.radio2[index].freq"
             /></template>
           </Column>
           <Column header="Name" field="name" style="padding: 2px 5px 2px 5px">
             <template #body="{ data }"> {{ data?.name }}</template>
             <template #editor="{ data, index }">
-              <Input class="fixW" v-model="getFlight.comms.radio2[index].name"
+              <InputText
+                class="fixW"
+                v-model="getFlight.comms.radio2[index].name"
             /></template>
           </Column>
           <Column header="n°" field="number" style="padding: 2px 5px 2px 5px">
@@ -892,7 +901,7 @@ const groupedFlights = computed(() =>
           >
             <template #body="{ data }"> {{ data?.description }}</template>
             <template #editor="{ data, index }">
-              <Input
+              <InputText
                 class="fixW"
                 v-model="getFlight.comms.radio2[index].description"
             /></template>
