@@ -180,6 +180,7 @@ import { useFlightStore } from "@/stores/flightStore";
 import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
 import { computed, ref, watch, type WritableComputedRef } from "vue";
 import InputNumber from "primevue/inputnumber";
+import Input from "primevue/inputtext";
 import { toLatString, toLongString } from "@/utils/utilFunctions";
 import Dialog from "primevue/dialog";
 import { usePackageStore } from "@/stores/packageStore";
