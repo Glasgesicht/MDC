@@ -664,7 +664,8 @@ export async function processCF(
       mach: parseFloat(wp.Mach[0]),
       name: wp.Name[0],
       tot: wp.TOT[0],
-      type: wp.Type[0] === "Steerpoint" ? "STP" : wp.Type[0],
+      type:
+        wp.Type[0].toLocaleLowerCase() === "steerpoint" ? "STP" : wp.Type[0],
       waypointNr: i + 1,
       hideOnMDC: false,
     }));
