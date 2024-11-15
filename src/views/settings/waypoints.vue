@@ -1,7 +1,6 @@
 <template>
   <div style="display: block" class="parent" v-if="getFlight.callsign">
     <div>
-      <Map width="500px" height="500px" />
       <div>
         <h3>Waypoints</h3>
         <DataTable
