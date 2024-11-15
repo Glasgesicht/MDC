@@ -598,7 +598,7 @@ export async function processCF(
       name: "",
     };
     radio1[19] = {
-      freq: "362.30",
+      freq: "362.300",
       description: "NATO CATF",
       name: "",
     };
