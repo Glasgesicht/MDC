@@ -154,6 +154,7 @@ const items: Ref<MenuItem[]> = computed(() => [
     items: [
       {
         label: "Get DTC",
+        icon: "pi pi-copy",
         disabled: !getFlight.value?.callsign,
         command: () => {
           // handle click
@@ -173,6 +174,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       },
       {
         label: "Get PNG",
+        icon: "pi pi-download",
         disabled: !meta.value.canExport,
         command: () => {
           download().downloadPageAsImage();
@@ -180,6 +182,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       },
       {
         label: "Get ZIP",
+        icon: "pi pi-download",
         disabled: !getFlight.value?.callsign,
         command: () => {
           showExport.value = true;
@@ -191,6 +194,7 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
+        icon: "pi pi-download",
         label: "Get JSON",
         disabled: !selectedPKG.value,
         command: () => {
@@ -203,9 +207,17 @@ const items: Ref<MenuItem[]> = computed(() => [
     label: "Other Pages",
     items: [
       {
+        icon: "pi pi-calculator",
         label: "Popup Calculator",
         command: () => {
           router.push({ name: "popupCalc" });
+        },
+      },
+      {
+        label: "Page Settings",
+        icon: "pi pi-cog",
+        command: () => {
+          router.push({ name: "Page Settings" });
         },
       },
     ],

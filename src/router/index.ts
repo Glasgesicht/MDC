@@ -11,6 +11,7 @@ import newdatacard from "@/views/mdc/newdatacard.vue";
 import newcomms from "@/views/mdc/newcomms.vue";
 import Commsmatrix from "@/views/mdc/commsmatrix.vue";
 import Flightmap from "@/views/mdc/map.vue";
+import pageSettings from "@/views/pageSettings.vue";
 
 import { useFlightStore } from "@/stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -25,6 +26,7 @@ const router = createRouter({
       component: generalSettings,
       meta: {
         canExport: false,
+        requireLoaded: true,
       },
     },
     {
@@ -33,6 +35,7 @@ const router = createRouter({
       component: packageSettings,
       meta: {
         canExport: false,
+        requireLoaded: true,
       },
     },
     {
@@ -41,6 +44,7 @@ const router = createRouter({
       component: flightSettings,
       meta: {
         canExport: false,
+        requireLoaded: true,
       },
     },
     {
@@ -49,6 +53,7 @@ const router = createRouter({
       component: waypointsSettings,
       meta: {
         canExport: false,
+        requireLoaded: true,
       },
     },
     {
@@ -60,6 +65,7 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
       },
     },
     {
@@ -71,6 +77,7 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
       },
     },
     {
@@ -82,6 +89,7 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
       },
     },
     {
@@ -93,6 +101,7 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
       },
     },
     {
@@ -104,6 +113,7 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
       }, // popupCalc.vue
     },
     {
@@ -115,6 +125,16 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
+      }, // popupCalc.vue
+    },
+    {
+      name: "Page Settings",
+      path: "/settings",
+      component: pageSettings,
+      meta: {
+        canExport: false,
+        requireLoaded: false,
       }, // popupCalc.vue
     },
 
@@ -131,7 +151,7 @@ const router = createRouter({
 
 router.beforeEach((to, from) => {
   const { getFlight } = storeToRefs(useFlightStore());
-  if (!getFlight.value) return false;
+  if (to.meta.requireLoaded && !getFlight.value) return false;
   return true;
 });
 
