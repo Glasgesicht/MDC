@@ -33,3 +33,4 @@ coverage
 /src/mdcpages/not shared
 components.d.ts
 src/views/mdc/popupCalc.vue
+components.d.ts
