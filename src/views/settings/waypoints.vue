@@ -271,7 +271,7 @@ function deleteWaypoint(i: number) {
 }
 </script>
 
-<style scoped>
+<style>
 .parent {
   display: flex;
   flex-wrap: wrap;
@@ -286,6 +286,20 @@ function deleteWaypoint(i: number) {
 }
 
 .item {
-  margin: 10px;
+  margin: 5px;
+}
+td {
+  text-align: start;
+  border-color: var(--p-datatable-body-cell-border-color);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  padding: 0.2rem 0.4rem !important;
+}
+th {
+  text-align: start;
+  border-color: var(--p-datatable-body-cell-border-color);
+  border-style: solid;
+  border-width: 0 0 1px 0;
+  padding: 0.3rem 0.5rem !important;
 }
 </style>

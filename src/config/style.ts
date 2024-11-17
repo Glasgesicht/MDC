@@ -321,8 +321,8 @@ export const style = {
       950: "#191d23",
     },
     formField: {
-      paddingX: "0.25rem",
-      paddingY: "0.15rem",
+      paddingX: "0.15rem",
+      paddingY: "0.1rem",
       sm: {
         fontSize: "0.3rem",
         paddingX: "0.2rem",
@@ -343,6 +343,13 @@ export const style = {
       },
       transitionDuration: "{transition.duration}",
     },
+    datatable: {
+      body: {
+        cell: {
+          padding: "0.125rem 0.3rem",
+        },
+      },
+    },
     list: {
       padding: "0.125rem 0",
       gap: "0",
@@ -350,11 +357,11 @@ export const style = {
         padding: "0.5rem 0.75rem 0.375rem 0.75rem",
       },
       option: {
-        padding: "0.5rem 0.75rem",
+        padding: "0.1rem 0.15rem",
         borderRadius: "0",
       },
       optionGroup: {
-        padding: "0.5rem 0.75rem",
+        padding: "0.1rem 0.1rem",
         fontWeight: "700",
       },
     },

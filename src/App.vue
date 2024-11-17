@@ -275,7 +275,7 @@ const showExport = ref(false);
   </div>
 </template>
 
-<style scoped>
+<style>
 #app {
   display: flex;
   height: 100vh;
