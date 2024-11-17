@@ -6,7 +6,7 @@ import { definePreset } from "@primevue/themes";
 
 import App from "./App.vue";
 import router from "./router";
-import Nora from "@primevue/themes/nora";
+import Aura from "@primevue/themes/aura";
 
 import "primeicons/primeicons.css";
 import "./assets/main.css";
@@ -14,7 +14,7 @@ import "./assets/main.css";
 const app = createApp(App);
 const pinia = createPinia();
 
-const design = definePreset(Nora, {
+const design = definePreset(Aura, {
   primitive: {
     borderRadius: {
       none: "0",
@@ -324,17 +324,17 @@ const design = definePreset(Nora, {
     iconSize: "0.8rem",
     anchorGutter: "0",
     primary: {
-      50: "#fafafa",
-      100: "#e7e7e9",
-      200: "#d4d4d7",
-      300: "#c0c0c6",
-      400: "#adadb4",
-      500: "#9a9aa3",
-      600: "#83838b",
-      700: "#6c6c72",
-      800: "#55555a",
-      900: "#3e3e41",
-      950: "#272729",
+      50: "#f7f8f9",
+      100: "#dadee3",
+      200: "#bdc3cd",
+      300: "#a0a9b7",
+      400: "#828ea1",
+      500: "#65748b",
+      600: "#566376",
+      700: "#475161",
+      800: "#38404c",
+      900: "#282e38",
+      950: "#191d23",
     },
     formField: {
       paddingX: "0.25rem",
@@ -425,17 +425,17 @@ const design = definePreset(Nora, {
       light: {
         surface: {
           0: "#ffffff",
-          50: "#f8fafc",
-          100: "#f1f5f9",
-          200: "#e2e8f0",
-          300: "#cbd5e1",
-          400: "#94a3b8",
-          500: "#64748b",
-          600: "#475569",
-          700: "#334155",
-          800: "#1e293b",
-          900: "#0f172a",
-          950: "#020617",
+          50: "#fafafb",
+          100: "#e5e8ec",
+          200: "#d1d6dd",
+          300: "#bdc3cf",
+          400: "#a8b1c0",
+          500: "#949fb1",
+          600: "#7e8796",
+          700: "#686f7c",
+          800: "#515761",
+          900: "#3b4047",
+          950: "#25282c",
         },
         primary: {
           color: "{primary.600}",
@@ -454,7 +454,7 @@ const design = definePreset(Nora, {
           color: "{surface.200}",
         },
         formField: {
-          background: "{surface.0}",
+          background: "{surface.50}",
           disabledBackground: "{surface.300}",
           filledBackground: "{surface.100}",
           filledHoverBackground: "{surface.100}",
@@ -481,7 +481,7 @@ const design = definePreset(Nora, {
           hoverMutedColor: "{surface.700}",
         },
         content: {
-          background: "{surface.0}",
+          background: "{surface.100}",
           hoverBackground: "{surface.200}",
           borderColor: "{surface.400}",
           color: "{text.color}",
@@ -519,8 +519,8 @@ const design = definePreset(Nora, {
             },
           },
           optionGroup: {
-            background: "transparent",
-            color: "{text.color}",
+            background: "{text.muted.color}",
+            color: "{primary.contrast.color}",
           },
         },
         navigation: {
@@ -537,8 +537,8 @@ const design = definePreset(Nora, {
             },
           },
           submenuLabel: {
-            background: "transparent",
-            color: "{text.color}",
+            background: "{text.muted.color}",
+            color: "{primary.contrast.color}",
           },
           submenuIcon: {
             color: "{text.muted.color}",
@@ -550,17 +550,17 @@ const design = definePreset(Nora, {
       dark: {
         surface: {
           0: "#ffffff",
-          50: "#fafafa",
-          100: "#f4f4f5",
-          200: "#e4e4e7",
-          300: "#d4d4d8",
-          400: "#a1a1aa",
-          500: "#71717a",
-          600: "#52525b",
-          700: "#3f3f46",
-          800: "#27272a",
-          900: "#18181b",
-          950: "#09090b",
+          50: "#f6f6f7",
+          100: "#d2d4d8",
+          200: "#aeb2b9",
+          300: "#8a919a",
+          400: "#676f7b",
+          500: "#434d5c",
+          600: "#39414e",
+          700: "#2f3640",
+          800: "#252a33",
+          900: "#1b1f25",
+          950: "#111317",
         },
         primary: {
           color: "{primary.500}",
@@ -644,7 +644,7 @@ const design = definePreset(Nora, {
             },
           },
           optionGroup: {
-            background: "transparent",
+            background: "{surface.100}",
             color: "{text.color}",
           },
         },
@@ -652,22 +652,22 @@ const design = definePreset(Nora, {
           item: {
             focusBackground: "{primary.color}",
             activeBackground: "{surface.700}",
-            color: "{text.color}",
+            color: "{surface.0}",
             focusColor: "{primary.contrast.color}",
             activeColor: "{text.color}",
             icon: {
               color: "{text.muted.color}",
-              focusColor: "{primary.contrast.color}",
+              focusColor: "{surface.0}",
               activeColor: "{text.hover.muted.color}",
             },
           },
           submenuLabel: {
-            background: "transparent",
-            color: "{text.color}",
+            background: "{surface.800}",
+            color: "{surface.0}",
           },
           submenuIcon: {
             color: "{text.muted.color}",
-            focusColor: "{primary.contrast.color}",
+            focusColor: "{surface.0}",
             activeColor: "{text.hover.muted.color}",
           },
         },

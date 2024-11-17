@@ -599,7 +599,7 @@ export async function processCF(
     };
     radio1[19] = {
       freq: "362.300",
-      description: "NATO CATF",
+      description: "NATO CTAF",
       name: "",
     };
     pkg.forEach((flight, i) => {

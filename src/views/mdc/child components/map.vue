@@ -21,7 +21,8 @@
       <l-tile-layer
         :url="`https://{s}.api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=${apiKey}`"
         layer-type="overlay"
-        name="OpenFlightMaps"
+        name="openaip"
+        :tms="false"
       ></l-tile-layer>
 
       <l-polyline
@@ -257,7 +258,7 @@ const navAreas = computed(
       }) as LatLngExpression[]
 );
 
-const onMapReady = (map:any) => {
+const onMapReady = (map: any) => {
   L.latlngGraticule({
     showLabel: true,
     color: "#007BFF",
@@ -272,7 +273,7 @@ const onMapReady = (map:any) => {
       { start: 17, end: 20, interval: 0.1 },
     ],
   }).addTo(map);
-}
+};
 </script>
 
 <style scoped>

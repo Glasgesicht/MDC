@@ -590,6 +590,7 @@ const groupedFlights = computed(() =>
         <Select
           :options="airports.filter((val) => val.map === theatre)"
           severity="danger"
+          class="dropdown"
           option-label="NAME"
           v-model="getFlight.ARR"
           @change="(e: any) => {
@@ -610,6 +611,7 @@ const groupedFlights = computed(() =>
         <Select
           :options="airports.filter((val) => val.map === theatre)"
           severity="danger"
+          class="dropdown"
           option-label="NAME"
           v-model="getFlight.ALT"
           @change="(e: any) => {
@@ -631,6 +633,7 @@ const groupedFlights = computed(() =>
           <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
             severity="danger"
+            class="dropdown"
             option-label="description"
             :model-value="selectedFreqs.checkUHF"
             @change="(e: any) => {
@@ -656,6 +659,7 @@ const groupedFlights = computed(() =>
           <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
             severity="danger"
+            class="dropdown"
             v-model="selectedFreqs.checkVHF"
             option-label="description"
             @change="(e: any) => {
@@ -683,6 +687,7 @@ const groupedFlights = computed(() =>
           <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
             severity="danger"
+            class="dropdown"
             v-model="selectedFreqs.tactUHF"
             option-label="description"
             @change="(e: any) => {
@@ -708,6 +713,7 @@ const groupedFlights = computed(() =>
           <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
             severity="danger"
+            class="dropdown"
             v-model="selectedFreqs.tactVHF"
             option-label="description"
             @change="(e: any) => {
@@ -740,6 +746,7 @@ const groupedFlights = computed(() =>
               .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
           "
           severity="danger"
+          class="dropdown"
           v-model="tanker"
           option-label="name"
           @change="(e: any) => {
@@ -952,7 +959,7 @@ const groupedFlights = computed(() =>
   }
 }
 
-.p-dropdown {
+.dropdown {
   width: 175px;
 }
 

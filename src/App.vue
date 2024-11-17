@@ -233,13 +233,10 @@ const showExport = ref(false);
 
 <template>
   <div id="app">
-    <div class="split left" style="background-color: var(--p-primary-300)">
+    <div class="split left" style="background-color: var(--p-menu-background)">
       <div class="logo13" style="height: 150px"></div>
 
-      <Menu
-        :model="items"
-        style="border: none; background-color: var(--p-primary-300)"
-      />
+      <Menu :model="items" style="border: none" />
 
       <hr style="width: 100%" v-if="file" />
 
