@@ -2,6 +2,7 @@
   <div style="height: 100%; width: 100%">
     <l-map
       ref="mapRef"
+      @ready="onMapReady"
       :center="centerPos"
       :zoom="zoomLvl"
       :use-global-leaflet="false"
@@ -18,7 +19,7 @@
       ></l-tile-layer>
 
       <l-tile-layer
-        :url="`https://api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=${apiKey}`"
+        :url="`https://{s}.api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=${apiKey}`"
         layer-type="overlay"
         name="OpenFlightMaps"
       ></l-tile-layer>
@@ -62,6 +63,7 @@ import { useFlightStore } from "@/stores/flightStore";
 import { LMap, LTileLayer, LPolyline, LMarker } from "@vue-leaflet/vue-leaflet";
 import L, { Icon, type LatLngExpression, type PointTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet-graticule";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch, type Ref, toRaw, inject } from "vue";
 
@@ -254,6 +256,23 @@ const navAreas = computed(
         return [n.location.lat, n.location.lon];
       }) as LatLngExpression[]
 );
+
+const onMapReady = (map:any) => {
+  L.latlngGraticule({
+    showLabel: true,
+    color: "#007BFF",
+    weight: 0.8,
+    opacity: 0.6,
+    zoomInterval: [
+      { start: 2, end: 4, interval: 10 },
+      { start: 5, end: 7, interval: 5 },
+      { start: 8, end: 10, interval: 1 },
+      { start: 11, end: 13, interval: 0.5 },
+      { start: 14, end: 16, interval: 0.2 },
+      { start: 17, end: 20, interval: 0.1 },
+    ],
+  }).addTo(map);
+}
 </script>
 
 <style scoped>

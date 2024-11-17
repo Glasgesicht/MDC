@@ -233,10 +233,13 @@ const showExport = ref(false);
 
 <template>
   <div id="app">
-    <div class="split left">
+    <div class="split left" style="background-color: var(--p-primary-300)">
       <div class="logo13" style="height: 150px"></div>
 
-      <Menu :model="items" style="border: none; background-color: #f4f4f4" />
+      <Menu
+        :model="items"
+        style="border: none; background-color: var(--p-primary-300)"
+      />
 
       <hr style="width: 100%" v-if="file" />
 
@@ -281,7 +284,6 @@ const showExport = ref(false);
   height: 100vh;
   width: 100vw;
   margin: 0;
-  background-color: lightgray;
   box-sizing: border-box;
   padding: 0;
 }
@@ -296,8 +298,6 @@ const showExport = ref(false);
   min-width: 200px;
   width: 220px;
   max-width: 220px;
-  background-color: #f4f4f4;
-  border-right: 1px solid #ddd;
 }
 
 .right {

@@ -1,5 +1,5 @@
 <template>
-  <Dropdown
+  <Select
     v-model="selectedPackage"
     :options="packages"
     class="m-5"
@@ -7,7 +7,7 @@
     placeholder="Select A Package"
     @change="flightStore.selectedFlightId = 0"
   />
-  <Dropdown
+  <Select
     v-model="selectedFlight"
     class="m-5"
     :options="selectedPKG?.flights"
@@ -22,7 +22,7 @@
         value?.callsignNumber > 0 ? value?.callsignNumber : `Select Flight`
       }}</template
     >
-  </Dropdown>
+  </Select>
 </template>
 
 <script setup lang="ts">

@@ -19,7 +19,7 @@
       </div>
       <div v-if="selectedPKG.name" class="box" style="max-width: 250px">
         <p>RAMROD (selected)</p>
-        <Dropdown
+        <Select
           :options="ramrods"
           v-model="selectedPKG.ramrod"
           editable

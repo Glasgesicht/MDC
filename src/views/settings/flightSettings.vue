@@ -286,7 +286,7 @@ const groupedFlights = computed(() =>
     </div>
     <div class="" v-if="file && getFlight.isActive">
       <p class="">Assign new Callsign</p>
-      <Dropdown
+      <Select
         placeholder="select new callsign"
         v-if="!isCustomCalsign && getFlight.isActive"
         filter
@@ -301,7 +301,7 @@ const groupedFlights = computed(() =>
         <template #optiongroup="slotProps">
           <div>{{ slotProps.option.label }}</div>
         </template>
-      </Dropdown>
+      </Select>
       <div
         v-if="isCustomCalsign && getFlight"
         class="parent"
@@ -372,7 +372,7 @@ const groupedFlights = computed(() =>
               {{ data[field] }}
             </template>
             <template #editor="{ data, field, index }">
-              <Dropdown
+              <Select
                 editable
                 @change="FlightMemberUpdate"
                 class="redefSize"
@@ -494,7 +494,7 @@ const groupedFlights = computed(() =>
         <InputNumber />
         <Checkbox v-model="enableBullz" binary />
         <a>Enable Bullseye</a>
-        <Dropdown
+        <Select
           :options="selectedPKG.bullseyes"
           option-value="wp"
           v-model:model-value="getFlight.misc.BullseyeWP"
@@ -509,7 +509,7 @@ const groupedFlights = computed(() =>
           ><template #option="{ option }"
             >{{ option.wp }}: {{ option.name }}</template
           >
-        </Dropdown>
+        </Select>
 
         <Checkbox /> <a>CARA ALLOW</a>
         <InputNumber />
@@ -520,18 +520,18 @@ const groupedFlights = computed(() =>
         <div />
         <a>TGP Code</a>
         <div style="display: flex">
-          <Dropdown />
-          <Dropdown />
-          <Dropdown />
-          <Dropdown />
+          <Select />
+          <Select />
+          <Select />
+          <Select />
         </div>
         <div />
         <a>LST Code</a>
         <div style="display: flex">
-          <Dropdown />
-          <Dropdown />
-          <Dropdown />
-          <Dropdown />
+          <Select />
+          <Select />
+          <Select />
+          <Select />
         </div>
         <div />
         <a>Laser Start Time</a>
@@ -540,7 +540,7 @@ const groupedFlights = computed(() =>
 
         <div style="display: flex; width: 50%">
           <InputMask mask="9?9" style="width: 50%" />
-          <Dropdown style="width: 50%" :options="['X', 'Y']" />
+          <Select style="width: 50%" :options="['X', 'Y']" />
         </div>
 
         <Checkbox /> <a>ILS</a>
@@ -564,7 +564,7 @@ const groupedFlights = computed(() =>
     <div class="freqs">
       <div class="item5">
         <p>DEPART</p>
-        <Dropdown
+        <Select
           :options="airports.filter((val) => val.map === theatre)"
           class="dropdown"
           severity="danger"
@@ -587,7 +587,7 @@ const groupedFlights = computed(() =>
 
       <div class="item5">
         <p>ARRIVE</p>
-        <Dropdown
+        <Select
           :options="airports.filter((val) => val.map === theatre)"
           severity="danger"
           option-label="NAME"
@@ -607,7 +607,7 @@ const groupedFlights = computed(() =>
       </div>
       <div class="item5">
         <p>ALTERNATE</p>
-        <Dropdown
+        <Select
           :options="airports.filter((val) => val.map === theatre)"
           severity="danger"
           option-label="NAME"
@@ -628,7 +628,7 @@ const groupedFlights = computed(() =>
       <div class="parent">
         <div class="item5 comm-box">
           <p>CHECK-IN UHF</p>
-          <Dropdown
+          <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
             severity="danger"
             option-label="description"
@@ -653,7 +653,7 @@ const groupedFlights = computed(() =>
         </div>
         <div class="item5">
           <p>CHECK-IN VHF</p>
-          <Dropdown
+          <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
             severity="danger"
             v-model="selectedFreqs.checkVHF"
@@ -680,7 +680,7 @@ const groupedFlights = computed(() =>
       <div class="parent freq">
         <div class="item5 comm-box">
           <p>TACTICAL UHF</p>
-          <Dropdown
+          <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) > 200)"
             severity="danger"
             v-model="selectedFreqs.tactUHF"
@@ -705,7 +705,7 @@ const groupedFlights = computed(() =>
         </div>
         <div class="item5">
           <p>TACTICAL VHF</p>
-          <Dropdown
+          <Select
             :options="tacticalFreqs.filter((n) => parseFloat(n.freq) < 200)"
             severity="danger"
             v-model="selectedFreqs.tactVHF"
@@ -731,7 +731,7 @@ const groupedFlights = computed(() =>
       </div>
       <div class="item5">
         <p>TANKER</p>
-        <Dropdown
+        <Select
           :options="
             selectedPKG.agencies
               .filter((ag) =>
