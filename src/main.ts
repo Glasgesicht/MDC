@@ -537,11 +537,11 @@ const design = definePreset(Aura, {
             },
           },
           submenuLabel: {
-            background: "{text.muted.color}",
-            color: "{primary.contrast.color}",
+            background: "{surface.200}",
+            color: "{text.color}",
           },
           submenuIcon: {
-            color: "{text.muted.color}",
+            color: "{text.color}",
             focusColor: "{primary.contrast.color}",
             activeColor: "{text.hover.muted.color}",
           },
@@ -656,17 +656,17 @@ const design = definePreset(Aura, {
             focusColor: "{primary.contrast.color}",
             activeColor: "{text.color}",
             icon: {
-              color: "{text.muted.color}",
+              color: "{text.color}",
               focusColor: "{surface.0}",
               activeColor: "{text.hover.muted.color}",
             },
           },
           submenuLabel: {
             background: "{surface.800}",
-            color: "{surface.0}",
+            color: "{text.color}",
           },
           submenuIcon: {
-            color: "{text.muted.color}",
+            color: "{text.color}",
             focusColor: "{surface.0}",
             activeColor: "{text.hover.muted.color}",
           },
