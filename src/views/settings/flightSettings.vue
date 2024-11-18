@@ -961,6 +961,7 @@ const groupedFlights = computed(() =>
 
 .item5 {
   margin: 5px;
+  min-width: 215px;
 }
 
 .comm-box {

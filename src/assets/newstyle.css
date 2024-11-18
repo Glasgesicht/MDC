@@ -327,7 +327,7 @@ select {
 }
 .w,
 .hg {
-  color: black;
+  color: black !important;
   background-color: var(--white);
 }
 
@@ -366,6 +366,7 @@ select {
 
 .hr {
   background-color: var(--halfred);
+  color: black !important;
 }
 
 .c-height {

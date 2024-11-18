@@ -73,6 +73,7 @@ const showROE = inject("showROE");
 
     <textarea
       type="text"
+      style="background-color: white; color: black"
       :class="`c36 tb ${showROE ? 'r23' : 'r34'} bdr ctr`"
       v-model="getFlight.gameplan"
     />

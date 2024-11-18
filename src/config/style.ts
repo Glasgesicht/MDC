@@ -570,7 +570,7 @@ export const style = {
           color: "{surface.200}",
         },
         formField: {
-          background: "{surface.950}",
+          background: "{surface.900}",
           disabledBackground: "{surface.700}",
           filledBackground: "{surface.800}",
           filledHoverBackground: "{surface.800}",
@@ -587,7 +587,7 @@ export const style = {
           floatLabelFocusColor: "{primary.color}",
           floatLabelActiveColor: "{surface.400}",
           floatLabelInvalidColor: "{form.field.invalid.placeholder.color}",
-          iconColor: "{surface.0}",
+          iconColor: "{surface.500}",
           shadow: "none",
         },
         text: {
