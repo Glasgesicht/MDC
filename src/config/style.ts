@@ -321,8 +321,8 @@ export const style = {
       950: "#191d23",
     },
     formField: {
-      paddingX: "0.15rem",
-      paddingY: "0.1rem",
+      paddingX: "0.2rem",
+      paddingY: "0.2rem",
       sm: {
         fontSize: "0.3rem",
         paddingX: "0.2rem",
@@ -357,11 +357,11 @@ export const style = {
         padding: "0.5rem 0.75rem 0.375rem 0.75rem",
       },
       option: {
-        padding: "0.1rem 0.15rem",
+        padding: "0.2rem 0.25rem",
         borderRadius: "0",
       },
       optionGroup: {
-        padding: "0.1rem 0.1rem",
+        padding: "0.15rem 0.15rem",
         fontWeight: "700",
       },
     },
@@ -373,7 +373,7 @@ export const style = {
     },
     navigation: {
       list: {
-        padding: "0.125rem 0",
+        padding: "0.2rem 0.125rem",
         gap: "0",
       },
       item: {
