@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "build": "vite build",
     "type-check": "vue-tsc --build --force",
-    "push": " && vite build && npx gh-pages -d dist"
+    "push": "pnpx vite build && pnpx gh-pages -d dist"
   },
   "dependencies": {
     "@primevue/themes": "^4.2.2",
