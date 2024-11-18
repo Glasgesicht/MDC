@@ -554,8 +554,8 @@ export const style = {
           950: "#111317",
         },
         primary: {
-          color: "{surface.950}",
-          contrastColor: "{surface.100}",
+          color: "{surface.100}",
+          contrastColor: "{surface.700}",
           hoverColor: "{primary.400}",
           activeColor: "{primary.300}",
         },

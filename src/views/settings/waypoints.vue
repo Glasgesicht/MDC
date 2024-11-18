@@ -88,20 +88,24 @@
           <template #footer>
             <Button
               label="decrement"
+              outlined
               icon="pi pi-angle-up"
               @click="decrSelected()"
               class="item" />
             <Button
               label="increment"
+              outlined
               icon="pi pi-chevron-down"
               @click="incSelected()"
               class="item" />
             <Button
               label="hide selected"
+              outlined
               @click="hideSelected()"
               class="item" />
             <Button
               label="unhide selected"
+              outlined
               @click="unhideSelected()"
               class="item"
           /></template>
@@ -152,13 +156,24 @@
               ><input v-model="getFlight.dmpis[index].note" /></template
           ></Column>
           <template #footer>
-            <SteerpointsToDTC class="item" mode="all" label="all to DTC" />
+            <SteerpointsToDTC
+              class="item"
+              mode="all"
+              label="all to DTC"
+              outlined
+            />
             <SteerpointsToDTC
               class="item"
               mode="waypoints"
               label="waypoints to DTC"
+              outlined
             />
-            <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" />
+            <SteerpointsToDTC
+              class="item"
+              mode="dmpi"
+              label="DMPI to DTC"
+              outlined
+            />
           </template>
         </DataTable>
       </div>

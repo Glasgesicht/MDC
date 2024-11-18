@@ -29,3 +29,11 @@ app.use(pinia);
 app.use(router);
 
 app.mount("#app");
+
+if (
+  localStorage.getItem("darkmode") === "true" ||
+  (window.matchMedia("(prefers-color-scheme: dark)").matches &&
+    !localStorage.getItem("darkmode"))
+) {
+  document.documentElement.classList.toggle("darkmode");
+}

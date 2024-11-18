@@ -19,6 +19,7 @@
       ></l-tile-layer>
 
       <l-tile-layer
+        v-if="apiKey && apiKey.length === 32"
         :url="`https://{s}.api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=${apiKey}`"
         layer-type="overlay"
         name="openaip"
@@ -69,6 +70,7 @@ import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch, type Ref, toRaw, inject } from "vue";
 
 const { getFlight } = storeToRefs(useFlightStore());
+const apiKey = localStorage.getItem("apiKey");
 
 const props = defineProps({
   allowDraggable: {
@@ -84,7 +86,6 @@ onMounted(() => {
   };
 });
 
-const apiKey = computed(() => import.meta.env.VITE_APP_MAP_API_KEY);
 const mapRef: Ref<any> = ref(null);
 
 const minMaxLatLon = computed(() =>
@@ -259,14 +260,15 @@ const navAreas = computed(
 );
 
 const onMapReady = (map: any) => {
+  //@ts-ignore
   L.latlngGraticule({
     showLabel: true,
     color: "#007BFF",
     weight: 0.8,
     opacity: 0.6,
     zoomInterval: [
-      { start: 2, end: 4, interval: 10 },
-      { start: 5, end: 7, interval: 5 },
+      { start: 2, end: 4, interval: 7 },
+      { start: 5, end: 8, interval: 2 },
       { start: 8, end: 10, interval: 1 },
       { start: 11, end: 13, interval: 0.5 },
       { start: 14, end: 16, interval: 0.2 },
