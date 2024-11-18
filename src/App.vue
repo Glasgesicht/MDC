@@ -232,7 +232,7 @@ const showExport = ref(false);
 </script>
 
 <template>
-  <div id="app">
+  <div id="app" class="darkmode">
     <div class="split left" style="background-color: var(--p-menu-background)">
       <div class="logo13" style="height: 150px"></div>
 

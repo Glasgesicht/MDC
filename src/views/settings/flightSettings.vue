@@ -292,7 +292,7 @@ const groupedFlights = computed(() =>
         filter
         :options="groupedFlights"
         optionLabel="callsign"
-        style="width: 253px"
+        style="width: 253px; margin: 3px"
         optionGroupLabel="label"
         optionGroupChildren="items"
         @change="callsignChangeEvent"
@@ -322,7 +322,12 @@ const groupedFlights = computed(() =>
       </div>
     </div>
     <div
-      style="text-align: left; margin-top: 14px; width: 200px"
+      style="
+        text-align: left;
+        margin-top: 14px;
+        width: 200px;
+        margin-left: 15px;
+      "
       class="parent"
       v-if="file && getFlight.isActive"
     >
@@ -577,7 +582,7 @@ const groupedFlights = computed(() =>
           placeholder="select"
         />
         <Button
-          style="grid-row: 15"
+          style="grid-row: 15; color: grey"
           v-if="getFlight.DEP.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('DEP')"
@@ -601,6 +606,7 @@ const groupedFlights = computed(() =>
         />
         <Button
           v-if="getFlight.ARR.ICAO"
+          style="color: gray"
           icon="pi pi-times-circle"
           @click="deleteAirport('ARR')"
           text
@@ -624,6 +630,7 @@ const groupedFlights = computed(() =>
           v-if="getFlight.ALT.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('ALT')"
+          style="color: gray"
           text
         />
       </div>
@@ -650,6 +657,7 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio1[4].freq"
             icon="pi pi-times-circle"
+            style="color: gray"
             @click="clearComms(4, 'pri')"
             text
           />
@@ -676,6 +684,7 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio2[4].freq"
             icon="pi pi-times-circle"
+            style="color: gray"
             @click="clearComms(4, 'sec')"
             text
           />
@@ -704,6 +713,7 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio1[5].freq"
             icon="pi pi-times-circle"
+            style="color: gray"
             @click="clearComms(5, 'pri')"
             text
           />
@@ -730,6 +740,7 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio2[5].freq"
             icon="pi pi-times-circle"
+            style="color: gray"
             @click="clearComms(5, 'sec')"
             text
           />
@@ -758,6 +769,7 @@ const groupedFlights = computed(() =>
         <Button
           v-if="tanker"
           icon="pi pi-times-circle"
+          style="color: gray"
           @click="clearComms(12, parseFloat(tanker.freq) > 200 ? 'pri' : 'sec')"
           text
         />
@@ -857,6 +869,7 @@ const groupedFlights = computed(() =>
               ><Button
                 text
                 icon="pi pi-eraser"
+                style="color: gray"
                 @click="clearComms(index, 'pri')"
             /></template>
           </Column>
@@ -918,6 +931,7 @@ const groupedFlights = computed(() =>
               ><Button
                 text
                 icon="pi pi-eraser"
+                style="color: gray"
                 @click="clearComms(index, 'sec')"
             /></template>
           </Column>

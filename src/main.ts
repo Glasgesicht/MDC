@@ -20,6 +20,9 @@ const design = definePreset(Aura, style);
 app.use(PrimeVue, {
   theme: {
     preset: design,
+    options: {
+      darkModeSelector: ".darkmode",
+    },
   },
 });
 app.use(pinia);

@@ -1,8 +1,11 @@
 <template>
-  <div>ssssssss</div>
-  why asdasda sd
+  <Button label="Toggle Dark Mode" @click="toggleDarkMode()" />
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+function toggleDarkMode() {
+  document.documentElement.classList.toggle("darkmode");
+}
+</script>
 
 <style></style>
