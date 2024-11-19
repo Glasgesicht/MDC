@@ -291,7 +291,9 @@ const showExport = ref(false);
         </div>
       </div>
       <div>
-        <div style="display: flex; align-items: center">
+        <div
+          :style="meta.canExport ? 'display: flex; align-items: center' : ''"
+        >
           <Button
             v-if="meta.canExport"
             class="page-button"
