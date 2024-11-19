@@ -2,7 +2,7 @@
   <div class="page-settings">
     <div class="menu-container">
       <header class="menu-header">
-        <h2>Page Settings</h2>
+        <h2>Application Settings</h2>
       </header>
       <Button
         label="Toggle Dark Mode"

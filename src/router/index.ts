@@ -129,7 +129,7 @@ const router = createRouter({
       }, // popupCalc.vue
     },
     {
-      name: "Page Settings",
+      name: "Application Settings",
       path: "/settings",
       component: pageSettings,
       meta: {

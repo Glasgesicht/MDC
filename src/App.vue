@@ -214,10 +214,10 @@ const items: Ref<MenuItem[]> = computed(() => [
         },
       },
       {
-        label: "Page Settings",
+        label: "Application Settings",
         icon: "pi pi-cog",
         command: () => {
-          router.push({ name: "Page Settings" });
+          router.push({ name: "Application Settings" });
         },
       },
     ],
