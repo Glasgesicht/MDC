@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import Menu from "primevue/menu";
-import { ref, provide, computed, type Ref, toRaw, onMounted, watch } from "vue";
+import {
+  ref,
+  provide,
+  computed,
+  type Ref,
+  toRaw,
+  onMounted,
+  watch,
+  onBeforeUnmount,
+} from "vue";
 import { usePackageStore } from "./stores/packageStore";
 import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
@@ -234,6 +243,26 @@ const items: Ref<MenuItem[]> = computed(() => [
 const version = `${__APP_VERSION__} (${new Date( // @ts-ignore
   __APP_VERSION_DATE__
 ).toLocaleDateString("se-SE")})`;
+
+const handleKeypress = (event: KeyboardEvent) => {
+  if (!meta.value.canExport) return;
+
+  const currentRouteName = parseInt(router.currentRoute.value.name as string);
+
+  if (event.key === "ArrowLeft" && currentRouteName > 1) {
+    router.push({ name: (currentRouteName - 1).toString() });
+  } else if (event.key === "ArrowRight" && currentRouteName < 6) {
+    router.push({ name: (currentRouteName + 1).toString() });
+  }
+};
+
+// Add and remove the keypress event listener
+onMounted(() => {
+  window.addEventListener("keydown", handleKeypress);
+});
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleKeypress);
+});
 
 const showExport = ref(false);
 </script>
