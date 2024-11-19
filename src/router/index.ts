@@ -57,7 +57,7 @@ const router = createRouter({
       },
     },
     {
-      name: "briefing",
+      name: "1",
       path: "/briefing",
       component: newbriefing,
       props: {
@@ -69,7 +69,7 @@ const router = createRouter({
       },
     },
     {
-      name: "datacard",
+      name: "2",
       path: "/datacard",
       component: newdatacard,
       props: {
@@ -81,7 +81,7 @@ const router = createRouter({
       },
     },
     {
-      name: "steerpoints",
+      name: "3",
       path: "/steerpoints",
       component: newsteerpoints,
       props: {
@@ -93,7 +93,7 @@ const router = createRouter({
       },
     },
     {
-      name: "comms",
+      name: "4",
       path: "/comms",
       component: newcomms,
       props: {
@@ -105,7 +105,7 @@ const router = createRouter({
       },
     },
     {
-      name: "flightmap",
+      name: "5",
       path: "/flightmap",
       component: Flightmap,
       props: {
@@ -117,7 +117,7 @@ const router = createRouter({
       }, // popupCalc.vue
     },
     {
-      name: "commsMatrix",
+      name: "6",
       path: "/commsMatrix",
       component: Commsmatrix,
       props: {

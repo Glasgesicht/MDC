@@ -78,6 +78,7 @@ const items: Ref<MenuItem[]> = computed(() => [
       },
       {
         label: "Flight Settings",
+
         icon: "pi pi-user-edit",
         disabled: !selectedPKG.value,
         command: () => {
@@ -100,22 +101,25 @@ const items: Ref<MenuItem[]> = computed(() => [
       {
         label: "Briefing",
         disabled: !getFlight?.value?.callsign,
+        icon: router.currentRoute.value.name === "1" ? "pi pi-angle-right" : "",
         command: () => {
-          router.push({ name: "briefing" });
+          router.push({ name: "1" });
         },
       },
       {
         label: "Datacard",
         disabled: !getFlight.value?.callsign,
+        icon: router.currentRoute.value.name === "2" ? "pi pi-angle-right" : "",
         command: () => {
-          router.push({ name: "datacard" });
+          router.push({ name: "2" });
         },
       },
       {
         label: "Steerpoints",
         disabled: !getFlight.value?.callsign,
+        icon: router.currentRoute.value.name === "3" ? "pi pi-angle-right" : "",
         command: () => {
-          router.push({ name: "steerpoints" });
+          router.push({ name: "3" });
         },
       },
       /*{
@@ -128,22 +132,25 @@ const items: Ref<MenuItem[]> = computed(() => [
       {
         label: "Comms",
         disabled: !getFlight.value?.callsign,
+        icon: router.currentRoute.value.name === "4" ? "pi pi-angle-right" : "",
         command: () => {
-          router.push({ name: "comms" });
+          router.push({ name: "4" });
         },
       },
       {
         label: "Flight Map",
         disabled: !getFlight.value?.callsign,
+        icon: router.currentRoute.value.name === "5" ? "pi pi-angle-right" : "",
         command: () => {
-          router.push({ name: "flightmap" });
+          router.push({ name: "5" });
         },
       },
       {
         label: "Comms Matrix",
         disabled: !getFlight.value?.callsign,
+        icon: router.currentRoute.value.name === "6" ? "pi pi-angle-right" : "",
         command: () => {
-          router.push({ name: "commsMatrix" });
+          router.push({ name: "6" });
         },
       },
     ],
@@ -206,13 +213,13 @@ const items: Ref<MenuItem[]> = computed(() => [
   {
     label: "Other Pages",
     items: [
-      {
+      /*{
         icon: "pi pi-calculator",
         label: "Popup Calculator",
         command: () => {
           router.push({ name: "popupCalc" });
         },
-      },
+      },*/
       {
         label: "Application Settings",
         icon: "pi pi-cog",
@@ -255,9 +262,39 @@ const showExport = ref(false);
         </div>
       </div>
       <div>
-        <RouterView />
+        <div style="display: flex; align-items: center">
+          <Button
+            v-if="meta.canExport"
+            class="page-button"
+            :disabled="router.currentRoute.value.name === '1'"
+            @click="
+              router.push({
+                name:
+                  parseInt(router.currentRoute.value.name as string) - 1 + '',
+              })
+            "
+            style="height: 100vh; width: 33%; border: none; font-size: 32px"
+            outlined
+            icon="pi pi-chevron-left"
+          />
+          <RouterView />
+          <Button
+            v-if="meta.canExport"
+            class="page-button"
+            style="height: 100vh; width: 33%; border: none"
+            :disabled="router.currentRoute.value.name == '6'"
+            @click="
+              router.push({
+                name:
+                  parseInt(router.currentRoute.value.name as string) + 1 + '',
+              })
+            "
+            outlined
+            icon="pi pi-chevron-right"
+          />
+        </div>
       </div>
-      <div style="position: fixed; top: 0px; right: 0px">
+      <div style="position: fixed; top: 0px; right: 0px; border: none">
         <editHistory />
       </div>
     </div>
@@ -290,6 +327,14 @@ const showExport = ref(false);
   display: flex;
   flex-direction: column;
 }
+
+.pi-chevron-left,
+.pi-chevron-right {
+  font-size: 18px !important;
+  opacity: 0.8;
+} /** 
+html.darkmode body div#app div#app div.split.right div div button.p-button.p-component.p-button-icon-only.p-button-outlined.page-button 
+*/
 
 .left {
   min-width: 200px;
