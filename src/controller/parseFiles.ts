@@ -65,7 +65,7 @@ export async function processJSON(payload: File) {
 
       const globalStore = useGlobalStore();
       globalStore.setTheatre(theatre);
-      globalStore.setMissionStartTime(missionStartTime);
+      globalStore.time.missionStartTime = parseInt(missionStartTime);
       globalStore.setFilename(payload.name);
       globalStore.setFile(true);
     }
