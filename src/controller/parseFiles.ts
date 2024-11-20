@@ -138,9 +138,14 @@ export async function processCF(
     parser
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
-        globalStore.setMissionStartTime(
-          parseInt(res.Mission.Environment[0].Starttime[0])
-        );
+        console.log(res.Mission);
+        globalStore.time = {
+          missionStartTime: parseInt(res.Mission.Environment[0].Starttime[0]),
+          day: parseInt(res.Mission.Environment[0].Day[0]),
+          month: parseInt(res.Mission.Environment[0].Month[0]),
+          year: parseInt(res.Mission.Environment[0].Year[0]),
+        };
+
         globalStore.setTheatre(
           (() => {
             if (res.Mission.Theater[0].toLowerCase().includes("caucasus"))
@@ -478,120 +483,133 @@ export async function processCF(
     // DEPARTURE
 
     if (takeoff.ICAO) {
-      radio1[0] = {
-        freq: takeoff.ATIS.uhf,
-        description: takeoff.ICAO + " " + "ATIS",
-        name: "",
-      };
-      radio2[0] = {
-        freq: takeoff.ATIS.vhf,
-        description: takeoff.ICAO + " " + "ATIS",
-        name: "",
-      };
-
-      radio1[1] = {
-        freq: takeoff.GROUND.uhf,
-        description: takeoff.ICAO + " " + "GRND",
-        name: "",
-      };
-      radio2[1] = {
-        freq: takeoff.GROUND.vhf,
-        description: takeoff.ICAO + " " + "GRND",
-        name: "",
-      };
-
-      radio1[2] = {
-        freq: takeoff.TOWER.uhf,
-        description: takeoff.ICAO + " " + "TOWR",
-        name: "",
-      };
-      radio2[2] = {
-        freq: takeoff.TOWER.vhf,
-        description: takeoff.ICAO + " " + "TOWR",
-        name: "",
-      };
-
-      radio1[3] = {
-        freq: takeoff.APPR.uhf,
-        description: takeoff.ICAO + " " + "APR",
-        name: "",
-      };
-      radio2[3] = {
-        freq: takeoff.APPR.vhf,
-        description: takeoff.ICAO + " " + "APR",
-        name: "",
-      };
+      if (takeoff.ATIS.uhf)
+        radio1[0] = {
+          freq: takeoff.ATIS.uhf,
+          description: takeoff.ICAO + " " + "ATIS",
+          name: "",
+        };
+      if (takeoff.ATIS.vhf)
+        radio2[0] = {
+          freq: takeoff.ATIS.vhf,
+          description: takeoff.ICAO + " " + "ATIS",
+          name: "",
+        };
+      if (takeoff.GROUND.uhf)
+        radio1[1] = {
+          freq: takeoff.GROUND.uhf,
+          description: takeoff.ICAO + " " + "GRND",
+          name: "",
+        };
+      if (takeoff.GROUND.vhf)
+        radio2[1] = {
+          freq: takeoff.GROUND.vhf,
+          description: takeoff.ICAO + " " + "GRND",
+          name: "",
+        };
+      if (takeoff.TOWER.uhf)
+        radio1[2] = {
+          freq: takeoff.TOWER.uhf,
+          description: takeoff.ICAO + " " + "TOWR",
+          name: "",
+        };
+      if (takeoff.TOWER.vhf)
+        radio2[2] = {
+          freq: takeoff.TOWER.vhf,
+          description: takeoff.ICAO + " " + "TOWR",
+          name: "",
+        };
+      if (takeoff.APPR.uhf)
+        radio1[3] = {
+          freq: takeoff.APPR.uhf,
+          description: takeoff.ICAO + " " + "APR",
+          name: "",
+        };
+      if (takeoff.APPR.vhf)
+        radio2[3] = {
+          freq: takeoff.APPR.vhf,
+          description: takeoff.ICAO + " " + "APR",
+          name: "",
+        };
     }
     // LANDING
     if (landing.ICAO) {
-      radio1[8] = {
-        freq: landing.GROUND.uhf,
-        description: landing.ICAO + " " + "GRND",
-        name: "",
-      };
-      radio2[8] = {
-        freq: landing.GROUND.vhf,
-        description: landing.ICAO + " " + "GRND",
-        name: "",
-      };
-
-      radio1[7] = {
-        freq: landing.TOWER.uhf,
-        description: landing.ICAO + " " + "TOWR",
-        name: "",
-      };
-      radio2[7] = {
-        freq: landing.TOWER.vhf,
-        description: landing.ICAO + " " + "TOWR",
-        name: "",
-      };
-
-      radio1[6] = {
-        freq: landing.APPR.uhf,
-        description: landing.ICAO + " " + "APR",
-        name: "",
-      };
-      radio2[6] = {
-        freq: landing.APPR.vhf,
-        description: landing.ICAO + " " + "APR",
-        name: "",
-      };
+      if (landing.GROUND.uhf)
+        radio1[8] = {
+          freq: landing.GROUND.uhf,
+          description: landing.ICAO + " " + "GRND",
+          name: "",
+        };
+      if (landing.GROUND.vhf)
+        radio2[8] = {
+          freq: landing.GROUND.vhf,
+          description: landing.ICAO + " " + "GRND",
+          name: "",
+        };
+      if (landing.TOWER.uhf)
+        radio1[7] = {
+          freq: landing.TOWER.uhf,
+          description: landing.ICAO + " " + "TOWR",
+          name: "",
+        };
+      if (landing.TOWER.vhf)
+        radio2[7] = {
+          freq: landing.TOWER.vhf,
+          description: landing.ICAO + " " + "TOWR",
+          name: "",
+        };
+      if (landing.APPR.uhf)
+        radio1[6] = {
+          freq: landing.APPR.uhf,
+          description: landing.ICAO + " " + "APR",
+          name: "",
+        };
+      if (landing.APPR.vhf)
+        radio2[6] = {
+          freq: landing.APPR.vhf,
+          description: landing.ICAO + " " + "APR",
+          name: "",
+        };
     }
     // ALTERNATE
-    if (alt.ICAO) {
-      radio1[11] = {
-        freq: alt.GROUND.uhf,
-        description: alt.ICAO + " " + "GRND",
-        name: "",
-      };
-      radio2[11] = {
-        freq: alt.GROUND.vhf,
-        description: alt.ICAO + " " + "GRND",
-        name: "",
-      };
-
-      radio1[10] = {
-        freq: alt.TOWER.uhf,
-        description: alt.ICAO + " " + "TOWR",
-        name: "",
-      };
-      radio2[10] = {
-        freq: alt.TOWER.vhf,
-        description: alt.ICAO + " " + "TOWR",
-        name: "",
-      };
-
-      radio1[9] = {
-        freq: alt.APPR.uhf,
-        description: alt.ICAO + " " + "APR",
-        name: "",
-      };
-      radio2[9] = {
-        freq: alt.APPR.vhf,
-        description: alt.ICAO + " " + "APR",
-        name: "",
-      };
-    }
+    if (alt.GROUND.uhf)
+      if (alt.ICAO) {
+        radio1[11] = {
+          freq: alt.GROUND.uhf,
+          description: alt.ICAO + " " + "GRND",
+          name: "",
+        };
+        if (alt.GROUND.vhf)
+          radio2[11] = {
+            freq: alt.GROUND.vhf,
+            description: alt.ICAO + " " + "GRND",
+            name: "",
+          };
+        if (alt.TOWER.uhf)
+          radio1[10] = {
+            freq: alt.TOWER.uhf,
+            description: alt.ICAO + " " + "TOWR",
+            name: "",
+          };
+        if (alt.TOWER.vhf)
+          radio2[10] = {
+            freq: alt.TOWER.vhf,
+            description: alt.ICAO + " " + "TOWR",
+            name: "",
+          };
+        if (alt.APPR.uhf)
+          radio1[9] = {
+            freq: alt.APPR.uhf,
+            description: alt.ICAO + " " + "APR",
+            name: "",
+          };
+        if (alt.APPR.vhf)
+          radio2[9] = {
+            freq: alt.APPR.vhf,
+            description: alt.ICAO + " " + "APR",
+            name: "",
+          };
+      }
     radio1[13] = {
       freq: "243.000",
       description: "GUARD",
