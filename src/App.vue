@@ -28,6 +28,8 @@ import { download } from "./utils/download";
 import { RouterView, useRoute } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
 import editHistory from "./components/history/editHistory.vue";
+import Commsmatrix from "./views/mdc/commsmatrix.vue";
+import Flightmap from "./views/mdc/map.vue";
 
 const showROE = ref(false);
 const { selectedPKG, packages } = storeToRefs(usePackageStore());
@@ -297,6 +299,7 @@ const showExport = ref(false);
           <Newdatacard :pagenr="2" />
           <Newsteerpoints :pagenr="3" />
           <Newcomms :pagenr="4" />
+          <Commsmatrix :pagenr="5" />
         </div>
       </div>
       <div>

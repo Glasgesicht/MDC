@@ -138,7 +138,7 @@ export async function processCF(
     parser
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
-        console.log(res.Mission);
+        //  console.log(res.Mission);
         globalStore.time = {
           missionStartTime: parseInt(res.Mission.Environment[0].Starttime[0]),
           day: parseInt(res.Mission.Environment[0].Day[0]),

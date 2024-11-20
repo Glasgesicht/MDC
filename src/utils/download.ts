@@ -59,7 +59,7 @@ export const download = () => {
 
     const childDivs = Array.from(pagesDiv.children)
       .filter((child) => child.tagName.toLowerCase() === "div")
-      .slice(0, 4);
+      .slice(0, 5);
     if (!childDivs) {
       console.error("Could not find child elements of 'mdcpages'");
       return;
@@ -157,7 +157,7 @@ export const download = () => {
       Object.assign({
         packages: packages.value,
         theatre: globalStore.theatre,
-        missionStartTime: globalStore.missionStartTime, //@ts-ignore
+        missionStartTime: globalStore.time.missionStartTime, //@ts-ignore
         version: __APP_VERSION__,
       }),
       null,
