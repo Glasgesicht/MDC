@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { commTables } from "@/config/frequencies";
+import { useGlobalStore } from "@/stores/theatreStore";
+const globalStore = useGlobalStore();
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -14,7 +16,16 @@ const { pagenr } = defineProps({
     <div class="c36 r bdr ctr">NATO SECRET - SHRED AFTER USE</div>
     <div class="c3 y bdr ctr">PAGE {{ pagenr }}</div>
     <a class="c33 g bdr ctr"
-      >CJTF-13 Frequency Matrix issue 1 - {{ new Date().toDateString() }}</a
+      >CJTF-13 Frequency Matrix issue 1 -
+      {{
+        new Date(
+          globalStore.time.year +
+            "-" +
+            globalStore.time.month +
+            "-" +
+            globalStore.time.day
+        ).toDateString()
+      }}</a
     >
     <div class="inner-grid c36 r47">
       <!-- Header Row with Numbering -->
