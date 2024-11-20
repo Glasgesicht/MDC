@@ -606,7 +606,6 @@ const groupedFlights = computed(() =>
         />
         <Button
           v-if="getFlight.ARR.ICAO"
-          style="color: gray"
           icon="pi pi-times-circle"
           @click="deleteAirport('ARR')"
           text
@@ -630,7 +629,6 @@ const groupedFlights = computed(() =>
           v-if="getFlight.ALT.ICAO"
           icon="pi pi-times-circle"
           @click="deleteAirport('ALT')"
-          style="color: gray"
           text
         />
       </div>
@@ -657,7 +655,6 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio1[4].freq"
             icon="pi pi-times-circle"
-            style="color: gray"
             @click="clearComms(4, 'pri')"
             text
           />
@@ -684,7 +681,6 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio2[4].freq"
             icon="pi pi-times-circle"
-            style="color: gray"
             @click="clearComms(4, 'sec')"
             text
           />
@@ -713,7 +709,6 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio1[5].freq"
             icon="pi pi-times-circle"
-            style="color: gray"
             @click="clearComms(5, 'pri')"
             text
           />
@@ -740,7 +735,6 @@ const groupedFlights = computed(() =>
           <Button
             v-if="getFlight.comms.radio2[5].freq"
             icon="pi pi-times-circle"
-            style="color: gray"
             @click="clearComms(5, 'sec')"
             text
           />
@@ -769,7 +763,6 @@ const groupedFlights = computed(() =>
         <Button
           v-if="tanker"
           icon="pi pi-times-circle"
-          style="color: gray"
           @click="clearComms(12, parseFloat(tanker.freq) > 200 ? 'pri' : 'sec')"
           text
         />
@@ -869,7 +862,6 @@ const groupedFlights = computed(() =>
               ><Button
                 text
                 icon="pi pi-eraser"
-                style="color: gray"
                 @click="clearComms(index, 'pri')"
             /></template>
           </Column>
@@ -931,7 +923,6 @@ const groupedFlights = computed(() =>
               ><Button
                 text
                 icon="pi pi-eraser"
-                style="color: gray"
                 @click="clearComms(index, 'sec')"
             /></template>
           </Column>

@@ -256,12 +256,21 @@ const handleKeypress = (event: KeyboardEvent) => {
   }
 };
 
+/**
+ * idk why CSS media queries don't work, use this ungodly workaround for now
+ */
+const isSmallScreen = ref(window.innerWidth <= 1310);
+const updateScreenSize = () => {
+  isSmallScreen.value = window.innerWidth <= 1310;
+};
 // Add and remove the keypress event listener
 onMounted(() => {
   window.addEventListener("keydown", handleKeypress);
+  window.addEventListener("resize", updateScreenSize);
 });
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", handleKeypress);
+  window.removeEventListener("resize", updateScreenSize);
 });
 
 const showExport = ref(false);
@@ -295,8 +304,7 @@ const showExport = ref(false);
           :style="meta.canExport ? 'display: flex; align-items: center' : ''"
         >
           <Button
-            v-if="meta.canExport"
-            class="page-button"
+            v-if="meta.canExport && !isSmallScreen"
             :disabled="router.currentRoute.value.name === '1'"
             @click="
               router.push({
@@ -304,15 +312,14 @@ const showExport = ref(false);
                   parseInt(router.currentRoute.value.name as string) - 1 + '',
               })
             "
-            style="height: 100vh; width: 33%; border: none; font-size: 32px"
+            style="height: 100vh; width: 28%; border: none; font-size: 32px"
             outlined
             icon="pi pi-chevron-left"
           />
           <RouterView />
           <Button
-            v-if="meta.canExport"
-            class="page-button"
-            style="height: 100vh; width: 33%; border: none"
+            v-if="meta.canExport && !isSmallScreen"
+            style="height: 100vh; width: 32%; border: none"
             :disabled="router.currentRoute.value.name == '6'"
             @click="
               router.push({

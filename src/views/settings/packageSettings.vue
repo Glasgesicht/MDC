@@ -204,7 +204,7 @@
       <p>Threat Classes</p>
       <DataTable
         :value="threats"
-        style="min-width: 600px"
+        style="min-width: 600px; max-width: 1100px"
         editMode="cell"
         @cell-edit-complete="onCellEditComplete"
         showGridlines

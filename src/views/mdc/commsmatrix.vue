@@ -25,11 +25,24 @@ const { pagenr } = defineProps({
         class="child"
       >
         <div v-if="index % 8 === 0" class="c40 child">
-          <div v-for="i in new Array(10).keys()" class="c4 ctr bdr row-header">
+          <div
+            v-for="i in new Array(10).keys()"
+            class="c4 ctr bdr row-header"
+            :style="
+              (i ? '' : 'border-right: 2px solid black') +
+              '; border-top: 2px solid black;border-bottom: 2px solid black'
+            "
+          >
             {{ i || "" }}
           </div>
         </div>
-        <div class="bdr c4 ctr" :style="`color:${row};background-color:grey`">
+        <div
+          class="bdr c4 ctr"
+          :style="
+            (index % 2 ? 'background-color:lightgrey' : '') +
+            ';border-right: 2px solid black'
+          "
+        >
           {{ row }}
         </div>
         <div
