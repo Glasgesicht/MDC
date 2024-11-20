@@ -30,7 +30,6 @@ import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import type { Flight, Package } from "@/types/mdcDataTypes";
 import { storeToRefs } from "pinia";
-import Dropdown, { type DropdownChangeEvent } from "primevue/dropdown";
 import { computed, ref } from "vue";
 
 const { showPKGSelection = true, showFlightSelection = true } = defineProps<{
