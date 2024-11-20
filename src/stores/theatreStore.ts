@@ -8,22 +8,34 @@ export const useGlobalStore = defineStore("global", {
     file: boolean;
     filename: string;
     theatre: theatre;
-    missionStartTime: number;
+    time: {
+      missionStartTime: number;
+      year: number;
+      month: number;
+      day: number;
+    };
     stateChanged: number;
+    weather: {};
     callsigns: Array<any>;
     agencies: Array<any>; //TODO: Move agencies here
-    poe: Array<any>
-    airports: Array<any> // TODO: Move them here
+    poe: Array<any>;
+    airports: Array<any>; // TODO: Move them here
   } => ({
     file: false,
     theatre: "Caucasus",
-    missionStartTime: 0,
+    time: {
+      missionStartTime: 0,
+      year: 2017,
+      month: 1,
+      day: 1,
+    },
     stateChanged: 0,
+    weather: {},
     filename: "Select File",
     callsigns: new Array(),
     agencies: new Array(),
     poe: new Array(), // TODO: Points of interests
-    airports: new Array()
+    airports: new Array(),
   }),
   actions: {
     setFile(file: boolean) {
@@ -31,9 +43,6 @@ export const useGlobalStore = defineStore("global", {
     },
     setTheatre(theatre: theatre) {
       this.$state.theatre = theatre;
-    },
-    setMissionStartTime(missionStartTime: number) {
-      this.$state.missionStartTime = missionStartTime;
     },
     setStateChanged() {
       this.$state.stateChanged = Date.now();
@@ -46,7 +55,6 @@ export const useGlobalStore = defineStore("global", {
     getFile: (state) => state.file,
     getStateChanged: (state) => state.stateChanged,
     getTheatre: (state) => state.theatre,
-    getMissionStartTime: (state) => state.missionStartTime,
     getFilename: (state) => state.filename,
   },
 });
