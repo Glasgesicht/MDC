@@ -27,9 +27,7 @@ const useDefaults = ref(true);
 
 const flightStore = useFlightStore();
 const { getFlight } = storeToRefs(flightStore);
-const { file, stateChanged, theatre, missionStartTime } = storeToRefs(
-  useGlobalStore()
-);
+const { file, stateChanged, theatre, time } = storeToRefs(useGlobalStore());
 
 function callsignChangeEvent(event: any) {
   if (event.value.callsign) {
