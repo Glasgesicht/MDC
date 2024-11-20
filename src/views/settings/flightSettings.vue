@@ -353,8 +353,15 @@ const groupedFlights = computed(() =>
     </div>
   </div>
 
-  <TabView v-if="file && getFlight.isActive" style="margin-top: 10px">
-    <TabPanel header="Common Settings">
+  <Tabs value="0" v-if="file && getFlight.isActive" style="margin-top: 10px">
+    <TabList>
+      <Tab value="0">Common Settings</Tab>
+      <Tab value="1">Gameplan</Tab>
+      <Tab value="2">COMMS Settings</Tab>
+      <Tab value="3">MISC Settings</Tab>
+      <Tab value="4">HARM/HTS</Tab>
+    </TabList>
+    <TabPanel value="0">
       <div class="">
         <p>Member in selected Flight</p>
         <DataTable
@@ -480,7 +487,7 @@ const groupedFlights = computed(() =>
         </DataTable>
       </div>
     </TabPanel>
-    <TabPanel header="Gameplan">
+    <TabPanel value="1">
       <TextArea
         style="min-width: 600px; min-height: 200px; resize: none"
         v-model="getFlight.gameplan"
@@ -489,8 +496,8 @@ const groupedFlights = computed(() =>
         class=""
       />
     </TabPanel>
-    <TabPanel header="COMMS Settings"></TabPanel>
-    <TabPanel header="MISC Settings">
+    <TabPanel value="2"></TabPanel>
+    <TabPanel value="3">
       <div class="miscSettings">
         <Checkbox />
         <a>Bingo</a>
@@ -556,8 +563,8 @@ const groupedFlights = computed(() =>
         <InputNumber />
       </div>
     </TabPanel>
-    <TabPanel header="HARM/HTS"> Work in Progress</TabPanel>
-  </TabView>
+    <TabPanel value="4"> Work in Progress</TabPanel>
+  </Tabs>
   <div class="parent" v-if="file && getFlight.isActive">
     <!--<div class="item">
         <p>COMMS ASSIGNMENT</p>
