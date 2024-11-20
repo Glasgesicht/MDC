@@ -122,7 +122,7 @@ const selectedFreqs = computed(() => {
   };
 });
 
-function FlightMemberUpdate() {
+function flightMemberUpdate() {
   getFlight.value.units.forEach((unit) => {
     if (!unit.callsign) return;
     if (unit.callsign.length < 3) return;
@@ -303,18 +303,19 @@ const groupedFlights = computed(() =>
       <div
         v-if="isCustomCalsign && getFlight"
         class="parent"
-        style="max-width: 250px"
+        style="width: 250px"
       >
         <InputText
           v-model="getFlight.callsign"
           @blur="flightStore.updateFligh()"
+          style="width: 100px"
         />
         <InputNumber
           :min="1"
           :max="9"
           v-model="getFlight.callsignNumber"
-          class="fixW"
-          style="max-width: 75px; margin-left: 5px"
+          class="nrfix"
+          style="width: 50px; margin-left: 5px; display: block"
           @blur="useFlightStore().updateFligh()"
         />
       </div>
@@ -384,7 +385,7 @@ const groupedFlights = computed(() =>
             <template #editor="{ data, field, index }">
               <Select
                 editable
-                @change="FlightMemberUpdate"
+                @change="flightMemberUpdate"
                 class="redefSize"
                 :options="_313ref"
                 v-model="getFlight.units[index].callsign"
@@ -977,7 +978,9 @@ const groupedFlights = computed(() =>
 .input {
   width: 100%;
 }
-
+.nrfix > * {
+  width: 100% !important;
+}
 .miscSettings {
   display: grid;
   grid-template-columns: 100px 140px 300px;
