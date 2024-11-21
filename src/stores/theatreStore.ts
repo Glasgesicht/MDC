@@ -15,7 +15,30 @@ export const useGlobalStore = defineStore("global", {
       day: number;
     };
     stateChanged: number;
-    weather: {};
+    magVar: number;
+    weather: {
+      cloudBase: number;
+      cloudCoverage: number;
+      cloudThickness: number;
+      dust: boolean;
+      dustVisibility: number;
+      dynamic: boolean;
+      fog: boolean;
+      fogThickness: number;
+      precipitation: number;
+      qnh: number;
+      temperature: number;
+      turbulence: number;
+      visibility: number;
+      wind33_Dir: number;
+      wind33_Speed: number;
+      wind1600_Dir: number;
+      wind1600_Speed: number;
+      wind6600_Dir: number;
+      wind6600_Speed: number;
+      wind26000_Dir: number;
+      wind26000_Speed: number;
+    };
     callsigns: Array<any>;
     agencies: Array<any>; //TODO: Move agencies here
     poe: Array<any>;
@@ -30,7 +53,30 @@ export const useGlobalStore = defineStore("global", {
       day: 1,
     },
     stateChanged: 0,
-    weather: {},
+    magVar: 0,
+    weather: {
+      cloudBase: 0,
+      cloudCoverage: 0,
+      cloudThickness: 0,
+      dust: false,
+      dustVisibility: 0,
+      dynamic: false,
+      fog: false,
+      fogThickness: 0,
+      precipitation: 0,
+      qnh: 0,
+      temperature: 0,
+      turbulence: 0,
+      visibility: 0,
+      wind33_Dir: 0,
+      wind33_Speed: 0,
+      wind1600_Dir: 0,
+      wind1600_Speed: 0,
+      wind6600_Dir: 0,
+      wind6600_Speed: 0,
+      wind26000_Dir: 0,
+      wind26000_Speed: 0,
+    },
     filename: "Select File",
     callsigns: new Array(),
     agencies: new Array(),
