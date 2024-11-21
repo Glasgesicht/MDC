@@ -21,7 +21,15 @@ const landingTime = computed(() => {
   const date = getFlight?.value.waypoints.find((n) =>
     n.type.toLowerCase().includes("land")
   )?.tot;
-  if (date) return new Date(date).toTimeString();
+  if (date)
+    return (
+      new Date(date)
+        .toTimeString()
+        ?.match(/.*?(\d{2}:\d{2})/)
+        ?.at(1)
+        ?.padStart(5, "0") + "Z"
+    );
+  return "";
 });
 
 const getUnit = computed(() => (i: number) => {
@@ -174,12 +182,7 @@ const AAR = getFlight?.value.waypoints
     <input class="c3 w bdr ctr" v-model="getFlight.takeoff" />
     <div class="c3 g bdr ctr">LAND</div>
     <div class="c3 tb w bdr ctr">
-      {{
-        landingTime
-          ?.match(/.*?(\d{2}:\d{2})/)
-          ?.at(1)
-          ?.padStart(5, "0") + "Z"
-      }}
+      {{ landingTime }}
     </div>
 
     <div class="c36 r9 w bdr ctr"></div>
@@ -383,11 +386,11 @@ const AAR = getFlight?.value.waypoints
           index < 2 && getFlight.comms.radio1[index + 4] !== undefined
             ? getFlight.comms.radio1[index + 4]?.name +
               " " +
-              getFlight.comms.radio1[index + 4]?.number
+              (getFlight.comms.radio1[index + 4]?.number ?? "")
             : ""
         }}
       </div>
-      <div :class="`c3 g`">{{ "2" + index }}</div>
+      <div :class="`c3 g ctr bdr`">{{ 5 + index }}</div>
       <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr ctr`">
         {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }}
       </div>
