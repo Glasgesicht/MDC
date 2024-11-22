@@ -34,13 +34,12 @@ export const download = () => {
 
       const imageBlob = await imageToBlob(image);
 
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(imageBlob);
-      link.download = `${getFlight.value.callsign}_${
-        router.currentRoute.value.name as string
-      }.png`;
-      link.click();
-      URL.revokeObjectURL(link.href);
+      triggerDownload(
+        imageBlob,
+        `${getFlight.value.callsign}_${
+          router.currentRoute.value.name as string
+        }.png`
+      );
     } catch (error) {
       console.error("Failed to download page as image", error);
     }
@@ -129,24 +128,35 @@ export const download = () => {
   const downloadImagesAsZip = async (pageImages: HTMLImageElement[]) => {
     const zip = new JSZip();
 
-    for (let i = 0; i < pageImages.length; i++) {
-      const image = pageImages[i];
-      const imageName = `P${i + 11}.png`;
+    // Convert all images to blobs concurrently
+    const imagePromises = pageImages.map((image, index) =>
+      imageToBlob(image).then((blob) => ({
+        name: `P${index + 11}.png`,
+        blob,
+      }))
+    );
 
-      // Ensure the image is converted to a blob before adding it to the zip file
-      const imageBlob = await imageToBlob(image);
-      zip.file(imageName, imageBlob);
+    const imageFiles = await Promise.all(imagePromises);
+
+    // Add files to zip
+    for (const { name, blob } of imageFiles) {
+      zip.file(name, blob);
     }
 
-    zip.generateAsync({ type: "blob" }).then((blob) => {
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${getFlight.value.callsign}.zip`;
-      link.click();
+    // Generate zip blob asynchronously
+    const zipBlob = await zip.generateAsync({ type: "blob" });
 
-      // Clean up
-      URL.revokeObjectURL(link.href);
-    });
+    // Trigger download
+    triggerDownload(zipBlob, `${getFlight.value.callsign}.zip`);
+  };
+
+  // Utility function to trigger a download
+  const triggerDownload = (blob: Blob, filename: string) => {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href); // Cleanup
   };
 
   async function toJSON() {
@@ -164,14 +174,8 @@ export const download = () => {
       2
     );
     const blob = new Blob([jsonString], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = globalStore.filename.split(".")[0] + ".json";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+
+    triggerDownload(blob, globalStore.filename.split(".")[0] + ".json");
   }
 
   return {
