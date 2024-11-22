@@ -8,7 +8,7 @@ import {
   calculateDistance,
   toLatString,
   toLongString,
-} from "@/utils/utilFunctions";
+} from "@/controller/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 const { getFlight } = storeToRefs(useFlightStore());
@@ -327,7 +327,7 @@ const showROE = inject("showROE");
   </div>
 </template>
 <style scoped>
-@import "@/assets/newstyle.css";
+@import "@/assets/styles/newstyle.css";
 
 .font500 {
   font-weight: 500;

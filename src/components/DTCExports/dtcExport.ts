@@ -1,4 +1,4 @@
-import { compressString } from "@/utils/dtc";
+import { compressString } from "@/controller/utils/dtc";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
@@ -12,7 +12,7 @@ import type {
   DTCF15E,
   MiscF15E,
 } from "../../types/dtcTypes";
-import { bullseyes } from "@/config/bullseye";
+import { bullseyes } from "@/config/defaults/bullseye";
 import type { theatre } from "@/types/theatre";
 import { useGlobalStore } from "@/stores/theatreStore";
 

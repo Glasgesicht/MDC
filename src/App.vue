@@ -15,7 +15,7 @@ import { useFlightStore } from "./stores/flightStore";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "./stores/theatreStore";
 import { processCF, processJSON } from "./controller/parseFiles";
-import { useDTCexports } from "@/components/DTCExports/dtc";
+import { useDTCexports } from "@/components/DTCExports/dtcExport";
 
 import Newsteerpoints from "./views/mdc/newsteerpoints.vue";
 import Newdatacard from "./views/mdc/newdatacard.vue";
@@ -24,7 +24,7 @@ import Newbriefing from "./views/mdc/newbriefing.vue";
 
 import type { MenuItem } from "primevue/menuitem";
 import router from "./router";
-import { download } from "./utils/download";
+import { download } from "./controller/utils/download";
 import { RouterView, useRoute } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
 import editHistory from "./components/history/editHistory.vue";

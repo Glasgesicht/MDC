@@ -90,7 +90,7 @@ const showROE = inject("showROE");
 </template>
 
 <style scoped>
-@import "@/assets/newstyle.css";
+@import "@/assets/styles/newstyle.css";
 .parent {
   display: inline-grid;
   grid-template-columns: repeat(36, 1fr);

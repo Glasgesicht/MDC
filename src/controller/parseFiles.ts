@@ -11,10 +11,10 @@ import type {
 import { initFlight } from "@/types/mdcDataTypes"; // @ts-ignore
 import JSZip from "jszip";
 import xml2js from "xml2js";
-import { flights } from "../config/flights";
-import { getSTN } from "@/utils/utilFunctions";
+import { flights } from "../config/defaults/flights";
+import { getSTN } from "@/controller/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
-import { airports } from "../config/airfields";
+import { airports } from "../config/defaults/airfields";
 import { DateTime } from "luxon";
 import { ref, watch } from "vue";
 import { Coordinate } from "./coordinates";
@@ -138,7 +138,7 @@ export async function processCF(
     parser
       .parseStringPromise(input)
       .then((res: { Mission: Mission }) => {
-        //  console.log(res.Mission);
+        console.log(res.Mission);
         globalStore.time = {
           missionStartTime: parseInt(res.Mission.Environment[0].Starttime[0]),
           day: parseInt(res.Mission.Environment[0].Day[0]),

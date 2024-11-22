@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createPinia, type Store } from "pinia";
 import PrimeVue from "primevue/config";
-import { style } from "./config/style";
+import { style } from "./config/styling/style";
 
 import { definePreset } from "@primevue/themes";
 
@@ -10,7 +10,7 @@ import router from "./router";
 import Aura from "@primevue/themes/aura";
 
 import "primeicons/primeicons.css";
-import "./assets/main.css";
+import "./assets/styles/main.css";
 
 const app = createApp(App);
 const pinia = createPinia();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { flights } from "@/config/flights";
-import { rnlaf313members } from "@/config/member";
+import { flights } from "@/config/defaults/flights";
+import { rnlaf313members } from "@/config/defaults/member";
 import { useFlightStore } from "@/stores/flightStore";
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
@@ -8,11 +8,11 @@ import { computed, ref, watch, type Ref } from "vue";
 import { useGlobalStore } from "@/stores/theatreStore";
 
 import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
-import { getSTN } from "@/utils/utilFunctions";
+import { getSTN } from "@/controller/utils/utilFunctions";
 
 import toDTC from "@/components/DTCExports/commsToDTC.vue";
-import { commTables, tacticalFreqs } from "@/config/frequencies";
-import { airports, airfieldEmpty } from "@/config/airfields";
+import { commTables, tacticalFreqs } from "@/config/defaults/frequencies";
+import { airports, airfieldEmpty } from "@/config/defaults/airfields";
 import type { WritableComputedRef } from "vue";
 import type { Coordinate } from "@/controller/coordinates";
 

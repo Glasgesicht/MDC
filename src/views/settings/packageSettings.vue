@@ -356,12 +356,12 @@ import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
 import { threats, usePackageStore } from "@/stores/packageStore";
 import { useGlobalStore } from "@/stores/theatreStore";
 import { storeToRefs } from "pinia";
-import { ramrods } from "@/config/ramrod";
+import { ramrods } from "@/config/defaults/ramrod";
 import { computed, ref, toRaw, type WritableComputedRef } from "vue";
 
 import SelectFlight from "@/components/PackageFlightSelection/SelectFlight.vue";
 
-import { toLatString, toLongString } from "@/utils/utilFunctions";
+import { toLatString, toLongString } from "@/controller/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 
 const { stateChanged } = storeToRefs(useGlobalStore());

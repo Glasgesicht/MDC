@@ -27,5 +27,5 @@ const { getFlight } = storeToRefs(useFlightStore());
 </script>
 
 <style lang="css" scoped>
-@import "@/assets/newstyle.css";
+@import "@/assets/styles/newstyle.css";
 </style>

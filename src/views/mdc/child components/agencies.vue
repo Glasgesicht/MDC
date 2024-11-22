@@ -42,7 +42,7 @@
 import { usePackageStore } from "@/stores/packageStore";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import { fromFreqency } from "@/config/frequencies";
+import { fromFreqency } from "@/config/defaults/frequencies";
 import { useFlightStore } from "@/stores/flightStore";
 
 const packageStore = usePackageStore();
@@ -70,5 +70,5 @@ const agencies = computed(() =>
 </script>
 
 <style scoped>
-@import "@/assets/newstyle.css";
+@import "@/assets/styles/newstyle.css";
 </style>

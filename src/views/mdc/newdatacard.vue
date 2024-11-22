@@ -7,7 +7,7 @@ import { threats, usePackageStore } from "@/stores/packageStore";
 import {
   generateInlineGrid,
   generateInlineGridFixed,
-} from "@/utils/utilFunctions";
+} from "@/controller/utils/utilFunctions";
 import { useFlightStore } from "@/stores/flightStore";
 import type { Coordinate } from "@/controller/coordinates";
 
@@ -402,7 +402,7 @@ const AAR = getFlight?.value.waypoints
   </div>
 </template>
 <style scoped>
-@import "@/assets/newstyle.css";
+@import "@/assets/styles/newstyle.css";
 
 .font500 {
   font-weight: 500;

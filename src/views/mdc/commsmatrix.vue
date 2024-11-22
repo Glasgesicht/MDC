@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { commTables } from "@/config/frequencies";
+import { commTables } from "@/config/defaults/frequencies";
 import { useGlobalStore } from "@/stores/theatreStore";
 const globalStore = useGlobalStore();
 
@@ -75,7 +75,7 @@ const { pagenr } = defineProps({
 </template>
 
 <style scoped>
-@import "@/assets/newstyle.css";
+@import "@/assets/styles/newstyle.css";
 
 .inner-grid {
   display: inline-grid;

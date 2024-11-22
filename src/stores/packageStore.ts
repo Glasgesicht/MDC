@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import type { Package } from "@/types/mdcDataTypes";
-import { threatRanges } from "@/config/threatRanges";
+import { threatRanges } from "@/config/defaults/threatRanges";
 
 export const initState = {
   airThreat: "",
