@@ -1,5 +1,5 @@
-import { usePackageStore } from "@/stores/packageStore";
-import { useGlobalStore } from "@/stores/theatreStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
+import { useGlobalStore } from "@/controller/stores/theatreStore";
 import type {
   Flight,
   Mission,
@@ -13,7 +13,7 @@ import JSZip from "jszip";
 import xml2js from "xml2js";
 import { flights } from "../config/defaults/flights";
 import { getSTN } from "@/controller/utils/utilFunctions";
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import { airports } from "../config/defaults/airfields";
 import { DateTime } from "luxon";
 import { ref, watch } from "vue";
@@ -97,8 +97,8 @@ export async function processCF(
     | ArrayBuffer
     | Blob
     | Promise<
-        string | number[] | Uint8Array | ArrayBuffer | Blob
-      > /* cf file is a zip */
+      string | number[] | Uint8Array | ArrayBuffer | Blob
+    > /* cf file is a zip */
 ): Promise<void> {
   return readCF(payload).then((res) => parseCfXML(res));
 

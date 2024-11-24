@@ -1,33 +1,18 @@
 <template>
-  <Select
-    v-model="selectedPackage"
-    :options="packages"
-    class="m-5"
-    optionLabel="name"
-    placeholder="Select A Package"
-    @change="flightStore.selectedFlightId = 0"
-  />
-  <Select
-    v-model="selectedFlight"
-    class="m-5"
-    :options="selectedPKG?.flights"
-    :disabled="!selectedPKG"
-    optionLabel="callsign"
-    placeholder="Select A Flight"
-    ><template #option="{ option }"
-      >{{ option?.callsign }} {{ option?.callsignNumber }}</template
-    ><template #value="{ value }"
-      >{{ value?.callsign }}
+  <Select v-model="selectedPackage" :options="packages" class="m-5" optionLabel="name" placeholder="Select A Package"
+    @change="flightStore.selectedFlightId = 0" />
+  <Select v-model="selectedFlight" class="m-5" :options="selectedPKG?.flights" :disabled="!selectedPKG"
+    optionLabel="callsign" placeholder="Select A Flight"><template #option="{ option }">{{ option?.callsign }} {{
+      option?.callsignNumber }}</template><template #value="{ value }">{{ value?.callsign }}
       {{
         value?.callsignNumber > 0 ? value?.callsignNumber : `Select Flight`
-      }}</template
-    >
+      }}</template>
   </Select>
 </template>
 
 <script setup lang="ts">
-import { useFlightStore } from "@/stores/flightStore";
-import { usePackageStore } from "@/stores/packageStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import type { Flight, Package } from "@/types/mdcDataTypes";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";

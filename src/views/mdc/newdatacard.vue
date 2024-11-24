@@ -2,13 +2,13 @@
 import { computed } from "vue";
 
 import { storeToRefs } from "pinia";
-import { threats, usePackageStore } from "@/stores/packageStore";
+import { threats, usePackageStore } from "@/controller/stores/packageStore";
 
 import {
   generateInlineGrid,
   generateInlineGridFixed,
 } from "@/controller/utils/utilFunctions";
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import type { Coordinate } from "@/controller/coordinates";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -221,11 +221,11 @@ const AAR = getFlight?.value.waypoints
           {{
             AAR.at(index)?.time
               ? hhmmss(AAR.at(index)?.time ?? "") +
-                "-" +
-                takeoffTime(
-                  hhmmss(AAR.at(index)?.time ?? ""),
-                  AAR.at(index)?.activity ?? ""
-                )
+              "-" +
+              takeoffTime(
+                hhmmss(AAR.at(index)?.time ?? ""),
+                AAR.at(index)?.activity ?? ""
+              )
               : ""
           }}
         </div>
@@ -233,27 +233,27 @@ const AAR = getFlight?.value.waypoints
           {{
             tankers.at(index)
               ? selectedPKG?.bullseyes.find(
-                  (x) => x.wp == getFlight.misc.BullseyeWP
-                )?.name
+                (x) => x.wp == getFlight.misc.BullseyeWP
+              )?.name
               : ""
           }}
           {{
             tankers.at(index)
               ? selectedPKG.bullseyes
-                  .find((n) => n.wp == getFlight.misc.BullseyeWP)
-                  ?.location.calculateDistance(
-                    tankers.at(index)!.location as Coordinate
-                  )
-                  .toFixed(0) + " / "
+                .find((n) => n.wp == getFlight.misc.BullseyeWP)
+                ?.location.calculateDistance(
+                  tankers.at(index)!.location as Coordinate
+                )
+                .toFixed(0) + " / "
               : ""
           }}
           {{
             tankers.at(index)
               ? selectedPKG.bullseyes
-                  .find((n) => n.wp == getFlight.misc.BullseyeWP)
-                  ?.location.headingTo(
-                    tankers.at(index)!.location as Coordinate
-                  ) + "nm"
+                .find((n) => n.wp == getFlight.misc.BullseyeWP)
+                ?.location.headingTo(
+                  tankers.at(index)!.location as Coordinate
+                ) + "nm"
               : ""
           }}
         </div>
@@ -383,26 +383,20 @@ const AAR = getFlight?.value.waypoints
       </div>
       <div :class="`c5 w ${index < 2 ? 'w' : 'hr'} bdr ctr`">
         {{
-          index < 2 && getFlight.comms.radio1[index + 4] !== undefined
-            ? getFlight.comms.radio1[index + 4]?.name +
-              " " +
-              (getFlight.comms.radio1[index + 4]?.number ?? "")
-            : ""
-        }}
+          index < 2 && getFlight.comms.radio1[index + 4] !== undefined ? getFlight.comms.radio1[index + 4]?.name + " " +
+            (getFlight.comms.radio1[index + 4]?.number ?? "") : "" }} </div>
+          <div :class="`c3 g ctr bdr`">{{ 5 + index }}</div>
+          <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr ctr`">
+            {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }} </div>
+              <input :class="`c3 hr bdr ctr`" />
+          </div>
+          <div class="c36 r bdr ctr">
+            RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+          </div>
       </div>
-      <div :class="`c3 g ctr bdr`">{{ 5 + index }}</div>
-      <div :class="`c3 w ${index < 2 ? 'w' : 'hr'}  bdr ctr`">
-        {{ index < 2 ? getFlight.comms.radio1[index + 4]?.freq : "" }}
-      </div>
-      <input :class="`c3 hr bdr ctr`" />
-    </div>
-    <div class="c36 r bdr ctr">
-      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
-    </div>
-  </div>
 </template>
 <style scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
 
 .font500 {
   font-weight: 500;

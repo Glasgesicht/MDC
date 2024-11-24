@@ -1,7 +1,7 @@
-import router from "@/router";
-import { useFlightStore } from "@/stores/flightStore";
-import { usePackageStore } from "@/stores/packageStore";
-import { useGlobalStore } from "@/stores/theatreStore";
+import router from "@/controller/router";
+import { useFlightStore } from "@/controller/stores/flightStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
+import { useGlobalStore } from "@/controller/stores/theatreStore";
 import { toJpeg } from "html-to-image";
 import JSZip from "jszip";
 import { storeToRefs } from "pinia";
@@ -36,8 +36,7 @@ export const download = () => {
 
       triggerDownload(
         imageBlob,
-        `${getFlight.value.callsign}_${
-          router.currentRoute.value.name as string
+        `${getFlight.value.callsign}_${router.currentRoute.value.name as string
         }.png`
       );
     } catch (error) {

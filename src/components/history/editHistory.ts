@@ -1,7 +1,7 @@
 import { useManualRefHistory, useRefHistory } from "@vueuse/core";
 import { storeToRefs } from "pinia";
-import { useFlightStore } from "@/stores/flightStore";
-import { usePackageStore } from "@/stores/packageStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import { computed, ref, watch } from "vue";
 import type { Package } from "@/types/mdcDataTypes";
 import { deserialize } from "@/controller/parseFiles";

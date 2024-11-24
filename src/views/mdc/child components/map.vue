@@ -1,52 +1,23 @@
 <template>
   <div style="height: 100%; width: 100%">
-    <l-map
-      ref="mapRef"
-      @ready="onMapReady"
-      :center="centerPos"
-      :zoom="zoomLvl"
-      :use-global-leaflet="false"
-      :options="{
-        zoomControl: false,
-        attributionControl: false,
-        zoomSnap: 0.1,
-      }"
-    >
-      <l-tile-layer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        layer-type="base"
-        name="OpenFlightMaps"
-      ></l-tile-layer>
+    <l-map ref="mapRef" @ready="onMapReady" :center="centerPos" :zoom="zoomLvl" :use-global-leaflet="false" :options="{
+      zoomControl: false,
+      attributionControl: false,
+      zoomSnap: 0.1,
+    }">
+      <l-tile-layer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" layer-type="base"
+        name="OpenFlightMaps"></l-tile-layer>
 
-      <l-tile-layer
-        v-if="apiKey && apiKey.length === 32"
+      <l-tile-layer v-if="apiKey && apiKey.length === 32"
         :url="`https://{s}.api.tiles.openaip.net/api/data/openaip/{z}/{x}/{y}.png?apiKey=${apiKey}`"
-        layer-type="overlay"
-        name="openaip"
-        :tms="false"
-      ></l-tile-layer>
+        layer-type="overlay" name="openaip" :tms="false"></l-tile-layer>
 
-      <l-polyline
-        :lat-lngs="navAreas"
-        color="grey"
-        :weight="2"
-        dashArray="2 10 "
-        name="navareas"
-        fill
-      ></l-polyline>
-      <l-polyline
-        :lat-lngs="steerpointPolyArray"
-        color="black"
-        :weight="2"
-      ></l-polyline>
+      <l-polyline :lat-lngs="navAreas" color="grey" :weight="2" dashArray="2 10 " name="navareas" fill></l-polyline>
+      <l-polyline :lat-lngs="steerpointPolyArray" color="black" :weight="2"></l-polyline>
 
-      <l-marker
-        v-for="wp of getFlight.waypoints.filter((n) => !n.hideOnMDC)"
-        :lat-lng="[wp.location.lat, wp.location.lon]"
-        :draggable="props.allowDraggable"
-        :icon="createCustomIcon(`${wp.name}`, 'right')"
-        @dragend="
-          (e) => {
+      <l-marker v-for="wp of getFlight.waypoints.filter((n) => !n.hideOnMDC)"
+        :lat-lng="[wp.location.lat, wp.location.lon]" :draggable="props.allowDraggable"
+        :icon="createCustomIcon(`${wp.name}`, 'right')" @dragend="(e) => {
             const ws = getFlight.waypoints.find(
               (n) => n.waypointNr == wp.waypointNr
             );
@@ -54,14 +25,13 @@
             ws!.location.lat = e.target.getLatLng().lat;
             ws!.location.lon = e.target.getLatLng().lng;
           }
-        "
-      ></l-marker>
+          "></l-marker>
     </l-map>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import { LMap, LTileLayer, LPolyline, LMarker } from "@vue-leaflet/vue-leaflet";
 import L, { Icon, type LatLngExpression, type PointTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";

@@ -1,14 +1,8 @@
 <template>
   <div class="parent">
     <div class="upload-container">
-      <input
-        type="file"
-        id="fileUpload"
-        class="file-input"
-        v-on:change="onChangedFile"
-        accept=".cf"
-        style="grid-row: 2 / span 2; grid-column: 1 / span 4"
-      />
+      <input type="file" id="fileUpload" class="file-input" v-on:change="onChangedFile" accept=".cf"
+        style="grid-row: 2 / span 2; grid-column: 1 / span 4" />
       <label for="fileUpload" class="file-label">
         <div class="file-button">Upload File</div>
       </label>
@@ -29,7 +23,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { processCF } from "@/controller/parseFiles";
-import { useGlobalStore } from "@/stores/theatreStore";
+import { useGlobalStore } from "@/controller/stores/theatreStore";
 import { ref } from "vue";
 import { useEditHistory } from "@/components/history/editHistory";
 

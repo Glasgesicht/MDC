@@ -1,8 +1,7 @@
 <template>
   <div class="bdr mdcpage" name="mdcpage">
     <div class="c3 y bdr ctr">PAGE {{ pagenr }}</div>
-    <a class="c33 g bdr ctr"
-      >Flight Route - {{ selectedPKG.name }} - MSN {{ getFlight.MSNumber }}
+    <a class="c33 g bdr ctr">Flight Route - {{ selectedPKG.name }} - MSN {{ getFlight.MSNumber }}
     </a>
     <div class="inner-grid c36 r49 bdr ctr">
       <Maps />
@@ -11,10 +10,10 @@
 </template>
 <script setup lang="ts">
 //@ts-ignore
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import Maps from "./child components/map.vue";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "@/stores/packageStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 
 const { pagenr } = defineProps({
   pagenr: {
@@ -27,5 +26,5 @@ const { getFlight } = storeToRefs(useFlightStore());
 </script>
 
 <style lang="css" scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
 </style>

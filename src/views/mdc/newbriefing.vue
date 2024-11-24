@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "@/stores/packageStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
@@ -44,15 +44,12 @@ const showROE = inject("showROE");
     </div>
     <div class="c6 g bdr ctr">HOMEPLATE</div>
     <input v-model="getFlight.DEP.NAME" class="c6 w tb bdr ctr" />
-    <div
-      class="c24 r2 squad bdr logo ctr"
-      style="
+    <div class="c24 r2 squad bdr logo ctr" style="
         color: #c1d7ff;
         font-size: 33px;
         font-family: Copperplate Gothic Light;
         font-style: normal;
-      "
-    >
+      ">
       16th Air Expeditionary Wing
     </div>
     <div class="c6 g bdr ctr">MSN TYPE</div>
@@ -71,26 +68,18 @@ const showROE = inject("showROE");
     <textarea v-model="selectedPKG.airThreat" class="r3 c18 w tb bdr ctr" />
     <div class="c36 g bdr ctr">GAMEPLAN</div>
 
-    <textarea
-      type="text"
-      style="background-color: white; color: black"
-      :class="`c36 tb ${showROE ? 'r23' : 'r34'} bdr ctr`"
-      v-model="getFlight.gameplan"
-    />
+    <textarea type="text" style="background-color: white; color: black"
+      :class="`c36 tb ${showROE ? 'r23' : 'r34'} bdr ctr`" v-model="getFlight.gameplan" />
     <div v-if="showROE" class="roehead c36 bdr ctr" style="width: 100%">
       RULES OF ENGAGEMENT
     </div>
-    <textarea
-      v-if="showROE"
-      type="text"
-      v-model="selectedPKG.roe"
-      class="c36 roe textbox non-resizable r6 bdr ctr"
-    />
+    <textarea v-if="showROE" type="text" v-model="selectedPKG.roe" class="c36 roe textbox non-resizable r6 bdr ctr" />
   </div>
 </template>
 
 <style scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
+
 .parent {
   display: inline-grid;
   grid-template-columns: repeat(36, 1fr);
@@ -98,6 +87,7 @@ const showROE = inject("showROE");
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .bingo {
   display: inline-grid;
   grid-template-columns: repeat(20, 1fr);
@@ -105,6 +95,7 @@ const showROE = inject("showROE");
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .shuffle {
   display: inline-grid;
   grid-template-columns: repeat(16, 1fr);
@@ -112,6 +103,7 @@ const showROE = inject("showROE");
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
+
 .font500 {
   font-weight: 500;
 }

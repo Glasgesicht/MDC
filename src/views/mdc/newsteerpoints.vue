@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { usePackageStore } from "@/stores/packageStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 
 import {
   calculateHeading,
@@ -9,7 +9,7 @@ import {
   toLatString,
   toLongString,
 } from "@/controller/utils/utilFunctions";
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 
 const { getFlight } = storeToRefs(useFlightStore());
 const { selectedPKG } = storeToRefs(usePackageStore());
@@ -142,8 +142,8 @@ const showROE = inject("showROE");
           waypointsArray.at(index)?.hideOnMDC
             ? ""
             : waypointsArray.at(index)?.type === "STP"
-            ? waypointsArray.at(index)?.name
-            : waypointsArray.at(index)?.type
+              ? waypointsArray.at(index)?.name
+              : waypointsArray.at(index)?.type
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
@@ -151,11 +151,11 @@ const showROE = inject("showROE");
           !waypointsArray.at(index) || waypointsArray.at(index)?.hideOnMDC
             ? ""
             : index === 0
-            ? calculateTakeoffTime(
+              ? calculateTakeoffTime(
                 hhmmss(waypointsArray.at(index)!.tot),
                 waypointsArray.at(index)!.activity
               )
-            : hhmmss(waypointsArray.at(index)!.tot)
+              : hhmmss(waypointsArray.at(index)!.tot)
         }}
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
@@ -164,7 +164,7 @@ const showROE = inject("showROE");
             ? ""
             : waypointsArray.at(index)?.location.lat &&
               waypointsArray.at(index - 1)?.location.lon
-            ? calculateHeading(
+              ? calculateHeading(
                 waypointsArray.at(index - 1)!.location.lat,
                 waypointsArray.at(index - 1)!.location.lon,
                 waypointsArray.at(index)!.location.lat,
@@ -182,7 +182,7 @@ const showROE = inject("showROE");
                 )
               ) +
               "nm"
-            : ""
+              : ""
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
@@ -190,12 +190,12 @@ const showROE = inject("showROE");
           waypointsArray.at(index)?.hideOnMDC
             ? ""
             : index !== 0
-            ? waypointsArray.at(index)?.groundspeed !== undefined
-              ? waypointsArray.at(index)?.groundspeed?.toFixed(0) +
+              ? waypointsArray.at(index)?.groundspeed !== undefined
+                ? waypointsArray.at(index)?.groundspeed?.toFixed(0) +
                 " / " +
                 waypointsArray.at(index)?.mach?.toFixed(2).replace("0.", ".")
+                : ""
               : ""
-            : ""
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
@@ -203,10 +203,10 @@ const showROE = inject("showROE");
           waypointsArray.at(index)?.hideOnMDC
             ? ""
             : waypointsArray.at(index)?.location.elevation
-            ? waypointsArray
+              ? waypointsArray
                 .at(index)
                 ?.location.elevation?.toLocaleString("en-EN") + " ft"
-            : ""
+              : ""
         }}
       </div>
       <div :class="`c3 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
@@ -214,8 +214,8 @@ const showROE = inject("showROE");
           waypointsArray.at(index)?.hideOnMDC
             ? ""
             : waypointsArray.at(index)
-            ? parseInt(calculateMinimumFuel(index + 1)).toLocaleString("en-EN")
-            : ""
+              ? parseInt(calculateMinimumFuel(index + 1)).toLocaleString("en-EN")
+              : ""
         }}
       </div>
       <div :class="`c9 hr  bdr ctr`">
@@ -223,10 +223,10 @@ const showROE = inject("showROE");
           waypointsArray.at(index)?.hideOnMDC
             ? ""
             : waypointsArray.at(index)?.location.lat !== undefined
-            ? toLatString(waypointsArray.at(index)!.location.lat) +
+              ? toLatString(waypointsArray.at(index)!.location.lat) +
               " // " +
               toLongString(waypointsArray.at(index)!.location.lon)
-            : ""
+              : ""
         }}
       </div>
       <div :class="`c4 ${index % 2 ? 'hg' : 'w'}  bdr ctr`">
@@ -234,10 +234,10 @@ const showROE = inject("showROE");
           waypointsArray.at(index)?.hideOnMDC
             ? ""
             : waypointsArray.at(index)?.activity !== "00:00:00"
-            ? index !== 0
-              ? waypointsArray.at(index)?.activity
+              ? index !== 0
+                ? waypointsArray.at(index)?.activity
+                : ""
               : ""
-            : ""
         }}
       </div>
     </div>
@@ -253,81 +253,63 @@ const showROE = inject("showROE");
 
     <div class="c36 child" v-for="index in new Array(16).keys()">
       <div class="c2 g bdr ctr">{{ index + 81 }}</div>
-      <div
-        :class="`c3 ${
-          index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'
-        } bdr ctr`"
-      >
-        {{ index + 81 < 97 ? getFlight.dmpis[index]?.type : "BULLS" }}
-      </div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
-        {{
-          index + 81 < 97
-            ? getFlight.dmpis[index]?.name
-            : getBullseyeName(index - 16)
-        }}
-      </div>
-      <div :class="`c9 hr bdr ctr`">
-        {{
-          index + 81 < 97
-            ? toLatLongString(
-                getFlight.dmpis[index]?.location.lat,
-                getFlight.dmpis[index]?.location.lon
-              )
-            : getBullseyeLocation(index - 16)
-        }}
-      </div>
-      <div
-        :class="`c3 ${
-          index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'
-        } bdr ctr`"
-      >
-        {{ index + 81 < 97 ? getFlight.dmpis[index]?.location.elevation : "" }}
-      </div>
-      <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr ctr`">
-        {{ getFlight.dmpis[index]?.note }}
-      </div>
-    </div>
-    <div class="c36 child" v-for="index in new Array(3).keys()">
-      <div class="c2 g bdr ctr">
-        {{
-          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].wp : ""
-        }}
-      </div>
-      <div class="c3 g bdr ctr">BULLS</div>
-      <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
-        {{
-          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].name : ""
-        }}
-      </div>
-      <div :class="`c9 hr bdr ctr`">
-        {{
-          selectedPKG.bullseyes[index]
-            ? selectedPKG.bullseyes[index].location.toLatString() + " / "
-            : ""
-        }}
+      <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'
+        } bdr ctr`">
+        {{ index + 81 < 97 ? getFlight.dmpis[index]?.type : "BULLS" }} </div>
+          <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
+            {{
+              index + 81 < 97 ? getFlight.dmpis[index]?.name : getBullseyeName(index - 16) }} </div>
+              <div :class="`c9 hr bdr ctr`">
+                {{
+                  index + 81 < 97 ? toLatLongString(getFlight.dmpis[index]?.location.lat,
+                    getFlight.dmpis[index]?.location.lon) : getBullseyeLocation(index - 16) }} </div>
+                  <div :class="`c3 ${index + 81 < 97 ? (index % 2 ? 'hg' : 'w') : 'g'
+                    } bdr ctr`">
+                    {{ index + 81 < 97 ? getFlight.dmpis[index]?.location.elevation : "" }} </div>
+                      <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr ctr`">
+                        {{ getFlight.dmpis[index]?.note }}
+                      </div>
+                  </div>
+                  <div class="c36 child" v-for="index in new Array(3).keys()">
+                    <div class="c2 g bdr ctr">
+                      {{
+                        selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].wp : ""
+                      }}
+                    </div>
+                    <div class="c3 g bdr ctr">BULLS</div>
+                    <div :class="`c5 ${index % 2 ? 'hg' : 'w'} bdr ctr`">
+                      {{
+                        selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].name : ""
+                      }}
+                    </div>
+                    <div :class="`c9 hr bdr ctr`">
+                      {{
+                        selectedPKG.bullseyes[index]
+                          ? selectedPKG.bullseyes[index].location.toLatString() + " / "
+                          : ""
+                      }}
 
-        {{
-          selectedPKG.bullseyes[index]
-            ? selectedPKG.bullseyes[index].location.toLongString()
-            : ""
-        }}
-      </div>
-      <div class="c3 hg bdr ctr"></div>
-      <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr ctr`">
-        {{
-          selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].note : ""
-        }}
-      </div>
-    </div>
+                      {{
+                        selectedPKG.bullseyes[index]
+                          ? selectedPKG.bullseyes[index].location.toLongString()
+                          : ""
+                      }}
+                    </div>
+                    <div class="c3 hg bdr ctr"></div>
+                    <div :class="`c14 nobdr ${index % 2 ? 'hg' : 'w'} bdr ctr`">
+                      {{
+                        selectedPKG.bullseyes[index] ? selectedPKG.bullseyes[index].note : ""
+                      }}
+                    </div>
+                  </div>
 
-    <div class="c36 r bdr ctr">
-      RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
-    </div>
-  </div>
+                  <div class="c36 r bdr ctr">
+                    RED BOXED CELLS SECRET WHEN COMPLETE - SHRED AFTER USE
+                  </div>
+              </div>
 </template>
 <style scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
 
 .font500 {
   font-weight: 500;

@@ -39,11 +39,11 @@
 </template>
 
 <script setup lang="ts">
-import { usePackageStore } from "@/stores/packageStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { fromFreqency } from "@/config/defaults/frequencies";
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 
 const packageStore = usePackageStore();
 const { getFlight } = storeToRefs(useFlightStore());
@@ -51,11 +51,11 @@ const findInRadios = (freq?: string) => {
   if (!freq) return "";
   return getFlight.value.comms.radio1.findIndex((n) => n.freq === freq) > -1
     ? "UHF " +
-        (getFlight.value.comms.radio1.findIndex((n) => n.freq === freq) + 1)
+    (getFlight.value.comms.radio1.findIndex((n) => n.freq === freq) + 1)
     : getFlight.value.comms.radio2.findIndex((n) => n.freq === freq) > -1
-    ? "VHF " +
+      ? "VHF " +
       (getFlight.value.comms.radio2.findIndex((n) => n.freq === freq) + 1)
-    : "";
+      : "";
 };
 
 const { selectedPKG } = storeToRefs(packageStore);
@@ -70,5 +70,5 @@ const agencies = computed(() =>
 </script>
 
 <style scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
 </style>

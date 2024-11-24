@@ -3,7 +3,7 @@ import Agencies from "./child components/agencies.vue";
 import { inject } from "vue";
 import { storeToRefs } from "pinia";
 
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 
 const { getFlight } = storeToRefs(useFlightStore());
 
@@ -74,7 +74,7 @@ const { pagenr } = defineProps({
   </div>
 </template>
 <style scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
 
 .font500 {
   font-weight: 500;

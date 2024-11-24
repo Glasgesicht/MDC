@@ -13,7 +13,7 @@ import Commsmatrix from "@/views/mdc/commsmatrix.vue";
 import Flightmap from "@/views/mdc/map.vue";
 import pageSettings from "@/views/pageSettings.vue";
 
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import { storeToRefs } from "pinia";
 
 const router = createRouter({

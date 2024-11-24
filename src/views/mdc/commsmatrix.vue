@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { commTables } from "@/config/defaults/frequencies";
-import { useGlobalStore } from "@/stores/theatreStore";
+import { useGlobalStore } from "@/controller/stores/theatreStore";
 const globalStore = useGlobalStore();
 
 const { pagenr } = defineProps({
@@ -15,53 +15,34 @@ const { pagenr } = defineProps({
   <div class="bdr mdcpage" name="mdcpage">
     <div class="c36 r bdr ctr">NATO SECRET - SHRED AFTER USE</div>
     <div class="c3 y bdr ctr">PAGE {{ pagenr }}</div>
-    <a class="c33 g bdr ctr"
-      >CJTF-13 Frequency Matrix issue 1 -
+    <a class="c33 g bdr ctr">CJTF-13 Frequency Matrix issue 1 -
       {{
         new Date(
           globalStore.time.year +
-            "-" +
-            globalStore.time.month +
-            "-" +
-            globalStore.time.day
+          "-" +
+          globalStore.time.month +
+          "-" +
+          globalStore.time.day
         ).toDateString()
-      }}</a
-    >
+      }}</a>
     <div class="inner-grid c36 r47">
       <!-- Header Row with Numbering -->
       <!-- Data Rows -->
-      <div
-        v-for="([row, items], index) in Object.entries(commTables[0])"
-        :key="row"
-        class="child"
-      >
+      <div v-for="([row, items], index) in Object.entries(commTables[0])" :key="row" class="child">
         <div v-if="index % 8 === 0" class="c40 child">
-          <div
-            v-for="i in new Array(10).keys()"
-            class="c4 ctr bdr row-header"
-            :style="
-              (i ? '' : 'border-right: 2px solid black') +
-              '; border-top: 2px solid black;border-bottom: 2px solid black'
-            "
-          >
+          <div v-for="i in new Array(10).keys()" class="c4 ctr bdr row-header" :style="(i ? '' : 'border-right: 2px solid black') +
+            '; border-top: 2px solid black;border-bottom: 2px solid black'
+            ">
             {{ i || "" }}
           </div>
         </div>
-        <div
-          class="bdr c4 ctr"
-          :style="
-            (index % 2 ? 'background-color:lightgrey' : '') +
-            ';border-right: 2px solid black'
-          "
-        >
+        <div class="bdr c4 ctr" :style="(index % 2 ? 'background-color:lightgrey' : '') +
+          ';border-right: 2px solid black'
+          ">
           {{ row }}
         </div>
-        <div
-          v-for="item of items"
-          :key="item"
-          class="c4 bdr ctr"
-          :style="index % 2 ? 'background-color:lightgrey' : ''"
-        >
+        <div v-for="item of items" :key="item" class="c4 bdr ctr"
+          :style="index % 2 ? 'background-color:lightgrey' : ''">
           {{ item }}
         </div>
       </div>
@@ -75,7 +56,7 @@ const { pagenr } = defineProps({
 </template>
 
 <style scoped>
-@import "@/assets/styles/newstyle.css";
+@import "@/assets/styles/mdc.css";
 
 .inner-grid {
   display: inline-grid;

@@ -1,6 +1,6 @@
 import { compressString } from "@/controller/utils/dtc";
-import { useFlightStore } from "@/stores/flightStore";
-import { usePackageStore } from "@/stores/packageStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import { storeToRefs } from "pinia";
 import type {
   DTCF16,
@@ -14,7 +14,7 @@ import type {
 } from "../../types/dtcTypes";
 import { bullseyes } from "@/config/defaults/bullseye";
 import type { theatre } from "@/types/theatre";
-import { useGlobalStore } from "@/stores/theatreStore";
+import { useGlobalStore } from "@/controller/stores/theatreStore";
 
 export const useDTCexports = () => {
   const { getFlight } = storeToRefs(useFlightStore());

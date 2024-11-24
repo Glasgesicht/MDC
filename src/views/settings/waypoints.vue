@@ -3,66 +3,47 @@
     <div>
       <div>
         <h3>Waypoints</h3>
-        <DataTable
-          showGridlines
-          edit-mode="cell"
-          selectionMode="multiple"
-          :metaKeySelection="true"
-          sort-field="waypointNr"
-          :sortOrder="1"
-          v-model:selection="selectedSteerpoints"
-          :value="getFlight.waypoints"
-          class="item"
-          style="
+        <DataTable showGridlines edit-mode="cell" selectionMode="multiple" :metaKeySelection="true"
+          sort-field="waypointNr" :sortOrder="1" v-model:selection="selectedSteerpoints" :value="getFlight.waypoints"
+          class="item" style="
             max-width: 2050px;
             grid-row: 28;
             align-content: left;
             margin-left: 0;
             text-align: left;
-          "
-        >
+          ">
           <Column field="waypointNr" header="WPN NR" style="width: 100px">
             <template #editor="{ index }">
-              <InputNumber
-                v-model:model-value="getFlight.waypoints[index].waypointNr"
-              ></InputNumber>
+              <InputNumber v-model:model-value="getFlight.waypoints[index].waypointNr"></InputNumber>
             </template>
           </Column>
           <Column field="name" header="Name">
             <template #editor="{ index }">
-              <InputText v-model="getFlight.waypoints[index].name" /></template
-          ></Column>
+              <InputText v-model="getFlight.waypoints[index].name" />
+            </template>
+          </Column>
           <Column field="type" header="Type">
             <template #editor="{ index }">
-              <InputText v-model="getFlight.waypoints[index].type"
-            /></template>
+              <InputText v-model="getFlight.waypoints[index].type" />
+            </template>
           </Column>
           <Column field="activity" header="Activity"></Column>
-          <Column field="tot" header="Time on Target"
-            ><template #body="{ data }">{{
-              new Date(data.tot).toLocaleTimeString("de-DE")
-            }}</template></Column
-          >
+          <Column field="tot" header="Time on Target"><template #body="{ data }">{{
+            new Date(data.tot).toLocaleTimeString("de-DE")
+          }}</template></Column>
           <Column field="mach" header="Mach">
             <template #body="{ data }">{{
               Number(data.mach).toFixed(2)
             }}</template>
           </Column>
           <Column field="groundspeed" header="Groundspeed">
-            <template #body="{ data }"
-              >{{ Number(data.groundspeed).toFixed(0) }} kts</template
-            >
+            <template #body="{ data }">{{ Number(data.groundspeed).toFixed(0) }} kts</template>
           </Column>
           <Column field="altitude" header="Altitude">
-            <template #body="{ data }"
-              >{{ data.location.getElevation() }} ft</template
-            >
+            <template #body="{ data }">{{ data.location.getElevation() }} ft</template>
             <template #editor="{ index }">
-              <InputNumber
-                v-model:model-value="
-                  getFlight.waypoints[index].location.elevation
-                "
-              ></InputNumber>
+              <InputNumber v-model:model-value="getFlight.waypoints[index].location.elevation
+                "></InputNumber>
             </template>
           </Column>
           <Column header="Hide" field="hideOnMDC" style="width: 40px">
@@ -71,44 +52,18 @@
             </template>
           </Column>
           <Column header="DMPI" style="width: 40px">
-            <template #body="{ index }"
-              ><Button @click="toDMPI(index)" outlined icon="pi pi-download"
-            /></template>
+            <template #body="{ index }"><Button @click="toDMPI(index)" outlined icon="pi pi-download" /></template>
           </Column>
 
           <Column style="width: 40px">
-            <template #body="{ index }"
-              ><Button
-                @click="deleteWaypoint(index)"
-                severity="danger"
-                outlined
-                icon="pi pi-trash"
-            /></template>
+            <template #body="{ index }"><Button @click="deleteWaypoint(index)" severity="danger" outlined
+                icon="pi pi-trash" /></template>
           </Column>
           <template #footer>
-            <Button
-              label="decrement"
-              outlined
-              icon="pi pi-angle-up"
-              @click="decrSelected()"
-              class="item" />
-            <Button
-              label="increment"
-              outlined
-              icon="pi pi-chevron-down"
-              @click="incSelected()"
-              class="item" />
-            <Button
-              label="hide selected"
-              outlined
-              @click="hideSelected()"
-              class="item" />
-            <Button
-              label="unhide selected"
-              outlined
-              @click="unhideSelected()"
-              class="item"
-          /></template>
+            <Button label="decrement" outlined icon="pi pi-angle-up" @click="decrSelected()" class="item" />
+            <Button label="increment" outlined icon="pi pi-chevron-down" @click="incSelected()" class="item" />
+            <Button label="hide selected" outlined @click="hideSelected()" class="item" />
+            <Button label="unhide selected" outlined @click="unhideSelected()" class="item" /></template>
         </DataTable>
       </div>
     </div>
@@ -117,29 +72,16 @@
         <h3 style="padding-bottom: 11px; min-width: 400px">
           Designated Impact Points (DMPIs)
         </h3>
-        <DataTable
-          showGridlines
-          edit-mode="cell"
-          :value="getFlight.dmpis"
-          style="min-width: 1200px"
-        >
-          <Column header="WPN NR" style="width: 100px"
-            ><template #body="{ index }">{{ index + 81 }}</template></Column
-          >
+        <DataTable showGridlines edit-mode="cell" :value="getFlight.dmpis" style="min-width: 1200px">
+          <Column header="WPN NR" style="width: 100px"><template #body="{ index }">{{ index + 81 }}</template></Column>
           <Column field="type" header="Type">
-            <template #editor="{ index }"
-              ><input v-model="getFlight.dmpis[index].type"
-            /></template>
+            <template #editor="{ index }"><input v-model="getFlight.dmpis[index].type" /></template>
           </Column>
           <Column field="name" header="Name">
-            <template #editor="{ index }"
-              ><input v-model="getFlight.dmpis[index].name"
-            /></template>
+            <template #editor="{ index }"><input v-model="getFlight.dmpis[index].name" /></template>
           </Column>
           <Column field="altitude" header="Altitude">
-            <template #body="{ data }"
-              >{{ data.location.getElevation() }} ft</template
-            >
+            <template #body="{ data }">{{ data.location.getElevation() }} ft</template>
           </Column>
           <Column field="latitude" header="Latitude">
             <template #body="{ data }">{{
@@ -151,29 +93,12 @@
               data.location.toLongString()
             }}</template>
           </Column>
-          <Column field="note" header="Note"
-            ><template #editor="{ index }"
-              ><input v-model="getFlight.dmpis[index].note" /></template
-          ></Column>
+          <Column field="note" header="Note"><template #editor="{ index }"><input
+                v-model="getFlight.dmpis[index].note" /></template></Column>
           <template #footer>
-            <SteerpointsToDTC
-              class="item"
-              mode="all"
-              label="all to DTC"
-              outlined
-            />
-            <SteerpointsToDTC
-              class="item"
-              mode="waypoints"
-              label="waypoints to DTC"
-              outlined
-            />
-            <SteerpointsToDTC
-              class="item"
-              mode="dmpi"
-              label="DMPI to DTC"
-              outlined
-            />
+            <SteerpointsToDTC class="item" mode="all" label="all to DTC" outlined />
+            <SteerpointsToDTC class="item" mode="waypoints" label="waypoints to DTC" outlined />
+            <SteerpointsToDTC class="item" mode="dmpi" label="DMPI to DTC" outlined />
           </template>
         </DataTable>
       </div>
@@ -185,19 +110,21 @@
       </template>
     </Dialog>
   </div>
-  <div v-else><h2>Please select a flight to edit</h2></div>
+  <div v-else>
+    <h2>Please select a flight to edit</h2>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import SteerpointsToDTC from "@/components/DTCExports/steerpointsToDTC.vue";
 import { computed, ref, watch, type WritableComputedRef } from "vue";
 import InputNumber from "primevue/inputnumber";
 import Input from "primevue/inputtext";
 import { toLatString, toLongString } from "@/controller/utils/utilFunctions";
 import Dialog from "primevue/dialog";
-import { usePackageStore } from "@/stores/packageStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import { Coordinate } from "@/controller/coordinates";
 import Map from "../mdc/child components/map.vue";
 const { getFlight } = storeToRefs(useFlightStore());
@@ -303,6 +230,7 @@ function deleteWaypoint(i: number) {
 .item {
   margin: 5px;
 }
+
 td {
   text-align: start;
   border-color: var(--p-datatable-body-cell-border-color);
@@ -310,6 +238,7 @@ td {
   border-width: 0 0 1px 0;
   padding: 0.2rem 0.4rem !important;
 }
+
 th {
   text-align: start;
   border-color: var(--p-datatable-body-cell-border-color);

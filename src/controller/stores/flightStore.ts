@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { usePackageStore } from "@/stores/packageStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import { flights } from "@/config/defaults/flights";
 import { getSTN } from "@/controller/utils/utilFunctions";
 import { initFlight } from "@/types/mdcDataTypes";

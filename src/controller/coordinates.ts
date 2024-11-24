@@ -1,5 +1,5 @@
-import { useFlightStore } from "@/stores/flightStore";
-import { usePackageStore } from "@/stores/packageStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
+import { usePackageStore } from "@/controller/stores/packageStore";
 import { storeToRefs } from "pinia";
 
 export class Coordinate {
@@ -203,7 +203,7 @@ export class Coordinate {
   /**
    * TODO: implement
    */
-  calculateTimeTo(target: Coordinate, speed: number) {}
+  calculateTimeTo(target: Coordinate, speed: number) { }
 
   /**
    * Converts a latitude string in the format "N/S [degrees]°[minutes]'" to decimal degrees
@@ -328,31 +328,31 @@ export class Coordinate {
         ((3 * e * e) / 8 +
           (3 * Math.pow(e, 4)) / 32 +
           (45 * Math.pow(e, 6)) / 1024) *
-          Math.sin(2 * φ) +
+        Math.sin(2 * φ) +
         ((15 * Math.pow(e, 4)) / 256 + (45 * Math.pow(e, 6)) / 1024) *
-          Math.sin(4 * φ) -
+        Math.sin(4 * φ) -
         ((35 * Math.pow(e, 6)) / 3072) * Math.sin(6 * φ));
 
     const easting =
       k0 *
-        N *
-        (A +
-          ((1 - T + C) * Math.pow(A, 3)) / 6 +
-          ((5 - 18 * T + T * T + 72 * C - 58 * Math.pow(e, 2)) *
-            Math.pow(A, 5)) /
-            120) +
+      N *
+      (A +
+        ((1 - T + C) * Math.pow(A, 3)) / 6 +
+        ((5 - 18 * T + T * T + 72 * C - 58 * Math.pow(e, 2)) *
+          Math.pow(A, 5)) /
+        120) +
       500000;
 
     let northing =
       k0 *
       (M +
         N *
-          Math.tan(φ) *
-          ((A * A) / 2 +
-            ((5 - T + 9 * C + 4 * C * C) * Math.pow(A, 4)) / 24 +
-            ((61 - 58 * T + T * T + 600 * C - 330 * Math.pow(e, 2)) *
-              Math.pow(A, 6)) /
-              720));
+        Math.tan(φ) *
+        ((A * A) / 2 +
+          ((5 - T + 9 * C + 4 * C * C) * Math.pow(A, 4)) / 24 +
+          ((61 - 58 * T + T * T + 600 * C - 330 * Math.pow(e, 2)) *
+            Math.pow(A, 6)) /
+          720));
 
     if (this.lat < 0) {
       northing += 10000000; // Add false northing for southern hemisphere

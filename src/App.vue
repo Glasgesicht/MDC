@@ -10,10 +10,10 @@ import {
   watch,
   onBeforeUnmount,
 } from "vue";
-import { usePackageStore } from "./stores/packageStore";
-import { useFlightStore } from "./stores/flightStore";
+import { usePackageStore } from "./controller/stores/packageStore";
+import { useFlightStore } from "./controller/stores/flightStore";
 import { storeToRefs } from "pinia";
-import { useGlobalStore } from "./stores/theatreStore";
+import { useGlobalStore } from "./controller/stores/theatreStore";
 import { processCF, processJSON } from "./controller/parseFiles";
 import { useDTCexports } from "@/components/DTCExports/dtcExport";
 
@@ -23,7 +23,7 @@ import Newcomms from "./views/mdc/newcomms.vue";
 import Newbriefing from "./views/mdc/newbriefing.vue";
 
 import type { MenuItem } from "primevue/menuitem";
-import router from "./router";
+import router from "./controller/router";
 import { download } from "./controller/utils/download";
 import { RouterView, useRoute } from "vue-router";
 import SelectFlight from "./components/PackageFlightSelection/SelectFlight.vue";
@@ -291,10 +291,7 @@ const showExport = ref(false);
     </div>
     <div class="split right" style="padding: 8px 0 0 8px">
       <div v-if="showExport">
-        <div
-          id="mdcpages"
-          style="display: flex; position: absolute; top: -2000px"
-        >
+        <div id="mdcpages" style="display: flex; position: absolute; top: -2000px">
           <Newbriefing :pagenr="1" />
           <Newdatacard :pagenr="2" />
           <Newsteerpoints :pagenr="3" />
@@ -303,36 +300,21 @@ const showExport = ref(false);
         </div>
       </div>
       <div>
-        <div
-          :style="meta.canExport ? 'display: flex; align-items: center' : ''"
-        >
-          <Button
-            v-if="meta.canExport && !isSmallScreen"
-            :disabled="router.currentRoute.value.name === '1'"
-            @click="
-              router.push({
-                name:
-                  parseInt(router.currentRoute.value.name as string) - 1 + '',
-              })
-            "
-            style="height: 100vh; width: 28%; border: none; font-size: 32px"
-            outlined
-            icon="pi pi-chevron-left"
-          />
+        <div :style="meta.canExport ? 'display: flex; align-items: center' : ''">
+          <Button v-if="meta.canExport && !isSmallScreen" :disabled="router.currentRoute.value.name === '1'" @click="
+            router.push({
+              name:
+                parseInt(router.currentRoute.value.name as string) - 1 + '',
+            })
+            " style="height: 100vh; width: 28%; border: none; font-size: 32px" outlined icon="pi pi-chevron-left" />
           <RouterView />
-          <Button
-            v-if="meta.canExport && !isSmallScreen"
-            style="height: 100vh; width: 32%; border: none"
-            :disabled="router.currentRoute.value.name == '6'"
-            @click="
+          <Button v-if="meta.canExport && !isSmallScreen" style="height: 100vh; width: 32%; border: none"
+            :disabled="router.currentRoute.value.name == '6'" @click="
               router.push({
                 name:
                   parseInt(router.currentRoute.value.name as string) + 1 + '',
               })
-            "
-            outlined
-            icon="pi pi-chevron-right"
-          />
+              " outlined icon="pi pi-chevron-right" />
         </div>
       </div>
       <div style="position: fixed; top: 0px; right: 0px; border: none">
@@ -340,14 +322,8 @@ const showExport = ref(false);
       </div>
     </div>
   </div>
-  <input
-    style="display: none"
-    type="file"
-    id="fileUpload"
-    class="file-input"
-    v-on:change="onChangedFile"
-    accept=".cf,.json"
-  />
+  <input style="display: none" type="file" id="fileUpload" class="file-input" v-on:change="onChangedFile"
+    accept=".cf,.json" />
   <div style="text-align: center; position: absolute; bottom: 0">
     version: {{ version }}
   </div>
@@ -373,7 +349,9 @@ const showExport = ref(false);
 .pi-chevron-right {
   font-size: 18px !important;
   opacity: 0.8;
-} /** 
+}
+
+/** 
 html.darkmode body div#app div#app div.split.right div div button.p-button.p-component.p-button-icon-only.p-button-outlined.page-button 
 */
 

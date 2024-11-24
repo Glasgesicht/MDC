@@ -1,4 +1,4 @@
-import { useFlightStore } from "@/stores/flightStore";
+import { useFlightStore } from "@/controller/stores/flightStore";
 import { storeToRefs } from "pinia";
 import type { Misc } from "./dtcTypes";
 import type { Coordinate } from "@/controller/coordinates";
@@ -214,7 +214,7 @@ export interface Mission {
   BlueBullseye: BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
   RedBullseye: BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
   NeutralBullseye:
-    | BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
+  | BlueBullseyeEntityOrRedBullseyeEntityOrNeutralBullseyeEntity[];
 }
 export interface BlueBriefingPicsEntity {
   BlueBriefingPicture: string[];

@@ -1,5 +1,5 @@
 /* Let's make some of the MDC's style global for funsies */
-* {
+:root {
   --grey: #3a3838;
   --white: #ffffff;
   --halfgrey: #d0cece;
@@ -8,13 +8,7 @@
   --halfred: #ffbbbb;
   --yellow: #ffff00;
 
-  font-family: "Bahnschrift";
-  font-size: 1em;
-  font-weight: 550;
 
-  text-align: center;
-  vertical-align: middle;
-  box-sizing: border-box;
 }
 
 .ctr {
@@ -34,6 +28,7 @@
 select::-ms-expand {
   display: none;
 }
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -42,6 +37,12 @@ select {
 }
 
 .mdcpage {
+
+  font-family: "Bahnschrift";
+  font-size: 1em;
+  font-weight: 550;
+  vertical-align: middle;
+
   border: 1px solid rgb(209, 209, 209);
   background-color: var(--white);
   max-width: 960px;
@@ -102,204 +103,271 @@ select {
   color: var(--white);
   grid-column: span 29;
 }
+
 .c1 {
   grid-column: span 1;
 }
+
 .c2 {
   grid-column: span 2;
 }
+
 .c3 {
   grid-column: span 3;
 }
+
 .c4 {
   grid-column: span 4;
 }
+
 .c5 {
   grid-column: span 5;
 }
+
 .c6 {
   grid-column: span 6;
 }
+
 .c7 {
   grid-column: span 7;
 }
+
 .c8 {
   grid-column: span 8;
 }
+
 .c9 {
   grid-column: span 9;
 }
+
 .c10 {
   grid-column: span 10;
 }
+
 .c11 {
   grid-column: span 11;
 }
+
 .c12 {
   grid-column: span 12;
 }
+
 .c13 {
   grid-column: span 13;
 }
+
 .c14 {
   grid-column: span 14;
 }
+
 .c15 {
   grid-column: span 15;
 }
+
 .c16 {
   grid-column: span 16;
 }
+
 .c17 {
   grid-column: span 17;
 }
+
 .c18 {
   grid-column: span 18;
 }
+
 .c19 {
   grid-column: span 19;
 }
+
 .c20 {
   grid-column: span 20;
 }
+
 .c21 {
   grid-column: span 21;
 }
+
 .c22 {
   grid-column: span 22;
 }
+
 .c23 {
   grid-column: span 23;
 }
+
 .c24 {
   grid-column: span 24;
 }
+
 .c25 {
   grid-column: span 25;
 }
+
 .c26 {
   grid-column: span 26;
 }
+
 .c27 {
   grid-column: span 27;
 }
+
 .c28 {
   grid-column: span 28;
 }
+
 .c29 {
   grid-column: span 29;
 }
+
 .c30 {
   grid-column: span 30;
 }
+
 .c31 {
   grid-column: span 31;
 }
+
 .c32 {
   grid-column: span 32;
 }
+
 .c33 {
   grid-column: span 33;
 }
+
 .c34 {
   grid-column: span 34;
 }
+
 .c35 {
   grid-column: span 35;
 }
+
 .c36 {
   grid-column: span 36;
 }
+
 .c40 {
   grid-column: span 40;
 }
+
 .r1 {
   grid-row: span 1;
 }
+
 .r2 {
   grid-row: span 2;
 }
+
 .r3 {
   grid-row: span 3;
 }
+
 .r4 {
   grid-row: span 4;
 }
+
 .r5 {
   grid-row: span 5;
 }
+
 .r6 {
   grid-row: span 6;
 }
+
 .r7 {
   grid-row: span 7;
 }
+
 .r8 {
   grid-row: span 8;
 }
+
 .r9 {
   grid-row: span 9;
 }
+
 .r10 {
   grid-row: span 10;
 }
+
 .r11 {
   grid-row: span 11;
 }
+
 .r12 {
   grid-row: span 12;
 }
+
 .r13 {
   grid-row: span 13;
 }
+
 .r14 {
   grid-row: span 14;
 }
+
 .r15 {
   grid-row: span 15;
 }
+
 .r16 {
   grid-row: span 16;
 }
+
 .r26 {
   grid-row: span 26;
 }
+
 .r27 {
   grid-row: span 27;
 }
+
 .r28 {
   grid-row: span 28;
 }
+
 .r29 {
   grid-row: span 29;
 }
+
 .r30 {
   grid-row: span 30;
 }
+
 .r31 {
   grid-row: span 31;
 }
+
 .r32 {
   grid-row: span 32;
 }
+
 .r33 {
   grid-row: span 33;
 }
+
 .r34 {
   grid-row: span 34;
 }
+
 .r35 {
   grid-row: span 35;
 }
+
 .r36 {
   grid-row: span 36;
 }
+
 .r43 {
   grid-row: span 43;
 }
+
 .r44 {
   grid-row: span 44;
 }
+
 .r45 {
   grid-row: span 45;
 }
@@ -311,9 +379,11 @@ select {
 .r47 {
   grid-row: span 47;
 }
+
 .r48 {
   grid-row: span 48;
 }
+
 .r49 {
   grid-row: span 49;
 }
@@ -322,9 +392,11 @@ select {
   writing-mode: tb-rl;
   transform: rotate(180deg);
 }
+
 .cw {
   writing-mode: tb-rl;
 }
+
 .w,
 .hg {
   color: black !important;
@@ -346,6 +418,7 @@ select {
   font-size: 0.9em;
   font-weight: bold;
 }
+
 .squad {
   color: var(--orange);
   background-color: var(--grey);
