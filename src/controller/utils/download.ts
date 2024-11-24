@@ -36,7 +36,8 @@ export const download = () => {
 
       triggerDownload(
         imageBlob,
-        `${getFlight.value.callsign}_${router.currentRoute.value.name as string
+        `p${router.currentRoute.value.name as string}_${
+          getFlight.value.callsign
         }.png`
       );
     } catch (error) {
@@ -45,9 +46,8 @@ export const download = () => {
   };
 
   const createZip = async () => {
-    await new Promise((resolve) => setTimeout(() => resolve(true), 600));
-
-    let images = new Array();
+    // I just include this here to ensure the components are rendered (outside the users view) before processing
+    await new Promise((resolve) => setTimeout(() => resolve(true), 10));
 
     const pagesDiv = document.getElementById("mdcpages");
     if (!pagesDiv) {
@@ -58,51 +58,54 @@ export const download = () => {
     const childDivs = Array.from(pagesDiv.children)
       .filter((child) => child.tagName.toLowerCase() === "div")
       .slice(0, 5);
-    if (!childDivs) {
-      console.error("Could not find child elements of 'mdcpages'");
+
+    if (!childDivs.length) {
+      console.error("No valid child elements found in 'mdcpages'");
       return;
     }
 
-    for (let i = 0; i < childDivs.length; i++) {
-      await new Promise((resolve) => setTimeout(() => resolve(true), 100));
-      const pageElement = childDivs[i];
-      if (!pageElement) {
-        console.error("Could not find element at index", i);
-        continue;
-      }
-
+    const imagePromises = childDivs.map(async (pageElement, index) => {
       try {
         const dataUrl = await toJpeg(pageElement as HTMLElement, {
           pixelRatio: 1,
         });
-        if (!dataUrl) {
-          console.error("Failed to create dataUrl for page", i);
-          continue;
-        }
-
         const image = new Image();
         image.src = dataUrl;
-        try {
-          images.push(await loadImage(image));
-        } catch (error) {
-          console.error("Failed to load image for page", i, error);
-        }
+
+        // Wait for the image to load before returning it
+        return await loadImage(image);
       } catch (error) {
-        console.error("Failed to create image for page", i, error);
+        console.error(`Failed to process page at index ${index}`, error);
+        return null; // Handle individual failures without stopping the loop
       }
+    });
+
+    const processedImages = await Promise.all(imagePromises).then((images) =>
+      images.filter((image) => image !== null)
+    );
+
+    if (processedImages.length === 0) {
+      console.error("No valid images to download");
+      return;
     }
 
-    await downloadImagesAsZip(images)
-      .catch((error) => {
-        console.error("Failed to download images as zip", error);
-      })
-      .finally(() => {
-        images = new Array();
-      });
+    // Pass the valid images to download as a zip
+    await downloadImagesAsZip(processedImages).catch((error) => {
+      console.error("Failed to download images as zip", error);
+    });
   };
 
   const imageToBlob = async (image: HTMLImageElement): Promise<Blob> => {
-    const canvas = document.createElement("canvas");
+    if (!image.naturalWidth || !image.naturalHeight) {
+      throw new Error("Image dimensions are invalid");
+    }
+
+    // Use an offscreen canvas if available for better performance in supported browsers
+    const canvas =
+      "OffscreenCanvas" in window
+        ? new OffscreenCanvas(image.naturalWidth, image.naturalHeight)
+        : document.createElement("canvas");
+
     canvas.width = image.naturalWidth;
     canvas.height = image.naturalHeight;
 
@@ -113,8 +116,14 @@ export const download = () => {
 
     context.drawImage(image, 0, 0);
 
+    // Use a synchronous method for OffscreenCanvas if possible
+    if (canvas instanceof OffscreenCanvas) {
+      return canvas.convertToBlob({ type: "image/png" });
+    }
+
+    // Fallback to the asynchronous method for regular canvas
     return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
+      (canvas as HTMLCanvasElement).toBlob((blob) => {
         if (blob) {
           resolve(blob);
         } else {
@@ -143,13 +152,21 @@ export const download = () => {
     }
 
     // Generate zip blob asynchronously
-    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const zipBlob = await zip.generateAsync({
+      type: "blob",
+      compression: "STORE",
+      compressionOptions: { level: 0 },
+    });
 
     // Trigger download
     triggerDownload(zipBlob, `${getFlight.value.callsign}.zip`);
   };
 
-  // Utility function to trigger a download
+  /**
+   * Utility function to trigger a download
+   * @param {Blob} blob The blob to download
+   * @param {string} filename The filename to use for the download
+   */
   const triggerDownload = (blob: Blob, filename: string) => {
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
@@ -158,6 +175,12 @@ export const download = () => {
     URL.revokeObjectURL(link.href); // Cleanup
   };
 
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Downloads the current state of the application as a JSON file
+   * @return {Promise<void>}
+   */
+  /******  ad686cfc-9e52-4cb7-8bf4-02e8efce2cf5  *******/
   async function toJSON() {
     const globalStore = useGlobalStore();
     const { packages } = storeToRefs(usePackageStore());
