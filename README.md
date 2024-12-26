@@ -25,6 +25,7 @@ Current WIP Items
 3. UI Changes, usability improvements.
 4. Addition of better support for different types of aircraft.
 5. Web Editor to edit missions from the MDC tool
+6. .miz file import to be independed of combat flite
 
 Later in development, this will also be a include a backend to enhace shareability of MDCs/Mission Data in generall.
 Further plans are to include an event planner to host and organise public events more easily.
