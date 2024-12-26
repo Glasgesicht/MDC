@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { processCF } from "@/controller/parseFiles";
+import { processCF } from "@/controller/utils/parseFiles";
 import { useGlobalStore } from "@/controller/stores/theatreStore";
 import { ref } from "vue";
 import { useEditHistory } from "@/components/history/editHistory";

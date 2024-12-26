@@ -1,7 +1,7 @@
 import { useFlightStore } from "@/controller/stores/flightStore";
 import { storeToRefs } from "pinia";
 import type { Misc } from "./dtcTypes";
-import type { Coordinate } from "@/controller/coordinates";
+import type { Coordinate } from "@/controller/utils/coordinates";
 
 export type FlightMember = {
   callsign: string;

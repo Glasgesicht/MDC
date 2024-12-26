@@ -30,7 +30,7 @@
           <Column field="activity" header="Activity"></Column>
           <Column field="tot" header="Time on Target"><template #body="{ data }">{{
             new Date(data.tot).toLocaleTimeString("de-DE")
-          }}</template></Column>
+              }}</template></Column>
           <Column field="mach" header="Mach">
             <template #body="{ data }">{{
               Number(data.mach).toFixed(2)
@@ -125,7 +125,7 @@ import Input from "primevue/inputtext";
 import { toLatString, toLongString } from "@/controller/utils/utilFunctions";
 import Dialog from "primevue/dialog";
 import { usePackageStore } from "@/controller/stores/packageStore";
-import { Coordinate } from "@/controller/coordinates";
+import { Coordinate } from "@/controller/utils/coordinates";
 import Map from "../mdc/child components/map.vue";
 const { getFlight } = storeToRefs(useFlightStore());
 const { selectedPKG } = storeToRefs(usePackageStore());

@@ -14,7 +14,7 @@ import toDTC from "@/components/DTCExports/commsToDTC.vue";
 import { commTables, tacticalFreqs } from "@/config/defaults/frequencies";
 import { airports, airfieldEmpty } from "@/config/defaults/airfields";
 import type { WritableComputedRef } from "vue";
-import type { Coordinate } from "@/controller/coordinates";
+import type { Coordinate } from "@/controller/utils/coordinates";
 
 /**
  * Misc
@@ -551,10 +551,10 @@ const groupedFlights = computed(() =>
       <div class="item5">
         <p>TANKER</p>
         <Select :options="selectedPKG.agencies
-            .filter((ag) =>
-              ['KC-135', 'KC135MPRS', 'KC130'].includes(ag.type)
-            )
-            .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
+          .filter((ag) =>
+            ['KC-135', 'KC135MPRS', 'KC130'].includes(ag.type)
+          )
+          .sort((a, b) => a.name.charCodeAt(0) - b.name.charCodeAt(0))
           " severity="danger" class="dropdown" v-model="tanker" option-label="name" @change="(e: any) => {
             tanker = e.value;
           }

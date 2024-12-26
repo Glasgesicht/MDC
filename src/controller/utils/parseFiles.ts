@@ -11,10 +11,10 @@ import type {
 import { initFlight } from "@/types/mdcDataTypes"; // @ts-ignore
 import JSZip from "jszip";
 import xml2js from "xml2js";
-import { flights } from "../config/defaults/flights";
+import { flights } from "../../config/defaults/flights";
 import { getSTN } from "@/controller/utils/utilFunctions";
 import { useFlightStore } from "@/controller/stores/flightStore";
-import { airports } from "../config/defaults/airfields";
+import { airports } from "../../config/defaults/airfields";
 import { DateTime } from "luxon";
 import { ref, watch } from "vue";
 import { Coordinate } from "./coordinates";

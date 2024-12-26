@@ -1,9 +1,9 @@
 import { createRouter, createMemoryHistory } from "vue-router";
 
-import generalSettings from "@/views/settings/generalSettings.vue";
-import flightSettings from "@/views/settings//flightSettings.vue";
-import packageSettings from "@/views/settings/packageSettings.vue";
-import waypointsSettings from "@/views/settings/waypoints.vue";
+import generalSettings from "@/views/flightsettings/generalSettings.vue";
+import flightSettings from "@/views/flightsettings//flightSettings.vue";
+import packageSettings from "@/views/flightsettings/packageSettings.vue";
+import waypointsSettings from "@/views/flightsettings/waypoints.vue";
 
 import newbriefing from "@/views/mdc/newbriefing.vue";
 import newsteerpoints from "@/views/mdc/newsteerpoints.vue";
@@ -15,6 +15,7 @@ import pageSettings from "@/views/pageSettings.vue";
 
 import { useFlightStore } from "@/controller/stores/flightStore";
 import { storeToRefs } from "pinia";
+import Configuration from "@/views/configuration.vue";
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -125,6 +126,15 @@ const router = createRouter({
       },
       meta: {
         canExport: true,
+        requireLoaded: false,
+      }, // popupCalc.vue
+    },
+    {
+      name: "Configuration",
+      path: "/config",
+      component: Configuration,
+      meta: {
+        canExport: false,
         requireLoaded: false,
       }, // popupCalc.vue
     },

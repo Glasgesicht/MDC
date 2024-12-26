@@ -14,7 +14,7 @@ import { usePackageStore } from "./controller/stores/packageStore";
 import { useFlightStore } from "./controller/stores/flightStore";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "./controller/stores/theatreStore";
-import { processCF, processJSON } from "./controller/parseFiles";
+import { processCF, processJSON } from "./controller/utils/parseFiles";
 import { useDTCexports } from "@/components/DTCExports/dtcExport";
 
 import Newsteerpoints from "./views/mdc/newsteerpoints.vue";
@@ -224,13 +224,13 @@ const items: Ref<MenuItem[]> = computed(() => [
   {
     label: "Other Pages",
     items: [
-      /*{
-        icon: "pi pi-calculator",
-        label: "Popup Calculator",
+      {
+        icon: "pi pi-cog",
+        label: "Configuration",
         command: () => {
-          router.push({ name: "popupCalc" });
+          router.push({ name: "Configuration" });
         },
-      },*/
+      },
       {
         label: "Application Settings",
         icon: "pi pi-cog",

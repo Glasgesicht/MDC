@@ -9,7 +9,7 @@ import {
   generateInlineGridFixed,
 } from "@/controller/utils/utilFunctions";
 import { useFlightStore } from "@/controller/stores/flightStore";
-import type { Coordinate } from "@/controller/coordinates";
+import type { Coordinate } from "@/controller/utils/coordinates";
 
 const { selectedPKG } = storeToRefs(usePackageStore());
 
