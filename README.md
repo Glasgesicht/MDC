@@ -5,16 +5,29 @@ Small project to genertate MDC's from Data import with many contextual presets f
 This is in a heavy WIP state.
 The current programm represets a rough scaffold of what this will eventually become.
 
-Currently planned features include:
+Currently implemented features include:
 
 1. Full set of Kneeboard pages for export. [Done in collaboration with @github/iProphet]
-2. Selective export to JPEG/ZIP for single pages, flights and packages. [60%]
-3. Save and Load Presets, independently of CF Files. [Requires Backend work eventually]
-4. Chooseable Airfields with their properties. [Just a matter of adding them]
-5. DTC export [already working for the most part, Missing some MISC and HARM settings]
-6. import .miz files, as well as DTC json and .cf files [currently only .cf is supported]
-7. QOL features, such as fully working Undo/Redo
-8. Many more features.
+2. Selective export to JPEG/ZIP for single pages, flights and packages.
+3. Save and Load Presets, independently of CF Files.
+4. Chooseable Airfields with their properties. 
+5. DTC export.
+6. Some QOL features, such as fully working Undo/Redo
+
+Current WIP Items
+
+1. Completely adjustable configuration, including the addition and modification of
+   1. Squadrons
+   2. Flights/Callsigns
+   3. Airfields
+   4. Weather Presets
+2. Utilization of Local Storage (Indexed DB) to preserve changes made without saving/loading .JSONs
+3. UI Changes, usability improvements.
+4. Addition of better support for different types of aircraft.
+5. Web Editor to edit missions from the MDC tool
+
+Later in development, this will also be a include a backend to enhace shareability of MDCs/Mission Data in generall.
+Further plans are to include an event planner to host and organise public events more easily.
 
 ### to get started:
 
