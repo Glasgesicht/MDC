@@ -9,4 +9,6 @@ export enum aircraft {
     "M2000" = "M2000",
     "JAS-37" = "JAS-37",
     "F-15E" = "F-15E"
-} 
+}
+
+export type aircraftType = `${aircraft}`

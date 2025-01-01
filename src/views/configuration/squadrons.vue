@@ -1,5 +1,5 @@
 <template>
-    <DataTable edit-mode="cell" :value="squadrons">
+    <DataTable edit-mode="cell" :value="squadrons" @cell-edit-complete="squadrons = squadrons">
         <Column header="Squadron Name">
             <template #body="{ data }">{{ data.name }}</template>
             <template #editor="{ data, index, field }">
@@ -10,34 +10,42 @@
                 #editor="{ data, index, field }">
                 <Select :options="Object.values(aircraft)" v-model="squadrons[index].aircraft"></Select></template>
         </Column>
-        <Column header="STN-Prefix"><template #body="{ data }">{{ data.STN ? data.STN + 'X' : 'automaticially assigned'
+        <Column header="STN-Prefix"><template #body="{ data }">{{ data.STN ? data.STN + 'XX' : 'automaticially assigned'
                 }}</template><template #editor="{ data, index, field }">
                 <InputMask mask="?9999X" v-model=squadrons[index].STN></InputMask>
             </template>
         </Column>
-        <Column header="Active"><template #body="{ data, index }">
-                <Checkbox v-model:model-value="squadrons[index].active" />
+        <Column header="Active">
+            <template #body="{ data, index }">
+                <Checkbox v-model="squadrons[index].active" binary @change="squadrons = squadrons" />
             </template>
+
         </Column>
         <Column header="Delete"><template #body="{ data, index }">
-                <Button icon="pi pi-trash" @click="squadrons.splice(index, 1)" />
+                <Button icon="pi pi-trash" @click="squadrons.splice(index, 1); squadrons = squadrons" />
             </template>
         </Column>
-        <template #footer><Button label="Add Squadron" @click="squadrons.push({
+        <template #footer><Button label="Add Squadron" @click="squadrons = [...squadrons, {
             name: 'A',
             aircraft: 'F/A-18C',
             active: true,
-            STN: ''
-        })" /></template>
+            STN: '',
+            callsigns: []
+        }]" /></template>
     </DataTable>
 </template>
 
 <script setup lang="ts">
 import { aircraft } from '@/types/aircraft';
-import { ref, type Ref } from 'vue';
-type aircraftType = `${aircraft}`
+import { useSqaudronsCallsigns } from './composables/useSquadronsCallsigns';
+import { ref } from 'vue';
 
-const squadrons: Ref<{ name: string, aircraft: aircraftType, STN: string, active: boolean }[]> = ref(new Array())
+/* There are some reactivity issue here due to the utilization of local storage, 
+** these are for now fixed due to explicitly rewriting the value through "squadron = squadron"
+** to trigger the rewrite of localstorage
+*/
+const { squadrons } = useSqaudronsCallsigns()
+
 
 </script>
 <style lang="css"></style>
