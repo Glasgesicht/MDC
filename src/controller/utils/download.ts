@@ -175,12 +175,10 @@ export const download = () => {
     URL.revokeObjectURL(link.href); // Cleanup
   };
 
-  /*************  ✨ Codeium Command ⭐  *************/
   /**
    * Downloads the current state of the application as a JSON file
    * @return {Promise<void>}
    */
-  /******  ad686cfc-9e52-4cb7-8bf4-02e8efce2cf5  *******/
   async function toJSON() {
     const globalStore = useGlobalStore();
     const { packages } = storeToRefs(usePackageStore());
