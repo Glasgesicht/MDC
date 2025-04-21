@@ -1,5 +1,7 @@
 # MDC
 
+<span style="color:red">This Project is on hold until DTCs are properly implmented in DCS: World.</span>
+
 Small project to genertate MDC's from Data import with many contextual presets for the use in the flight simulator "DCS: World"
 
 This is in a heavy WIP state.
