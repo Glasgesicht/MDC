@@ -1,8 +1,12 @@
-export type theatre =
-  | "Caucasus"
-  | "Syria"
-  | "PG"
-  | "Nevada"
-  | "Sinai"
-  | "Kola"
-  | "Marianas";
+export enum theatres {
+  "Caucasus" ="Caucasus",
+  "Syria" ="Syria",
+   "PG" = "PG",
+   "Nevada" = "Nevada",
+  "Sinai" = "Sinai",
+  "Kola" = "Kola",
+   "Marianas" = "Marianas",
+   "Germany" = "Germany"
+}
+
+export type theatre = `${theatres}`
