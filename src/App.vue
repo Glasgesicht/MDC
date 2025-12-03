@@ -279,19 +279,22 @@ const showExport = ref(false);
 </script>
 
 <template>
-  <div id="app">
-    <div class="split left" style="background-color: var(--p-menu-background)">
-      <div class="logo13" style="height: 150px"></div>
+  <div id="app" class="flex h-screen w-screen m-0 p-0 box-border">
+    <aside
+      class="flex flex-col min-w-[200px] w-[220px] max-w-[220px]"
+      style="background-color: var(--p-menu-background)"
+    >
+      <div class="logo13 h-[150px]"></div>
 
-      <Menu :model="items" style="border: none" />
+      <Menu :model="items" class="border-none" />
 
-      <hr style="width: 100%" v-if="file" />
+      <hr class="w-full" v-if="file" />
 
       <SelectFlight v-if="file" showFlightSelection showPKGSelection />
-    </div>
-    <div class="split right" style="padding: 8px 0 0 8px">
+    </aside>
+    <main class="flex-1 min-w-[1200px] h-screen overflow-y-auto pl-2 pt-2">
       <div v-if="showExport">
-        <div id="mdcpages" style="display: flex; position: absolute; top: -2000px">
+        <div id="mdcpages" class="flex absolute -top-[2000px]">
           <Newbriefing :pagenr="1" />
           <Newdatacard :pagenr="2" />
           <Newsteerpoints :pagenr="3" />
@@ -300,76 +303,56 @@ const showExport = ref(false);
         </div>
       </div>
       <div>
-        <div :style="meta.canExport ? 'display: flex; align-items: center' : ''">
-          <Button v-if="meta.canExport && !isSmallScreen" :disabled="router.currentRoute.value.name === '1'" @click="
-            router.push({
-              name:
-                parseInt(router.currentRoute.value.name as string) - 1 + '',
-            })
-            " style="height: 100vh; width: 28%; border: none; font-size: 32px" outlined icon="pi pi-chevron-left" />
+        <div :class="meta.canExport ? 'flex items-center' : ''">
+          <Button
+            v-if="meta.canExport && !isSmallScreen"
+            :disabled="router.currentRoute.value.name === '1'"
+            @click="
+              router.push({
+                name:
+                  parseInt(router.currentRoute.value.name as string) - 1 + '',
+              })
+            "
+            class="h-screen w-[28%] border-none text-3xl"
+            outlined
+            icon="pi pi-chevron-left"
+          />
           <RouterView />
-          <Button v-if="meta.canExport && !isSmallScreen" style="height: 100vh; width: 32%; border: none"
-            :disabled="router.currentRoute.value.name == '6'" @click="
+          <Button
+            v-if="meta.canExport && !isSmallScreen"
+            class="h-screen w-[32%] border-none"
+            :disabled="router.currentRoute.value.name == '6'"
+            @click="
               router.push({
                 name:
                   parseInt(router.currentRoute.value.name as string) + 1 + '',
               })
-              " outlined icon="pi pi-chevron-right" />
+            "
+            outlined
+            icon="pi pi-chevron-right"
+          />
         </div>
       </div>
-      <div style="position: fixed; top: 0px; right: 0px; border: none">
+      <div class="fixed top-0 right-0 border-none">
         <editHistory />
       </div>
-    </div>
+    </main>
   </div>
-  <input style="display: none" type="file" id="fileUpload" class="file-input" v-on:change="onChangedFile"
-    accept=".cf,.json" />
-  <div style="text-align: center; position: absolute; bottom: 0">
-    version: {{ version }}
-  </div>
+  <input
+    class="hidden"
+    type="file"
+    id="fileUpload"
+    v-on:change="onChangedFile"
+    accept=".cf,.json"
+  />
+  <footer class="text-center absolute bottom-0">version: {{ version }}</footer>
 </template>
 
 <style>
-#app {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-  box-sizing: border-box;
-  padding: 0;
-}
-
-.split {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 .pi-chevron-left,
 .pi-chevron-right {
   font-size: 18px !important;
   opacity: 0.8;
-}
-
-/** 
-html.darkmode body div#app div#app div.split.right div div button.p-button.p-component.p-button-icon-only.p-button-outlined.page-button 
-*/
-
-.left {
-  min-width: 200px;
-  width: 220px;
-  max-width: 220px;
-}
-
-.right {
-  min-width: 1200px;
-  height: 100vh;
-  overflow-y: auto;
-  flex: 1;
-}
-
-.right::after {
-  max-width: 2000px;
 }
 
 .m-5 {

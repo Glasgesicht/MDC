@@ -21,7 +21,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ["xml2js", "glob", "fs-extra", "graceful-fs"],
+    include: ["xml2js"],
   },
   resolve: {
     alias: {

@@ -1,29 +1,33 @@
 <template>
-  <div class="page-settings">
-    <div class="menu-container">
-      <header class="menu-header">
-        <h2>Application Settings</h2>
+  <div class="p-6">
+    <div class="mb-6">
+      <header class="mb-4">
+        <h2 class="text-2xl font-semibold">Application Settings</h2>
       </header>
       <Button
         label="Toggle Dark Mode"
         icon="pi pi-moon"
         @click="toggleDarkMode()"
-        class="dark-mode-toggle"
+        class="mb-4"
       />
-      <div class="api-key-section">
-        <label for="apikey" class="api-label">OpenAIP API Key</label><br />
+      <div class="mt-4">
+        <label for="apikey" class="block font-medium mb-1"
+          >OpenAIP API Key</label
+        >
         <InputText
           type="text"
-          style="width: 350px"
+          class="w-[350px]"
           id="apikey"
           v-model="apiKey"
           placeholder="Enter your API key"
-          class="api-input"
-        /><br />
-
-        <small class="api-helper-text">
+        />
+        <small class="block mt-2 text-gray-500">
           Register an account and get a free API key
-          <a href="https://www.openaip.net/user/api-clients" target="_blank">
+          <a
+            href="https://www.openaip.net/user/api-clients"
+            target="_blank"
+            class="text-blue-500 hover:underline"
+          >
             here </a
           >.
         </small>
@@ -52,12 +56,3 @@ const apiKey = computed({
   },
 });
 </script>
-
-<style scoped>
-.menu-container {
-  margin-bottom: 1rem;
-}
-.api-key-section {
-  margin-top: 1rem;
-}
-</style>

@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* Let's make some of the MCD'--mcd-text-colors style global for funsies */
 .logo13 {
   background-image: url("../images/logo_cjtf13.png");
